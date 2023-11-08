@@ -2,7 +2,7 @@ package src.Model;
 
 import java.awt.*;
 
-public abstract class ATower implements IPlacable, IPositionable{
+public abstract class ATower implements IPlacable{
    private int x;
    private int y;
    private int cost;
