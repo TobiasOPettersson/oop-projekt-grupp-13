@@ -13,10 +13,11 @@ public abstract class AEnemy {
         this.speedY = speedY;
     }
 
-    public void move(double x, double y) {
-        this.posX += x;
-        this.posY += y;
+    public void move(double speedX, double speedY) {
+        this.posX += speedX;
+        this.posY += speedY;
     }
+    
     public int getHealth(){
         return this.health;
     }
