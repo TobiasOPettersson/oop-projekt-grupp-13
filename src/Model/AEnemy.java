@@ -8,6 +8,8 @@ public abstract class AEnemy implements IMovable{
     private Rectangle enemyRect; //Enemy boundaries so that when it gets in to the towers targeting range, it gets shot
                                  //Maybe use width, and height instead?
 
+    //AN ENEMY NEEDS A PATH, MAYBE HAVE A DIRECTION VARIABLE... ENUM?
+    
     public AEnemy(int health, int x, int y, double speedX, double speedY, int width, int height) {
         this.health = health;
         this.x = x;
