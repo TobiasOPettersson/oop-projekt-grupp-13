@@ -1,4 +1,7 @@
 package src.Model;
 
-public class MapOne {
+public class MapOne extends AMap {
+    public MapOne(){
+        super();
+    }
 }
