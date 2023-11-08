@@ -2,7 +2,7 @@ package src.Model;
 
 import java.util.List;
 
-import Model.TileAvailability.GridType;
+import src.Model.TileAvailability.GridType;
 
 import java.util.ArrayList;
 
