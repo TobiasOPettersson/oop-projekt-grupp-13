@@ -2,7 +2,7 @@ package Model;
 
 public abstract class AEnemy {
     private int health; //The health points of an enemy
-    private double posX, posY;
+    private double posX, posY; //The enemys position
     private double speedX, speedY; //The speed in x- and y-direction for an enemy
 
     public AEnemy(int health, double posX, double posY, double speedX, double speedY) {
