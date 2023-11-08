@@ -1,4 +1,4 @@
-package Model;
+package src.Model;
 
 public abstract class AEnemy {
     private int health; //The health points of an enemy
