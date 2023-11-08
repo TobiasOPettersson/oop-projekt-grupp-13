@@ -1,4 +1,4 @@
-package Controller;
+package src.Controller;
 
 public class TowerController {
 }
