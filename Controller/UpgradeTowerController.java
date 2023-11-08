@@ -17,15 +17,10 @@ public class UpgradeTowerController extends TowerController {
 
     // TODO METHOD upgradeTower();
 
-    //public void upgradeTower(int x, int y, Atower tower){
+    // public void upgradeTower(int x, int y, Atower tower){
     // Example: upgrading a tower object and adding it to the game world.
     // ATower newTower = new ATower(x, y, tower);
     // Tell mainModel to upgrade the tower..
     // MainModel.upgrade(newTower);
-
-
-    }
-
-
 
 }
