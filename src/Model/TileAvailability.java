@@ -1,9 +1,7 @@
 package src.Model;
 
-public class TileAvailability {
-    enum GridType {
+public enum TileAvailability {
         Free,
         Tower,
         Path
-    }
 }
