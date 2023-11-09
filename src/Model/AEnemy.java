@@ -1,22 +1,24 @@
 package src.Model;
 import java.awt.Rectangle;
+import java.awt.Image;
 
-public abstract class AEnemy implements IMovable{
+public abstract class AEnemy implements IMovable {
     private int health; //The health points of an enemy
-    private int x, y; //The enemys position
+    private int x, y; //The enemys position, maybe have this as a point?
     private double speedX, speedY; //The speed in x- and y-direction for an enemy
-    private Rectangle enemyRect; //Enemy boundaries so that when it gets in to the towers targeting range, it gets shot
-                                 //Maybe use width, and height instead?
-
-    //AN ENEMY NEEDS A PATH, MAYBE HAVE A DIRECTION VARIABLE... ENUM?
+    private Rectangle hitBox; //Enemy hitbox so that when it gets in to the towers targeting range, it can get shot
+    private Image model;
+    private String type;
     
-    public AEnemy(int health, int x, int y, double speedX, double speedY, int width, int height) {
+    public AEnemy(int health, int x, int y, double speedX, double speedY, int width, int height, Image model, String type) {
         this.health = health;
         this.x = x;
         this.y = y;
         this.speedX = speedX;
         this.speedY = speedY;
-        this.enemyRect = new Rectangle(x, y, width, height);
+        this.hitBox = new Rectangle(x, y, width, height);
+        this.model = model;
+        this.type = type;
     }
 
     public void move(double speedX, double speedY) {
@@ -45,10 +47,10 @@ public abstract class AEnemy implements IMovable{
     }
 
     public int getWidth() {
-        return enemyRect.width;
+        return this.hitBox.width;
     }
 
     public int getHeight() {
-        return enemyRect.height;
+        return this.hitBox.height;
     }
 }
