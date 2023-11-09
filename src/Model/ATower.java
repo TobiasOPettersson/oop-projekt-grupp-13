@@ -4,7 +4,7 @@ import java.awt.*;
 
 public abstract class ATower implements IPlacable{
    private int x;
-   private int y;
+   private double y;
    private int cost;
    private int range;
    private Image model;
@@ -17,7 +17,7 @@ public abstract class ATower implements IPlacable{
        this.model = model;
    }
 
-   public int getX() {
+   public double getX() {
        return x;
    }
 
@@ -25,7 +25,7 @@ public abstract class ATower implements IPlacable{
        this.x = x;
    }
 
-   public int getY() {
+   public double getY() {
        return y;
    }
 
