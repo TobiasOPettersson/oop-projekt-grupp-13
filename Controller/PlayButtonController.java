@@ -12,7 +12,7 @@ public class PlayButtonController extends JPanel{
     //ImageIcon playImage;
     JButton button;
 
-    public PlayButtonController(JFrame frame){
+    public PlayButtonController(){
         this.setBackground(Color.red);
         this.setSize(150, 75);
         this.setBorder(BorderFactory.createEmptyBorder(200, 20, 20, 20));

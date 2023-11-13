@@ -1,11 +1,13 @@
 package Model;
 
-import java.awt.*;
-
 public class Archer extends AttackTower{
 
-   public Archer(int x, int y, int cost, int range, Image model, int damage, int fireSpeed) {
-       super(x, y, cost, range, model, damage, fireSpeed);
+   public Archer(int x, int y) {
+       super(x, y);
+       cost = 1;
+       //model = archerImage;
+       damage = 5;
+       fireSpeed = 200;
    }
 
    @Override

@@ -3,18 +3,15 @@ package Model;
 import java.awt.*;
 
 public abstract class ATower implements IPlacable, IPositionable{
-   private int x;
-   private int y;
-   private int cost;
-   private int range;
-   private Image model;
+   protected int x;
+   protected int y;
+   protected int cost;
+   protected int range;
+   protected Image model;
 
-   public ATower(int x, int y, int cost, int range, Image model) {
+   public ATower(int x, int y) {
        this.x = x;
        this.y = y;
-       this.cost = cost;
-       this.range = range;
-       this.model = model;
    }
 
    public int getX() {

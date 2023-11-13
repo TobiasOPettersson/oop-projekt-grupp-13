@@ -1,15 +1,11 @@
 package Model;
 
-import java.awt.*;
-
 public abstract class AttackTower extends ATower implements IShootable{
-   private int damage;
-   private int fireSpeed;
+    protected int damage;
+    protected int fireSpeed;
 
-   public AttackTower(int x, int y, int cost, int range, Image model, int damage, int fireSpeed) {
-       super(x, y, cost, range, model);
-       this.damage = damage;
-       this.fireSpeed = fireSpeed;
+   public AttackTower(int x, int y) {
+       super(x, y);
    }
 
    public int getDamage() {
