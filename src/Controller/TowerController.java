@@ -1,4 +1,4 @@
-package Controller;
+package src.Controller;
 
 /**
  * This is an abstract class representing a Tower Controller in a game.
