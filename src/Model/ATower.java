@@ -9,12 +9,9 @@ public abstract class ATower implements IPlacable{
    private int range;
    private Image model;
 
-   public ATower(int x, int y, int cost, int range, Image model) {
+   public ATower(int x, int y) {
        this.x = x;
        this.y = y;
-       this.cost = cost;
-       this.range = range;
-       this.model = model;
    }
 
    public int getX() {
