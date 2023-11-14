@@ -162,7 +162,7 @@ public abstract class AEnemy implements IMovable {
                 }
             }
         }
-
+        
         else {
             switch (this.lastDirection) {
                 case RIGHT:

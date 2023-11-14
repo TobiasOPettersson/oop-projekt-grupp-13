@@ -17,6 +17,8 @@ public class EnemyOneTest {
         AEnemy enemy = new EnemyOne(0, 0, 0.34);
         Point tileCenterPoint = new Point(20,0);
         enemy.setTileCenterPointX(tileCenterPoint.getX());
+        enemy.setLastDirection(EnemyDirection.RIGHT);
+        enemy.setNextDirection(EnemyDirection.RIGHT);
 
         while (enemy.getX() < enemy.getTileCenterPointX()) {
             enemy.move();

@@ -1,4 +1,4 @@
-package View;
+package src.View;
 
 import javax.swing.JPanel;
 import java.awt.Graphics;
@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.awt.Color;
 
-import Model.MainModel;
+import src.Model.MainModel;
 
 public class DrawPanel extends JPanel {
     private BufferedImage image;

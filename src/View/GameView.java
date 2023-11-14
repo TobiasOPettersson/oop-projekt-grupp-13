@@ -1,7 +1,7 @@
-package View;
+package src.View;
 
 import javax.swing.JFrame;
-import Model.MainModel;
+import src.Model.MainModel;
 import java.awt.image.*;
 import java.io.IOException;
 import java.io.InputStream;
