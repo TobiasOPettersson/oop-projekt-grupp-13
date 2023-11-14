@@ -124,10 +124,10 @@ public abstract class AEnemy implements IMovable {
     public void move() {
         if (movesPastTileCenterPoint()) {
             if (this.lastDirection == this.nextDirection) {
-                int horizontal = ((this.lastDirection == EnemyDirection.RIGHT) ? 1 : 0) - ((this.lastDirection == EnemyDirection.LEFT) ? 1 : 0);
+               /*  int horizontal = ((this.lastDirection == EnemyDirection.RIGHT) ? 1 : 0) - ((this.lastDirection == EnemyDirection.LEFT) ? 1 : 0);
                 int vertical = ((this.lastDirection == EnemyDirection.DOWN) ? 1 : 0) - ((this.lastDirection == EnemyDirection.UP) ? 1 : 0);
                 this.x += horizontal * speed;
-                this.y += vertical * speed;
+                this.y += vertical * speed; */
 
                 switch (this.lastDirection) {
                     case RIGHT:
