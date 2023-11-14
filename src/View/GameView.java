@@ -1,7 +1,7 @@
-package View;
+package src.View;
 
 import javax.swing.JFrame;
-import Model.MainModel;
+import src.Model.MainModel;
 import java.awt.image.*;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,6 +25,7 @@ public class GameView extends JFrame {
     // import sprite sheet
     private void importImg() {
         InputStream is = this.getClass().getResourceAsStream("res/spriteatlas.png");
+
         try {
             image = ImageIO.read(is);
         } catch (IOException e) {
@@ -35,7 +36,7 @@ public class GameView extends JFrame {
 
     // initialize swing window
     private void initComponents() {
-        setSize(640, 640);
+        setSize(GraphicsDependencies.getWidth(), GraphicsDependencies.getHeight());
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);

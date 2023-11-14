@@ -1,12 +1,14 @@
-package View;
+package src.View;
 
 import javax.swing.JPanel;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.awt.Color;
 
-import Model.MainModel;
+import src.Model.MainModel;
 
 public class DrawPanel extends JPanel {
     private BufferedImage image;
@@ -18,16 +20,16 @@ public class DrawPanel extends JPanel {
     // "p1" = Path1 = sprites.get(8)
     // "p2" = Path2 = sprites.get(9)
     private String[][] map = {
-        {"g", "g", "g", "g", "g", "g", "g", "g", "g", "g"},
-        {"g", "w", "w", "g", "g", "g", "g", "g", "g", "g"},
-        {"g", "w", "w", "g", "p1","p2","p1","g", "g", "g"},
-        {"g", "g", "g", "g", "p2","g", "p2","g", "g", "g"},
-        {"g", "g", "g", "g", "p2","w", "p2","g", "g", "g"},
-        {"p2","p2","p2","p2","p1","w", "p2","g", "g", "g"},
-        {"g", "g", "g", "g", "g", "w", "p1","p2","p2","p2"},
-        {"g", "g", "g", "g", "w", "w", "g", "g", "g", "g"},
-        {"g", "g", "g", "g", "w", "w", "g", "g", "g", "g"},
-        {"g", "g", "g", "g", "w", "w", "g", "g", "g", "g"},
+            { "g", "g", "g", "g", "g", "g", "g", "g", "g", "g" },
+            { "g", "w", "w", "g", "g", "g", "g", "g", "g", "g" },
+            { "g", "w", "w", "g", "^>", ">", ">v", "g", "g", "g" },
+            { "g", "g", "g", "g", "^", "g", "v", "g", "g", "g" },
+            { "g", "g", "g", "g", "^", "w", "v", "g", "g", "g" },
+            { ">", ">", ">", ">", ">^", "w", "v", "g", "g", "g" },
+            { "g", "g", "g", "g", "g", "w", "v>", ">", ">", ">" },
+            { "g", "g", "g", "g", "w", "w", "g", "g", "g", "g" },
+            { "g", "g", "g", "g", "w", "w", "g", "g", "g", "g" },
+            { "g", "g", "g", "g", "w", "w", "g", "g", "g", "g" },
     };
 
     // Constructor
@@ -58,22 +60,44 @@ public class DrawPanel extends JPanel {
 
         for (int j = 0; j < 10; j++) {
             for (int i = 0; i < 10; i++) {
-                if(map[j][i].equals("g")){
-                    g.drawImage(sprites.get(grass), i*32, j*32, null);
-                }else if(map[j][i].equals("w")){
-                    g.drawImage(sprites.get(water), i*32, j*32, null);
-                }else if(map[j][i].equals("p1")){
-                    g.drawImage(sprites.get(path1), i*32, j*32, null);
-                }else if(map[j][i].equals("p2")){
-                    g.drawImage(sprites.get(path2), i*32, j*32, null);
+                switch (map[j][i]) {
+                    case "g":
+                        g.drawImage(sprites.get(grass), i * 32, j * 32, null);
+                        break;
+                    case "w":
+                        g.drawImage(sprites.get(water), i * 32, j * 32, null);
+                        break;
+                    case ">":
+                        g.drawImage(sprites.get(path2), i * 32, j * 32, null);
+                        break;
+                    case ">^":
+                        g.drawImage(SpriteRotator.rotateSprite(sprites.get(path1), 180), i * 32, j * 32, null);
+                        break;
+                    case "^":
+                        g.drawImage(SpriteRotator.rotateSprite(sprites.get(path2), 90), i * 32, j * 32, null);
+                        break;
+                    case "v":
+                        g.drawImage(SpriteRotator.rotateSprite(sprites.get(path2), 90), i * 32, j * 32, null);
+                        break;
+                    case "^>":
+                        g.drawImage(sprites.get(path1), i * 32, j * 32, null);
+                        break;
+                    case ">v":
+                        g.drawImage(SpriteRotator.rotateSprite(sprites.get(path1), 90), i * 32, j * 32, null);
+                        break;
+                    case "v>":
+                        g.drawImage(SpriteRotator.rotateSprite(sprites.get(path1), -90), i * 32, j * 32, null);
+                        break;
                 }
             }
         }
     }
-    
+
+
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         drawMap(g);
+        //BufferedImage RSprite = SpriteRotator.rotateSprite90Degree(sprites.get(8));
 
     }
 }

@@ -1,6 +1,6 @@
-package View;
-import View.GameView;
-import Model.MainModel;
+package src.View;
+import src.View.GameView;
+import src.Model.MainModel;
 
 public class TempMain {
     
