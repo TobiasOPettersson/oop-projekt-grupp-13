@@ -38,6 +38,10 @@ public class towerView extends JFrame {
 
     }
 
-    // methods for a label/buttons..
+    // method to updateLabel
+    public void updateLabel(String text) {
+        JLabel label = controller.getLabel();
+        label.setText(text);
+    }
 
 }
