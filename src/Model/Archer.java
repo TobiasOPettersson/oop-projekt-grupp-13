@@ -1,4 +1,4 @@
-package src.Model;
+package Model;
 
 public class Archer extends AttackTower{
 
@@ -8,11 +8,13 @@ public class Archer extends AttackTower{
        //model = archerImage;
        damage = 5;
        fireSpeed = 200;
+       range = 200;
    }
 
    @Override
-   public void shoot(AEnemy target) {
-       //target.getHP -= getDamage();
+   public void shoot() {
+        AEnemy target = findFirstTarget(null);
+        // target.health -= getDamage();
    }
 
    @Override
