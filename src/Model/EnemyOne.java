@@ -1,9 +1,8 @@
 package src.Model;
-import java.awt.Image;
 public class EnemyOne extends AEnemy{
     
-    public EnemyOne(double x, double y, double speed, int width, int height, Image model) {
-        super(1, x, y, speed, width, height, model, "normal");
+    public EnemyOne(double x, double y, double speed) {
+        super(1, x, y, speed, "normal");
     }
 
     @Override
