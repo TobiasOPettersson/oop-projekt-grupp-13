@@ -1,4 +1,4 @@
-package src.Model;
+package Model;
 
 public enum TileAvailability {
         Free,
