@@ -17,10 +17,14 @@ public class AMap {
         createGrid();
     }
 
-    public void createGrid(){
+    /*
+     * Takes in the vertecies of the path
+     * The two list need to be of equal length of type int
+     */
+    public void createGrid(int[] verteciesX, int[] verteciesY){
         for(TileAvailability[] row : grid){
             Arrays.fill(row, TileAvailability.Free);
         }
-        System.out.println(grid);
+        
     }
 }
