@@ -10,7 +10,6 @@ import java.util.Arrays;
 
 public class AMap {
     public List<ATower> towers = new ArrayList<ATower>();
-    public List<AEnemy> enemies = new ArrayList<AEnemy>();
     public TileAvailability grid[][] = new TileAvailability[8][8];
     
     public AMap(){
@@ -25,6 +24,5 @@ public class AMap {
         for(TileAvailability[] row : grid){
             Arrays.fill(row, TileAvailability.Free);
         }
-        
     }
 }
