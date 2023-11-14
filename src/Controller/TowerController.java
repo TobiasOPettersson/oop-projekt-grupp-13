@@ -21,15 +21,18 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public abstract class TowerController {
+import src.Model.AMap;
 
+public abstract class TowerController {
+    protected AMap map;
     private int x;
     private int y;
     private List<JButton> buttons = new ArrayList<>();
     private JLabel label;
     private JPanel panel;
 
-    public TowerController(int x, int y, List<JButton> buttons, JLabel label, JPanel panel) {
+    public TowerController(AMap map, int x, int y, List<JButton> buttons, JLabel label, JPanel panel) {
+        this.map = map;
         this.x = x;
         this.y = y;
         this.buttons = new ArrayList<>(buttons);
