@@ -44,4 +44,10 @@ public class towerView extends JFrame {
         label.setText(text);
     }
 
+    // method to add buttons to the panel.
+    public void addButton(JButton button) {
+        JPanel panel = controller.getPanel();
+        panel.add(button);
+    }
+
 }
