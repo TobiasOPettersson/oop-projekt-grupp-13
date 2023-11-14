@@ -1,8 +1,8 @@
-package src.Model;
+package Model;
 
 import java.util.List;
 
-import src.Model.TileAvailability;
+import Model.TileAvailability;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -11,18 +11,27 @@ import java.util.Arrays;
 public class AMap {
     public List<ATower> towers = new ArrayList<ATower>();
     public TileAvailability grid[][] = new TileAvailability[8][8];
-    
-    public AMap(){
+
+    public AMap() {
         createGrid();
     }
 
-    /*
-     * Takes in the vertecies of the path
-     * The two list need to be of equal length of type int
-     */
-    public void createGrid(int[] verteciesX, int[] verteciesY){
-        for(TileAvailability[] row : grid){
+    public void createGrid() {
+        for (TileAvailability[] row : grid) {
             Arrays.fill(row, TileAvailability.Free);
         }
     }
+
+    public void addTower(ATower tower) {
+        // towers.add(tower);
+        //
+        int towerX = tower.getX();
+        int towerY = tower.getY();
+
+        grid[towerX][towerY].setOccupied(true);
+        towers.add(tower);
+
+        // occupied... x, y värde på tower..
+    }
+
 }
