@@ -1,6 +1,6 @@
 package src.Model;
 
-public class ATile implements IPositionable{
+public class ATile{
     public int x;
     public int y;
     public TileTerrain terrain;
@@ -11,12 +11,10 @@ public class ATile implements IPositionable{
         this.terrain = TileTerrain.Plains;
     }
 
-    @Override
     public int getX() {
         return this.x;
     }
 
-    @Override
     public int getY() {
         return this.y;
     }
