@@ -25,6 +25,7 @@ public class GameView extends JFrame {
     // import sprite sheet
     private void importImg() {
         InputStream is = this.getClass().getResourceAsStream("res/spriteatlas.png");
+
         try {
             image = ImageIO.read(is);
         } catch (IOException e) {
