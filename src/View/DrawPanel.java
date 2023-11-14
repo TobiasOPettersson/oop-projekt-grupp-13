@@ -1,9 +1,10 @@
-package View;
+package src.View;
+
 import Model.MainModel;
 
 public class DrawPanel {
 
-    public DrawPanel(MainModel model){
+    public DrawPanel(MainModel model) {
 
     }
 }
