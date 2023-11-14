@@ -37,4 +37,12 @@ public abstract class TowerController {
         this.panel = panel;
     }
 
+    public JPanel getPanel() {
+        return panel;
+    }
+
+    public JLabel getLabel() {
+        return label;
+    }
+
 }

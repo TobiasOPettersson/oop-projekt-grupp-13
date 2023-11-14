@@ -1,6 +1,6 @@
 package src.View;
 
-import Model.MainModel;
+import src.Model.MainModel;
 
 public class DrawPanel {
 
