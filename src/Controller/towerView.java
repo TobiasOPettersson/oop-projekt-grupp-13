@@ -21,8 +21,10 @@ public class towerView extends JFrame {
 
     }
 
+    // initalize the panel for upgradeTower,createTower etc..
     public void initTowerView() {
         JPanel panel = controller.getPanel();
+        // jsut a dummy size, have to adapt..
         panel.setSize(100, 100);
         panel.setBackground(Color.black);
         panel.setVisible(true);
@@ -35,5 +37,7 @@ public class towerView extends JFrame {
         setVisible(true); // Make the frame visible
 
     }
+
+    // methods for a label/buttons..
 
 }
