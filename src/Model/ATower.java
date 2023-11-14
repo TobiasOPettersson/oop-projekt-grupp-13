@@ -1,18 +1,43 @@
-package src.Model;
+package Model;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public abstract class ATower implements IPlacable{
-   private int x;
-   private int y;
-   private int cost;
-   private int range;
-   private Image model;
+   protected int x;
+   protected int y;
+   protected int cost;
+   protected int range;
+   protected Image model;
 
    public ATower(int x, int y) {
        this.x = x;
        this.y = y;
    }
+
+   public AEnemy findFirstTarget(ArrayList<AEnemy> enemies){
+        for (AEnemy enemy : enemies) {
+            if(inRangeOf(enemy)){
+                return enemy;
+            }
+        }
+        return null;
+    }
+
+   public ArrayList<AEnemy> findAllTarget(ArrayList<AEnemy> enemies){
+        ArrayList<AEnemy> targets = new ArrayList<>();   
+        for (AEnemy enemy : enemies) {
+            if(inRangeOf(enemy)){
+                targets.add(enemy);
+            }
+        }
+        return enemies;
+    }
+
+    public boolean inRangeOf(AEnemy enemy){
+        double distance = Math.sqrt(Math.pow(x - enemy.getX(), 2) + Math.pow(y - enemy.getY(), 2));
+        return distance <= range;
+    }
 
    public int getX() {
        return x;
