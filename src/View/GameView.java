@@ -13,13 +13,12 @@ public class GameView extends JFrame {
     private BufferedImage image;
 
     // Constructor
-    public GameView(MainModel model) {
+    public GameView(MainModel model) { // Moved initComponents down so setVisible is done last
         importImg();
-        initComponents();
         this.model = model;
         this.drawPanel = new DrawPanel(model, image);
         add(drawPanel);
-
+        initComponents();
     }
 
     // import sprite sheet
@@ -37,9 +36,8 @@ public class GameView extends JFrame {
     // initialize swing window
     private void initComponents() {
         setSize(GraphicsDependencies.getWidth(), GraphicsDependencies.getHeight());
-        setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-
+        setVisible(true);
     }
 }
