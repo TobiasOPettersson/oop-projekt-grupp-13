@@ -1,15 +1,15 @@
 package src.Model;
 
 public abstract class AEnemy implements IMovable {
-    private int health; //The health points of an enemy
-    private double x, y; //The enemys position, maybe have this as a point?
-    private double speed; //The speed in an enemy
-    //private double hitBox; //Enemy hitbox so that when it gets in to the towers targeting range, it can get shot
+    private int health; //health points
+    private double x, y; //position
+    private double speed; //movement speed of an enemy
+    //private Rectangle hitBox; //Enemy hitbox
     private String type; //The type of enemy
-    private EnemyDirection lastDirection = EnemyDirection.RIGHT; //An enemy will start on the left side
-    private EnemyDirection nextDirection = EnemyDirection.RIGHT;
-    private double tileCenterPointX; //TEMPORARY
-    private double tileCenterPointY; //TEMPORARY
+    private EnemyDirection lastDirection = EnemyDirection.RIGHT; //last direction, starting with walking right
+    private EnemyDirection nextDirection = EnemyDirection.RIGHT; //next direction, starting with walking right
+    private double tileCenterPointX; //Need to have information about the next tile centerpoint so that we can move the enemy accordingly
+    private double tileCenterPointY;
 
     public AEnemy(int health, double x, double y, double speed, String type) {
         this.health = health;
@@ -20,6 +20,9 @@ public abstract class AEnemy implements IMovable {
         this.type = type;
     } //Constructor
 
+    /*
+     * Returning the next x-coordinate depending on the direction and speed
+     */
     private double nextXCoordinate() {
         switch (this.lastDirection) {
             case RIGHT:
@@ -31,6 +34,9 @@ public abstract class AEnemy implements IMovable {
         }
     }
 
+    /*
+     * Returning the next y-coordinate depending on the direction and speed
+     */
     private double nextYCoordinate() {
         switch (this.lastDirection) {
             case UP:
@@ -42,6 +48,9 @@ public abstract class AEnemy implements IMovable {
         }
     }
 
+    /*
+     * If an enemy moves past a tile centerpoint return true. Else return false.
+     */
     private boolean movesPastTileCenterPoint() {
         boolean passesTileCenterPoint = false;
         if ((nextXCoordinate() >= tileCenterPointX && this.lastDirection == EnemyDirection.RIGHT) || (nextXCoordinate() <= tileCenterPointX && this.lastDirection == EnemyDirection.LEFT)) {
@@ -53,6 +62,10 @@ public abstract class AEnemy implements IMovable {
         return passesTileCenterPoint;
     }
 
+    /*
+     * The four methods below updates the enemys coordinates depending on the last direction,
+     * its next coordinate and where the next tile centerpoint is
+     */
     private void switchingToMovingUp() {
             switch (this.lastDirection) {
                 case RIGHT:
@@ -121,6 +134,9 @@ public abstract class AEnemy implements IMovable {
         }
     }
 
+    /*
+     * Move an enemy depending on its last direction and next direction
+     */
     public void move() {
         if (movesPastTileCenterPoint()) {
             if (this.lastDirection == this.nextDirection) {
@@ -181,6 +197,7 @@ public abstract class AEnemy implements IMovable {
         }
     }
 
+<<<<<<< Updated upstream
     public void setTileCenterPointY(double y) {
         this.tileCenterPointY = y;
     }
@@ -189,6 +206,9 @@ public abstract class AEnemy implements IMovable {
         return this.tileCenterPointY;
     }
 
+=======
+    // ------- Getters and setters ---------
+>>>>>>> Stashed changes
     public void setTileCenterPointX(double x) {
         this.tileCenterPointX = x;
     }
