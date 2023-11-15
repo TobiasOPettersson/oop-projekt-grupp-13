@@ -4,7 +4,7 @@ public class PathTile extends ATile {
     PathTile next;
     
     public PathTile(int x, int y, PathTile next){
-        super(x, y);
+        super(x, y, false);
         this.next = next;
     }
 
