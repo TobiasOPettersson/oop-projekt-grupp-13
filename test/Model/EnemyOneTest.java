@@ -38,4 +38,79 @@ public class EnemyOneTest {
         }
         assertEquals(10, Math.round(enemy.getX()));
     }
+
+    @Test
+    public void moving_an_enemy_in_the_up_direction_should_decrease_its_y_coordinate() {
+        AEnemy enemy = new EnemyOne(0, 20, 0.34);
+        Point tileCenterPoint = new Point(0,10);
+        enemy.setTileCenterPointY(tileCenterPoint.getY());
+        enemy.setLastDirection(EnemyDirection.UP);
+        enemy.setNextDirection(EnemyDirection.UP);
+        while (enemy.getY() > enemy.getTileCenterPointY()) {
+            enemy.move();
+        }
+        assertEquals(10, Math.round(enemy.getY()));
+    }
+
+    @Test
+    public void moving_an_enemy_in_the_down_direction_should_increase_its_y_coordinate() {
+        AEnemy enemy = new EnemyOne(0, 10, 0.34);
+        Point tileCenterPoint = new Point(0,20);
+        enemy.setTileCenterPointY(tileCenterPoint.getY());
+        enemy.setLastDirection(EnemyDirection.DOWN);
+        enemy.setNextDirection(EnemyDirection.DOWN);
+        while (enemy.getY() < enemy.getTileCenterPointY()) {
+            enemy.move();
+        }
+        assertEquals(20, Math.round(enemy.getY()));
+    }
+
+    @Test
+    public void next_tile_is_down() {
+        AEnemy enemy = new EnemyOne(0.5, 0, 1);
+        Point tileCenterPoint = new Point(1,0);
+        enemy.setTileCenterPointX(tileCenterPoint.getX());
+        enemy.setLastDirection(EnemyDirection.RIGHT);
+        enemy.setNextDirection(EnemyDirection.DOWN);
+
+        enemy.move();
+        assertEquals(0.5, enemy.getY());
+    }
+
+    @Test
+    public void next_tile_is_up() {
+        AEnemy enemy = new EnemyOne(0.5, 10, 1);
+        Point tileCenterPoint = new Point(1,10);
+        enemy.setTileCenterPointX(tileCenterPoint.getX());
+        enemy.setLastDirection(EnemyDirection.RIGHT);
+        enemy.setNextDirection(EnemyDirection.UP);
+
+        enemy.move();
+        assertEquals(9.5, enemy.getY());
+    }
+
+    @Test
+    public void next_tile_is_right() {
+        AEnemy enemy = new EnemyOne(0, 1.5, 1);
+        Point tileCenterPoint = new Point(0, 1);
+        enemy.setTileCenterPointY(tileCenterPoint.getY());
+        enemy.setLastDirection(EnemyDirection.UP);
+        enemy.setNextDirection(EnemyDirection.RIGHT);
+
+        enemy.move();
+        assertEquals(0.5, enemy.getX());
+    }
+
+    @Test
+    public void next_tile_is_left() {
+        AEnemy enemy = new EnemyOne(1, 1.5, 1);
+        Point tileCenterPoint = new Point(1, 2);
+        enemy.setTileCenterPointY(tileCenterPoint.getY());
+        enemy.setLastDirection(EnemyDirection.DOWN);
+        enemy.setNextDirection(EnemyDirection.LEFT);
+
+        enemy.move();
+        assertEquals(0.5, enemy.getX());
+    }
+
 }

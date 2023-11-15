@@ -56,12 +56,12 @@ public abstract class AEnemy implements IMovable {
     private void switchingToMovingUp() {
             switch (this.lastDirection) {
                 case RIGHT:
-                    this.x = this.tileCenterPointX;
                     this.y -= (nextXCoordinate() - this.tileCenterPointX);
+                    this.x = this.tileCenterPointX;
                     break;
                 case LEFT:
-                    this.x = this.tileCenterPointX;
                     this.y -= (this.tileCenterPointX - nextXCoordinate());
+                    this.x = this.tileCenterPointX;
                     break;
                 default:
                     this.x = this.tileCenterPointX;
@@ -73,12 +73,12 @@ public abstract class AEnemy implements IMovable {
     private void switchingToMovingDown()  {
         switch (this.lastDirection) {
             case RIGHT:
-                this.x = this.tileCenterPointX;
                 this.y += (nextXCoordinate() - this.tileCenterPointX);
+                this.x = this.tileCenterPointX;
                 break;
             case LEFT:
-                this.x = this.tileCenterPointX;
                 this.y += (this.tileCenterPointX - nextXCoordinate());
+                this.x = this.tileCenterPointX;
                 break;
             default:
                 this.x = this.tileCenterPointX;
@@ -179,6 +179,14 @@ public abstract class AEnemy implements IMovable {
                     break; 
                 }
         }
+    }
+
+    public void setTileCenterPointY(double y) {
+        this.tileCenterPointY = y;
+    }
+
+    public double getTileCenterPointY() {
+        return this.tileCenterPointY;
     }
 
     public void setTileCenterPointX(double x) {
