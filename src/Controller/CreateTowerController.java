@@ -6,7 +6,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import Model.ATower;
+import src.Model.ATower;
 
 public class CreateTowerController extends TowerController {
 
