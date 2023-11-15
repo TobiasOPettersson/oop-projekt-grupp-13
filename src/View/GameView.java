@@ -33,6 +33,10 @@ public class GameView extends JFrame {
 
     }
 
+    public void update(){
+        drawPanel.update();
+    }
+
     // initialize swing window
     private void initComponents() {
         setSize(GraphicsDependencies.getWidth(), GraphicsDependencies.getHeight());
