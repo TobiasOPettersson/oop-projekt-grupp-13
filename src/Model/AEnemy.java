@@ -197,7 +197,7 @@ public abstract class AEnemy implements IMovable {
         }
     }
 
-<<<<<<< Updated upstream
+    // -------- Getters and setters ---------
     public void setTileCenterPointY(double y) {
         this.tileCenterPointY = y;
     }
@@ -206,9 +206,6 @@ public abstract class AEnemy implements IMovable {
         return this.tileCenterPointY;
     }
 
-=======
-    // ------- Getters and setters ---------
->>>>>>> Stashed changes
     public void setTileCenterPointX(double x) {
         this.tileCenterPointX = x;
     }
