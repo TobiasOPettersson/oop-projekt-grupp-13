@@ -82,6 +82,7 @@ public class EnemyOneTest {
         AEnemy enemy = new EnemyOne(0.5, 10, 1);
         Point tileCenterPoint = new Point(1,10);
         enemy.setTileCenterPointX(tileCenterPoint.getX());
+        enemy.setTileCenterPointY(tileCenterPoint.getY());
         enemy.setLastDirection(EnemyDirection.RIGHT);
         enemy.setNextDirection(EnemyDirection.UP);
 
@@ -98,7 +99,7 @@ public class EnemyOneTest {
         enemy.setNextDirection(EnemyDirection.RIGHT);
 
         enemy.move();
-        assertEquals(0.5, enemy.getX());
+        assertEquals(0.5, enemy.getX()); 
     }
 
     @Test

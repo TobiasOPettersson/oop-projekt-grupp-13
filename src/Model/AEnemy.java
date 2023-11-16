@@ -4,7 +4,6 @@ public abstract class AEnemy implements IMovable {
     private int health; //health points
     private double x, y; //position
     private double speed; //movement speed of an enemy
-    //private Rectangle hitBox; //Enemy hitbox
     private String type; //The type of enemy
     private EnemyDirection lastDirection = EnemyDirection.RIGHT; //last direction, starting with walking right
     private EnemyDirection nextDirection = EnemyDirection.RIGHT; //next direction, starting with walking right
@@ -16,7 +15,6 @@ public abstract class AEnemy implements IMovable {
         this.x = x;
         this.y = y;
         this.speed = speed;
-        //this.hitBox = new Rectangle((int) x + width/2, (int) y + height/2, width, height);
         this.type = type;
     } //Constructor
 
@@ -63,137 +61,22 @@ public abstract class AEnemy implements IMovable {
     }
 
     /*
-     * The four methods below updates the enemys coordinates depending on the last direction,
-     * its next coordinate and where the next tile centerpoint is
-     */
-    private void switchingToMovingUp() {
-            switch (this.lastDirection) {
-                case RIGHT:
-                    this.y -= (nextXCoordinate() - this.tileCenterPointX);
-                    this.x = this.tileCenterPointX;
-                    break;
-                case LEFT:
-                    this.y -= (this.tileCenterPointX - nextXCoordinate());
-                    this.x = this.tileCenterPointX;
-                    break;
-                default:
-                    this.x = this.tileCenterPointX;
-                    this.y = this.tileCenterPointY;
-                    break;
-            }
-        }
-
-    private void switchingToMovingDown()  {
-        switch (this.lastDirection) {
-            case RIGHT:
-                this.y += (nextXCoordinate() - this.tileCenterPointX);
-                this.x = this.tileCenterPointX;
-                break;
-            case LEFT:
-                this.y += (this.tileCenterPointX - nextXCoordinate());
-                this.x = this.tileCenterPointX;
-                break;
-            default:
-                this.x = this.tileCenterPointX;
-                this.y = this.tileCenterPointY;
-                break;
-        }
-    }
-
-    private void switchingToMovingRight() {
-        switch (this.lastDirection) {
-            case DOWN:
-                this.x += (nextYCoordinate() - this.tileCenterPointY);
-                this.y = this.tileCenterPointY;
-                break;
-            case UP:
-                this.x += (this.tileCenterPointY - nextYCoordinate());
-                this.y = this.tileCenterPointY;
-                break;
-            default:
-                this.x = this.tileCenterPointX;
-                this.y = this.tileCenterPointY;
-                break;
-        }
-    }
-
-    private void switchingToMovingLeft() {
-        switch (this.lastDirection) {
-            case DOWN:
-                this.x -= (nextYCoordinate() - this.tileCenterPointY);
-                this.y = this.tileCenterPointY;
-                break;
-            case UP:
-                this.x -= (this.tileCenterPointY - nextYCoordinate());
-                this.y = this.tileCenterPointY;
-                break;
-            default:
-                this.x = this.tileCenterPointX;
-                this.y = this.tileCenterPointY;
-                break;
-        }
-    }
-
-    /*
      * Move an enemy depending on its last direction and next direction
      */
     public void move() {
-        if (movesPastTileCenterPoint()) {
-            if (this.lastDirection == this.nextDirection) {
-               /*  int horizontal = ((this.lastDirection == EnemyDirection.RIGHT) ? 1 : 0) - ((this.lastDirection == EnemyDirection.LEFT) ? 1 : 0);
-                int vertical = ((this.lastDirection == EnemyDirection.DOWN) ? 1 : 0) - ((this.lastDirection == EnemyDirection.UP) ? 1 : 0);
+        int horizontal = ((this.lastDirection == EnemyDirection.RIGHT) ? 1 : 0) - ((this.lastDirection == EnemyDirection.LEFT) ? 1 : 0);
+        int vertical = ((this.lastDirection == EnemyDirection.DOWN) ? 1 : 0) - ((this.lastDirection == EnemyDirection.UP) ? 1 : 0);
+        int horizontalNext = ((this.nextDirection == EnemyDirection.RIGHT) ? 1 : 0) - ((this.nextDirection == EnemyDirection.LEFT) ? 1 : 0);
+        int verticalNext = ((this.nextDirection == EnemyDirection.DOWN) ? 1 : 0) - ((this.nextDirection == EnemyDirection.UP) ? 1 : 0);
+
+        if (!movesPastTileCenterPoint() || this.lastDirection == this.nextDirection) {
                 this.x += horizontal * speed;
-                this.y += vertical * speed; */
-
-                switch (this.lastDirection) {
-                    case RIGHT:
-                        this.x += this.speed;
-                        break;
-                    case LEFT:
-                        this.x -= this.speed;
-                        break;
-                    case UP:
-                        this.y -= this.speed;
-                        break;
-                    case DOWN:
-                        this.y += this.speed;
-                        break; 
-                    }
+                this.y += vertical * speed;
             }
-
-            else if (this.lastDirection != this.nextDirection) {
-                switch (this.nextDirection){
-                    case RIGHT:
-                        switchingToMovingRight();
-                        break;
-                    case LEFT:
-                        switchingToMovingLeft();
-                        break;
-                    case UP:
-                        switchingToMovingUp();
-                        break;
-                    case DOWN:
-                        switchingToMovingDown();
-                        break;
-                }
-            }
-        }
-        
         else {
-            switch (this.lastDirection) {
-                case RIGHT:
-                    this.x += this.speed;
-                    break;
-                case LEFT:
-                    this.x -= this.speed;
-                    break;
-                case UP:
-                    this.y -= this.speed;
-                    break;
-                case DOWN:
-                    this.y += this.speed;
-                    break; 
-                }
+            this.y = this.tileCenterPointY + Math.abs(this.x + horizontal * speed - this.tileCenterPointX) * verticalNext;
+            this.x = this.tileCenterPointX + Math.abs(this.y + vertical * speed - this.tileCenterPointY) * horizontalNext;
+            //Remove first element from direction list
         }
     }
 
