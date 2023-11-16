@@ -59,10 +59,6 @@ public abstract class AEnemy implements IMovable {
         this.tileCenterPointY = y;
     }
 
-    public double getTileCenterPointY() {
-        return this.tileCenterPointY;
-    }
-
     public void setTileCenterPointX(double x) {
         this.tileCenterPointX = x;
     }
@@ -71,44 +67,16 @@ public abstract class AEnemy implements IMovable {
         return this.tileCenterPointX;
     }
 
-    public int getHealth() {
-        return health;
-    }
-
-    public void setHealth(int health) {
-        this.health = health;
+    public double getTileCenterPointY() {
+        return this.tileCenterPointY;
     }
 
     public double getX() {
         return x;
     }
 
-    public void setX(double x) {
-        this.x = x;
-    }
-
     public double getY() {
         return y;
-    }
-
-    public void setY(double y) {
-        this.y = y;
-    }
-
-    public double getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(double speed) {
-        this.speed = speed;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public EnemyDirection getLastDirection() {
