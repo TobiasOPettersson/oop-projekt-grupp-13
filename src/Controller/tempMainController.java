@@ -37,7 +37,7 @@ public class tempMainController {
 
         JFrame frame = new JFrame("create tower");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 300);
+        frame.setSize(800, 800);
 
         // PlayButtonController playButton = new PlayButtonController();
 

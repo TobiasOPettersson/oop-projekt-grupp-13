@@ -25,7 +25,7 @@ public class towerView extends JFrame {
     public void initTowerView() {
         JPanel panel = controller.getPanel();
         // jsut a dummy size, have to adapt..
-        panel.setSize(400, 400);
+        panel.setSize(800, 800);
         panel.setBackground(Color.white);
         panel.setVisible(true);
 
