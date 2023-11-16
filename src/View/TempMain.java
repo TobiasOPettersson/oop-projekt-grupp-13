@@ -10,7 +10,7 @@ public class TempMain {
     // Frame rate
     private final double FPS = 60.0;
     // speed är hur många pixlar fienden flyttar sig per update
-    double speed = 8.0;
+    double speed = 1.0;
     double enemyX = 0;
     double enemyY = 240;
 
@@ -62,26 +62,14 @@ public class TempMain {
 
     public void run() {
         double timePerFrame = 1_000_000_000.0 / FPS;
-
         long lastFrame = System.nanoTime();
-        long lastTimeCheck = System.currentTimeMillis();
-        int frames = 0;
 
         while (true) {
             // Rendering loop
             if (System.nanoTime() - lastFrame >= timePerFrame) {
                 lastFrame = System.nanoTime();
                 view.update();
-                // frames++;
             }
-
-            // Do this every second
-            /*
-             * if (System.currentTimeMillis() - lastTimeCheck >= 1_000) {
-             * System.out.println("FPS: " + frames);
-             * frames = 0;
-             * }
-             */
         }
 
     }
