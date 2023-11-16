@@ -1,5 +1,5 @@
 package src.Model;
 
-public interface IMovable extends IPositionable{
+public interface IMovable {
     void move();
 }
