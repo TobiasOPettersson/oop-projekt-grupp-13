@@ -27,8 +27,14 @@ public class DrawPanel extends JPanel {
     // Map blueprint
     // "g" = Grass = sprites.get(18)
     // "w" = Water = sprites.get(60)
-    // "p1" = Path1 = sprites.get(8)
-    // "p2" = Path2 = sprites.get(9)
+    // ">" = Path2 = sprites.get(9)
+    // ">^" = Path1 * 180 degree = sprites.get(8)
+    // ">v" = Path1 * 90 degree = sprites.get(8)
+    // "^>" = Path1 = sprites.get(8)
+    // "v>" = Path1 * (-)90 degree = sprites.get(8)
+    // "^" = Path2 * 90 degree = sprites.get(9)
+    // "v" = Path2 * 90 degree = sprites.get(9)
+
     private String[][] map = {
             { "g", "g", "g", "g", "g", "g", "g", "g", "g", "g", "g", "g", "g", "g", "g", "w", "w", "w", "w", "w" },
             { "g", "w", "w", "g", "g", "g", "g", "g", "g", "g", "g", "g", "g", "g", "g", "w", "w", "w", "w", "g" },
@@ -46,7 +52,7 @@ public class DrawPanel extends JPanel {
         setStartPos(heightOfMap, spriteSize);
         setPathPos(heightOfMap, 20, spriteSize);
         setEndPos(heightOfMap, widthOfMap, spriteSize);
-        //setSuperEndPos(heightOfMap, widthOfMap);
+        // setSuperEndPos(heightOfMap, widthOfMap);
 
     }
 
@@ -60,15 +66,17 @@ public class DrawPanel extends JPanel {
 
     private void setEndPos(int heightOfMap, int widthOfMap, int spriteSize) {
         for (int i = 0; i < heightOfMap; i++) {
-            if (map[i][widthOfMap-1].equals(">")) {
-                dirChangeArray.add(new DirChange(widthOfMap*spriteSize+10, i * spriteSize, ">"));
+            if (map[i][widthOfMap - 1].equals(">")) {
+                dirChangeArray.add(new DirChange(widthOfMap * spriteSize + 10, i * spriteSize, ">"));
             }
         }
     }
 
-    private void setSuperEndPos(int heightOfMap, int widthOfMap) {
-                dirChangeArray.add(new DirChange(widthOfMap+10, heightOfMap/2, ">"));
-    }
+    /*
+     * private void setSuperEndPos(int heightOfMap, int widthOfMap) {
+     * dirChangeArray.add(new DirChange(widthOfMap+10, heightOfMap/2, ">"));
+     * }
+     */
 
     private void setPathPos(int heightOfMap, int widthOfMap, int spriteSize) {
         for (int i = 0; i < widthOfMap; i++) {
@@ -134,7 +142,6 @@ public class DrawPanel extends JPanel {
                         break;
                     case ">^":
                         g.drawImage(SpriteHelper.rotateSprite(sprites.get(path1), 180), i * sSize, j * sSize, null);
-                        // dirChangeArray.add(new DirChange(i * sSize, j * sSize, "^"));
                         break;
                     case "^":
                         g.drawImage(SpriteHelper.rotateSprite(sprites.get(path2), 90), i * sSize, j * sSize, null);
@@ -144,15 +151,12 @@ public class DrawPanel extends JPanel {
                         break;
                     case "^>":
                         g.drawImage(sprites.get(path1), i * sSize, j * sSize, null);
-                        // dirChangeArray.add(new DirChange(i * sSize, j * sSize, ">"));
                         break;
                     case ">v":
                         g.drawImage(SpriteHelper.rotateSprite(sprites.get(path1), 90), i * sSize, j * sSize, null);
-                        // dirChangeArray.add(new DirChange(i * sSize, j * sSize, "v"));
                         break;
                     case "v>":
                         g.drawImage(SpriteHelper.rotateSprite(sprites.get(path1), -90), i * sSize, j * sSize, null);
-                        // dirChangeArray.add(new DirChange(i * sSize, j * sSize, ">"));
                         break;
                 }
             }
@@ -178,13 +182,16 @@ public class DrawPanel extends JPanel {
         super.paintComponent(g);
         drawMap(g);
 
-        if (c == 1)
-            for (DirChange item : dirChangeArray) {
-                System.out.println("x: " + item.getX() + ", y: " + item.getY() + ", dir: " + item.getDir());
-                c = 0;
-            }
+        // Testing
+        /*
+         * if (c == 1)
+         * for (DirChange item : dirChangeArray) {
+         * System.out.println("x: " + item.getX() + ", y: " + item.getY() + ", dir: " +
+         * item.getDir());
+         * c = 0;
+         * }
+         */
         drawEnemy(g);
-        // BufferedImage RSprite = SpriteRotator.rotateSprite90Degree(sprites.get(8));
 
     }
 }

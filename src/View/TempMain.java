@@ -11,7 +11,7 @@ public class TempMain {
     private final double FPS = 60.0;
     // Update rate, will e done in model later
     private final double UPS = 60.0;
-    int speedMul = 2;
+    double speedMul = 0.34;
     int deltaX = 0;
     int deltaY = 0;
     double enemyX = 0;
