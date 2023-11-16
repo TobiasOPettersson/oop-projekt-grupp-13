@@ -1,6 +1,7 @@
 package src.Controller;
 
 import java.util.List;
+import java.awt.Color;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -21,25 +22,15 @@ public class tempMainController {
         JPanel panel = new JPanel();
 
         // Create CreateTowerController instance with valid parameters
-        TowerController towerController = new CreateTowerController(0, 0, List.of(button), label, panel);
+        TowerController towerController = new CreateTowerController(0, 0,
+                List.of(button), label, panel);
 
         // Create towerView instance and use the controller
         towerView towerView = new towerView(towerController);
 
-        // Update label and add button to the panel
-        towerView.updateLabel("CREATE Towers");
-        JButton anotherButton = new JButton("Tower one");
-        JButton anotherButton2 = new JButton("Tower two");
-        JButton anotherButton3 = new JButton("Tower three");
-        towerView.addButton(anotherButton);
-        towerView.addButton(anotherButton2);
-        towerView.addButton(anotherButton3);
-
         JFrame frame = new JFrame("create tower");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(800, 800);
-
-        // PlayButtonController playButton = new PlayButtonController();
+        frame.setSize(20, 20);
 
         frame.add(towerView);
 

@@ -1,14 +1,20 @@
 package src.Controller;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Graphics;
 import java.awt.Panel;
 import java.util.Set;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import src.Controller.TowerController; // Import the TowerController abstract class
+import src.Model.MainModel;
 
 public class towerView extends JFrame {
 
@@ -23,18 +29,33 @@ public class towerView extends JFrame {
 
     // initalize the panel for upgradeTower,createTower etc..
     public void initTowerView() {
-        JPanel panel = controller.getPanel();
+        JPanel mainPanel = new JPanel(new BorderLayout());
         // jsut a dummy size, have to adapt..
-        panel.setSize(800, 800);
-        panel.setBackground(Color.white);
-        panel.setVisible(true);
+        mainPanel.setSize(400, 400);
+        mainPanel.setBackground(Color.BLACK);
+        mainPanel.setVisible(true);
 
-        add(panel);
+        JLabel label = new JLabel("CREATE TOWERS :");
+        label.setForeground(Color.BLACK);
 
-        pack(); // Adjusts the frame size based on the components added
-        setLocationRelativeTo(null); // Centers the frame on the screen
-        // setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(true); // Make the frame visible
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setSize(20, 20);
+        FlowLayout flowLayout = new FlowLayout(FlowLayout.CENTER); // Create a FlowLayout instance
+        flowLayout.setHgap(20); // Set the horizontal gap (space between components) to 10 pixels
+        buttonPanel.setLayout(flowLayout); // Apply the modified FlowLayout to the panel
+        buttonPanel.add(label);
+        buttonPanel.setPreferredSize(new Dimension(190, 190));
+
+        for (int i = 1; i <= 3; i++) {
+            JButton button = new JButton("Button " + i);
+            buttonPanel.add(button);
+
+        }
+        buttonPanel.setPreferredSize(new Dimension(50, 50));
+
+        // mainPanel.add(buttonPanel, BorderLayout.CENTER);
+        add(buttonPanel, BorderLayout.CENTER);
+        setVisible(true);
 
     }
 

@@ -29,6 +29,9 @@ public abstract class TowerController {
     private JLabel label;
     private JPanel panel;
 
+    // x an y för model förstå var man ska skapa tornet
+    // i addtower
+
     public TowerController(int x, int y, List<JButton> buttons, JLabel label, JPanel panel) {
         this.x = x;
         this.y = y;
