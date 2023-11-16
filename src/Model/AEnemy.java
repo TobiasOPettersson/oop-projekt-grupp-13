@@ -19,42 +19,14 @@ public abstract class AEnemy implements IMovable {
     } //Constructor
 
     /*
-     * Returning the next x-coordinate depending on the direction and speed
-     */
-    private double nextXCoordinate() {
-        switch (this.lastDirection) {
-            case RIGHT:
-                return this.x + this.speed;
-            case LEFT:
-                return this.x - this.speed;
-            default:
-                return this.x;
-        }
-    }
-
-    /*
-     * Returning the next y-coordinate depending on the direction and speed
-     */
-    private double nextYCoordinate() {
-        switch (this.lastDirection) {
-            case UP:
-                return this.y - this.speed;
-            case DOWN:
-                return this.y + this.speed;
-            default:
-                return this.y;
-        }
-    }
-
-    /*
      * If an enemy moves past a tile centerpoint return true. Else return false.
      */
-    private boolean movesPastTileCenterPoint() {
+    private boolean movesPastTileCenterPoint(double nextX, double nextY) {
         boolean passesTileCenterPoint = false;
-        if ((nextXCoordinate() >= tileCenterPointX && this.lastDirection == EnemyDirection.RIGHT) || (nextXCoordinate() <= tileCenterPointX && this.lastDirection == EnemyDirection.LEFT)) {
+        if ((nextX >= tileCenterPointX && this.lastDirection == EnemyDirection.RIGHT) || (nextX <= tileCenterPointX && this.lastDirection == EnemyDirection.LEFT)) {
             passesTileCenterPoint = true;
         }
-        if ((nextYCoordinate() <= tileCenterPointY && this.lastDirection == EnemyDirection.UP) || (nextYCoordinate() >= tileCenterPointY && this.lastDirection == EnemyDirection.DOWN)) {
+        if ((nextY <= tileCenterPointY && this.lastDirection == EnemyDirection.UP) || (nextY >= tileCenterPointY && this.lastDirection == EnemyDirection.DOWN)) {
             passesTileCenterPoint = true;
         }
         return passesTileCenterPoint;
@@ -64,18 +36,20 @@ public abstract class AEnemy implements IMovable {
      * Move an enemy depending on its last direction and next direction
      */
     public void move() {
-        int horizontal = ((this.lastDirection == EnemyDirection.RIGHT) ? 1 : 0) - ((this.lastDirection == EnemyDirection.LEFT) ? 1 : 0);
-        int vertical = ((this.lastDirection == EnemyDirection.DOWN) ? 1 : 0) - ((this.lastDirection == EnemyDirection.UP) ? 1 : 0);
-        int horizontalNext = ((this.nextDirection == EnemyDirection.RIGHT) ? 1 : 0) - ((this.nextDirection == EnemyDirection.LEFT) ? 1 : 0);
-        int verticalNext = ((this.nextDirection == EnemyDirection.DOWN) ? 1 : 0) - ((this.nextDirection == EnemyDirection.UP) ? 1 : 0);
+        int h = ((this.lastDirection == EnemyDirection.RIGHT) ? 1 : 0) - ((this.lastDirection == EnemyDirection.LEFT) ? 1 : 0);
+        int v = ((this.lastDirection == EnemyDirection.DOWN) ? 1 : 0) - ((this.lastDirection == EnemyDirection.UP) ? 1 : 0);
+        int hNext = ((this.nextDirection == EnemyDirection.RIGHT) ? 1 : 0) - ((this.nextDirection == EnemyDirection.LEFT) ? 1 : 0);
+        int vNext = ((this.nextDirection == EnemyDirection.DOWN) ? 1 : 0) - ((this.nextDirection == EnemyDirection.UP) ? 1 : 0);
+        double nextX = this.x + h * speed;
+        double nextY = this.y + v * speed;
 
-        if (!movesPastTileCenterPoint() || this.lastDirection == this.nextDirection) {
-                this.x += horizontal * speed;
-                this.y += vertical * speed;
+        if (!movesPastTileCenterPoint(nextX, nextY) || this.lastDirection == this.nextDirection) {
+                this.x += h * speed;
+                this.y += v * speed;
             }
         else {
-            this.y = this.tileCenterPointY + Math.abs(this.x + horizontal * speed - this.tileCenterPointX) * verticalNext;
-            this.x = this.tileCenterPointX + Math.abs(this.y + vertical * speed - this.tileCenterPointY) * horizontalNext;
+            this.y = this.tileCenterPointY + Math.abs((nextX) - this.tileCenterPointX) * vNext;
+            this.x = this.tileCenterPointX + Math.abs((nextY) - this.tileCenterPointY) * hNext;
             //Remove first element from direction list
         }
     }

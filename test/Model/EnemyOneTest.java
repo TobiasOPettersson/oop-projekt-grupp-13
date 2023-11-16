@@ -70,6 +70,7 @@ public class EnemyOneTest {
         AEnemy enemy = new EnemyOne(0.5, 0, 1);
         Point tileCenterPoint = new Point(1,0);
         enemy.setTileCenterPointX(tileCenterPoint.getX());
+        enemy.setTileCenterPointY(tileCenterPoint.getY());
         enemy.setLastDirection(EnemyDirection.RIGHT);
         enemy.setNextDirection(EnemyDirection.DOWN);
 
@@ -95,6 +96,7 @@ public class EnemyOneTest {
         AEnemy enemy = new EnemyOne(0, 1.5, 1);
         Point tileCenterPoint = new Point(0, 1);
         enemy.setTileCenterPointY(tileCenterPoint.getY());
+        enemy.setTileCenterPointX(tileCenterPoint.getX());
         enemy.setLastDirection(EnemyDirection.UP);
         enemy.setNextDirection(EnemyDirection.RIGHT);
 
@@ -107,6 +109,7 @@ public class EnemyOneTest {
         AEnemy enemy = new EnemyOne(1, 1.5, 1);
         Point tileCenterPoint = new Point(1, 2);
         enemy.setTileCenterPointY(tileCenterPoint.getY());
+        enemy.setTileCenterPointX(tileCenterPoint.getX());
         enemy.setLastDirection(EnemyDirection.DOWN);
         enemy.setNextDirection(EnemyDirection.LEFT);
 
