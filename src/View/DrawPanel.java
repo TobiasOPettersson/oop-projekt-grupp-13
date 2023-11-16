@@ -13,7 +13,7 @@ public class DrawPanel extends JPanel {
     private BufferedImage image;
     private TempMain model;
     private ArrayList<BufferedImage> sprites = new ArrayList<>();
-    public ArrayList<DirChange> dirChangeArray = new ArrayList<>();
+    public ArrayList<DirNode> dirChangeArray = new ArrayList<>();
 
     // Constructor
     public DrawPanel(TempMain model, BufferedImage image) {
@@ -59,7 +59,7 @@ public class DrawPanel extends JPanel {
     private void setStartPos(int heightOfMap, int spriteSize) {
         for (int i = 0; i < heightOfMap; i++) {
             if (map[i][0].equals(">")) {
-                dirChangeArray.add(new DirChange(0, i * spriteSize, ">"));
+                dirChangeArray.add(new DirNode(0, i * spriteSize, ">"));
             }
         }
     }
@@ -67,7 +67,7 @@ public class DrawPanel extends JPanel {
     private void setEndPos(int heightOfMap, int widthOfMap, int spriteSize) {
         for (int i = 0; i < heightOfMap; i++) {
             if (map[i][widthOfMap - 1].equals(">")) {
-                dirChangeArray.add(new DirChange(widthOfMap * spriteSize + 10, i * spriteSize, ">"));
+                dirChangeArray.add(new DirNode(widthOfMap * spriteSize + 10, i * spriteSize, ">"));
             }
         }
     }
@@ -81,23 +81,23 @@ public class DrawPanel extends JPanel {
     private void setPathPos(int heightOfMap, int widthOfMap, int spriteSize) {
         for (int i = 0; i < widthOfMap; i++) {
             for (int j = 0; j < heightOfMap; j++) {
-                DirChange prevChange = dirChangeArray.get(dirChangeArray.size() - 1);
+                DirNode prevChange = dirChangeArray.get(dirChangeArray.size() - 1);
                 switch (prevChange.getDir()) {
                     case ">":
                         if (map[j][i].equals(">^")) {
-                            dirChangeArray.add(new DirChange(i * spriteSize, j * spriteSize, "^"));
+                            dirChangeArray.add(new DirNode(i * spriteSize, j * spriteSize, "^"));
                         } else if (map[j][i].equals(">v")) {
-                            dirChangeArray.add(new DirChange(i * spriteSize, j * spriteSize, "v"));
+                            dirChangeArray.add(new DirNode(i * spriteSize, j * spriteSize, "v"));
                         }
                         break;
                     case "^":
                         if (map[j][i].equals(">")) {
-                            dirChangeArray.add(new DirChange(i * spriteSize, j * spriteSize, ">"));
+                            dirChangeArray.add(new DirNode(i * spriteSize, j * spriteSize, ">"));
                         }
                         break;
                     case "v":
                         if (map[j][i].equals("v>")) {
-                            dirChangeArray.add(new DirChange(i * spriteSize, j * spriteSize, ">"));
+                            dirChangeArray.add(new DirNode(i * spriteSize, j * spriteSize, ">"));
                         }
                 }
             }

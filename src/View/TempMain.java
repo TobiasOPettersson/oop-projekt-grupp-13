@@ -9,11 +9,8 @@ import src.Model.MainModel;
 public class TempMain {
     // Frame rate
     private final double FPS = 60.0;
-    // Update rate, will e done in model later
-    private final double UPS = 60.0;
-    double speedMul = 0.34;
-    int deltaX = 0;
-    int deltaY = 0;
+    // speed är hur många pixlar fienden flyttar sig per update
+    double speed = 8.0;
     double enemyX = 0;
     double enemyY = 240;
 
@@ -24,42 +21,38 @@ public class TempMain {
         new TempMain().run();
     }
 
-    public Position moveEnemy(ArrayList<DirChange> dirArray) {
-        if(dirArray.size() > 1){
-        DirChange currentDir = dirArray.get(0);
-        DirChange nextDir = dirArray.get(1);
-        String direction = currentDir.getDir();
-        double nextX = nextDir.getX();
-        double nextY = nextDir.getY();
+    public Position moveEnemy(ArrayList<DirNode> dirNodeArray) {
+        // This if is there to ensure that nextNode won't trigger an index out of bounds when the array only has 1 element
+        if(dirNodeArray.size() > 1){
+        DirNode currentNode = dirNodeArray.get(0);
+        DirNode nextNode = dirNodeArray.get(1);
+        String currentDirection = currentNode.getDir();
+        // nextX and nextY are the coordinates for the next node, the node the enemies are walking towards
+        double nextX = nextNode.getX();
+        double nextY = nextNode.getY();
 
-        switch (direction) {
+        switch (currentDirection) {
             case ">":
-                deltaY = 0;
-                deltaX = 1;
-                if (enemyX >= nextX && dirArray.size() > 1) {
-                    dirArray.remove(0);
+                if (enemyX >= nextX) {
+                    dirNodeArray.remove(0);
                 } else {
-                    enemyX += deltaX * speedMul;
+                    enemyX += speed;
                     return new Position(enemyX, enemyY);
                 }
                 break;
             case "^":
-                deltaY = 1;
-                deltaX = 0;
-                if (enemyY <= nextY && dirArray.size() > 1) {
-                    dirArray.remove(0);
+                if (enemyY <= nextY) {
+                    dirNodeArray.remove(0);
                 } else {
-                    enemyY -= deltaY * speedMul;
+                    enemyY -= speed;
                     return new Position(enemyX, enemyY);
                 }
                 break;
             case "v":
-                deltaY = 1;
-                deltaX = 0;
-                if (enemyY >= nextY && dirArray.size() > 1) {
-                    dirArray.remove(0);
+                if (enemyY >= nextY) {
+                    dirNodeArray.remove(0);
                 } else {
-                    enemyY += deltaY * speedMul;
+                    enemyY += speed;
                     return new Position(enemyX, enemyY);
                 }
         }
