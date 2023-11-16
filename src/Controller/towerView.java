@@ -16,10 +16,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import src.Controller.TowerController; // Import the TowerController abstract class
 import src.Model.MainModel;
+import src.View.GraphicsDependencies;
 
 public class towerView extends JFrame {
 
     private TowerController controller;
+    // call from this from viewn...
+    private GraphicsDependencies borderGraphic;
 
     public towerView(TowerController controller) {
 
