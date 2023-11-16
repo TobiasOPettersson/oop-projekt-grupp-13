@@ -23,9 +23,41 @@ public class AMap {
                                {0, 0, 0, 0, 7, 0, 0, 0, 0},
                                {0, 0, 0, 0, 8, 0, 0, 0, 0},
                                {0, 0, 0, 0, 9, 0, 0, 0, 0},};
+    public List<EnemyDirection> pathDirections = new ArrayList<EnemyDirection>();
 
     public AMap() {
         createGrid();
+    }
+
+    private void createPathDirections(PathTile start) {
+        PathTile next;
+        while (start.getNext() != null) {
+            next = start.getNext();
+            if (start.getX() == next.getX() - 1){
+                pathDirections.add(EnemyDirection.RIGHT);
+                start = next;
+                next = next.getNext();
+                continue;
+            } 
+            else if (start.getX() == next.getX() + 1) {
+                pathDirections.add(EnemyDirection.LEFT);
+                start = next;
+                next = next.getNext();
+                continue;
+            }
+            else if (start.getY() == next.getY() - 1) {
+                pathDirections.add(EnemyDirection.DOWN);
+                start = next;
+                next = next.getNext();
+                continue;
+            }
+            else if (start.getY() == next.getY() + 1) {
+                pathDirections.add(EnemyDirection.UP);
+                start = next;
+                next = next.getNext();
+                continue;
+            }
+        }
     }
 
     public void createGrid() {
@@ -47,6 +79,7 @@ public class AMap {
         for(int i = 0 ; i < 9 ; i++){
             System.out.println(pathGrid[8][i]);
             if (pathGrid[8][i] > tempValue){
+                tempValue = pathGrid[8][i];
                 tempY = i;
             } 
         }
@@ -112,6 +145,7 @@ public class AMap {
         }
         */
 
+        System.out.println("Temp value: " + tempValue);
         while (tempValue > 1) {
             ATile nextTile = grid[tempX][tempY];
             if (tempX - 1 >= 0 && pathGrid[tempX - 1][tempY] == tempValue - 1) {
@@ -127,7 +161,7 @@ public class AMap {
                 tempValue--;
                 tempY++;
             }
-        
+            System.out.println("Test");
             // Setting the next tile in the grid
             if (nextTile instanceof PathTile) {
                 PathTile pt = (PathTile) nextTile;
@@ -135,6 +169,8 @@ public class AMap {
                 System.out.println("PathTile at: " + tempX + " " + tempY);
             }
         }
+
+        createPathDirections((PathTile)grid[tempX][tempY]);
 
         // Filling the rest of the grid with TowerTiles
         for (int i = 0; i < 9; i++) {
@@ -163,4 +199,7 @@ public class AMap {
         return grid[x][y];
     }
 
+    public List<EnemyDirection> getPathDirections(){
+        return this.pathDirections;
+    }
 }
