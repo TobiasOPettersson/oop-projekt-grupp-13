@@ -9,6 +9,7 @@ import java.awt.Panel;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -29,22 +30,19 @@ public class towerView extends JFrame {
 
     // initalize the panel for upgradeTower,createTower etc..
     public void initTowerView() {
-        JPanel mainPanel = new JPanel(new BorderLayout());
-        // jsut a dummy size, have to adapt..
-        mainPanel.setSize(400, 400);
-        mainPanel.setBackground(Color.BLACK);
-        mainPanel.setVisible(true);
 
         JLabel label = new JLabel("CREATE TOWERS :");
         label.setForeground(Color.BLACK);
 
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setSize(20, 20);
-        FlowLayout flowLayout = new FlowLayout(FlowLayout.CENTER); // Create a FlowLayout instance
-        flowLayout.setHgap(20); // Set the horizontal gap (space between components) to 10 pixels
+        buttonPanel.setSize(400, 400);
+
+        FlowLayout flowLayout = new FlowLayout(FlowLayout.LEFT); // Create a FlowLayout instance
+        flowLayout.setHgap(100); // Set the horizontal gap (space between components) to 10 pixels
         buttonPanel.setLayout(flowLayout); // Apply the modified FlowLayout to the panel
+
         buttonPanel.add(label);
-        buttonPanel.setPreferredSize(new Dimension(190, 190));
+        // buttonPanel.setPreferredSize(new Dimension(190, 190));
 
         for (int i = 1; i <= 3; i++) {
             JButton button = new JButton("Button " + i);
@@ -54,7 +52,9 @@ public class towerView extends JFrame {
         buttonPanel.setPreferredSize(new Dimension(50, 50));
 
         // mainPanel.add(buttonPanel, BorderLayout.CENTER);
+
         add(buttonPanel, BorderLayout.CENTER);
+
         setVisible(true);
 
     }
