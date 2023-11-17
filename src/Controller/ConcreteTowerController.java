@@ -3,6 +3,8 @@ package src.Controller;
 import java.util.List;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -22,14 +24,21 @@ class ConcreteTowerController extends TowerController {
         label.setForeground(Color.BLACK);
 
         JPanel buttonPanel = getPanel();
-        buttonPanel.setBackground(Color.GRAY);
-        buttonPanel.setBounds(40, 80, 200, 200);
+        buttonPanel.setBounds(40, 80, 400, 600);
+        buttonPanel.setBackground(Color.BLUE);
+        buttonPanel.setLayout(new GridLayout(0, 4, 10, 10));
+        buttonPanel.setPreferredSize(new Dimension(300, 200));
 
-        for (JButton button : buttons) {
-            button.setBounds(50, 100, 80, 30);
-            button.setBackground(Color.YELLOW);
+        List<JButton> listwithButtons = getButtons();
+        buttonPanel.add(label, BorderLayout.SOUTH);
+        for (JButton button : listwithButtons) {
+            button.setBackground(Color.GREEN);
+            System.out.println("inne i knappenloopne");
+
+            button.setBounds(50, 100, 500, 50);
+
             buttonPanel.add(button);
         }
-        buttonPanel.add(label);
+
     }
 }

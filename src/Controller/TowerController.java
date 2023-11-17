@@ -57,4 +57,8 @@ public abstract class TowerController {
         return label;
     }
 
+    public List<JButton> getButtons() {
+        return buttons;
+    }
+
 }

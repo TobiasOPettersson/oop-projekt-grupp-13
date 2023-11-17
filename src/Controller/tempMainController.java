@@ -18,11 +18,7 @@ public class tempMainController {
     public static void main(String[] args) {
         List<JButton> buttons = new ArrayList<>();
         JButton button = new JButton();
-        buttons.add(button);
-        // Add JButton instances to the buttons list...
-
-        JLabel label = new JLabel("Tower Label");
-
+        JLabel label = new JLabel("HALLÅ");
         JPanel panel = new JPanel();
         // Customize JPanel settings as needed...
 
