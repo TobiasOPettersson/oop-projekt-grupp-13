@@ -1,33 +1,41 @@
+package src.Controller;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import javax.imageio.ImageIO;
 
-class spriteButtonController extends JButton {
+public class SpriteButtonController extends JButton {
 
     private BufferedImage spriteImage;
+    private boolean isVisible;
 
-    public spriteButtonController(String imagePath) {
-        setOpaque(false); // Make the button transparent
-        setContentAreaFilled(false); // Don't paint the content area
-        setBorderPainted(false); // Remove the border
+    public SpriteButtonController() {
+        super(); // Call the superclass constructor
+
+        setPreferredSize(new Dimension(100, 100)); // Set preferred button size
 
         try {
-            spriteImage = ImageIO.read(new File(imagePath)); // Load sprite image from file
+            URL imageUrl = new URL("res/resImagesprite_39.png"); // Replace with your image URL
+            spriteImage = ImageIO.read(imageUrl);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-    }
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        if (spriteImage != null) {
-            int x = (getWidth() - spriteImage.getWidth()) / 2;
-            int y = (getHeight() - spriteImage.getHeight()) / 2;
-            g.drawImage(spriteImage, x, y, this);
-        }
+        addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (isVisible) {
+                    setIcon(new ImageIcon(spriteImage)); // Set sprite image when clicked
+                } else {
+                    setIcon(null); // Remove image when made invisible
+                }
+                isVisible = !isVisible; // Toggle visibility
+            }
+        });
     }
 }

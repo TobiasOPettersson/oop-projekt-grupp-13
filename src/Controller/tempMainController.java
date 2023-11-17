@@ -18,11 +18,11 @@ public class tempMainController {
     public static void main(String[] args) {
         List<JButton> buttons = new ArrayList<>();
         JButton button = new JButton();
-        JLabel label = new JLabel("HALLÅ");
+        JLabel label = new JLabel();
         JPanel panel = new JPanel();
         // Customize JPanel settings as needed...
 
-        TowerController controller = new ConcreteTowerController(0, 0, buttons, label, panel);
+        TowerController controller = new CreateTowerController(0, 0, buttons, label, panel);
         TowerView towervies = new TowerView(controller);
     }
 }
