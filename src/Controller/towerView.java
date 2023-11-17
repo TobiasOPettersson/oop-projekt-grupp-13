@@ -38,26 +38,23 @@ public class towerView extends JFrame {
         label.setForeground(Color.BLACK);
 
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setSize(400, 400);
+        buttonPanel.setBackground(Color.GRAY);
+        buttonPanel.setBounds(40, 80, 200, 200);
 
-        FlowLayout flowLayout = new FlowLayout(FlowLayout.LEFT); // Create a FlowLayout instance
-        flowLayout.setHgap(100); // Set the horizontal gap (space between components) to 10 pixels
-        buttonPanel.setLayout(flowLayout); // Apply the modified FlowLayout to the panel
+        // Creating and adding a sample sprite button
+        // spriteButtonController spriteButton = new
+        // spriteButtonController("path/to/spriteatlas.png");
 
-        buttonPanel.add(label);
-        // buttonPanel.setPreferredSize(new Dimension(190, 190));
+        buttonPanel.add(label, BorderLayout.SOUTH);
 
-        for (int i = 1; i <= 3; i++) {
-            JButton button = new JButton("Button " + i);
-            buttonPanel.add(button);
+        JButton b1 = new JButton("Archer");
+        b1.setBounds(50, 100, 80, 30);
+        b1.setBackground(Color.yellow);
 
-        }
-        buttonPanel.setPreferredSize(new Dimension(50, 50));
+        buttonPanel.add(b1, BorderLayout.SOUTH);
+        add(buttonPanel);
 
-        // mainPanel.add(buttonPanel, BorderLayout.CENTER);
-
-        add(buttonPanel, BorderLayout.CENTER);
-
+        setLocationRelativeTo(null);
         setVisible(true);
 
     }

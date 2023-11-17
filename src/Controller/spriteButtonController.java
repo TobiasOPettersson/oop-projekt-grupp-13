@@ -31,6 +31,3 @@ class spriteButtonController extends JButton {
         }
     }
 }
-
-// top at center..
-//

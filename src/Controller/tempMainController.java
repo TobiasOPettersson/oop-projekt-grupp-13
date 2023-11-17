@@ -12,27 +12,24 @@ import javax.swing.SwingUtilities;
 
 import src.Model.MainModel;
 import src.View.GameView;
+import src.View.GraphicsDependencies;
 
 public class tempMainController {
     public static void main(String[] args) {
-
+        GraphicsDependencies g;
         List<JButton> buttons = new ArrayList<>();
         JButton button = new JButton("Tower Button");
         JLabel label = new JLabel("Tower Label");
         JPanel panel = new JPanel();
 
-        // Create CreateTowerController instance with valid parameters
-        TowerController towerController = new CreateTowerController(0, 0,
-                List.of(button), label, panel);
-
-        // Create towerView instance and use the controller
+        TowerController towerController = new CreateTowerController(0, 0, buttons, label, panel);
         towerView towerView = new towerView(towerController);
 
-        JFrame frame = new JFrame("create tower");
+        JFrame frame = new JFrame("Create Tower");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(800, 800);
+        frame.setSize(400, 400);
         frame.add(towerView);
+        frame.setLayout(null);
         frame.setVisible(true);
-
     }
 }

@@ -9,12 +9,16 @@ public class GraphicsDependencies {
     // Y where tower controller should be created
     private static final int BOTTOMPANEL = 190;
 
-    public static int getWidth(){
+    public static int getWidth() {
         return WIDTH;
     }
-    
-    public static int getHeight(){
+
+    public static int getHeight() {
         return HEIGHT;
     }
-    
+
+    public static int getBottomPanel() {
+        return BOTTOMPANEL;
+    }
+
 }
