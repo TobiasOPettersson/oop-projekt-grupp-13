@@ -21,7 +21,12 @@ class TowerView extends JFrame {
         JPanel panel = new JPanel();
         JLabel label = new JLabel("Tower Label");
         ArrayList<JButton> buttons = new ArrayList<>();
-        // Add buttons to the buttons list...
+        JButton b1 = new JButton();
+        JButton b2 = new JButton();
+        JButton b3 = new JButton();
+        buttons.add(b1);
+
+        
 
         controller = new ConcreteTowerController(0, 0, buttons, label, panel);
         controller.initTowerController();

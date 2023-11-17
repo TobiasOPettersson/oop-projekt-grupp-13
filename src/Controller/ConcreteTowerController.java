@@ -1,3 +1,4 @@
+package src.Controller;
 
 import java.util.List;
 import java.awt.BorderLayout;
@@ -21,7 +22,7 @@ class ConcreteTowerController extends TowerController {
         label.setForeground(Color.BLACK);
 
         JPanel buttonPanel = getPanel();
-        buttonPanel.setBackground(Color.GREEN);
+        buttonPanel.setBackground(Color.GRAY);
         buttonPanel.setBounds(40, 80, 200, 200);
 
         for (JButton button : buttons) {

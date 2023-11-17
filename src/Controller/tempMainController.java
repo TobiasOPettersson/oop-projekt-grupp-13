@@ -17,6 +17,8 @@ import src.View.GraphicsDependencies;
 public class tempMainController {
     public static void main(String[] args) {
         List<JButton> buttons = new ArrayList<>();
+        JButton button = new JButton();
+        buttons.add(button);
         // Add JButton instances to the buttons list...
 
         JLabel label = new JLabel("Tower Label");
