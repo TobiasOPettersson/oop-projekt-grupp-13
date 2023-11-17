@@ -6,13 +6,9 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
-
-import src.Controller.TowerController; // Import the TowerController abstract class
-import src.Model.MainModel;
-import src.View.GraphicsDependencies;
-
-public class TowerView extends JFrame {
+class TowerView extends JFrame {
 
     private TowerController controller;
 
