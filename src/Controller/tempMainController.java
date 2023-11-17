@@ -16,20 +16,15 @@ import src.View.GraphicsDependencies;
 
 public class tempMainController {
     public static void main(String[] args) {
-        GraphicsDependencies g;
         List<JButton> buttons = new ArrayList<>();
-        JButton button = new JButton("Tower Button");
+        // Add JButton instances to the buttons list...
+
         JLabel label = new JLabel("Tower Label");
+
         JPanel panel = new JPanel();
+        // Customize JPanel settings as needed...
 
-        TowerController towerController = new CreateTowerController(0, 0, buttons, label, panel);
-        towerView towerView = new towerView(towerController);
-
-        JFrame frame = new JFrame("Create Tower");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 400);
-        frame.add(towerView);
-        frame.setLayout(null);
-        frame.setVisible(true);
+        TowerController controller = new ConcreteTowerController(0, 0, buttons, label, panel);
+        TowerView towervies = new TowerView(controller);
     }
 }
