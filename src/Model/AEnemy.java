@@ -1,32 +1,69 @@
 package src.Model;
 
+import java.util.List;
+
 public abstract class AEnemy implements IMovable {
     private int health; //health points
     private double x, y; //position
     private double speed; //movement speed of an enemy
     private String type; //The type of enemy
-    private EnemyDirection lastDirection = EnemyDirection.RIGHT; //last direction, starting with walking right
-    private EnemyDirection nextDirection = EnemyDirection.RIGHT; //next direction, starting with walking right
-    private double tileCenterPointX; //Need to have information about the next tile centerpoint so that we can move the enemy accordingly
-    private double tileCenterPointY;
-
-    public AEnemy(int health, double x, double y, double speed, String type) {
+    private List<Direction> directions;
+    
+    public AEnemy(int health, double x, double y, double speed, String type, List<Direction> directions) {
         this.health = health;
         this.x = x;
         this.y = y;
         this.speed = speed;
         this.type = type;
+        this.directions = directions;
     } //Constructor
+    
+    
+    private double tileCenterPointX(double h) {
+        if (h!=0) {
+            double number;
+            double offset = (double) h/2;
+            if (this.x == Math.floor(this.x) + 0.5) {
+                number = (double) Math.round(this.x + offset);
+            }
+            else {
+                number = (double) Math.round(this.x);
+            }
+            return number + offset;
+        }
+        double number = Math.floor(this.x);
+        return number + 0.5;
+    }
+
+    private double tileCenterPointY(double v) {
+        if (v!=0) {
+            double number;
+            double offset = (double) v/2;
+            if (this.y == Math.floor(this.y) + 0.5) {
+                System.out.println("test");
+                number = (double) Math.round(this.y + offset);
+            }
+            else {
+                number = (double) Math.round(this.y);
+            }
+            System.out.println("Number: " + number + "Offset: " + offset);
+            return number + offset;
+        }
+        double number = Math.floor(this.y);
+        return number + 0.5;
+    }
 
     /*
      * If an enemy moves past a tile centerpoint return true. Else return false.
      */
-    private boolean movesPastTileCenterPoint(double nextX, double nextY) {
+    private boolean movesPastTileCenterPoint(double nextX, double nextY, Direction currentDir, double h, double v) {
         boolean passesTileCenterPoint = false;
-        if ((nextX >= tileCenterPointX && this.lastDirection == EnemyDirection.RIGHT) || (nextX <= tileCenterPointX && this.lastDirection == EnemyDirection.LEFT)) {
+        if ((nextX >= tileCenterPointX(h) && currentDir == Direction.RIGHT) || (nextX <= tileCenterPointX(h) && currentDir == Direction.LEFT)) {
             passesTileCenterPoint = true;
         }
-        if ((nextY <= tileCenterPointY && this.lastDirection == EnemyDirection.UP) || (nextY >= tileCenterPointY && this.lastDirection == EnemyDirection.DOWN)) {
+        if ((nextY <= tileCenterPointY(v) && currentDir == Direction.UP) || (nextY >= tileCenterPointY(v) && currentDir == Direction.DOWN)) {
+            System.out.print("WOO");
+            System.out.println(tileCenterPointY(v));
             passesTileCenterPoint = true;
         }
         return passesTileCenterPoint;
@@ -36,40 +73,61 @@ public abstract class AEnemy implements IMovable {
      * Move an enemy depending on its last direction and next direction
      */
     public void move() {
-        int h = ((this.lastDirection == EnemyDirection.RIGHT) ? 1 : 0) - ((this.lastDirection == EnemyDirection.LEFT) ? 1 : 0);
-        int v = ((this.lastDirection == EnemyDirection.DOWN) ? 1 : 0) - ((this.lastDirection == EnemyDirection.UP) ? 1 : 0);
-        int hNext = ((this.nextDirection == EnemyDirection.RIGHT) ? 1 : 0) - ((this.nextDirection == EnemyDirection.LEFT) ? 1 : 0);
-        int vNext = ((this.nextDirection == EnemyDirection.DOWN) ? 1 : 0) - ((this.nextDirection == EnemyDirection.UP) ? 1 : 0);
-        double nextX = this.x + h * speed;
-        double nextY = this.y + v * speed;
+        
+        if (directions.size() > 0) {
+            Direction currentDir = directions.get(0);
+            double h = ((currentDir == Direction.RIGHT) ? 1 : 0) - ((currentDir == Direction.LEFT) ? 1 : 0);
+            double v = ((currentDir == Direction.DOWN) ? 1 : 0) - ((currentDir == Direction.UP) ? 1 : 0);
+            
+            if (directions.size() == 1) {
+                double centerPointX = tileCenterPointX(h);
+                double centerPointY = tileCenterPointY(v);
+                this.x += h * speed;
+                this.y += v * speed;
+                if ((Math.signum(this.y - centerPointY) == v || (this.y == centerPointY)) && (Math.signum((this.x - centerPointX)) == h || (this.x == centerPointX))  ) {
+                    directions.remove(0);
+                }
+            }
+            
+            if (directions.size() > 1) {
+                Direction nextDir = directions.get(1);
 
-        if (!movesPastTileCenterPoint(nextX, nextY) || this.lastDirection == this.nextDirection) {
+                double hNext = ((nextDir == Direction.RIGHT) ? 1 : 0) - ((nextDir == Direction.LEFT) ? 1 : 0);
+                double vNext = ((nextDir == Direction.DOWN) ? 1 : 0) - ((nextDir == Direction.UP) ? 1 : 0);
+
+                double nextX = this.x + h * speed;
+                double nextY = this.y + v * speed;
+
+                if (movesPastTileCenterPoint(nextX, nextY, currentDir, h, v)) {
+                if (currentDir == nextDir) {
+                    this.x += h * speed;
+                    this.y += v * speed;
+                }
+                else {
+                    double nextYPos = tileCenterPointY(v) + Math.abs((nextX) - tileCenterPointX(h)) * vNext;
+                    double nextXPos = tileCenterPointX(h) + Math.abs((nextY) - tileCenterPointY(v)) * hNext;
+                    this.y = nextYPos;
+                    this.x = nextXPos;
+                    System.out.println("tilecenterpointY: " + (tileCenterPointY(v)));
+                }
+                directions.remove(0);
+                System.out.println(directions.size());
+            }
+            else {
                 this.x += h * speed;
                 this.y += v * speed;
             }
-        else {
-            this.y = this.tileCenterPointY + Math.abs((nextX) - this.tileCenterPointX) * vNext;
-            this.x = this.tileCenterPointX + Math.abs((nextY) - this.tileCenterPointY) * hNext;
-            //Remove first element from direction list
+            System.out.println("X POSITION: " + this.x);
+            System.out.println("Y POSITION: " + this.y);
+            }
         }
+        else {
+            System.out.println("Direction array is empty");
+        }
+        
     }
-
+       
     // -------- Getters and setters ---------
-    public void setTileCenterPointY(double y) {
-        this.tileCenterPointY = y;
-    }
-
-    public void setTileCenterPointX(double x) {
-        this.tileCenterPointX = x;
-    }
-
-    public double getTileCenterPointX() {
-        return this.tileCenterPointX;
-    }
-
-    public double getTileCenterPointY() {
-        return this.tileCenterPointY;
-    }
 
     public double getX() {
         return x;
@@ -77,21 +135,5 @@ public abstract class AEnemy implements IMovable {
 
     public double getY() {
         return y;
-    }
-
-    public EnemyDirection getLastDirection() {
-        return lastDirection;
-    }
-
-    public void setLastDirection(EnemyDirection lastDirection) {
-        this.lastDirection = lastDirection;
-    }
-
-    public EnemyDirection getNextDirection() {
-        return nextDirection;
-    }
-
-    public void setNextDirection(EnemyDirection nextDirection) {
-        this.nextDirection = nextDirection;
     }
 }
