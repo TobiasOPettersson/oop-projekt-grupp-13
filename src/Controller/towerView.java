@@ -21,16 +21,16 @@ class TowerView extends JFrame {
     private void initComponents() {
         JPanel panel = new JPanel();
         JLabel label = new JLabel("CREATE TOWERS");
-        ArrayList<SpriteButtonController> buttons = new ArrayList<>();
-        // JButton b1 = new JButton();
-        // JButton b2 = new JButton();
-        // JButton b3 = new JButton();
-        SpriteButtonController spriteButton = new SpriteButtonController();
-        buttons.add(spriteButton);
+        ArrayList<JButton> buttons = new ArrayList<>();
+        JButton b1 = new JButton();
+        JButton b2 = new JButton();
+        JButton b3 = new JButton();
+        // SpriteButtonController spriteButton = new SpriteButtonController();
 
-        // buttons.add(b1);
-        // buttons.add(b2);
-        // buttons.add(b3);
+        buttons.add(b1);
+
+        buttons.add(b2);
+        buttons.add(b3);
 
         // controller = new ConcreteTowerController(0, 0, buttons, label, panel);
         controller = new CreateTowerController(0, 0, new ArrayList<JButton>(buttons), label, panel);
