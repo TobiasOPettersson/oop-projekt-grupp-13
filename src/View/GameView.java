@@ -8,12 +8,12 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 
 public class GameView extends JFrame {
-    MainModel model;
+    TempMain model;
     DrawPanel drawPanel;
     private BufferedImage image;
 
     // Constructor
-    public GameView(MainModel model) { // Moved initComponents down so setVisible is done last
+    public GameView(TempMain model) { // Moved initComponents down so setVisible is done last
         importImg();
         this.model = model;
         this.drawPanel = new DrawPanel(model, image);
