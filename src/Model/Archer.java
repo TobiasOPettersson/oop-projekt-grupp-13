@@ -7,7 +7,9 @@ public class Archer extends AttackTower{
        //cost = 1;
        //model = archerImage;
        damage = 5;
-       fireSpeed = 200;
+       cooldown = 200;
+       maxCooldown = cooldown;
+       range = 200;
    }
 
    @Override

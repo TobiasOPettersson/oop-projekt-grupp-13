@@ -8,14 +8,18 @@ public abstract class AEnemy implements IMovable {
     private double speed; //movement speed of an enemy
     private String type; //The type of enemy
     private List<Direction> directions;
+    private int damage;
+    private int moneyBank;
     
-    public AEnemy(int health, double x, double y, double speed, String type, List<Direction> directions) {
+    public AEnemy(int health, double y, double speed, String type, List<Direction> directions, int damage, int moneyBank) {
         this.health = health;
-        this.x = x;
+        this.x = 0;
         this.y = y;
         this.speed = speed;
         this.type = type;
         this.directions = directions;
+        this.damage = damage;
+        this.moneyBank = moneyBank;
     } //Constructor
     
     private double tileCenterPointX(double h) {
@@ -130,5 +134,21 @@ public abstract class AEnemy implements IMovable {
 
     public double getY() {
         return y;
+    }
+
+    public int getDamage() {
+        return this.damage;
+    }
+
+    public void doDamage(int x){
+        this.health -= x;
+    }
+
+    public int getHealth(){
+        return this.health;
+    }
+
+    public int getMoney(){
+        return this.moneyBank;
     }
 }
