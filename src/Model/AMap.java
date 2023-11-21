@@ -17,7 +17,7 @@ public class AMap {
                                {0, 0, 0, 0, 0, 0, 0, 0, 0},
                                {0, 0, 0, 0, 0, 0, 0, 0, 0},
                                {0, 0, 0, 0, 0, 0, 0, 0, 0},};
-    public List<EnemyDirection> pathDirections = new ArrayList<EnemyDirection>();
+    private List<EnemyDirection> pathDirections = new ArrayList<EnemyDirection>();
 
     public AMap() {
         createGrid();
@@ -127,7 +127,7 @@ public class AMap {
     }
 
     public List<EnemyDirection> getPathDirections(){
-        return this.pathDirections;
+        return new ArrayList<>(this.pathDirections);
     }
 
     public int getStartPosition(){
