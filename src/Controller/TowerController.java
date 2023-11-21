@@ -1,19 +1,5 @@
 package src.Controller;
 
-/**
- * This is an abstract class representing a Tower Controller in a game.
- * It defines the common properties and behaviors for tower controllers.
- * Subclasses are expected to extend this class and provide specific implementations.
- * 
- * Properties:
- * - x: X-coordinate of the tower's position.
- * - y: Y-coordinate of the tower's position.
- * - buttons: A list of JButton objects associated with the tower.
- * - label: A JLabel object associated with the tower.
- * - panel: A JPanel object associated with the tower.
- 
- */
-
 import java.util.List;
 import java.awt.BorderLayout;
 import java.awt.Color;
