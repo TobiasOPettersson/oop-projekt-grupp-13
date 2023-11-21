@@ -1,30 +1,30 @@
-package View;
+package src.View;
 
 import javax.swing.JFrame;
-import Model.MainModel;
+import src.Model.MainModel;
 import java.awt.image.*;
 import java.io.IOException;
 import java.io.InputStream;
 import javax.imageio.ImageIO;
 
 public class GameView extends JFrame {
-    MainModel model;
+    TempMain model;
     DrawPanel drawPanel;
     private BufferedImage image;
 
     // Constructor
-    public GameView(MainModel model) {
+    public GameView(TempMain model) { // Moved initComponents down so setVisible is done last
         importImg();
-        initComponents();
         this.model = model;
         this.drawPanel = new DrawPanel(model, image);
         add(drawPanel);
-
+        initComponents();
     }
 
     // import sprite sheet
     private void importImg() {
         InputStream is = this.getClass().getResourceAsStream("res/spriteatlas.png");
+
         try {
             image = ImageIO.read(is);
         } catch (IOException e) {
@@ -33,12 +33,15 @@ public class GameView extends JFrame {
 
     }
 
+    public void update(){
+        drawPanel.update();
+    }
+
     // initialize swing window
     private void initComponents() {
-        setSize(640, 640);
-        setVisible(true);
+        setSize(GraphicsDependencies.getWidth(), GraphicsDependencies.getHeight());
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-
+        setVisible(true);
     }
 }

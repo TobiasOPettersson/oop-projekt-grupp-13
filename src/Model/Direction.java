@@ -1,6 +1,6 @@
 package src.Model;
 
-public enum EnemyDirection {
+public enum Direction {
     UP,
     RIGHT,
     DOWN,

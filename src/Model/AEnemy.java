@@ -1,247 +1,134 @@
 package src.Model;
 
-public abstract class AEnemy implements IMovable {
-    private int health; //The health points of an enemy
-    private double x, y; //The enemys position, maybe have this as a point?
-    private double speed; //The speed in an enemy
-    //private double hitBox; //Enemy hitbox so that when it gets in to the towers targeting range, it can get shot
-    private String type; //The type of enemy
-    private EnemyDirection lastDirection = EnemyDirection.RIGHT; //An enemy will start on the left side
-    private EnemyDirection nextDirection = EnemyDirection.RIGHT;
-    private double tileCenterPointX; //TEMPORARY
-    private double tileCenterPointY; //TEMPORARY
+import java.util.List;
 
-    public AEnemy(int health, double x, double y, double speed, String type) {
+public abstract class AEnemy implements IMovable {
+    private int health; //health points
+    private double x, y; //position
+    private double speed; //movement speed of an enemy
+    private String type; //The type of enemy
+    private List<Direction> directions;
+    
+    public AEnemy(int health, double x, double y, double speed, String type, List<Direction> directions) {
         this.health = health;
         this.x = x;
         this.y = y;
         this.speed = speed;
-        //this.hitBox = new Rectangle((int) x + width/2, (int) y + height/2, width, height);
         this.type = type;
+        this.directions = directions;
     } //Constructor
-
-    private double nextXCoordinate() {
-        switch (this.lastDirection) {
-            case RIGHT:
-                return this.x + this.speed;
-            case LEFT:
-                return this.x - this.speed;
-            default:
-                return this.x;
+    
+    private double tileCenterPointX(double h) {
+        if (h!=0) {
+            double number;
+            double offset = (double) h/2;
+            if (this.x == Math.floor(this.x) + 0.5) {
+                number = (double) Math.round(this.x + offset);
+            }
+            else {
+                number = (double) Math.round(this.x);
+            }
+            return number + offset;
         }
+        double number = Math.floor(this.x);
+        return number + 0.5;
     }
 
-    private double nextYCoordinate() {
-        switch (this.lastDirection) {
-            case UP:
-                return this.y - this.speed;
-            case DOWN:
-                return this.y + this.speed;
-            default:
-                return this.y;
+    private double tileCenterPointY(double v) {
+        if (v!=0) {
+            double number;
+            double offset = (double) v/2;
+            if (this.y == Math.floor(this.y) + 0.5) {
+                System.out.println("test");
+                number = (double) Math.round(this.y + offset);
+            }
+            else {
+                number = (double) Math.round(this.y);
+            }
+            System.out.println("Number: " + number + "Offset: " + offset);
+            return number + offset;
         }
+        double number = Math.floor(this.y);
+        return number + 0.5;
     }
 
-    private boolean movesPastTileCenterPoint() {
+    /*
+     * If an enemy moves past a tile centerpoint return true. Else return false.
+     */
+    private boolean movesPastTileCenterPoint(double nextX, double nextY, Direction currentDir, double h, double v) {
         boolean passesTileCenterPoint = false;
-        if ((nextXCoordinate() >= tileCenterPointX && this.lastDirection == EnemyDirection.RIGHT) || (nextXCoordinate() <= tileCenterPointX && this.lastDirection == EnemyDirection.LEFT)) {
+        if ((nextX >= tileCenterPointX(h) && currentDir == Direction.RIGHT) || (nextX <= tileCenterPointX(h) && currentDir == Direction.LEFT)) {
             passesTileCenterPoint = true;
         }
-        if ((nextYCoordinate() <= tileCenterPointY && this.lastDirection == EnemyDirection.UP) || (nextYCoordinate() >= tileCenterPointY && this.lastDirection == EnemyDirection.DOWN)) {
+        if ((nextY <= tileCenterPointY(v) && currentDir == Direction.UP) || (nextY >= tileCenterPointY(v) && currentDir == Direction.DOWN)) {
             passesTileCenterPoint = true;
         }
         return passesTileCenterPoint;
     }
 
-    private void switchingToMovingUp() {
-            switch (this.lastDirection) {
-                case RIGHT:
-                    this.x = this.tileCenterPointX;
-                    this.y -= (nextXCoordinate() - this.tileCenterPointX);
-                    break;
-                case LEFT:
-                    this.x = this.tileCenterPointX;
-                    this.y -= (this.tileCenterPointX - nextXCoordinate());
-                    break;
-                default:
-                    this.x = this.tileCenterPointX;
-                    this.y = this.tileCenterPointY;
-                    break;
-            }
-        }
-
-    private void switchingToMovingDown()  {
-        switch (this.lastDirection) {
-            case RIGHT:
-                this.x = this.tileCenterPointX;
-                this.y += (nextXCoordinate() - this.tileCenterPointX);
-                break;
-            case LEFT:
-                this.x = this.tileCenterPointX;
-                this.y += (this.tileCenterPointX - nextXCoordinate());
-                break;
-            default:
-                this.x = this.tileCenterPointX;
-                this.y = this.tileCenterPointY;
-                break;
-        }
-    }
-
-    private void switchingToMovingRight() {
-        switch (this.lastDirection) {
-            case DOWN:
-                this.x += (nextYCoordinate() - this.tileCenterPointY);
-                this.y = this.tileCenterPointY;
-                break;
-            case UP:
-                this.x += (this.tileCenterPointY - nextYCoordinate());
-                this.y = this.tileCenterPointY;
-                break;
-            default:
-                this.x = this.tileCenterPointX;
-                this.y = this.tileCenterPointY;
-                break;
-        }
-    }
-
-    private void switchingToMovingLeft() {
-        switch (this.lastDirection) {
-            case DOWN:
-                this.x -= (nextYCoordinate() - this.tileCenterPointY);
-                this.y = this.tileCenterPointY;
-                break;
-            case UP:
-                this.x -= (this.tileCenterPointY - nextYCoordinate());
-                this.y = this.tileCenterPointY;
-                break;
-            default:
-                this.x = this.tileCenterPointX;
-                this.y = this.tileCenterPointY;
-                break;
-        }
-    }
-
+    /*
+     * Move an enemy depending on its last direction and next direction
+     */
     public void move() {
-        if (movesPastTileCenterPoint()) {
-            if (this.lastDirection == this.nextDirection) {
-               /*  int horizontal = ((this.lastDirection == EnemyDirection.RIGHT) ? 1 : 0) - ((this.lastDirection == EnemyDirection.LEFT) ? 1 : 0);
-                int vertical = ((this.lastDirection == EnemyDirection.DOWN) ? 1 : 0) - ((this.lastDirection == EnemyDirection.UP) ? 1 : 0);
-                this.x += horizontal * speed;
-                this.y += vertical * speed; */
+        if (directions.size() > 0) {
+            Direction currentDir = directions.get(0);
+            double h = ((currentDir == Direction.RIGHT) ? 1 : 0) - ((currentDir == Direction.LEFT) ? 1 : 0);
+            double v = ((currentDir == Direction.DOWN) ? 1 : 0) - ((currentDir == Direction.UP) ? 1 : 0);
+            
+            if (directions.size() == 1) {
+                double centerPointX = tileCenterPointX(h);
+                double centerPointY = tileCenterPointY(v);
+                this.x += h * speed;
+                this.y += v * speed;
+                if ((Math.signum(this.y - centerPointY) == v || (this.y == centerPointY)) && (Math.signum((this.x - centerPointX)) == h || (this.x == centerPointX))  ) {
+                    directions.remove(0);
+                    this.x = centerPointX;
+                    this.y = centerPointY;
+                }
+            }
+            
+            if (directions.size() > 1) {
+                Direction nextDir = directions.get(1);
 
-                switch (this.lastDirection) {
-                    case RIGHT:
-                        this.x += this.speed;
-                        break;
-                    case LEFT:
-                        this.x -= this.speed;
-                        break;
-                    case UP:
-                        this.y -= this.speed;
-                        break;
-                    case DOWN:
-                        this.y += this.speed;
-                        break; 
+                double hNext = ((nextDir == Direction.RIGHT) ? 1 : 0) - ((nextDir == Direction.LEFT) ? 1 : 0);
+                double vNext = ((nextDir == Direction.DOWN) ? 1 : 0) - ((nextDir == Direction.UP) ? 1 : 0);
+
+                double nextX = this.x + h * speed;
+                double nextY = this.y + v * speed;
+
+                if (movesPastTileCenterPoint(nextX, nextY, currentDir, h, v)) {
+                    if (currentDir == nextDir) {
+                        this.x += h * speed;
+                        this.y += v * speed;
                     }
-            }
-
-            else if (this.lastDirection != this.nextDirection) {
-                switch (this.nextDirection){
-                    case RIGHT:
-                        switchingToMovingRight();
-                        break;
-                    case LEFT:
-                        switchingToMovingLeft();
-                        break;
-                    case UP:
-                        switchingToMovingUp();
-                        break;
-                    case DOWN:
-                        switchingToMovingDown();
-                        break;
+                    else {
+                        double nextYPos = tileCenterPointY(v) + Math.abs((nextX) - tileCenterPointX(h)) * vNext;
+                        double nextXPos = tileCenterPointX(h) + Math.abs((nextY) - tileCenterPointY(v)) * hNext;
+                        this.y = nextYPos;
+                        this.x = nextXPos;
+                    }
+                    directions.remove(0);
+                    System.out.println(directions.size());
+                }
+                else {
+                    this.x += h * speed;
+                    this.y += v * speed;
                 }
             }
         }
-
         else {
-            switch (this.lastDirection) {
-                case RIGHT:
-                    this.x += this.speed;
-                    break;
-                case LEFT:
-                    this.x -= this.speed;
-                    break;
-                case UP:
-                    this.y -= this.speed;
-                    break;
-                case DOWN:
-                    this.y += this.speed;
-                    break; 
-                }
+            System.out.println("Direction array is empty");
         }
+        
     }
-
-    public void setTileCenterPointX(double x) {
-        this.tileCenterPointX = x;
-    }
-
-    public double getTileCenterPointX() {
-        return this.tileCenterPointX;
-    }
-
-    public int getHealth() {
-        return health;
-    }
-
-    public void setHealth(int health) {
-        this.health = health;
-    }
+       
+    // -------- Getters and setters ---------
 
     public double getX() {
         return x;
     }
 
-    public void setX(double x) {
-        this.x = x;
-    }
-
     public double getY() {
         return y;
-    }
-
-    public void setY(double y) {
-        this.y = y;
-    }
-
-    public double getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(double speed) {
-        this.speed = speed;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public EnemyDirection getLastDirection() {
-        return lastDirection;
-    }
-
-    public void setLastDirection(EnemyDirection lastDirection) {
-        this.lastDirection = lastDirection;
-    }
-
-    public EnemyDirection getNextDirection() {
-        return nextDirection;
-    }
-
-    public void setNextDirection(EnemyDirection nextDirection) {
-        this.nextDirection = nextDirection;
     }
 }
