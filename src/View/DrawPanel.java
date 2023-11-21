@@ -6,19 +6,35 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.awt.Color;
-
-import src.Model.MainModel;
 
 public class DrawPanel extends JPanel {
     private BufferedImage image;
+    private TempMain model;
     private ArrayList<BufferedImage> sprites = new ArrayList<>();
+    public ArrayList<DirNode> dirChangeArray = new ArrayList<>();
+
+    // Constructor
+    public DrawPanel(TempMain model, BufferedImage image) {
+        this.image = image;
+        this.model = model;
+        loadSprites();
+        setPath(10, 20, 48);
+        update();
+    }
 
     // Map blueprint
     // "g" = Grass = sprites.get(18)
     // "w" = Water = sprites.get(60)
-    // "p1" = Path1 = sprites.get(8)
-    // "p2" = Path2 = sprites.get(9)
+    // ">" = Path2 = sprites.get(9)
+    // ">^" = Path1 * 180 degree = sprites.get(8)
+    // ">v" = Path1 * 90 degree = sprites.get(8)
+    // "^>" = Path1 = sprites.get(8)
+    // "v>" = Path1 * (-)90 degree = sprites.get(8)
+    // "^" = Path2 * 90 degree = sprites.get(9)
+    // "v" = Path2 * 90 degree = sprites.get(9)
+
     private String[][] map = {
             { "g", "g", "g", "g", "g", "g", "g", "g", "g", "g", "g", "g", "g", "g", "g", "w", "w", "w", "w", "w" },
             { "g", "w", "w", "g", "g", "g", "g", "g", "g", "g", "g", "g", "g", "g", "g", "w", "w", "w", "w", "g" },
@@ -26,18 +42,66 @@ public class DrawPanel extends JPanel {
             { "g", "g", "g", "g", "^", "g", "v", "g", "g", "g", "g", "g", "g", "g", "^>", ">", ">v", "g", "g", "g" },
             { "g", "g", "g", "g", "^", "w", "v", "g", "g", "g", "g", "g", "g", "g", "^", "w", "v", "g", "g", "g" },
             { ">", ">", ">", ">", ">^", "w", "v", "g", "g", "g", "g", "g", "g", "g", "^", "g", "v", "g", "g", "g" },
-            { "g", "g", "g", "g", "g", "w", "v>", ">", ">", ">", ">", ">", ">", ">", ">^", "g", "v>", ">", ">", ">" },
-            { "g", "g", "g", "g", "w", "w", "g", "g", "g", "g", "g", "g", "g", "g", "g", "g", "g", "g", "g", "g" },
-            { "g", "g", "g", "g", "w", "w", "g", "g", "g", "g", "g", "g", "g", "g", "g", "g", "g", "g", "g", "g" },
+            { "g", "g", "g", "g", "g", "w", "v>", ">", ">", ">v", "g", "g", "^>", ">", ">^", "g", "v>", ">", ">", ">" },
+            { "g", "g", "g", "g", "w", "w", "g", "g", "g", "v", "g", "g", "^", "g", "g", "g", "g", "g", "g", "g" },
+            { "g", "g", "g", "g", "w", "w", "g", "g", "g", "v>", ">", ">", ">^", "g", "g", "g", "g", "g", "g", "g" },
             { "g", "g", "g", "g", "w", "w", "g", "g", "g", "g", "g", "g", "g", "g", "g", "g", "g", "g", "g", "g" },
     };
 
-    // Constructor
-    public DrawPanel(MainModel model, BufferedImage image) {
-        this.image = image;
-        loadSprites();
+    private void setPath(int heightOfMap, int widthOfMap, int spriteSize) {
+        setStartPos(heightOfMap, spriteSize);
+        setPathPos(heightOfMap, 20, spriteSize);
+        setEndPos(heightOfMap, widthOfMap, spriteSize);
+        // setSuperEndPos(heightOfMap, widthOfMap);
 
-        update();
+    }
+
+    private void setStartPos(int heightOfMap, int spriteSize) {
+        for (int i = 0; i < heightOfMap; i++) {
+            if (map[i][0].equals(">")) {
+                dirChangeArray.add(new DirNode(0, i * spriteSize, ">"));
+            }
+        }
+    }
+
+    private void setEndPos(int heightOfMap, int widthOfMap, int spriteSize) {
+        for (int i = 0; i < heightOfMap; i++) {
+            if (map[i][widthOfMap - 1].equals(">")) {
+                dirChangeArray.add(new DirNode(widthOfMap * spriteSize + 10, i * spriteSize, ">"));
+            }
+        }
+    }
+
+    /*
+     * private void setSuperEndPos(int heightOfMap, int widthOfMap) {
+     * dirChangeArray.add(new DirChange(widthOfMap+10, heightOfMap/2, ">"));
+     * }
+     */
+
+    private void setPathPos(int heightOfMap, int widthOfMap, int spriteSize) {
+        for (int i = 0; i < widthOfMap; i++) {
+            for (int j = 0; j < heightOfMap; j++) {
+                DirNode prevChange = dirChangeArray.get(dirChangeArray.size() - 1);
+                switch (prevChange.getDir()) {
+                    case ">":
+                        if (map[j][i].equals(">^")) {
+                            dirChangeArray.add(new DirNode(i * spriteSize, j * spriteSize, "^"));
+                        } else if (map[j][i].equals(">v")) {
+                            dirChangeArray.add(new DirNode(i * spriteSize, j * spriteSize, "v"));
+                        }
+                        break;
+                    case "^":
+                        if (map[j][i].equals(">")) {
+                            dirChangeArray.add(new DirNode(i * spriteSize, j * spriteSize, ">"));
+                        }
+                        break;
+                    case "v":
+                        if (map[j][i].equals("v>")) {
+                            dirChangeArray.add(new DirNode(i * spriteSize, j * spriteSize, ">"));
+                        }
+                }
+            }
+        }
     }
 
     // Create Sprite sheet by taking subimages from image and then scale them
@@ -99,11 +163,10 @@ public class DrawPanel extends JPanel {
         }
     }
 
-    void drawEnemy(Graphics g, int walk) {
-        int x = walk;
-        int y = 235;
+    void drawEnemy(Graphics g) {
 
-        g.drawImage(sprites.get(28), x, y, null);
+        Position position = model.moveEnemy(dirChangeArray);
+        g.drawImage(sprites.get(28), (int) position.getX(), (int) position.getY(), null);
 
     }
 
@@ -112,13 +175,22 @@ public class DrawPanel extends JPanel {
     }
 
     public int walk = 0;
+    int c = 1;
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         drawMap(g);
-        walk += 5;
-        drawEnemy(g, walk);
-        // BufferedImage RSprite = SpriteRotator.rotateSprite90Degree(sprites.get(8));
+
+        // Testing
+        /*
+         * if (c == 1)
+         * for (DirChange item : dirChangeArray) {
+         * System.out.println("x: " + item.getX() + ", y: " + item.getY() + ", dir: " +
+         * item.getDir());
+         * c = 0;
+         * }
+         */
+        drawEnemy(g);
 
     }
 }
