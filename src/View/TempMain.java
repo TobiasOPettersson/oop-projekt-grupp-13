@@ -22,41 +22,43 @@ public class TempMain {
     }
 
     public Position moveEnemy(ArrayList<DirNode> dirNodeArray) {
-        // This if is there to ensure that nextNode won't trigger an index out of bounds when the array only has 1 element
-        if(dirNodeArray.size() > 1){
-        DirNode currentNode = dirNodeArray.get(0);
-        DirNode nextNode = dirNodeArray.get(1);
-        String currentDirection = currentNode.getDir();
-        // nextX and nextY are the coordinates for the next node, the node the enemies are walking towards
-        double nextX = nextNode.getX();
-        double nextY = nextNode.getY();
+        // This if is there to ensure that nextNode won't trigger an index out of bounds
+        // when the array only has 1 element
+        if (dirNodeArray.size() > 1) {
+            DirNode currentNode = dirNodeArray.get(0);
+            DirNode nextNode = dirNodeArray.get(1);
+            String currentDirection = currentNode.getDir();
+            // nextX and nextY are the coordinates for the next node, the node the enemies
+            // are walking towards
+            double nextX = nextNode.getX();
+            double nextY = nextNode.getY();
 
-        switch (currentDirection) {
-            case ">":
-                if (enemyX >= nextX) {
-                    dirNodeArray.remove(0);
-                } else {
-                    enemyX += speed;
-                    return new Position(enemyX, enemyY);
-                }
-                break;
-            case "^":
-                if (enemyY <= nextY) {
-                    dirNodeArray.remove(0);
-                } else {
-                    enemyY -= speed;
-                    return new Position(enemyX, enemyY);
-                }
-                break;
-            case "v":
-                if (enemyY >= nextY) {
-                    dirNodeArray.remove(0);
-                } else {
-                    enemyY += speed;
-                    return new Position(enemyX, enemyY);
-                }
+            switch (currentDirection) {
+                case ">":
+                    if (enemyX >= nextX) {
+                        dirNodeArray.remove(0);
+                    } else {
+                        enemyX += speed;
+                        return new Position(enemyX, enemyY);
+                    }
+                    break;
+                case "^":
+                    if (enemyY <= nextY) {
+                        dirNodeArray.remove(0);
+                    } else {
+                        enemyY -= speed;
+                        return new Position(enemyX, enemyY);
+                    }
+                    break;
+                case "v":
+                    if (enemyY >= nextY) {
+                        dirNodeArray.remove(0);
+                    } else {
+                        enemyY += speed;
+                        return new Position(enemyX, enemyY);
+                    }
+            }
         }
-    }
         return new Position(enemyX, enemyY);
     }
 

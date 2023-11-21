@@ -171,7 +171,6 @@ public class DrawPanel extends JPanel {
     }
 
     public void update() {
-
         repaint();
     }
 
