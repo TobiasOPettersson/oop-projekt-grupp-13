@@ -18,7 +18,6 @@ public abstract class AEnemy implements IMovable {
         this.directions = directions;
     } //Constructor
     
-    
     private double tileCenterPointX(double h) {
         if (h!=0) {
             double number;
@@ -62,8 +61,6 @@ public abstract class AEnemy implements IMovable {
             passesTileCenterPoint = true;
         }
         if ((nextY <= tileCenterPointY(v) && currentDir == Direction.UP) || (nextY >= tileCenterPointY(v) && currentDir == Direction.DOWN)) {
-            System.out.print("WOO");
-            System.out.println(tileCenterPointY(v));
             passesTileCenterPoint = true;
         }
         return passesTileCenterPoint;
@@ -73,7 +70,6 @@ public abstract class AEnemy implements IMovable {
      * Move an enemy depending on its last direction and next direction
      */
     public void move() {
-        
         if (directions.size() > 0) {
             Direction currentDir = directions.get(0);
             double h = ((currentDir == Direction.RIGHT) ? 1 : 0) - ((currentDir == Direction.LEFT) ? 1 : 0);
@@ -86,6 +82,8 @@ public abstract class AEnemy implements IMovable {
                 this.y += v * speed;
                 if ((Math.signum(this.y - centerPointY) == v || (this.y == centerPointY)) && (Math.signum((this.x - centerPointX)) == h || (this.x == centerPointX))  ) {
                     directions.remove(0);
+                    this.x = centerPointX;
+                    this.y = centerPointY;
                 }
             }
             
@@ -99,26 +97,23 @@ public abstract class AEnemy implements IMovable {
                 double nextY = this.y + v * speed;
 
                 if (movesPastTileCenterPoint(nextX, nextY, currentDir, h, v)) {
-                if (currentDir == nextDir) {
+                    if (currentDir == nextDir) {
+                        this.x += h * speed;
+                        this.y += v * speed;
+                    }
+                    else {
+                        double nextYPos = tileCenterPointY(v) + Math.abs((nextX) - tileCenterPointX(h)) * vNext;
+                        double nextXPos = tileCenterPointX(h) + Math.abs((nextY) - tileCenterPointY(v)) * hNext;
+                        this.y = nextYPos;
+                        this.x = nextXPos;
+                    }
+                    directions.remove(0);
+                    System.out.println(directions.size());
+                }
+                else {
                     this.x += h * speed;
                     this.y += v * speed;
                 }
-                else {
-                    double nextYPos = tileCenterPointY(v) + Math.abs((nextX) - tileCenterPointX(h)) * vNext;
-                    double nextXPos = tileCenterPointX(h) + Math.abs((nextY) - tileCenterPointY(v)) * hNext;
-                    this.y = nextYPos;
-                    this.x = nextXPos;
-                    System.out.println("tilecenterpointY: " + (tileCenterPointY(v)));
-                }
-                directions.remove(0);
-                System.out.println(directions.size());
-            }
-            else {
-                this.x += h * speed;
-                this.y += v * speed;
-            }
-            System.out.println("X POSITION: " + this.x);
-            System.out.println("Y POSITION: " + this.y);
             }
         }
         else {
