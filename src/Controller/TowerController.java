@@ -10,6 +10,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.plaf.BorderUIResource;
 
+import src.Model.ATower;
+
 public abstract class TowerController {
 
     private int x;
@@ -45,6 +47,9 @@ public abstract class TowerController {
 
     public List<JButton> getButtons() {
         return buttons;
+    }
+
+    public void handleButtonClick(String type) {
     }
 
 }

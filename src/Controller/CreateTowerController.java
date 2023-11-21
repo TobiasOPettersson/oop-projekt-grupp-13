@@ -38,7 +38,6 @@ public class CreateTowerController extends TowerController {
             System.out.println("inne i knappenloopne");
             button.setPreferredSize(new Dimension(10, 10));
             buttonPanel.add(button);
-
         }
 
     }
@@ -52,5 +51,15 @@ public class CreateTowerController extends TowerController {
     // Tell mainModel to create the tower..
     // MainModel.addTower(newTower);
     // }
+
+    public void createTower(String type) {
+        // map.createTower(savedMousePosX, savedMousePosY, type);
+        // gameView.placeTower(savedMousePosX, savedMousePosY, type);
+    }
+
+    @Override
+    public void handleButtonClick(String type) {
+        createTower(type);
+    }
 
 }

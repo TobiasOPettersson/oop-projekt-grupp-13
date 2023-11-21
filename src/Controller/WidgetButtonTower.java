@@ -47,7 +47,7 @@ public class WidgetButtonTower extends JPanel {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent mEvent) {
-                // handleButtonClick.createTower();
+                towerControlller.handleButtonClick(labelTower.getText());
             }
         });
     }
