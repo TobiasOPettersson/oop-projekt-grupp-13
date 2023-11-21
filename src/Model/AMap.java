@@ -5,10 +5,10 @@ import java.util.ArrayList;
 
 public class AMap {
     private int listSize = 9;
-    public List<ATower> towers = new ArrayList<ATower>();
-    public ATile grid[][] = new ATile[listSize][listSize];
-    public int startPosition = 4;
-    public int[][] pathGrid = {{0, 0, 0, 0, 0, 0, 0, 0, 0},
+    private List<ATower> towers = new ArrayList<ATower>();
+    private ATile grid[][] = new ATile[listSize][listSize];
+    private int startPosition = 4;
+    private int[][] pathGrid = {{0, 0, 0, 0, 0, 0, 0, 0, 0},
                                {0, 0, 0, 0, 0, 0, 0, 0, 0},
                                {0, 0, 0, 0, 0, 0, 0, 0, 0},
                                {0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -55,7 +55,7 @@ public class AMap {
         }
     }
 
-    public void createGrid() {
+    private void createGrid() {
         int tempX = listSize - 1;
         int tempY = 0;
         int tempValue = 0;
