@@ -28,10 +28,10 @@ public class CreateTowerController extends TowerController {
         label.setForeground(Color.BLACK);
 
         // JPanel buttonPanel = new JPanel();
-        add(label);
+        add(label, BorderLayout.EAST);
 
-        setBackground(Color.GREEN);
-        setLayout(new GridLayout(0, 4, 10, 10));
+        setBackground(Color.WHITE);
+        setLayout(new GridLayout(0, 4, 10, 20));
         setPreferredSize(new Dimension(300, 300));
 
         List<WidgetButtonTower> listwithButtons = new ArrayList<>();
