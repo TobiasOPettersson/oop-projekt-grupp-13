@@ -22,6 +22,7 @@ public abstract class TowerController extends JPanel {
 
     // x an y för model förstå var man ska skapa tornet
     // i addtower
+    // random kommentar
 
     public TowerController(int x, int y, JLabel label) {
         this.x = x;
