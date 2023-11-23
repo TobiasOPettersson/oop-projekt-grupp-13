@@ -2,13 +2,16 @@ package src.Model;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class ATower implements IPlacable{
-   protected int x;
-   protected int y;
-   protected int cost;
+   private int x;
+   private double y;
+   private int cost;
    protected int range;
-   protected Image model;
+   private Image model;
+   protected int cooldown;
+   protected int maxCooldown;
 
    public ATower(int x, int y) {
        this.x = x;
@@ -78,4 +81,40 @@ public abstract class ATower implements IPlacable{
    public void setModel(Image model) {
        this.model = model;
    }
+
+    public AEnemy findFirstTarget(List<AEnemy> enemies){
+        for (AEnemy enemy : enemies) {
+            if(inRangeOf(enemy)){
+                return enemy;
+            }
+        }
+        return null;
+    }
+
+   public ArrayList<AEnemy> findAllTarget(ArrayList<AEnemy> enemies){
+        ArrayList<AEnemy> targets = new ArrayList<>();   
+        for (AEnemy enemy : enemies) {
+            if(inRangeOf(enemy)){
+                targets.add(enemy);
+            }
+        }
+        return enemies;
+    }
+
+    public boolean inRangeOf(AEnemy enemy){
+        double distance = Math.sqrt(Math.pow(x - enemy.getX(), 2) + Math.pow(y - enemy.getY(), 2));
+        return distance <= range;
+    }
+
+    public int getCooldown() {
+        return cooldown;
+    }
+    public void setCooldown(int fireSpeed) {
+        this.cooldown = fireSpeed;
+    }
+
+    public void changeCooldown() {
+        if (this.maxCooldown > 0) this.maxCooldown--;
+        else this.maxCooldown = this.cooldown--;
+       }
 }

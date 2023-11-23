@@ -17,7 +17,7 @@ public class AMap {
                                {0, 0, 0, 0, 0, 0, 0, 0, 0},
                                {0, 0, 0, 0, 0, 0, 0, 0, 0},
                                {0, 0, 0, 0, 0, 0, 0, 0, 0},};
-    private List<EnemyDirection> pathDirections = new ArrayList<EnemyDirection>();
+    private List<Direction> pathDirections = new ArrayList<Direction>();
 
     public AMap() {
         createGrid();
@@ -29,25 +29,25 @@ public class AMap {
         while (start.getNext() != null) {
             next = start.getNext();
             if (start.getX() == next.getX() - 1){
-                pathDirections.add(EnemyDirection.RIGHT);
+                pathDirections.add(Direction.RIGHT);
                 start = next;
                 next = next.getNext();
                 continue;
             } 
             else if (start.getX() == next.getX() + 1) {
-                pathDirections.add(EnemyDirection.LEFT);
+                pathDirections.add(Direction.LEFT);
                 start = next;
                 next = next.getNext();
                 continue;
             }
             else if (start.getY() == next.getY() - 1) {
-                pathDirections.add(EnemyDirection.DOWN);
+                pathDirections.add(Direction.DOWN);
                 start = next;
                 next = next.getNext();
                 continue;
             }
             else if (start.getY() == next.getY() + 1) {
-                pathDirections.add(EnemyDirection.UP);
+                pathDirections.add(Direction.UP);
                 start = next;
                 next = next.getNext();
                 continue;
@@ -126,7 +126,7 @@ public class AMap {
         return grid[y][x];
     }
 
-    public List<EnemyDirection> getPathDirections(){
+    public List<Direction> getPathDirections(){
         return new ArrayList<>(this.pathDirections);
     }
 
@@ -138,6 +138,14 @@ public class AMap {
         for(int i = 0 ; i < listSize ; i++){
             if (pathGrid[i][0] == 1) this.startPosition = i;
         }
+    }
+
+    public List<ATower> getTower(){
+        return this.towers;
+    }
+
+    public int getMapSize(){
+        return this.listSize;
     }
 
     public void createTower(int x, int y, String type){
