@@ -18,7 +18,7 @@ public abstract class ATower implements IPlacable{
        this.y = y;
    }
 
-    public AEnemy findFirstTarget(ArrayList<AEnemy> enemies){
+    public AEnemy findFirstTarget(List<AEnemy> enemies){
         for (AEnemy enemy : enemies) {
             if(inRangeOf(enemy)){
                 return enemy;
@@ -40,6 +40,18 @@ public abstract class ATower implements IPlacable{
     public boolean inRangeOf(AEnemy enemy){
         double distance = Math.sqrt(Math.pow(x - enemy.getX(), 2) + Math.pow(y - enemy.getY(), 2));
         return distance <= range;
+    }
+
+    public void changeCooldown() {
+        if (this.maxCooldown > 0) this.maxCooldown--;
+        else this.maxCooldown = this.cooldown--;
+    }
+
+    public int getCooldown() {
+        return cooldown;
+    }
+    public void setCooldown(int fireSpeed) {
+        this.cooldown = fireSpeed;
     }
 
    public double getX() {
@@ -81,40 +93,4 @@ public abstract class ATower implements IPlacable{
    public void setModel(Image model) {
        this.model = model;
    }
-
-    public AEnemy findFirstTarget(List<AEnemy> enemies){
-        for (AEnemy enemy : enemies) {
-            if(inRangeOf(enemy)){
-                return enemy;
-            }
-        }
-        return null;
-    }
-
-   public ArrayList<AEnemy> findAllTarget(ArrayList<AEnemy> enemies){
-        ArrayList<AEnemy> targets = new ArrayList<>();   
-        for (AEnemy enemy : enemies) {
-            if(inRangeOf(enemy)){
-                targets.add(enemy);
-            }
-        }
-        return enemies;
-    }
-
-    public boolean inRangeOf(AEnemy enemy){
-        double distance = Math.sqrt(Math.pow(x - enemy.getX(), 2) + Math.pow(y - enemy.getY(), 2));
-        return distance <= range;
-    }
-
-    public int getCooldown() {
-        return cooldown;
-    }
-    public void setCooldown(int fireSpeed) {
-        this.cooldown = fireSpeed;
-    }
-
-    public void changeCooldown() {
-        if (this.maxCooldown > 0) this.maxCooldown--;
-        else this.maxCooldown = this.cooldown--;
-       }
 }
