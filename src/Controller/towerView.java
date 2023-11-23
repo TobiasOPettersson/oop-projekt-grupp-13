@@ -33,7 +33,8 @@ class TowerView extends JFrame {
         buttons.add(b3);
 
         // controller = new ConcreteTowerController(0, 0, buttons, label, panel);
-        controller = new CreateTowerController(0, 0, new ArrayList<JButton>(buttons), label, panel);
+        // controller = new CreateTowerController(0, 0, new ArrayList<JButton>(buttons),
+        // label, panel);
         controller.initTowerController();
 
         add(panel, BorderLayout.SOUTH);

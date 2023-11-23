@@ -32,7 +32,7 @@ public class WidgetButtonTower extends JPanel {
         setSize(new Dimension(100, 200));
         setBackground(Color.gray);
         setLayout(new BorderLayout());
-
+        System.out.println("inside WidgebuttonController");
         labelTower.setHorizontalAlignment(SwingConstants.CENTER);
         labelCost.setHorizontalAlignment(SwingConstants.CENTER);
 

@@ -16,19 +16,18 @@ import src.View.GraphicsDependencies;
 
 public class tempMainController {
     public static void main(String[] args) {
-        // List<JButton> buttons = new ArrayList<>();
-        // JButton button = new JButton();
-        // JLabel label = new JLabel();
-        // JPanel panel = new JPanel();
-        // // Customize JPanel settings as needed...
 
-        // TowerController controller = new CreateTowerController(0, 0, buttons, label,
-        // panel);
+        JLabel label = new JLabel("CREATE TOWERS");
+
+        // Customize JPanel settings as needed...
+
+        CreateTowerController controller = new CreateTowerController(0, 0, label);
+
         // TowerView towervies = new TowerView(controller);
         JFrame frame = new JFrame();
-        WidgetButtonTower tower = new WidgetButtonTower(null, 0, "Archer", null);
-        frame.setSize(400, 400);
-        frame.add(tower);
+
+        frame.setSize(600, 600);
+        frame.add(controller);
         frame.setVisible(true);
 
     }

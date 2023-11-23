@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -13,31 +14,43 @@ import src.Model.AMap;
 
 public class CreateTowerController extends TowerController {
 
-    public CreateTowerController(AMap map, int x, int y, List<JButton> buttons, JLabel label, JPanel panel) {
-        super(map, x, y, buttons, label, panel);
+    public CreateTowerController(int x, int y, JLabel label) {
+        super(x, y, label);
+        initTowerController();
         // TODO Auto-generated constructor stub
-
+        // setBackground(Color.BLACK);
     }
 
-    @Override
     public void initTowerController() {
+        System.out.println("inisde inti");
         JLabel label = getLabel();
         label.setForeground(Color.BLACK);
 
-        JPanel buttonPanel = getPanel();
+        // JPanel buttonPanel = new JPanel();
+        add(label, BorderLayout.EAST);
 
-        buttonPanel.setBackground(Color.BLUE);
-        buttonPanel.setLayout(new GridLayout(0, 4, 10, 10));
-        buttonPanel.setPreferredSize(new Dimension(300, 200));
+        setBackground(Color.WHITE);
+        setLayout(new GridLayout(0, 4, 10, 20));
+        setPreferredSize(new Dimension(300, 300));
 
-        List<JButton> listwithButtons = getButtons();
-        buttonPanel.add(label, BorderLayout.CENTER);
-        for (JButton button : listwithButtons) {
-            button.setBackground(Color.WHITE);
-            System.out.println("inne i knappenloopne");
-            button.setPreferredSize(new Dimension(10, 10));
-            buttonPanel.add(button);
+        List<WidgetButtonTower> listwithButtons = new ArrayList<>();
+
+        listwithButtons.add(new WidgetButtonTower(null, 0, "Archer", this));
+        listwithButtons.add(new WidgetButtonTower(null, 0, "Wizard", this));
+        listwithButtons.add(new WidgetButtonTower(null, 0, "Buffer", this));
+
+        for (WidgetButtonTower widgetButtonTower : listwithButtons) {
+            System.out.println("inside for loop");
+            add(widgetButtonTower);
+
         }
+
+        // for (JButton button : listwithButtons) {
+        // button.setBackground(Color.WHITE);
+        // System.out.println("inne i knappenloopne");
+        // button.setPreferredSize(new Dimension(10, 10));
+        // buttonPanel.add(button);
+        // }
 
     }
 
