@@ -1,108 +1,93 @@
 package View;
 
 import javax.swing.JPanel;
+
+import Controller.PlayButtonController;
+import Model.AEnemy;
+import Model.ATile;
+import Model.ATower;
+import Model.Direction;
+import Model.MainModel;
+import Model.TowerTile;
+import Model.TowerType;
+
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Arrays;
+import java.awt.BasicStroke;
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class DrawPanel extends JPanel {
+    private GameView gameView;
     private BufferedImage image;
-    private TempMain model;
+    private BufferedImage imageKnife;
+    private MainModel model;
     private ArrayList<BufferedImage> sprites = new ArrayList<>();
-    public ArrayList<DirNode> dirChangeArray = new ArrayList<>();
+    // public ArrayList<DirNode> dirChangeArray = new ArrayList<>(); // Temp map
+    private ATile mapGrid[][];
+    private List<Direction> pathDirections;
+    private int gridWidth;
+    private int gridHeight;
+    private ArrayList<BufferedImage> pathSprites = new ArrayList<>();
+    private int[][] pathGrid;
+    private String[][] towerMap;
+    private final int SPRITE_SIZE = 48; 
+    private int[] selectedTile = new int[2];
+
 
     // Constructor
-    public DrawPanel(TempMain model, BufferedImage image) {
+    public DrawPanel(GameView gameView, MainModel model, BufferedImage image, BufferedImage imageKnife) {
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent mEvent) {
+                handleTileClick(mEvent.getX(), mEvent.getY());
+            }
+        });
+        this.gameView = gameView;
         this.image = image;
+        this.imageKnife = imageKnife;
         this.model = model;
+        this.pathDirections = this.model.getPathDirections();
+        this.mapGrid = this.model.getTileGrid();
+        this.gridWidth = this.model.getMapSizeX();
+        this.gridHeight = this.model.getMapSizeY();
+        this.pathGrid = this.model.getPathGrid();
+        setLayout(new BorderLayout());
+        add(new PlayButtonController(model), BorderLayout.PAGE_END);
         loadSprites();
-        setPath(10, 20, 48);
         update();
+        createPathSprites();
     }
 
-    // Map blueprint
-    // "g" = Grass = sprites.get(18)
-    // "w" = Water = sprites.get(60)
-    // ">" = Path2 = sprites.get(9)
-    // ">^" = Path1 * 180 degree = sprites.get(8)
-    // ">v" = Path1 * 90 degree = sprites.get(8)
-    // "^>" = Path1 = sprites.get(8)
-    // "v>" = Path1 * (-)90 degree = sprites.get(8)
-    // "^" = Path2 * 90 degree = sprites.get(9)
-    // "v" = Path2 * 90 degree = sprites.get(9)
-
-    private String[][] map = {
-            { "g", "g", "g", "g", "g", "g", "g", "g", "g", "g", "g", "g", "g", "g", "g", "w", "w", "w", "w", "w" },
-            { "g", "w", "w", "g", "g", "g", "g", "g", "g", "g", "g", "g", "g", "g", "g", "w", "w", "w", "w", "g" },
-            { "g", "w", "w", "g", "^>", ">", ">v", "g", "g", "g", "g", "g", "g", "g", "w", "w", "w", "w", "g", "g" },
-            { "g", "g", "g", "g", "^", "g", "v", "g", "g", "g", "g", "g", "g", "g", "^>", ">", ">v", "g", "g", "g" },
-            { "g", "g", "g", "g", "^", "w", "v", "g", "g", "g", "g", "g", "g", "g", "^", "w", "v", "g", "g", "g" },
-            { ">", ">", ">", ">", ">^", "w", "v", "g", "g", "g", "g", "g", "g", "g", "^", "g", "v", "g", "g", "g" },
-            { "g", "g", "g", "g", "g", "w", "v>", ">", ">", ">v", "g", "g", "^>", ">", ">^", "g", "v>", ">", ">", ">" },
-            { "g", "g", "g", "g", "w", "w", "g", "g", "g", "v", "g", "g", "^", "g", "g", "g", "g", "g", "g", "g" },
-            { "g", "g", "g", "g", "w", "w", "g", "g", "g", "v>", ">", ">", ">^", "g", "g", "g", "g", "g", "g", "g" },
-            { "g", "g", "g", "g", "w", "w", "g", "g", "g", "g", "g", "g", "g", "g", "g", "g", "g", "g", "g", "g" },
-    };
-
-    private void setPath(int heightOfMap, int widthOfMap, int spriteSize) {
-        setStartPos(heightOfMap, spriteSize);
-        setPathPos(heightOfMap, 20, spriteSize);
-        setEndPos(heightOfMap, widthOfMap, spriteSize);
-        // setSuperEndPos(heightOfMap, widthOfMap);
-
+    public void placeTower(int x, int y, String type){
+        
     }
 
-    private void setStartPos(int heightOfMap, int spriteSize) {
-        for (int i = 0; i < heightOfMap; i++) {
-            if (map[i][0].equals(">")) {
-                dirChangeArray.add(new DirNode(0, i * spriteSize, ">"));
-            }
-        }
-    }
-
-    private void setEndPos(int heightOfMap, int widthOfMap, int spriteSize) {
-        for (int i = 0; i < heightOfMap; i++) {
-            if (map[i][widthOfMap - 1].equals(">")) {
-                dirChangeArray.add(new DirNode(widthOfMap * spriteSize + 10, i * spriteSize, ">"));
-            }
-        }
-    }
-
-    /*
-     * private void setSuperEndPos(int heightOfMap, int widthOfMap) {
-     * dirChangeArray.add(new DirChange(widthOfMap+10, heightOfMap/2, ">"));
-     * }
-     */
-
-    private void setPathPos(int heightOfMap, int widthOfMap, int spriteSize) {
-        for (int i = 0; i < widthOfMap; i++) {
-            for (int j = 0; j < heightOfMap; j++) {
-                DirNode prevChange = dirChangeArray.get(dirChangeArray.size() - 1);
-                switch (prevChange.getDir()) {
-                    case ">":
-                        if (map[j][i].equals(">^")) {
-                            dirChangeArray.add(new DirNode(i * spriteSize, j * spriteSize, "^"));
-                        } else if (map[j][i].equals(">v")) {
-                            dirChangeArray.add(new DirNode(i * spriteSize, j * spriteSize, "v"));
+    private void handleTileClick(int x, int y) {
+        for (int i = 0; i < gridWidth; i++) {
+            if(x > 48 * i && x < 48 * (i+1)){
+                for (int j = 0; j < gridHeight; j++) {
+                    if(y > 48 * j && y < 48 * (j+1)){
+                        if(model.getMap().getTile(i, j) instanceof TowerTile){
+                            selectedTile[0] = i;
+                            selectedTile[1] = j;
+                            gameView.openWidgit(i, j);
+                            return;
                         }
-                        break;
-                    case "^":
-                        if (map[j][i].equals(">")) {
-                            dirChangeArray.add(new DirNode(i * spriteSize, j * spriteSize, ">"));
-                        }
-                        break;
-                    case "v":
-                        if (map[j][i].equals("v>")) {
-                            dirChangeArray.add(new DirNode(i * spriteSize, j * spriteSize, ">"));
-                        }
+                    }
                 }
             }
         }
     }
+
 
     // Create Sprite sheet by taking subimages from image and then scale them
     private void loadSprites() {
@@ -115,58 +100,114 @@ public class DrawPanel extends JPanel {
         }
     }
 
-    // Draws the map to the screen according to the blueprint
-    private void drawMap(Graphics g) {
-        // Grass = sprites.get(18)
-        int grass = 18;
-        // Water = sprites.get(60)
-        int water = 60;
-        // path1 = sprites.get(8)
-        int path1 = 8;
-        // path2 = sprites.get(9)
-        int path2 = 9;
-        // size of sprites, originalsize * scale = 32*1.5 = 48
-        int sSize = 48;
+    private void createPathSprites() { // Behöver fixas, Mycket redundant kod
+        // pathTurn = sprites.get(8)
+        int pathTurn = 8;
+        // pathStraight = sprites.get(9)
+        int pathStraight = 9;
+        Direction previous = this.pathDirections.get(0);
+        Direction current;
+        for (int i = 1; i < this.pathDirections.size(); i++) {
+            current = this.pathDirections.get(i);
+            if (previous == Direction.RIGHT && current == Direction.RIGHT) {
+                pathSprites.add(sprites.get(pathStraight)); // >
+            } else if (previous == Direction.RIGHT && current == Direction.DOWN) {
+                pathSprites.add(SpriteHelper.rotateSprite(sprites.get(pathTurn), 90)); // >v
+            } else if (previous == Direction.RIGHT && current == Direction.UP) {
+                pathSprites.add(SpriteHelper.rotateSprite(sprites.get(pathTurn), 180)); // >^
+            } else if (previous == Direction.DOWN && current == Direction.DOWN) {
+                pathSprites.add(SpriteHelper.rotateSprite(sprites.get(pathStraight), 90)); // v
+            } else if (previous == Direction.DOWN && current == Direction.LEFT) {
+                pathSprites.add(SpriteHelper.rotateSprite(sprites.get(pathTurn), 180)); // v<
+            } else if (previous == Direction.DOWN && current == Direction.RIGHT) {
+                pathSprites.add(SpriteHelper.rotateSprite(sprites.get(pathTurn), -90)); // v>
+            } else if (previous == Direction.LEFT && current == Direction.LEFT) {
+                pathSprites.add(sprites.get(pathStraight)); // <
+            } else if (previous == Direction.LEFT && current == Direction.UP) {
+                pathSprites.add(SpriteHelper.rotateSprite(sprites.get(pathTurn), -90)); // <^
+            } else if (previous == Direction.LEFT && current == Direction.DOWN) {
+                pathSprites.add(sprites.get(pathTurn)); // <v
+            } else if (previous == Direction.UP && current == Direction.UP) {
+                pathSprites.add(SpriteHelper.rotateSprite(sprites.get(pathStraight), 90)); // ^
+            } else if (previous == Direction.UP && current == Direction.RIGHT) {
+                pathSprites.add(sprites.get(pathTurn)); // ^>
+            } else if (previous == Direction.UP && current == Direction.LEFT) {
+                SpriteHelper.rotateSprite(sprites.get(pathTurn), 90); // ^<
+            }
+            previous = current;
+        }
+    }
 
-        for (int j = 0; j < 10; j++) {
-            for (int i = 0; i < 20; i++) {
-                switch (map[j][i]) {
-                    case "g":
-                        g.drawImage(sprites.get(grass), i * sSize, j * sSize, null);
-                        break;
-                    case "w":
-                        g.drawImage(sprites.get(water), i * sSize, j * sSize, null);
-                        break;
-                    case ">":
-                        g.drawImage(sprites.get(path2), i * sSize, j * sSize, null);
-                        break;
-                    case ">^":
-                        g.drawImage(SpriteHelper.rotateSprite(sprites.get(path1), 180), i * sSize, j * sSize, null);
-                        break;
-                    case "^":
-                        g.drawImage(SpriteHelper.rotateSprite(sprites.get(path2), 90), i * sSize, j * sSize, null);
-                        break;
-                    case "v":
-                        g.drawImage(SpriteHelper.rotateSprite(sprites.get(path2), 90), i * sSize, j * sSize, null);
-                        break;
-                    case "^>":
-                        g.drawImage(sprites.get(path1), i * sSize, j * sSize, null);
-                        break;
-                    case ">v":
-                        g.drawImage(SpriteHelper.rotateSprite(sprites.get(path1), 90), i * sSize, j * sSize, null);
-                        break;
-                    case "v>":
-                        g.drawImage(SpriteHelper.rotateSprite(sprites.get(path1), -90), i * sSize, j * sSize, null);
-                        break;
+    private void drawMap(Graphics g) {
+        drawTerrain(g);
+        drawPath(g);
+        drawTowers(g);
+        drawEnemies(g);
+    }
+    
+    
+    
+
+    void drawSelectedTile(Graphics g) {
+        if(selectedTile.length > 0){
+            Graphics2D g2 = (Graphics2D) g;
+            g2.setStroke(new BasicStroke(1));
+            g2.drawRect(selectedTile[0]*48, selectedTile[1]*48, 48, 48);
+            g2.setStroke(g2.getStroke());
+        }
+    }
+
+    void drawEnemies(Graphics g) {
+        // offset half of sprite size so the calculated position of enemy will be same position as center of enemysprite
+        int offset = 24; // Sprite size / 2
+        int spriteSize = 48;
+
+        for(AEnemy enemy : model.getEnemies()){
+            System.out.println("Enemy X: " + enemy.getX() + ", Y: " + enemy.getY()); // DEL
+            g.drawImage(sprites.get(28), (int) (enemy.getX() * spriteSize) - offset, (int) (enemy.getY() * spriteSize) - offset,null);
+        }
+    }
+
+    private void drawTowers(Graphics g) {
+        for(ATower tower : model.getMap().getTowers()){
+            // TowerSprite: Knife
+            //System.out.println("Enemy X: " + enemy.getX() + ", Y: " + enemy.getY()); // DEL
+            g.drawImage(imageKnife, (int) tower.getX()*48, (int) tower.getY()*48,null);
+        }
+    }
+
+    private void drawPath(Graphics g) {
+        int spriteSize = 48;
+        for (int i = 0; i < gridWidth; i++) {
+            for (int j = 0; j < gridHeight; j++) {
+                if (pathGrid[j][i] != 0) {
+                    g.drawImage(pathSprites.get(pathGrid[j][i] - 1), i * spriteSize, j * spriteSize, null);
                 }
             }
         }
     }
 
-    void drawEnemy(Graphics g) {
+    // Draws the map to the screen according to the blueprint
+    private void drawTerrain(Graphics g) {
+        // Grass = sprites.get(18)
+        int plains = 18;
+        // Water = sprites.get(60)
+        int water = 60;
+        // size of sprites, originalsize * scale = 32*1.5 = 48
+        int sSize = 48;
 
-        Position position = model.moveEnemy(dirChangeArray);
-        g.drawImage(sprites.get(28), (int) position.getX(), (int) position.getY(), null);
+        for (int i = 0; i < gridWidth; i++) {
+            for (int j = 0; j < gridHeight; j++) {
+                switch (mapGrid[j][i].getTerrain()) {
+                    case Plains:
+                        g.drawImage(sprites.get(plains), i * sSize, j * sSize, null);
+                        break;
+                    case Water:
+                        g.drawImage(sprites.get(water), i * sSize, j * sSize, null);
+                        break;
+                }
+            }
+        }
 
     }
 
@@ -190,7 +231,9 @@ public class DrawPanel extends JPanel {
          * c = 0;
          * }
          */
-        drawEnemy(g);
-
+        drawEnemies(g);
+        drawTowers(g);
+         drawSelectedTile(g);
     }
+
 }

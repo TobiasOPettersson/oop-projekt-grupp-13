@@ -8,11 +8,14 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import Model.MainModel;
+
 public class PlayButtonController extends JPanel{
     //ImageIcon playImage;
     JButton button;
+    MainModel model;
 
-    public PlayButtonController(){
+    public PlayButtonController(MainModel model){
         this.setBackground(Color.red);
         this.setSize(150, 75);
         this.setBorder(BorderFactory.createEmptyBorder(200, 20, 20, 20));
@@ -20,10 +23,6 @@ public class PlayButtonController extends JPanel{
         button.setSize(125,50);
         button.setText("PLAY");
         this.add(button);
-        
-        //this.setBounds(frame.getWidth()+100, frame.getHeight()+25,150,75);
-        //playImage = new ImageIcon();
-        
-        // button.addActionListener(e -> MainModel.play());
+        button.addActionListener(e -> model.play());
     }
 }

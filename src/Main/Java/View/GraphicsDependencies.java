@@ -7,7 +7,10 @@ public class GraphicsDependencies {
     // Frame rate for View
     private static final int FRAMERATE = 20;
     // Y where tower controller should be created
-    private static final int BOTTOMPANEL = 190;
+    private static final int BOTTOMPANEL = 190; // Kanske inte ska användas
+    // sprite size in pixels
+    private static final int SPRITESIZE = 48;
+    
 
     public static int getWidth() {
         return WIDTH;

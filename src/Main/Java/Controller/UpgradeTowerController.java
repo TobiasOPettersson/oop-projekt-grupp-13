@@ -6,11 +6,28 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class UpgradeTowerController extends TowerController {
+import Model.TowerType;
 
-    public UpgradeTowerController(int x, int y, List<JButton> buttons, JLabel label, JPanel panel) {
-        super(x, y, label);
-        // TODO Auto-generated constructor stub
+public class UpgradeTowerController extends TowerController{
+    TowerType towerType;
+
+    public UpgradeTowerController(ITowerObserver observer, TowerType towerType) {
+        super(observer);
+        this.towerType = towerType;
+    }
+
+    public TowerType getTowerType() {
+        return towerType;
+    }
+
+    @Override
+    public void handleButtonClick(TowerType type) {
+        notifyObservers(type);
+    }
+
+    @Override
+    public void notifyObservers(TowerType towerType) {
+        observer.upgradeTower(savedMousePosX, savedMousePosY, 0);
     }
 
     /// Methods///

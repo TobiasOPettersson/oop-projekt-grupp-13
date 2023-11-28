@@ -1,16 +1,17 @@
 package Model;
+
 import java.util.List;
 
 public abstract class AEnemy implements IMovable {
     private int health; //health points
     private double x, y; //position
     private double speed; //movement speed of an enemy
-    private String type; //The type of enemy
+    private EnemyType type; //The type of enemy
     private List<Direction> directions;
     private int damage;
     private int moneyBank;
     
-    public AEnemy(int health, double y, double speed, String type, List<Direction> directions, int damage, int moneyBank) {
+    public AEnemy(int health, double y, double speed, EnemyType type, List<Direction> directions, int damage, int moneyBank) {
         this.health = health;
         this.x = 0;
         this.y = y;
@@ -97,6 +98,8 @@ public abstract class AEnemy implements IMovable {
                 double nextX = this.x + h * speed;
                 double nextY = this.y + v * speed;
 
+                // If the next point which the enemies are going through is decided when they cross the midddle of a tile 
+                // the setting of nextX nd Y should probably be done by movespastTileCenter
                 if (movesPastTileCenterPoint(nextX, nextY, currentDir, h, v)) {
                     if (currentDir == nextDir) {
                         this.x += h * speed;
@@ -119,7 +122,6 @@ public abstract class AEnemy implements IMovable {
         else {
             System.out.println("Direction array is empty");
         }
-        
     }
        
     // -------- Getters and setters ---------
@@ -146,5 +148,9 @@ public abstract class AEnemy implements IMovable {
 
     public int getMoney(){
         return this.moneyBank;
+    }
+
+    public int getDirectionsSize(){
+        return directions.size();
     }
 }

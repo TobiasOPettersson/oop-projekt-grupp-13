@@ -5,17 +5,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class ATower implements IPlacable{
-   private int x;
-   private double y;
-   private int cost;
+   protected int x;
+   protected int y;
+   protected int cost;
    protected int range;
-   private Image model;
-   protected int cooldown;
+   protected int cooldown = 0;
    protected int maxCooldown;
+   protected TowerType towerType;
 
-   public ATower(int x, int y) {
+   public ATower(int x, int y, int cost, int range, int maxCooldown, TowerType towerType) {
        this.x = x;
        this.y = y;
+       this.cost = cost;
+       this.range = range;
+       this.maxCooldown = maxCooldown;
+       this.towerType = towerType;
    }
 
     public AEnemy findFirstTarget(List<AEnemy> enemies){
@@ -42,55 +46,37 @@ public abstract class ATower implements IPlacable{
         return distance <= range;
     }
 
-    public void changeCooldown() {
-        if (this.maxCooldown > 0) this.maxCooldown--;
-        else this.maxCooldown = this.cooldown--;
+    public boolean triggerCooldown() {
+        if(cooldown > 0){
+            cooldown--;
+            return false;
+        } else{
+            cooldown = 0;
+            return true;
+        }
     }
 
-    public int getCooldown() {
-        return cooldown;
-    }
-    public void setCooldown(int fireSpeed) {
-        this.cooldown = fireSpeed;
+    public void resetCooldown() {
+        this.cooldown = maxCooldown;
     }
 
-   public double getX() {
-       return x;
-   }
+    public TowerType getTowerType(){
+        return towerType;
+    }
 
-   public void setX(int x) {
-       this.x = x;
-   }
+    public double getX(){
+        return x;
+    }
 
-   public double getY() {
-       return y;
-   }
+    public double getY(){
+        return y;
+    }
 
-   public void setY(int y) {
-       this.y = y;
-   }
+    public int getXInt(){
+        return x;
+    }
 
-   public int getCost() {
-       return cost;
-   }
-
-   public void setCost(int cost) {
-       this.cost = cost;
-   }
-
-   public int getRange() {
-       return range;
-   }
-
-   public void setRange(int range) {
-       this.range = range;
-   }
-
-   public Image getModel() {
-       return model;
-   }
-
-   public void setModel(Image model) {
-       this.model = model;
-   }
+    public int getYInt(){
+        return y;
+    }
 }

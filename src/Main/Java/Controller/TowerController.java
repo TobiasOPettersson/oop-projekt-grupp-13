@@ -1,56 +1,39 @@
 package Controller;
 
 import java.util.List;
-import java.awt.BorderLayout;
-import java.awt.Color;
+import java.util.Map;
+import static java.util.Map.entry;
 import java.awt.Dimension;
 import java.util.ArrayList;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.plaf.BorderUIResource;
+import Model.TowerType;
+import View.GraphicsDependencies;
 
-import Model.ATower;
-
-public abstract class TowerController extends JPanel {
-
-    private int x;
-    private int y;
+public abstract class TowerController extends JPanel implements ITowerSubject{
+    protected int savedMousePosX;
+    protected int savedMousePosY;
+    protected ITowerObserver observer;
     protected List<WidgetButtonTower> buttons = new ArrayList<>();
-    private JLabel label;
+    private final int MAP_HEIGHT = 480;
+    private final int FRAME_HEIGHT = GraphicsDependencies.getHeight();
+    protected Map<TowerType, String> buttonImgPaths = Map.ofEntries(
+        entry(TowerType.knife, "res/knife-sprite.png"),
+        entry(TowerType.mallet, "res/mallet-sprite.png"),
+        entry(TowerType.blowtorch, "res/blowtorch-sprite.png"),
+        entry(TowerType.slicer, "res/slicer-sprite.png")
+);
 
-    // x an y för model förstå var man ska skapa tornet
-    // i addtower
-    // random kommentar
-
-    public TowerController(int x, int y, JLabel label) {
-        this.x = x;
-        this.y = y;
-        this.label = label;
-
-        setSize(new Dimension(600, 600));
+    public TowerController(ITowerObserver observer) {
+        this.observer = observer;
+        setSize(new Dimension(600, FRAME_HEIGHT - MAP_HEIGHT));
         setVisible(true);
-
-        System.out.println("iniside towercontroler consrtuctor");
-
-        // setBackground(Color.ORANGE);
-
     }
 
-    // public JPanel getPanel() {
-    // return panel;
-    // }
-
-    public JLabel getLabel() {
-        return label;
+    public void handleButtonClick(TowerType type) {
     }
 
-    // public List<JButton> getButtons() {
-    // return buttons;
-    // }
-
-    public void handleButtonClick(String type) {
+    public void setSavedMousePos(int x, int y){
+        savedMousePosX = x;
+        savedMousePosY = y;
     }
-
 }

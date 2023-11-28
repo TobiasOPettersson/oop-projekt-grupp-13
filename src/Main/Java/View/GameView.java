@@ -1,33 +1,58 @@
 package View;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.LayoutStyle;
+
+import Controller.CreateTowerController;
+import Controller.ITowerObserver;
+import Controller.ITowerSubject;
+import Controller.UpgradeTowerController;
+import Model.AMap;
+import Model.ATower;
 import Model.MainModel;
+import Model.TowerTile;
+import Model.TowerType;
+
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.image.*;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
+
 import javax.imageio.ImageIO;
 
-public class GameView extends JFrame {
-    TempMain model;
+public class GameView extends JFrame{
+    MainModel model;
     DrawPanel drawPanel;
     private BufferedImage image;
+    private BufferedImage image2;
+    CreateTowerController createWidget;
+    List<UpgradeTowerController> upgradeWidgets;
 
     // Constructor
-    public GameView(TempMain model) { // Moved initComponents down so setVisible is done last
+
+    public GameView(MainModel model) { // Moved initComponents down so setVisible is done last
         importImg();
         this.model = model;
-        this.drawPanel = new DrawPanel(model, image);
-        add(drawPanel);
+        this.drawPanel = new DrawPanel(this, model, image, image2);
+        add(drawPanel, BorderLayout.CENTER);
+        createWidget = new CreateTowerController(this.model);
+        add(createWidget, BorderLayout.SOUTH);
         initComponents();
     }
 
     // import sprite sheet
     private void importImg() {
-        InputStream is = this.getClass().getResourceAsStream("res/spriteatlas.png");
+        InputStream is = this.getClass().getResourceAsStream("res_view/spriteatlas.png");
+        InputStream is2 = this.getClass().getResourceAsStream("res_view/knife2.png");
 
         try {
             image = ImageIO.read(is);
+            image2 = ImageIO.read(is2);
         } catch (IOException e) {
+            e.printStackTrace();
             e.printStackTrace();
         }
 
@@ -35,6 +60,21 @@ public class GameView extends JFrame {
 
     public void update(){
         drawPanel.update();
+    }
+
+    public void openWidgit(int x, int y){
+        if(model.getMap().getTile(x, y).placeable){
+            createWidget.setVisible(true);
+            createWidget.setSavedMousePos(x, y);    
+        } else{
+            for (UpgradeTowerController upgradeWidget : upgradeWidgets) {
+                TowerType type = ((TowerTile)model.getMap().getTile(x, y)).getTower().getTowerType();
+                if(type.equals(upgradeWidget.getTowerType())){
+                    upgradeWidget.setVisible(true);
+                    upgradeWidget.setSavedMousePos(x, y);
+                }
+            }
+        }
     }
 
     // initialize swing window

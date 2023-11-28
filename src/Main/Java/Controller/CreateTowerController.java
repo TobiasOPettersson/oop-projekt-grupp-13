@@ -7,40 +7,37 @@ import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
-import Model.AMap;
 
-public class CreateTowerController extends TowerController {
+import Model.TowerType;
 
-    public CreateTowerController(int x, int y, JLabel label) {
-        super(x, y, label);
+public class CreateTowerController extends TowerController{
+    
+    public CreateTowerController(ITowerObserver observer) {
+        super(observer);
         initTowerController();
-        // TODO Auto-generated constructor stub
-        // setBackground(Color.BLACK);
     }
 
     public void initTowerController() {
-        System.out.println("inisde inti");
-        JLabel label = getLabel();
+        JLabel label = new JLabel("CREATE TOWERS");
+        // System.out.println("inisde inti"); //DEL
         label.setForeground(Color.BLACK);
 
-        // JPanel buttonPanel = new JPanel();
         add(label, BorderLayout.EAST);
 
         setBackground(Color.WHITE);
         setLayout(new GridLayout(0, 4, 10, 20));
-        setPreferredSize(new Dimension(300, 300));
+        setPreferredSize(new Dimension(300, 100));
 
         List<WidgetButtonTower> listwithButtons = new ArrayList<>();
 
-        listwithButtons.add(new WidgetButtonTower(null, 0, "Archer", this));
-        listwithButtons.add(new WidgetButtonTower(null, 0, "Wizard", this));
-        listwithButtons.add(new WidgetButtonTower(null, 0, "Buffer", this));
+        listwithButtons.add(new WidgetButtonTower(null, 1, "Knife", TowerType.knife, this));
+        listwithButtons.add(new WidgetButtonTower(null, 3, "Mallet", TowerType.mallet, this));
+        listwithButtons.add(new WidgetButtonTower(null, 4, "Blowtorch", TowerType.blowtorch, this));
+        listwithButtons.add(new WidgetButtonTower(null, 2, "Slicer", TowerType.slicer, this));
 
         for (WidgetButtonTower widgetButtonTower : listwithButtons) {
-            System.out.println("inside for loop");
+            // System.out.println("inside for loop"); // DEL
             add(widgetButtonTower);
 
         }
@@ -53,19 +50,14 @@ public class CreateTowerController extends TowerController {
         // }
 
     }
-/* 
-    public void createTower(int x, int y, String type) {
-        map.createTower(x, y, type);
-    }
-*/
-    public void createTower(String type) {
-        // map.createTower(savedMousePosX, savedMousePosY, type);
-        // gameView.placeTower(savedMousePosX, savedMousePosY, type);
+
+    @Override
+    public void handleButtonClick(TowerType type) {
+        notifyObservers(type);
     }
 
     @Override
-    public void handleButtonClick(String type) {
-        createTower(type);
+    public void notifyObservers(TowerType towerType) {
+        observer.createTower(savedMousePosX, savedMousePosY, towerType);
     }
- 
 }

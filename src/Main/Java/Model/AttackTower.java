@@ -3,30 +3,31 @@ package Model;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AttackTower extends ATower implements IShootable{
+public abstract class AttackTower extends ATower implements IAttackable{
     protected int damage;
 
-   public AttackTower(int x, int y) {
-       super(x, y);
+   public AttackTower(int x, int y, int cost, int range, int maxCooldown, TowerType towerType, int damage) {
+       super(x, y, cost, range, maxCooldown, towerType);
+       this.damage = damage;
    }
 
    @Override
     public AEnemy findFirstTarget(List<AEnemy> enemies){
-        if(cooldown == 0){
-            for (AEnemy enemy : enemies) {
-                if(inRangeOf(enemy)){
-                    return enemy;
-                }
+        for (AEnemy enemy : enemies) {
+            if(inRangeOf(enemy)){
+                return enemy;
             }
         }
         return null;
     }
 
     @Override
-    public void shoot(AEnemy enemy) {
-         AEnemy target = findFirstTarget(null);
-         target.doDamage(damage);
-         cooldown = maxCooldown;
+    public void attack(AEnemy target) {
+        if(target != null){
+            target.doDamage(damage);
+            resetCooldown();
+            System.out.println("Has attacked!!!!");
+        }
     }
 
    public int getDamage() {

@@ -5,29 +5,30 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 import javax.swing.JComponent;
+import Controller.CreateTowerController;
+import Model.AMap;
 import Model.MainModel;
 
 import View.GameView;
 
 import java.util.ArrayList;
 
-import Model.MainModel;
 
 public class TempMain {
     // Frame rate
-    private final double FPS = 60.0;
+    private final double FPS = 60.0; // In MAINMODEL NOW
     // speed är hur många pixlar fienden flyttar sig per update
     double speed = 1.0;
     double enemyX = 0;
     double enemyY = 240;
 
-    // MainModel model = new MainModel();
-    GameView view = new GameView(this);
+    //MainModel model = new MainModel();
+    //GameView view = new GameView(this); // In MAINMODEL NOW
 
     public static void main(String[] args) {
-        new TempMain().run();
+        //new TempMain().run();
     }
-
+/*
     public Position moveEnemy(ArrayList<DirNode> dirNodeArray) {
         // This if is there to ensure that nextNode won't trigger an index out of bounds
         // when the array only has 1 element
@@ -81,7 +82,7 @@ public class TempMain {
             }
         }
     }
-}
+}*/
 
 /*
 TrainCanvas enemy = new TrainCanvas();
@@ -129,5 +130,5 @@ class TrainCanvas extends JComponent {
 
         gg.setColor(Color.blue);
         gg.fillOval(500,340,200,200);
-    }
-}*/
+    }*/
+}

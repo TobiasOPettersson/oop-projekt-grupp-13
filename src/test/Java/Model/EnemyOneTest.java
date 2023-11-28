@@ -14,7 +14,7 @@ public class EnemyOneTest {
     @Test
     public void next_tile_is_left() {
         ArrayList<Direction> directions = new ArrayList<Direction>();
-        directions.add(Direction.RIGHT);
+        directions.add(Direction.RIGHT); //(3.5, 3.5)
         directions.add(Direction.UP);
         directions.add(Direction.RIGHT);
         directions.add(Direction.DOWN);
