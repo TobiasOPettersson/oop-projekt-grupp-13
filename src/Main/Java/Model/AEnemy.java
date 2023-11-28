@@ -10,11 +10,12 @@ public abstract class AEnemy implements IMovable {
     private List<Direction> directions;
     private int damage;
     private int moneyBank;
+    private double tileOffset = 0.5;
     
     public AEnemy(int health, double y, double speed, EnemyType type, List<Direction> directions, int damage, int moneyBank) {
         this.health = health;
         this.x = 0;
-        this.y = y;
+        this.y = y + tileOffset;
         this.speed = speed;
         this.type = type;
         this.directions = directions;

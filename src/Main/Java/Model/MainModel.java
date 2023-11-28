@@ -11,13 +11,12 @@ public class MainModel implements ITowerObserver{
     private Player player;
     private boolean alive;
     private boolean activeWave;
-    private double tileOffset = 0.5;
 
     public MainModel(){
         this.map = new MapOne();
         // Temp Wave thing. Spawns three enemies.
         for (int i = 0; i <= 2; i++){
-            this.enemies.add(new EnemyOne(this.map.getStartPosition() + tileOffset, 0.02, this.map.getPathDirections()));
+            this.enemies.add(new EnemyOne(this.map.getStartPosition(), 0.02, this.map.getPathDirections()));
         }
         //this.enemies.add(new EnemyOne(this.map.getStartPosition(), 1, this.map.getPathDirections()));
         this.player = new Player(10, 200);
