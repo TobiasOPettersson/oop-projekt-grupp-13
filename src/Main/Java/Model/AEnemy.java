@@ -69,14 +69,22 @@ public abstract class AEnemy implements IMovable {
         return passesTileCenterPoint;
     }
 
+    private int horizontalVectorMultiplier(Direction dir) {
+        return ((dir == Direction.RIGHT) ? 1 : 0) - ((dir == Direction.LEFT) ? 1 : 0);
+    }
+
+    private int verticalVectorMultiplier(Direction dir) {
+        return ((dir == Direction.DOWN) ? 1 : 0) - ((dir == Direction.UP) ? 1 : 0);
+    }
+
     /*
      * Move an enemy depending on its last direction and next direction
      */
     public void move() {
         if (directions.size() > 0) {
             Direction currentDir = directions.get(0);
-            double h = ((currentDir == Direction.RIGHT) ? 1 : 0) - ((currentDir == Direction.LEFT) ? 1 : 0);
-            double v = ((currentDir == Direction.DOWN) ? 1 : 0) - ((currentDir == Direction.UP) ? 1 : 0);
+            double h = horizontalVectorMultiplier(currentDir);
+            double v = verticalVectorMultiplier(currentDir);
             
             if (directions.size() == 1) {
                 double centerPointX = tileCenterPointX(h);
@@ -93,14 +101,12 @@ public abstract class AEnemy implements IMovable {
             if (directions.size() > 1) {
                 Direction nextDir = directions.get(1);
 
-                double hNext = ((nextDir == Direction.RIGHT) ? 1 : 0) - ((nextDir == Direction.LEFT) ? 1 : 0);
-                double vNext = ((nextDir == Direction.DOWN) ? 1 : 0) - ((nextDir == Direction.UP) ? 1 : 0);
+                double hNext = horizontalVectorMultiplier(nextDir);
+                double vNext = verticalVectorMultiplier(nextDir);
 
                 double nextX = this.x + h * speed;
                 double nextY = this.y + v * speed;
 
-                // If the next point which the enemies are going through is decided when they cross the midddle of a tile 
-                // the setting of nextX nd Y should probably be done by movespastTileCenter
                 if (movesPastTileCenterPoint(nextX, nextY, currentDir, h, v)) {
                     if (currentDir == nextDir) {
                         this.x += h * speed;
@@ -139,8 +145,8 @@ public abstract class AEnemy implements IMovable {
         return this.damage;
     }
 
-    public void doDamage(int x){
-        this.health -= x;
+    public void doDamage(int damage){
+        this.health -= damage;
     }
 
     public int getHealth(){
