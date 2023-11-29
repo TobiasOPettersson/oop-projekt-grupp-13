@@ -22,7 +22,7 @@
     </properties>
 
     <build>
-        <sourceDirectory>src/Main/Java</sourceDirectory>
+        <sourceDirectory>src/main/java</sourceDirectory>
         <!-- other build configurations -->
     </build>
 
