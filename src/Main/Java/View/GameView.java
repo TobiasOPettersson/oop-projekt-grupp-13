@@ -27,7 +27,7 @@ public class GameView extends JFrame{
     MainModel model;
     DrawPanel drawPanel;
     private BufferedImage image;
-    private BufferedImage image2;
+    private BufferedImage imageKnife;
     CreateTowerController createWidget;
     List<UpgradeTowerController> upgradeWidgets;
 
@@ -36,7 +36,7 @@ public class GameView extends JFrame{
     public GameView(MainModel model) { // Moved initComponents down so setVisible is done last
         importImg();
         this.model = model;
-        this.drawPanel = new DrawPanel(this, model, image, image2);
+        this.drawPanel = new DrawPanel(this, model, image, imageKnife);
         add(drawPanel, BorderLayout.CENTER);
         createWidget = new CreateTowerController(this.model);
         add(createWidget, BorderLayout.SOUTH);
@@ -46,11 +46,11 @@ public class GameView extends JFrame{
     // import sprite sheet
     private void importImg() {
         InputStream is = this.getClass().getResourceAsStream("res1/spriteatlas.png");
-        InputStream is2 = this.getClass().getResourceAsStream("res1/knife2.png");
+        InputStream is2 = this.getClass().getResourceAsStream("res1/knife1.png");
 
         try {
             image = ImageIO.read(is);
-            image2 = ImageIO.read(is2);
+            imageKnife = ImageIO.read(is2);
         } catch (IOException e) {
             e.printStackTrace();
             e.printStackTrace();
