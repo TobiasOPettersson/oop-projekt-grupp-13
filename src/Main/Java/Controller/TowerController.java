@@ -6,7 +6,12 @@ import static java.util.Map.entry;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import javax.swing.JPanel;
-import Model.TowerType;
+
+import Controller.Interfaces.ITowerSubject;
+
+import Controller.Interfaces.ITowerObserver;
+
+import Model.Towers.TowerType;
 import View.GraphicsDependencies;
 
 public abstract class TowerController extends JPanel implements ITowerSubject{

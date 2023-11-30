@@ -1,7 +1,10 @@
-package Model;
+package Model.Towers;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import Model.Enemies.AEnemy;
+import Model.Interfaces.IAttackable;
 
 public abstract class AttackTower extends ATower implements IAttackable{
     protected int damage;

@@ -1,4 +1,6 @@
-package Model;
+package Model.Map;
+
+import Model.Enums.TileTerrain;
 
 public class ATile{
     public int x;

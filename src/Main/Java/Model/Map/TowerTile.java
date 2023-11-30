@@ -1,4 +1,6 @@
-package Model;
+package Model.Map;
+
+import Model.Towers.ATower;
 
 public class TowerTile extends ATile {
 

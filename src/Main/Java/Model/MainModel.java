@@ -3,7 +3,17 @@ package Model;
 import java.util.ArrayList;
 import java.util.List;
 
-import Controller.ITowerObserver;
+import Controller.Interfaces.ITowerObserver;
+import Model.Enemies.AEnemy;
+import Model.Enemies.EnemyOne;
+import Model.Enums.Direction;
+import Model.Map.AMap;
+import Model.Map.ATile;
+import Model.Map.MapOne;
+import Model.Player.Player;
+import Model.Towers.ATower;
+import Model.Towers.AttackTower;
+import Model.Towers.TowerType;
 
 public class MainModel implements ITowerObserver{
     private AMap map;

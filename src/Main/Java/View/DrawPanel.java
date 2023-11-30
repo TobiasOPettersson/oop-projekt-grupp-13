@@ -3,13 +3,13 @@ package View;
 import javax.swing.JPanel;
 
 import Controller.PlayButtonController;
-import Model.AEnemy;
-import Model.ATile;
-import Model.ATower;
-import Model.Direction;
 import Model.MainModel;
-import Model.TowerTile;
-import Model.TowerType;
+import Model.Enemies.AEnemy;
+import Model.Enums.Direction;
+import Model.Map.ATile;
+import Model.Map.TowerTile;
+import Model.Towers.ATower;
+import Model.Towers.TowerType;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;

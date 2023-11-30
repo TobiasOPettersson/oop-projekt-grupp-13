@@ -1,4 +1,4 @@
-package Model;
+package Model.Towers;
 
 public class KnifeTower extends AttackTower{
 

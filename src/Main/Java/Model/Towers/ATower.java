@@ -1,8 +1,11 @@
-package Model;
+package Model.Towers;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import Model.Enemies.AEnemy;
+import Model.Interfaces.IPlacable;
 
 public abstract class ATower implements IPlacable{
    protected int x;

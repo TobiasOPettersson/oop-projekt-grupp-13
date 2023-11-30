@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import Model.MainModel;
-import Model.TowerType;
+import Model.Towers.TowerType;
 import View.GameView;
 import View.GraphicsDependencies;
 
