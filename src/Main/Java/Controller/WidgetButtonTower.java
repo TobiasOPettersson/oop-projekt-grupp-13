@@ -41,7 +41,7 @@ public class WidgetButtonTower extends JPanel {
         setSize(new Dimension(100, 200));
         setBackground(Color.gray);
         setLayout(new BorderLayout());
-        // System.out.println("inside WidgebuttonController"); // DEL
+
         labelTower.setHorizontalAlignment(SwingConstants.CENTER);
         labelCost.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -68,19 +68,22 @@ public class WidgetButtonTower extends JPanel {
         });
     }
 
-    private JLabel drawImage(){
-        /*switch (type) {
-            case knife:
-                return new JLabel(new ImageIcon("src\\Controller\\res\\knife-sprite.png"));
-            case mallet:
-                return new JLabel(new ImageIcon("src\\Controller\\res\\mallet-sprite.png"));
-            case blowtorch:
-                return new JLabel(new ImageIcon("src\\Controller\\res\\blowtorch-sprite.png"));
-            case slicer:
-                return new JLabel(new ImageIcon("src\\Controller\\res\\slicer-sprite.png"));
-            default:
-                return new JLabel(new ImageIcon("src\\Controller\\res\\knife-sprite.png"));
-        }*/
+    private JLabel drawImage() {
+        /*
+         * switch (type) {
+         * case knife:
+         * return new JLabel(new ImageIcon("src\\Controller\\res\\knife-sprite.png"));
+         * case mallet:
+         * return new JLabel(new ImageIcon("src\\Controller\\res\\mallet-sprite.png"));
+         * case blowtorch:
+         * return new JLabel(new
+         * ImageIcon("src\\Controller\\res\\blowtorch-sprite.png"));
+         * case slicer:
+         * return new JLabel(new ImageIcon("src\\Controller\\res\\slicer-sprite.png"));
+         * default:
+         * return new JLabel(new ImageIcon("src\\Controller\\res\\knife-sprite.png"));
+         * }
+         */
         return new JLabel(new ImageIcon("src\\Controller\\res\\knife-sprite.png"));
     }
 }
