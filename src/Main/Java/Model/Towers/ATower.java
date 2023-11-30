@@ -1,22 +1,29 @@
 package Model.Towers;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 import Model.Enemies.AEnemy;
-import Model.Interfaces.IPlacable;
 
-public abstract class ATower implements IPlacable{
-   protected int x;
-   protected int y;
-   protected int cost;
-   protected int range;
-   protected int cooldown = 0;
-   protected int maxCooldown;
-   protected TowerType towerType;
+public abstract class ATower{
+    private int x;
+    private int y;
+    private int cost;
+    private double range;
+    private int cooldown = 0;  // Cooldown starts at 0 so towers can use their abilities directly
+    private int maxCooldown;
+    private TowerType towerType;
 
-   public ATower(int x, int y, int cost, int range, int maxCooldown, TowerType towerType) {
+   /**
+    * Constructor of abstract class ATower
+    * @param x the x-position of the tower as a grid-index, i.e. not the x-position of the sprite in view
+    * @param y the y-position of the tower as a grid-index, i.e. not the y-position of the sprite in view 
+    * @param cost is the amount of money needed to buy one tower
+    * @param range is the range of the towers ability 
+    * @param maxCooldown is the maximum cooldown of the towers ability, the variable cooldown will reset to this after an ability has been used
+    * @param towerType is the type of the tower, for example knife or mallet
+    */
+   public ATower(int x, int y, int cost, double range, int maxCooldown, TowerType towerType) {
        this.x = x;
        this.y = y;
        this.cost = cost;
@@ -25,6 +32,11 @@ public abstract class ATower implements IPlacable{
        this.towerType = towerType;
    }
 
+    /**
+    * Finds the first enemy in range of the towers range
+    * @param enemies is the list of enemies on the map
+    * @return the first enemy in range or null if there are no enemies in range
+    */
     public AEnemy findFirstTarget(List<AEnemy> enemies){
         for (AEnemy enemy : enemies) {
             if(inRangeOf(enemy)){
@@ -34,7 +46,12 @@ public abstract class ATower implements IPlacable{
         return null;
     }
 
-   public ArrayList<AEnemy> findAllTarget(ArrayList<AEnemy> enemies){
+    /**
+    * Finds all enemies inside of the towers range 
+    * @param enemies is the list of enemies on the map
+    * @return all enemies in range or null if there are no enemies in range
+    */
+    public ArrayList<AEnemy> findAllTargets(ArrayList<AEnemy> enemies){
         ArrayList<AEnemy> targets = new ArrayList<>();   
         for (AEnemy enemy : enemies) {
             if(inRangeOf(enemy)){
@@ -44,21 +61,40 @@ public abstract class ATower implements IPlacable{
         return enemies;
     }
 
+    /**
+     * Checks if an enemy is in range or not
+     * Without "distance += ...;" it will look like the enemy was attacked out of range, even though it wasn't 
+     * @param enemy to check 
+     * @return whether or not the enemy is in range of the towers attack
+     */
     public boolean inRangeOf(AEnemy enemy){
         double distance = Math.sqrt(Math.pow(x - enemy.getX(), 2) + Math.pow(y - enemy.getY(), 2));
+        distance += 0.3;
         return distance <= range;
     }
 
-    public boolean triggerCooldown() {
+    /**
+     * Decrements cooldown unless it's already at 0
+     */
+    public void decrementCooldown() {
         if(cooldown > 0){
             cooldown--;
-            return false;
         } else{
             cooldown = 0;
-            return true;
         }
     }
 
+    /**
+     * Checks if tower ability is on cooldown
+     * @return true if cooldown larger than 0
+     */
+    public boolean isOnCooldown() {
+        return cooldown > 0;
+    }
+
+    /**
+     * Resets cooldown to the maximum
+     */
     public void resetCooldown() {
         this.cooldown = maxCooldown;
     }
@@ -67,19 +103,19 @@ public abstract class ATower implements IPlacable{
         return towerType;
     }
 
-    public double getX(){
+    public int getX(){
         return x;
     }
 
-    public double getY(){
+    public int getY(){
         return y;
     }
 
-    public int getXInt(){
-        return x;
+    public int getCost(){
+        return cost;
     }
 
-    public int getYInt(){
-        return y;
+    public double getRange() {
+        return range;
     }
 }
