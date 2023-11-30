@@ -42,13 +42,6 @@ public class CreateTowerController extends TowerController {
 
         }
 
-        // for (JButton button : listwithButtons) {
-        // button.setBackground(Color.WHITE);
-        // System.out.println("inne i knappenloopne");
-        // button.setPreferredSize(new Dimension(10, 10));
-        // buttonPanel.add(button);
-        // }
-
     }
 
     @Override
