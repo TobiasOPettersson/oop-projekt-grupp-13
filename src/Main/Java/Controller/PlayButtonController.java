@@ -17,8 +17,8 @@ public class PlayButtonController extends JPanel {
 
     public PlayButtonController(MainModel model) {
         this.setBackground(Color.red);
-        this.setSize(50, 75);
-        this.setBorder(BorderFactory.createEmptyBorder(200, 20, 20, 20));
+        this.setSize(150, 75);
+        this.setBorder(BorderFactory.createEmptyBorder(20, 10, 10, 10));
         button = new JButton();
         button.setSize(125, 50);
         button.setText("PLAY");
