@@ -6,15 +6,12 @@ import static java.util.Map.entry;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import javax.swing.JPanel;
-
 import Controller.Interfaces.ITowerSubject;
-
 import Controller.Interfaces.ITowerObserver;
-
 import Model.Towers.TowerType;
 import View.GraphicsDependencies;
 
-public abstract class TowerController extends JPanel implements ITowerSubject{
+public abstract class TowerController extends JPanel implements ITowerSubject {
     protected int savedMousePosX;
     protected int savedMousePosY;
     protected ITowerObserver observer;
@@ -22,11 +19,10 @@ public abstract class TowerController extends JPanel implements ITowerSubject{
     private final int MAP_HEIGHT = 480;
     private final int FRAME_HEIGHT = GraphicsDependencies.getHeight();
     protected Map<TowerType, String> buttonImgPaths = Map.ofEntries(
-        entry(TowerType.knife, "res/knife-sprite.png"),
-        entry(TowerType.mallet, "res/mallet-sprite.png"),
-        entry(TowerType.blowtorch, "res/blowtorch-sprite.png"),
-        entry(TowerType.slicer, "res/slicer-sprite.png")
-);
+            entry(TowerType.knife, "res/knife-sprite.png"),
+            entry(TowerType.mallet, "res/mallet-sprite.png"),
+            entry(TowerType.blowtorch, "res/blowtorch-sprite.png"),
+            entry(TowerType.slicer, "res/slicer-sprite.png"));
 
     public TowerController(ITowerObserver observer) {
         this.observer = observer;
@@ -37,7 +33,7 @@ public abstract class TowerController extends JPanel implements ITowerSubject{
     public void handleButtonClick(TowerType type) {
     }
 
-    public void setSavedMousePos(int x, int y){
+    public void setSavedMousePos(int x, int y) {
         savedMousePosX = x;
         savedMousePosY = y;
     }
