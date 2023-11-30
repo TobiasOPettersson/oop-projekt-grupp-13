@@ -23,7 +23,7 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-public class GameView extends JFrame{
+public class GameView extends JFrame {
     MainModel model;
     DrawPanel drawPanel;
     private BufferedImage image;
@@ -58,18 +58,18 @@ public class GameView extends JFrame{
 
     }
 
-    public void update(){
+    public void update() {
         drawPanel.update();
     }
 
-    public void openWidgit(int x, int y){
-        if(model.getMap().getTile(x, y).placeable){
+    public void openWidgit(int x, int y) {
+        if (model.getMap().getTile(x, y).placeable) {
             createWidget.setVisible(true);
-            createWidget.setSavedMousePos(x, y);    
-        } else{
+            createWidget.setSavedMousePos(x, y);
+        } else {
             for (UpgradeTowerController upgradeWidget : upgradeWidgets) {
-                TowerType type = ((TowerTile)model.getMap().getTile(x, y)).getTower().getTowerType();
-                if(type.equals(upgradeWidget.getTowerType())){
+                TowerType type = ((TowerTile) model.getMap().getTile(x, y)).getTower().getTowerType();
+                if (type.equals(upgradeWidget.getTowerType())) {
                     upgradeWidget.setVisible(true);
                     upgradeWidget.setSavedMousePos(x, y);
                 }

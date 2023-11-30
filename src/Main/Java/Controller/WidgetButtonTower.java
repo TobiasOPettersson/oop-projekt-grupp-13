@@ -46,7 +46,7 @@ public class WidgetButtonTower extends JPanel {
         labelCost.setHorizontalAlignment(SwingConstants.CENTER);
 
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        bottomPanel.setPreferredSize(new Dimension(50, 100));
+        bottomPanel.setPreferredSize(new Dimension(100, 30));
         bottomPanel.setBackground(Color.PINK);
         bottomPanel.setLayout(new GridLayout(2, 1, 0, 0));
         bottomPanel.add(labelTower);
@@ -54,7 +54,7 @@ public class WidgetButtonTower extends JPanel {
         add(bottomPanel, BorderLayout.SOUTH);
 
         JPanel topPanel = new JPanel();
-        topPanel.setPreferredSize(new Dimension(50, 100));
+        // topPanel.setPreferredSize(new Dimension(10, 10));
         topPanel.setBackground(Color.orange);
         topPanel.setLayout(new BorderLayout());
         topPanel.add(drawImage(), BorderLayout.CENTER);
@@ -84,6 +84,6 @@ public class WidgetButtonTower extends JPanel {
          * return new JLabel(new ImageIcon("src\\Controller\\res\\knife-sprite.png"));
          * }
          */
-        return new JLabel(new ImageIcon("src\\Controller\\res\\knife-sprite.png"));
+        return new JLabel(new ImageIcon("src\\Main\\Java\\Controller\\res\\knife-sprite.png"));
     }
 }
