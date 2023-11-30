@@ -7,7 +7,7 @@ public abstract class AEnemy implements IMovable {
     private double x, y; //position
     private double speed; //movement speed of an enemy
     private EnemyType type; //The type of enemy
-    private List<Direction> directions;
+    private List<Direction> directions; //List of directions for the enemy to follow when moving
     private int damage;
     private int moneyBag;
     private double tileOffset = 0.5;
@@ -21,7 +21,7 @@ public abstract class AEnemy implements IMovable {
         this.directions = directions;
         this.damage = damage;
         this.moneyBag = moneyBank;
-    } //Constructor
+    } 
     
     private double tileCenterPointX(double h) {
         if (h!=0) {
@@ -56,9 +56,9 @@ public abstract class AEnemy implements IMovable {
     }
 
     /*
-     * If an enemy moves past a tile centerpoint return true. Else return false.
+     * If an enemy will move past a tile centerpoint - return true. Else return false.
      */
-    private boolean movesPastTileCenterPoint(double nextX, double nextY, Direction currentDir, double h, double v) {
+    private boolean nextPosPastCenterPoint(double nextX, double nextY, Direction currentDir, double h, double v) {
         boolean passesTileCenterPoint = false;
         if ((nextX >= tileCenterPointX(h) && currentDir == Direction.RIGHT) || (nextX <= tileCenterPointX(h) && currentDir == Direction.LEFT)) {
             passesTileCenterPoint = true;
@@ -67,6 +67,10 @@ public abstract class AEnemy implements IMovable {
             passesTileCenterPoint = true;
         }
         return passesTileCenterPoint;
+    }
+
+    private boolean currentPosPastCenterPoint(double centerPointX, double centerPointY, double h, double v) {
+        return ((Math.signum(this.y - centerPointY) == v) || (this.y == centerPointY)) && (Math.signum(this.x - centerPointX) == h || (this.x == centerPointX));
     }
 
     private int horizontalVectorMultiplier(Direction dir) {
@@ -82,53 +86,79 @@ public abstract class AEnemy implements IMovable {
      */
     public void move() {
         if (directions.size() > 0) {
-            Direction currentDir = directions.get(0);
-            double h = horizontalVectorMultiplier(currentDir);
-            double v = verticalVectorMultiplier(currentDir);
-            
-            if (directions.size() == 1) {
-                double centerPointX = tileCenterPointX(h);
-                double centerPointY = tileCenterPointY(v);
-                this.x += h * speed;
-                this.y += v * speed;
-                if ((Math.signum(this.y - centerPointY) == v || (this.y == centerPointY)) && (Math.signum((this.x - centerPointX)) == h || (this.x == centerPointX))  ) {
-                    directions.remove(0);
-                    this.x = centerPointX;
-                    this.y = centerPointY;
-                }
-            }
-            
-            if (directions.size() > 1) {
-                Direction nextDir = directions.get(1);
-
-                double hNext = horizontalVectorMultiplier(nextDir);
-                double vNext = verticalVectorMultiplier(nextDir);
-
-                double nextX = this.x + h * speed;
-                double nextY = this.y + v * speed;
-
-                if (movesPastTileCenterPoint(nextX, nextY, currentDir, h, v)) {
-                    if (currentDir == nextDir) {
-                        this.x += h * speed;
-                        this.y += v * speed;
-                    }
-                    else {
-                        double nextYPos = tileCenterPointY(v) + Math.abs((nextX) - tileCenterPointX(h)) * vNext;
-                        double nextXPos = tileCenterPointX(h) + Math.abs((nextY) - tileCenterPointY(v)) * hNext;
-                        this.y = nextYPos;
-                        this.x = nextXPos;
-                    }
-                    directions.remove(0);
-                }
-                else {
-                    this.x += h * speed;
-                    this.y += v * speed;
-                }
-            }
+            moveEnemy();
         }
         else {
             System.out.println("Direction array is empty");
         }
+    }
+
+    private void moveEnemy() {
+        Direction currentDir = directions.get(0);
+        double h = horizontalVectorMultiplier(currentDir);
+        double v = verticalVectorMultiplier(currentDir);
+        
+        finalDirectionMove(h, v);
+        
+        if (directions.size() > 1) {
+            Direction nextDir = directions.get(1);
+
+            double hNext = horizontalVectorMultiplier(nextDir);
+            double vNext = verticalVectorMultiplier(nextDir);
+            
+            double nextX = getNextX(h);
+            double nextY = getNextY(v);
+
+            if (nextPosPastCenterPoint(nextX, nextY, currentDir, h, v)) {
+                if (currentDir == nextDir) {
+                    oneAxisMove(h, v);
+                }
+                else {
+                    turningMove(h, v, hNext, vNext, nextX, nextY);
+                }
+                directions.remove(0);
+            }
+            else {
+                oneAxisMove(h, v);
+            }
+        }
+    }
+
+    private void turningMove(double h, double v, double hNext, double vNext, double nextX, double nextY) {
+        double nextXPos = tileCenterPointX(h) + Math.abs((nextY) - tileCenterPointY(v)) * hNext;
+        double nextYPos = tileCenterPointY(v) + Math.abs((nextX) - tileCenterPointX(h)) * vNext;
+        this.x = nextXPos;
+        this.y = nextYPos;
+    }
+
+    private double getNextY(double v) {
+        return this.y + v * speed;
+    }
+
+    private double getNextX(double h) {
+        return this.x + h * speed;
+    }
+
+    private void oneAxisMove(double h, double v) {
+        this.x += h * speed;
+        this.y += v * speed;
+    }
+
+    private void finalDirectionMove(double h, double v) {
+        if (directions.size() == 1) {
+            double centerPointX = tileCenterPointX(h);
+            double centerPointY = tileCenterPointY(v);
+            oneAxisMove(h, v);
+            if (currentPosPastCenterPoint(centerPointX, centerPointY, h, v)) {
+                forceEnemyToCenterPoint(centerPointX, centerPointY);
+                directions.remove(0);
+            }
+        }
+    }
+
+    private void forceEnemyToCenterPoint(double centerPointX, double centerPointY) {
+        this.x = centerPointX;
+        this.y = centerPointY;
     }
        
     // -------- Getters and setters ---------
