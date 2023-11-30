@@ -11,8 +11,8 @@ import javax.swing.JLabel;
 
 import Model.TowerType;
 
-public class CreateTowerController extends TowerController{
-    
+public class CreateTowerController extends TowerController {
+
     public CreateTowerController(ITowerObserver observer) {
         super(observer);
         initTowerController();
@@ -26,7 +26,7 @@ public class CreateTowerController extends TowerController{
         add(label, BorderLayout.EAST);
 
         setBackground(Color.WHITE);
-        setLayout(new GridLayout(0, 4, 10, 20));
+        setLayout(new GridLayout(0, 5, 10, 20));
         setPreferredSize(new Dimension(300, 100));
 
         List<WidgetButtonTower> listwithButtons = new ArrayList<>();
@@ -37,7 +37,7 @@ public class CreateTowerController extends TowerController{
         listwithButtons.add(new WidgetButtonTower(null, 2, "Slicer", TowerType.slicer, this));
 
         for (WidgetButtonTower widgetButtonTower : listwithButtons) {
-            // System.out.println("inside for loop"); // DEL
+
             add(widgetButtonTower);
 
         }
