@@ -1,6 +1,8 @@
-package Model;
+package Model.Enemies;
 
 import java.util.List;
+
+import Model.Enums.Direction;
 
 public class EnemyOne extends AEnemy{
     

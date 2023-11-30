@@ -7,7 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
-import Model.TowerType;
+import Model.Towers.TowerType;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

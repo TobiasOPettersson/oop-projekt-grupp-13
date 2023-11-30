@@ -6,7 +6,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import Model.TowerType;
+import Controller.Interfaces.ITowerObserver;
+import Model.Towers.TowerType;
 
 public class UpgradeTowerController extends TowerController{
     TowerType towerType;

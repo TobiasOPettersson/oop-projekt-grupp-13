@@ -5,14 +5,14 @@ import javax.swing.JPanel;
 import javax.swing.LayoutStyle;
 
 import Controller.CreateTowerController;
-import Controller.ITowerObserver;
-import Controller.ITowerSubject;
 import Controller.UpgradeTowerController;
-import Model.AMap;
-import Model.ATower;
+import Controller.Interfaces.ITowerObserver;
+import Controller.Interfaces.ITowerSubject;
 import Model.MainModel;
-import Model.TowerTile;
-import Model.TowerType;
+import Model.Map.AMap;
+import Model.Map.TowerTile;
+import Model.Towers.ATower;
+import Model.Towers.TowerType;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;

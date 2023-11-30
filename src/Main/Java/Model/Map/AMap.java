@@ -1,9 +1,13 @@
-package Model;
+package Model.Map;
 
 import java.util.List;
 import java.util.Map;
 
-import Controller.ITowerObserver;
+import Controller.Interfaces.ITowerObserver;
+import Model.Enums.Direction;
+import Model.Towers.ATower;
+import Model.Towers.KnifeTower;
+import Model.Towers.TowerType;
 
 import java.awt.Point;
 import java.security.Key;

@@ -9,7 +9,8 @@ import java.util.List;
 
 import javax.swing.JLabel;
 
-import Model.TowerType;
+import Controller.Interfaces.ITowerObserver;
+import Model.Towers.TowerType;
 
 public class CreateTowerController extends TowerController{
     

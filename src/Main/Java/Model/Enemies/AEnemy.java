@@ -1,6 +1,9 @@
-package Model;
+package Model.Enemies;
 
 import java.util.List;
+
+import Model.Enums.Direction;
+import Model.Interfaces.IMovable;
 
 public abstract class AEnemy implements IMovable {
     private int health; //health points
