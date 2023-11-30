@@ -19,7 +19,7 @@ public class CreateTowerController extends TowerController {
         initTowerController();
     }
 
-    public void initTowerController() {
+    private void initTowerController() {
         JLabel label = new JLabel("CREATE TOWERS: ");
         // System.out.println("inisde inti"); //DEL
         label.setForeground(Color.BLACK);
