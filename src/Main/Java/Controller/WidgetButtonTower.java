@@ -84,6 +84,6 @@ public class WidgetButtonTower extends JPanel {
          * return new JLabel(new ImageIcon("src\\Controller\\res\\knife-sprite.png"));
          * }
          */
-        return new JLabel(new ImageIcon("src\\Controller\\res\\knife-sprite.png"));
+        return new JLabel(new ImageIcon("src\\Main\\Java\\Controller\\res\\knife-sprite.png"));
     }
 }

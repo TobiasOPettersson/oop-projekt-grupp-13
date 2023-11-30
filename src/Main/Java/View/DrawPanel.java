@@ -58,7 +58,7 @@ public class DrawPanel extends JPanel {
         this.gridHeight = this.model.getMapSizeY();
         this.pathGrid = this.model.getPathGrid();
         setLayout(new BorderLayout());
-        add(new PlayButtonController(model), BorderLayout.PAGE_END);
+        add(new PlayButtonController(model), BorderLayout.PAGE_START);
         loadSprites();
         update();
         createPathSprites();
