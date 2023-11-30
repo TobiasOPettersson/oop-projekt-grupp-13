@@ -27,7 +27,6 @@ public class DrawPanel extends JPanel {
     private BufferedImage imageKnife;
     private MainModel model;
     private ArrayList<BufferedImage> sprites = new ArrayList<>();
-    // public ArrayList<DirNode> dirChangeArray = new ArrayList<>(); // Temp map
     private ATile mapGrid[][];
     private List<Direction> pathDirections;
     private int gridWidth;
