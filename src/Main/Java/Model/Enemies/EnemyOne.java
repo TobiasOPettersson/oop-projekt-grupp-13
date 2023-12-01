@@ -3,6 +3,7 @@ package Model.Enemies;
 import java.util.List;
 
 import Model.Enums.Direction;
+import Model.Enums.EnemyType;
 
 public class EnemyOne extends AEnemy{
     
