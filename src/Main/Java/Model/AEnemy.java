@@ -2,6 +2,10 @@ package Model;
 
 import java.util.List;
 
+/**
+ * A base class representing an enemy in the game.
+ * This class implements the IMovable interface.
+ */
 public abstract class AEnemy implements IMovable {
     private int health; //health points
     private double x, y; //position
@@ -12,7 +16,7 @@ public abstract class AEnemy implements IMovable {
     private int moneyBag;
     private double tileOffset = 0.5;
     
-    public AEnemy(int health, double y, double speed, EnemyType type, List<Direction> directions, int damage, int moneyBank) {
+    public AEnemy(int health, double y, double speed, EnemyType type, List<Direction> directions, int damage, int moneyBag) {
         this.health = health;
         this.x = 0;
         this.y = y + tileOffset;
@@ -20,96 +24,157 @@ public abstract class AEnemy implements IMovable {
         this.type = type;
         this.directions = directions;
         this.damage = damage;
-        this.moneyBag = moneyBank;
+        this.moneyBag = moneyBag;
     } 
     
-    private double tileCenterPointX(double h) {
-        if (h!=0) {
-            double number;
-            double offset = (double) h/2;
-            if (this.x == Math.floor(this.x) + 0.5) {
-                number = (double) Math.round(this.x + offset);
-            }
-            else {
-                number = (double) Math.round(this.x);
-            }
-            return number + offset;
-        }
-        double number = Math.floor(this.x);
-        return number + 0.5;
-    }
-
-    private double tileCenterPointY(double v) {
-        if (v!=0) {
-            double number;
-            double offset = (double) v/2;
-            if (this.y == Math.floor(this.y) + 0.5) {
-                number = (double) Math.round(this.y + offset);
-            }
-            else {
-                number = (double) Math.round(this.y);
-            }
-            return number + offset;
-        }
-        double number = Math.floor(this.y);
-        return number + 0.5;
-    }
-
     /*
-     * If an enemy will move past a tile centerpoint - return true. Else return false.
+     * Computes the horizontal vector.
+     * Returns the horizontal vector depending on an enemy's direciton.
      */
-    private boolean nextPosPastCenterPoint(double nextX, double nextY, Direction currentDir, double h, double v) {
-        boolean passesTileCenterPoint = false;
-        if ((nextX >= tileCenterPointX(h) && currentDir == Direction.RIGHT) || (nextX <= tileCenterPointX(h) && currentDir == Direction.LEFT)) {
-            passesTileCenterPoint = true;
-        }
-        if ((nextY <= tileCenterPointY(v) && currentDir == Direction.UP) || (nextY >= tileCenterPointY(v) && currentDir == Direction.DOWN)) {
-            passesTileCenterPoint = true;
-        }
-        return passesTileCenterPoint;
-    }
-
-    private boolean currentPosPastCenterPoint(double centerPointX, double centerPointY, double h, double v) {
-        return ((Math.signum(this.y - centerPointY) == v) || (this.y == centerPointY)) && (Math.signum(this.x - centerPointX) == h || (this.x == centerPointX));
-    }
-
-    private int horizontalVectorMultiplier(Direction dir) {
+    private int horizontalVector(Direction dir) {
         return ((dir == Direction.RIGHT) ? 1 : 0) - ((dir == Direction.LEFT) ? 1 : 0);
     }
 
-    private int verticalVectorMultiplier(Direction dir) {
+    /*
+     * Computes the vertical vector.
+     * Returns the vertical vector depending on an enemy's direciton.
+     */
+    private int verticalVector(Direction dir) {
         return ((dir == Direction.DOWN) ? 1 : 0) - ((dir == Direction.UP) ? 1 : 0);
     }
 
     /*
-     * Move an enemy depending on its last direction and next direction
+     * Computes the closest tile centerpoint x- or y-corodinate.
+     * h must be -1, 0 or 1. Throws IllegalArgumentException if not.
+     * Else return the closest coordinate depending on the enemy's position
+     * and current vector.
      */
-    public void move() {
-        if (directions.size() > 0) {
-            moveEnemy();
+    private double tileCenterPoint(double coordinate, double vector) {
+        if (vector != -1 && vector != 0 && vector != 1) {
+            throw new IllegalArgumentException("The vector can only be -1, 0, or 1");
         }
-        else {
-            System.out.println("Direction array is empty");
+
+        if (vector != 0) {
+            double number;
+            double offset = vector / 2;
+    
+            if (coordinate == Math.floor(coordinate) + this.tileOffset) {
+                number = Math.round(coordinate + offset);
+            } else {
+                number = Math.round(coordinate);
+            }
+    
+            return number + offset;
+        }
+    
+        double number = Math.floor(coordinate);
+        return number + 0.5;
+    }
+    
+    /*
+     * Return the closest tile centerpoint x-coordinate.
+     */
+    private double tileCenterPointX(double h) {
+        return tileCenterPoint(this.x, h);
+    }
+    
+    /*
+     * Return the closest tile centerpoint y-coordinate.
+     */
+    private double tileCenterPointY(double v) {
+        return tileCenterPoint(this.y, v);
+    }
+
+    /*
+     * Computes if the enemy's next position is passed or on a tile centerpoint.
+     * Returns true if the position is passed or on a centerpoint, else false.
+     */
+    private boolean nextPosIsPassedCenterPoint(double nextX, double nextY, Direction currentDir, double h, double v) {
+        if ((nextX >= tileCenterPointX(h) && currentDir == Direction.RIGHT) || (nextX <= tileCenterPointX(h) && currentDir == Direction.LEFT)) {
+            return true;
+        }
+        if ((nextY <= tileCenterPointY(v) && currentDir == Direction.UP) || (nextY >= tileCenterPointY(v) && currentDir == Direction.DOWN)) {
+            return true;
+        }
+        return false;
+    }
+
+    /*
+     * Computes if the enemy's current position is passed or on a tile centerpoint.
+     * Returns true if the position is passed or on a centerpoint, else false.
+     */
+    private boolean currentPosIsPassedCenterPoint(double centerPointX, double centerPointY, double h, double v) {
+        return ((Math.signum(this.y - centerPointY) == v) || (this.y == centerPointY)) && (Math.signum(this.x - centerPointX) == h || (this.x == centerPointX));
+    }
+
+    /*
+     * Calculate the next enemy position coordinates in one axis and updates them.
+     */
+    private void oneAxisMove(double h, double v) {
+        if (h!= 0 && v!= 0) {
+            throw new IllegalArgumentException("The enemy can only walk in one direction");
+        }
+        this.x += h * speed;
+        this.y += v * speed;
+    }
+
+    /*
+     * Updates the enemy's coordinates to the closest tile centerpoint coordinates.
+     */
+    private void forceEnemyToCenterPoint(double centerPointX, double centerPointY) {
+        this.x = centerPointX;
+        this.y = centerPointY;
+    }
+
+    /*
+     * If there is only one direction for the enemy left to move, move it
+     * in that direction until it has reached its closest tile centerpoint.
+     */
+    private void finalDirectionMove(double h, double v) {
+        if (directions.size() == 1) {
+            double centerPointX = tileCenterPointX(h);
+            double centerPointY = tileCenterPointY(v);
+            oneAxisMove(h, v);
+            if (currentPosIsPassedCenterPoint(centerPointX, centerPointY, h, v)) {
+                forceEnemyToCenterPoint(centerPointX, centerPointY);
+                directions.remove(0);
+            }
         }
     }
 
+    /*
+     * Calculate the next enemy position coordinates after a turn and updates them.
+     */
+    private void turningMove(double h, double v, double hNext, double vNext, double nextX, double nextY) {
+        double nextXPos = tileCenterPointX(h) + Math.abs((nextY) - tileCenterPointY(v)) * hNext;
+        double nextYPos = tileCenterPointY(v) + Math.abs((nextX) - tileCenterPointX(h)) * vNext;
+        this.x = nextXPos;
+        this.y = nextYPos;
+    }
+
+    /**
+     * Moves the enemy along a predefined path of directions, adjusting its position
+     * based on the current and next direction. Handles both continuous movement
+     * in the same direction and turning at designated points.
+     */
     private void moveEnemy() {
         Direction currentDir = directions.get(0);
-        double h = horizontalVectorMultiplier(currentDir);
-        double v = verticalVectorMultiplier(currentDir);
+
+        double h = horizontalVector(currentDir);
+        double v = verticalVector(currentDir);
         
         finalDirectionMove(h, v);
         
         if (directions.size() > 1) {
             Direction nextDir = directions.get(1);
 
-            double hNext = horizontalVectorMultiplier(nextDir);
-            double vNext = verticalVectorMultiplier(nextDir);
+            double hNext = horizontalVector(nextDir);
+            double vNext = verticalVector(nextDir);
             
-            double nextX = getNextX(h);
-            double nextY = getNextY(v);
+            double nextX = this.x + h * speed;
+            double nextY = this.y + v * speed;
 
-            if (nextPosPastCenterPoint(nextX, nextY, currentDir, h, v)) {
+            if (nextPosIsPassedCenterPoint(nextX, nextY, currentDir, h, v)) {
                 if (currentDir == nextDir) {
                     oneAxisMove(h, v);
                 }
@@ -124,41 +189,14 @@ public abstract class AEnemy implements IMovable {
         }
     }
 
-    private void turningMove(double h, double v, double hNext, double vNext, double nextX, double nextY) {
-        double nextXPos = tileCenterPointX(h) + Math.abs((nextY) - tileCenterPointY(v)) * hNext;
-        double nextYPos = tileCenterPointY(v) + Math.abs((nextX) - tileCenterPointX(h)) * vNext;
-        this.x = nextXPos;
-        this.y = nextYPos;
-    }
-
-    private double getNextY(double v) {
-        return this.y + v * speed;
-    }
-
-    private double getNextX(double h) {
-        return this.x + h * speed;
-    }
-
-    private void oneAxisMove(double h, double v) {
-        this.x += h * speed;
-        this.y += v * speed;
-    }
-
-    private void finalDirectionMove(double h, double v) {
-        if (directions.size() == 1) {
-            double centerPointX = tileCenterPointX(h);
-            double centerPointY = tileCenterPointY(v);
-            oneAxisMove(h, v);
-            if (currentPosPastCenterPoint(centerPointX, centerPointY, h, v)) {
-                forceEnemyToCenterPoint(centerPointX, centerPointY);
-                directions.remove(0);
-            }
+    /*
+     * Move an enemy if the direction list isn't empty.
+     */
+    @Override
+    public void move() {
+        if (directions.size() > 0) {
+            moveEnemy();
         }
-    }
-
-    private void forceEnemyToCenterPoint(double centerPointX, double centerPointY) {
-        this.x = centerPointX;
-        this.y = centerPointY;
     }
        
     // -------- Getters and setters ---------
