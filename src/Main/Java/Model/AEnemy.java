@@ -3,7 +3,7 @@ package Model;
 import java.util.List;
 
 /**
- * A base class representing an enemy in the game.
+ * An abstract class representing an enemy in the game.
  * This class implements the IMovable interface.
  */
 public abstract class AEnemy implements IMovable {
