@@ -34,9 +34,7 @@ public class DrawPanel extends JPanel {
     private int gridHeight;
     private ArrayList<BufferedImage> pathSprites = new ArrayList<>();
     private int[][] pathGrid;
-    private String[][] towerMap;
-    private final int SPRITE_SIZE = 48;
-    private int[] selectedTile = new int[2];
+    private int[] selectedTile = new int[]{-1, -1};
     private int animationIndex = 0;
     private int animationTick = 0;
 
