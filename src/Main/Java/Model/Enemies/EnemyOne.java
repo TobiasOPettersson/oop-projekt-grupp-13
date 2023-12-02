@@ -1,6 +1,8 @@
-package Model;
+package Model.Enemies;
 
 import java.util.List;
+
+import Model.Enums.Direction;
 
 /**
  * A sub-class representing EnemyOne in the game.

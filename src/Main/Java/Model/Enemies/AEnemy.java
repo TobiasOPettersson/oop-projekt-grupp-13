@@ -1,6 +1,10 @@
-package Model;
+package Model.Enemies;
+
 
 import java.util.List;
+
+import Model.Enums.Direction;
+import Model.Interfaces.IMovable;
 
 /**
  * An abstract class representing an enemy in the game.
@@ -212,7 +216,7 @@ public abstract class AEnemy implements IMovable {
     public int getDamage() {
         return this.damage;
     }
-
+    
     /*
      * Updates the enemy health depending on the damage it takes
      */
