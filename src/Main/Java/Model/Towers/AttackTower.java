@@ -16,8 +16,8 @@ public abstract class AttackTower extends ATower implements IAttackable{
      * @param towerType is the type of the tower, for example knife or mallet     
      * @param damage is the amount of damage an attack does
      */
-    public AttackTower(int x, int y, int cost, double range, int maxCooldown, TowerType towerType, int damage) {
-        super(x, y, cost, range, maxCooldown, towerType);
+    public AttackTower(int x, int y, int cost, double range, double aoeRange, int maxCooldown, TowerType towerType, int damage) {
+        super(x, y, cost, range, aoeRange, maxCooldown, towerType);
         this.damage = damage;
     }
 
@@ -28,7 +28,6 @@ public abstract class AttackTower extends ATower implements IAttackable{
     public void attack(AEnemy target) {
         if(target != null){
             target.takeDamage(damage);
-            System.out.println(target.getHealth());
             resetCooldown();
         }
     }

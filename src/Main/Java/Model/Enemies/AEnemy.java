@@ -5,12 +5,13 @@ import java.util.List;
 
 import Model.Enums.Direction;
 import Model.Interfaces.IMovable;
+import Model.Interfaces.ITargetable;
 
 /**
  * An abstract class representing an enemy in the game.
  * This class implements the IMovable interface.
  */
-public abstract class AEnemy implements IMovable {
+public abstract class AEnemy implements IMovable, ITargetable {
     private int health; //health points
     private double x, y; //position
     private double speed; //movement speed of an enemy
@@ -205,10 +206,12 @@ public abstract class AEnemy implements IMovable {
        
     // -------- Getters and setters ---------
 
+    @Override
     public double getX() {
         return x;
     }
 
+    @Override
     public double getY() {
         return y;
     }

@@ -7,6 +7,7 @@ import Controller.Interfaces.ITowerObserver;
 import Model.Enemies.AEnemy;
 import Model.Enemies.EnemyOne;
 import Model.Enums.Direction;
+import Model.Interfaces.ITargetable;
 import Model.Map.AMap;
 import Model.Map.ATile;
 import Model.Map.MapOne;
@@ -25,7 +26,7 @@ public class MainModel implements ITowerObserver{
     public MainModel(){
         this.map = new MapOne();
         // Temp Wave thing. Spawns three enemies.
-        for (int i = 0; i <= 2; i++){
+        for (int i = 0; i <= 10; i++){
             this.enemies.add(new EnemyOne(map.getStartPosition(), 0.02, map.getPathDirections()));
         }
         //this.enemies.add(new EnemyOne(this.map.getStartPosition(), 1, this.map.getPathDirections()));
@@ -51,20 +52,23 @@ public class MainModel implements ITowerObserver{
         }
 
         // Spawn a new enemy if the last enemy has walked one tile
-        if(enemies.isEmpty() || enemies.get(enemies.size()-1).getDirectionsSize() < map.getPathDirections().size()-2){
-            enemies.add(new EnemyOne(map.getStartPosition(), 0.02, this.map.getPathDirections()));
-        }
+        //if(enemies.isEmpty() || enemies.get(enemies.size()-1).getDirectionsSize() < map.getPathDirections().size()-2){
+        //    enemies.add(new EnemyOne(map.getStartPosition(), 0.02, this.map.getPathDirections()));
+        //}
 
 
         for (ATower tower : map.getTowers()){
             if(!tower.isOnCooldown()){
                 if (tower instanceof AttackTower){
-                    AEnemy target = tower.findFirstTarget(enemies);
-                    if(target != null){
-                        ((AttackTower)tower).attack(target);
-                        if (target.getHealth() <= 0) {
-                            player.addMoney(target.getMoney());
-                            enemies.remove(target);
+                    List<AEnemy> targets = tower.findEnemiesInRange(enemies);
+                    if(targets != null){
+                        System.out.println(targets.size());
+                        for(AEnemy target : targets){
+                            ((AttackTower)tower).attack(target);
+                            if (target.getHealth() <= 0) {
+                                player.addMoney(target.getMoney());
+                                enemies.remove(target);
+                            }
                         }
                     }
                 }
@@ -90,6 +94,23 @@ public class MainModel implements ITowerObserver{
 
     public void play(){
         activeWave = true;
+    }
+
+
+    public List<ITargetable> convertEnemiesToTargetables(){
+        List<ITargetable> targetables = new ArrayList<>();
+        for (AEnemy enemy : enemies) {
+            targetables.add(enemy);
+        }
+        return targetables;
+    }
+
+    public List<ITargetable> convertTowersToTargetables(){
+        List<ITargetable> targetables = new ArrayList<>();
+        for (ATower tower : map.getTowers()) {
+            targetables.add(tower);
+        }
+        return targetables;
     }
 
     private boolean alive(){

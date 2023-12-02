@@ -5,7 +5,10 @@ import java.util.List;
 import Controller.Interfaces.ITowerObserver;
 import Model.Enums.Direction;
 import Model.Towers.ATower;
+import Model.Towers.BlowtorchTower;
 import Model.Towers.KnifeTower;
+import Model.Towers.MalletTower;
+import Model.Towers.SlicerTower;
 import Model.Towers.TowerType;
 
 import java.util.ArrayList;
@@ -143,6 +146,15 @@ public class AMap{
             switch (type){
                 case knife: 
                     tower = new KnifeTower(x, y);
+                    break;
+                case mallet: 
+                    tower = new MalletTower(x, y);
+                    break;
+                case blowtorch: 
+                    tower = new BlowtorchTower(x, y);
+                    break;
+                case slicer: 
+                    tower = new SlicerTower(x, y);
                     break;
                 default:
                     System.out.println("Tower type given is not implemented");
