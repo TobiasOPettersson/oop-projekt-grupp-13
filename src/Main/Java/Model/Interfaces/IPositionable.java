@@ -1,4 +1,4 @@
-package Model;
+package Model.Interfaces;
 
 public interface IPositionable {
    double getX();

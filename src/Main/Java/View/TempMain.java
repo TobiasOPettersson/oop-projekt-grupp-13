@@ -6,9 +6,8 @@ import java.awt.Graphics2D;
 
 import javax.swing.JComponent;
 import Controller.CreateTowerController;
-import Model.AMap;
 import Model.MainModel;
-
+import Model.Map.AMap;
 import View.GameView;
 
 import java.util.ArrayList;

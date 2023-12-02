@@ -1,6 +1,6 @@
-package Controller;
+package Controller.Interfaces;
 
-import Model.TowerType;
+import Model.Towers.TowerType;
 
 public interface ITowerObserver {
     void createTower(int x, int y, TowerType type);

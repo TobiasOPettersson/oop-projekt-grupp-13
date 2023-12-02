@@ -1,4 +1,4 @@
-package Model;
+package Model.Player;
 
 public class Player {
     private int money;

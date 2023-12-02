@@ -1,14 +1,13 @@
-package Model;
+package Model.Enemies;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.awt.Point;
 import java.util.ArrayList;
 
-import Model.Direction;
-import Model.EnemyOne;
-import Model.AEnemy;;
+import Model.Enums.Direction;
+import Model.Enemies.EnemyOne;
+import Model.Enemies.AEnemy;;
 
 public class EnemyOneTest {
 

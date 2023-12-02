@@ -3,25 +3,21 @@ package View;
 import javax.swing.JPanel;
 
 import Controller.PlayButtonController;
-import Model.AEnemy;
-import Model.ATile;
-import Model.ATower;
-import Model.Direction;
 import Model.MainModel;
-import Model.TowerTile;
-import Model.TowerType;
+import Model.Enemies.AEnemy;
+import Model.Enums.Direction;
+import Model.Map.ATile;
+import Model.Map.TowerTile;
+import Model.Towers.ATower;
+import Model.Towers.TowerType;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Stroke;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Arrays;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -38,10 +34,9 @@ public class DrawPanel extends JPanel {
     private int gridHeight;
     private ArrayList<BufferedImage> pathSprites = new ArrayList<>();
     private int[][] pathGrid;
-    private String[][] towerMap;
-    private final int SPRITE_SIZE = 48; 
-    private int[] selectedTile = new int[2];
-
+    private int[] selectedTile = new int[]{-1, -1};
+    private int animationIndex = 0;
+    private int animationTick = 0;
 
     // Constructor
     public DrawPanel(GameView gameView, MainModel model, BufferedImage image, BufferedImage imageKnife) {
@@ -67,16 +62,16 @@ public class DrawPanel extends JPanel {
         createPathSprites();
     }
 
-    public void placeTower(int x, int y, String type){
-        
+    public void placeTower(int x, int y, String type) {
+
     }
 
     private void handleTileClick(int x, int y) {
         for (int i = 0; i < gridWidth; i++) {
-            if(x > 48 * i && x < 48 * (i+1)){
+            if (x > 48 * i && x < 48 * (i + 1)) {
                 for (int j = 0; j < gridHeight; j++) {
-                    if(y > 48 * j && y < 48 * (j+1)){
-                        if(model.getMap().getTile(i, j) instanceof TowerTile){
+                    if (y > 48 * j && y < 48 * (j + 1)) {
+                        if (model.getMap().getTile(i, j) instanceof TowerTile) {
                             selectedTile[0] = i;
                             selectedTile[1] = j;
                             gameView.openWidgit(i, j);
@@ -88,6 +83,20 @@ public class DrawPanel extends JPanel {
         }
     }
 
+    private void updateAnimation() {
+        animationTick++;
+        if (animationTick >= 20) {
+            animationTick = 0;
+            updateAnimationIndex();
+        }
+    }
+
+    private void updateAnimationIndex() {
+        animationIndex++;
+        if (animationIndex >= 4) {
+            animationIndex = 0;
+        }
+    }
 
     // Create Sprite sheet by taking subimages from image and then scale them
     private void loadSprites() {
@@ -144,34 +153,37 @@ public class DrawPanel extends JPanel {
         drawTowers(g);
         drawEnemies(g);
     }
-    
-    
-    
 
     void drawSelectedTile(Graphics g) {
-        if(selectedTile.length > 0){
+        if (selectedTile.length > 0) {
             Graphics2D g2 = (Graphics2D) g;
             g2.setStroke(new BasicStroke(1));
-            g2.drawRect(selectedTile[0]*48, selectedTile[1]*48, 48, 48);
+            g2.drawRect(selectedTile[0] * 48, selectedTile[1] * 48, 48, 48);
             g2.setStroke(g2.getStroke());
         }
     }
 
     void drawEnemies(Graphics g) {
-        // offset half of sprite size so the calculated position of enemy will be same position as center of enemysprite
+        // offset half of sprite size so the calculated position of enemy will be same
+        // position as center of enemysprite
         int offset = 24; // Sprite size / 2
         int spriteSize = 48;
 
-        for(AEnemy enemy : model.getEnemies()){
-            g.drawImage(sprites.get(28), (int) (enemy.getX() * spriteSize) - offset, (int) (enemy.getY() * spriteSize) - offset,null);
+        for (AEnemy enemy : model.getEnemies()) {
+            System.out.println("Enemy X: " + enemy.getX() + ", Y: " + enemy.getY()); // DEL
+            g.drawImage(sprites.get(28), (int) (enemy.getX() * spriteSize) - offset,
+                    (int) (enemy.getY() * spriteSize) - offset, null);
+            // Add method that gets the correct sprite for enemies according to
+            // animationIndex.
         }
     }
 
     private void drawTowers(Graphics g) {
-        for(ATower tower : model.getMap().getTowers()){
+        for (ATower tower : model.getMap().getTowers()) {
             // TowerSprite: Knife
-            //System.out.println("Enemy X: " + enemy.getX() + ", Y: " + enemy.getY()); // DEL
-            g.drawImage(imageKnife, (int) tower.getX()*48, (int) tower.getY()*48,null);
+            // System.out.println("Enemy X: " + enemy.getX() + ", Y: " + enemy.getY()); //
+            // DEL
+            g.drawImage(imageKnife, (int) tower.getX() * 48, (int) tower.getY() * 48, null);
         }
     }
 
@@ -211,6 +223,7 @@ public class DrawPanel extends JPanel {
     }
 
     public void update() {
+        updateAnimation();
         repaint();
     }
 
@@ -232,7 +245,7 @@ public class DrawPanel extends JPanel {
          */
         drawEnemies(g);
         drawTowers(g);
-         drawSelectedTile(g);
+        drawSelectedTile(g);
     }
 
 }

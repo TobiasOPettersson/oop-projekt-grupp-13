@@ -1,4 +1,4 @@
-package Model;
+package Model.Map;
 
 public class PathTile extends ATile {
     PathTile next;

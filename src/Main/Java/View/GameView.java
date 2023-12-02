@@ -5,14 +5,14 @@ import javax.swing.JPanel;
 import javax.swing.LayoutStyle;
 
 import Controller.CreateTowerController;
-import Controller.ITowerObserver;
-import Controller.ITowerSubject;
 import Controller.UpgradeTowerController;
-import Model.AMap;
-import Model.ATower;
+import Controller.Interfaces.ITowerObserver;
+import Controller.Interfaces.ITowerSubject;
 import Model.MainModel;
-import Model.TowerTile;
-import Model.TowerType;
+import Model.Map.AMap;
+import Model.Map.TowerTile;
+import Model.Towers.ATower;
+import Model.Towers.TowerType;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -23,7 +23,7 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-public class GameView extends JFrame{
+public class GameView extends JFrame {
     MainModel model;
     DrawPanel drawPanel;
     private BufferedImage image;
@@ -58,18 +58,18 @@ public class GameView extends JFrame{
 
     }
 
-    public void update(){
+    public void update() {
         drawPanel.update();
     }
 
-    public void openWidgit(int x, int y){
-        if(model.getMap().getTile(x, y).placeable){
+    public void openWidgit(int x, int y) {
+        if (model.getMap().getTile(x, y).placeable) {
             createWidget.setVisible(true);
-            createWidget.setSavedMousePos(x, y);    
-        } else{
+            createWidget.setSavedMousePos(x, y);
+        } else {
             for (UpgradeTowerController upgradeWidget : upgradeWidgets) {
-                TowerType type = ((TowerTile)model.getMap().getTile(x, y)).getTower().getTowerType();
-                if(type.equals(upgradeWidget.getTowerType())){
+                TowerType type = ((TowerTile) model.getMap().getTile(x, y)).getTower().getTowerType();
+                if (type.equals(upgradeWidget.getTowerType())) {
                     upgradeWidget.setVisible(true);
                     upgradeWidget.setSavedMousePos(x, y);
                 }

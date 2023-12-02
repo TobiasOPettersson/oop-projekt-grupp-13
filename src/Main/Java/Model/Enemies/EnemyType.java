@@ -1,4 +1,4 @@
-package Model;
+package Model.Enemies;
 
 public enum EnemyType {
     tomato,
