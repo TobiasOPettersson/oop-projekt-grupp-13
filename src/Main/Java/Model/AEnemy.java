@@ -213,7 +213,10 @@ public abstract class AEnemy implements IMovable {
         return this.damage;
     }
 
-    public void doDamage(int damage){
+    /*
+     * Updates the enemy health depending on the damage it takes
+     */
+    public void takeDamage(int damage){
         this.health -= damage;
     }
 

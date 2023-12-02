@@ -24,7 +24,7 @@ public abstract class AttackTower extends ATower implements IAttackable{
     @Override
     public void attack(AEnemy target) {
         if(target != null){
-            target.doDamage(damage);
+            target.takeDamage(damage);
             resetCooldown();
             System.out.println("Has attacked!!!!");
         }
