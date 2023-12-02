@@ -16,7 +16,6 @@ public abstract class TowerController extends JPanel implements ITowerSubject{
     private ITowerObserver observer;
     private final int MAP_HEIGHT = 480;
     private final int FRAME_HEIGHT = GraphicsDependencies.getHeight();
-    private Map<TowerType, String> buttonImgPaths;
 
     /**
      * Constructor of the abstract Tower Controller class
@@ -24,22 +23,11 @@ public abstract class TowerController extends JPanel implements ITowerSubject{
      */
     public TowerController(ITowerObserver observer) {
         this.observer = observer;
-        initButtonImagePaths();
         setSize(new Dimension(600, FRAME_HEIGHT - MAP_HEIGHT));
         setVisible(true);
     }
 
-    /**
-     * Initializes the map containing the pats of button images
-     */
-    private void initButtonImagePaths(){
-        buttonImgPaths = Map.ofEntries(
-            entry(TowerType.knife, "res/knife-sprite.png"),
-            entry(TowerType.mallet, "res/mallet-sprite.png"),
-            entry(TowerType.blowtorch, "res/blowtorch-sprite.png"),
-            entry(TowerType.slicer, "res/slicer-sprite.png")
-            );
-    }
+
 
     /**
      * When a button is clicked this method calls notifyObservers

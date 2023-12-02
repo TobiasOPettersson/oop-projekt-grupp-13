@@ -6,6 +6,7 @@ import Controller.PlayButtonController;
 import Model.MainModel;
 import Model.Enemies.AEnemy;
 import Model.Enums.Direction;
+import Model.Interfaces.ITargetable;
 import Model.Map.ATile;
 import Model.Map.TowerTile;
 import Model.Towers.ATower;
@@ -16,6 +17,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.event.MouseAdapter;
@@ -24,7 +26,7 @@ import java.awt.event.MouseEvent;
 public class DrawPanel extends JPanel {
     private GameView gameView;
     private BufferedImage image;
-    private BufferedImage imageKnife;
+    private Map<TowerType, BufferedImage> towerImageMap;
     private MainModel model;
     private ArrayList<BufferedImage> sprites = new ArrayList<>();
     // public ArrayList<DirNode> dirChangeArray = new ArrayList<>(); // Temp map
@@ -39,7 +41,7 @@ public class DrawPanel extends JPanel {
     private int animationTick = 0;
 
     // Constructor
-    public DrawPanel(GameView gameView, MainModel model, BufferedImage image, BufferedImage imageKnife) {
+    public DrawPanel(GameView gameView, MainModel model, BufferedImage image, Map<TowerType, BufferedImage> towerImageMap) {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent mEvent) {
@@ -48,7 +50,7 @@ public class DrawPanel extends JPanel {
         });
         this.gameView = gameView;
         this.image = image;
-        this.imageKnife = imageKnife;
+        this.towerImageMap = towerImageMap;
         this.model = model;
         this.pathDirections = this.model.getPathDirections();
         this.mapGrid = this.model.getTileGrid();
@@ -169,8 +171,8 @@ public class DrawPanel extends JPanel {
         int offset = 24; // Sprite size / 2
         int spriteSize = 48;
 
-        for (AEnemy enemy : model.getEnemies()) {
-            System.out.println("Enemy X: " + enemy.getX() + ", Y: " + enemy.getY()); // DEL
+        for (ITargetable enemy : model.getEnemies()) {
+            //System.out.println("Enemy X: " + enemy.getX() + ", Y: " + enemy.getY()); // DEL
             g.drawImage(sprites.get(28), (int) (enemy.getX() * spriteSize) - offset,
                     (int) (enemy.getY() * spriteSize) - offset, null);
             // Add method that gets the correct sprite for enemies according to
@@ -183,7 +185,12 @@ public class DrawPanel extends JPanel {
             // TowerSprite: Knife
             // System.out.println("Enemy X: " + enemy.getX() + ", Y: " + enemy.getY()); //
             // DEL
-            g.drawImage(imageKnife, (int) tower.getX() * 48, (int) tower.getY() * 48, null);
+            g.drawImage(towerImageMap.get(tower.getTowerType()), (int) tower.getX()*48, (int) tower.getY()*48, null);
+            Graphics2D g2 = (Graphics2D) g;
+            int rangeCircleX = (int)((tower.getX()-tower.getRange()));
+            int rangeCircleY = (int)((tower.getY()-tower.getRange()));
+            int rangeCircleD = (int)(tower.getRange()*2*48);
+            g2.drawOval(rangeCircleX*48, rangeCircleY*48, rangeCircleD+48, rangeCircleD+48);
         }
     }
 
