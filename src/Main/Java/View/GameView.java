@@ -6,19 +6,21 @@ import javax.swing.LayoutStyle;
 
 import Controller.CreateTowerController;
 import Controller.UpgradeTowerController;
+import Controller.Interfaces.IMoneyObserver;
 import Controller.Interfaces.ITowerObserver;
 import Controller.Interfaces.ITowerSubject;
 import Model.MainModel;
+import Model.Enums.TowerType;
 import Model.Map.AMap;
 import Model.Map.TowerTile;
 import Model.Towers.ATower;
-import Model.Towers.TowerType;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.image.*;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +44,7 @@ public class GameView extends JFrame {
         add(drawPanel, BorderLayout.CENTER);
         createWidget = new CreateTowerController(this.model);
         add(createWidget, BorderLayout.SOUTH);
+        model.getPlayer().setMoneyObservers(getMoneyObservers());
         initComponents();
     }
 
@@ -90,5 +93,16 @@ public class GameView extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
+    }
+
+    public List<IMoneyObserver> getMoneyObservers(){
+        List<IMoneyObserver> observers = new ArrayList<>();
+        if(upgradeWidgets != null){
+            for (UpgradeTowerController upWidget : upgradeWidgets) {
+                observers.add(upWidget);
+            }
+        }
+        observers.add(createWidget);
+        return observers;
     }
 }

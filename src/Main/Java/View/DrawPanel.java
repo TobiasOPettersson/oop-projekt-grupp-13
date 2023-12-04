@@ -6,11 +6,11 @@ import Controller.PlayButtonController;
 import Model.MainModel;
 import Model.Enemies.AEnemy;
 import Model.Enums.Direction;
+import Model.Enums.TowerType;
 import Model.Interfaces.ITargetable;
 import Model.Map.ATile;
 import Model.Map.TowerTile;
 import Model.Towers.ATower;
-import Model.Towers.TowerType;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;

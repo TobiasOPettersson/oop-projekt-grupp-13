@@ -4,9 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Model.Enemies.AEnemy;
+import Model.Enums.TargetType;
+import Model.Enums.TowerType;
+import Model.Enums.Upgrade;
 import Model.Interfaces.ITargetable;
+import Model.Interfaces.IUpgradable;
 
-public abstract class ATower implements ITargetable{
+
+public abstract class ATower implements ITargetable, IUpgradable{
     private double x;
     private double y;
     private int cost;
@@ -16,6 +21,7 @@ public abstract class ATower implements ITargetable{
     private int maxCooldown;
     private TowerType towerType;
     private TargetType[] targetType;
+    private List<Upgrade> upgrades;
 
    /**
     * Constructor of abstract class ATower
@@ -46,9 +52,13 @@ public abstract class ATower implements ITargetable{
         List<AEnemy> targets = new ArrayList<>();
         for (AEnemy enemy : enemies) {
             if(inRangeOf(this, enemy, range)){
-                targets.add(enemy);        
+                targets.add(enemy);   
+                System.out.println(targetType[0]);     
                 if(targetType[0] == TargetType.first){
-                    targets.addAll(findAoeTargets(enemy, enemies));
+                    System.out.println(aoeRange);
+                    if(aoeRange != 0){
+                        targets.addAll(findAoeTargets(enemy, enemies));
+                    }
                     return targets;
                 }
             }
@@ -67,7 +77,7 @@ public abstract class ATower implements ITargetable{
     */
     public List<AEnemy> findAoeTargets(AEnemy source, List<AEnemy> enemies) {
         List<AEnemy> aoeTargets = new ArrayList<>();
-        if(aoeRange != 0){
+  
             List<AEnemy> aoeTargetables = enemies;
             aoeTargetables.remove(source);
             for (AEnemy enemy : aoeTargetables) {
@@ -75,7 +85,6 @@ public abstract class ATower implements ITargetable{
                     aoeTargets.add(enemy);
                 }
             }
-        }
         return aoeTargets;
     }
 
@@ -141,7 +150,39 @@ public abstract class ATower implements ITargetable{
     }
 
     public void setTargetTypes(TargetType targetable, TargetType target){
-        targetType = new TargetType[]{target, targetable};
+        targetType = new TargetType[]{targetable, target};
+    }
+
+    public TargetType[] getTargetTypes() {
+        return targetType;
+    }
+
+    public void setRange(double range) {
+        this.range = range;
+    }
+
+    protected void addUpgrade(Upgrade upgrade){
+        upgrades.add(upgrade);
+    }
+
+    protected boolean hasUpgrade(Upgrade targetUpgrade){
+        return upgrades.contains(targetUpgrade);
+    }
+
+    public void setMaxCooldown(int maxCooldown) {
+        this.maxCooldown = maxCooldown;
+    }
+
+    public int getMaxCooldown() {
+        return maxCooldown;
+    }
+
+    protected double getAoeRange() {
+        return aoeRange;
+    }
+
+    protected void setAoeRange(double aoeRange) {
+        this.aoeRange = aoeRange;
     }
 
 

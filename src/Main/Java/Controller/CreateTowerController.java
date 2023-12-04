@@ -2,14 +2,19 @@ package Controller;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 import Controller.Interfaces.ITowerObserver;
-import Model.Towers.TowerType;
+import Model.Enums.TowerType;
+import Model.Interfaces.IMoneySubject;
 
 public class CreateTowerController extends TowerController{
-    
+    JLabel coinsLabel;
+
     /**
      * Constructor for the Shop Widget
      * @param observer is the Map which is notified when the player wants to create a tower
@@ -27,18 +32,30 @@ public class CreateTowerController extends TowerController{
      * Initializes the title label
      */
     private void initTitle(){
-        JLabel label = new JLabel("CREATE TOWERS");
-        label.setForeground(Color.BLACK);
-        add(label, BorderLayout.EAST);
+        JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        labelPanel.setLayout(new GridLayout(2, 1, 0, 0));
+        JLabel titleLabel = new JLabel("CREATE TOWERS");
+        coinsLabel = new JLabel("Coins: ");
+        titleLabel.setForeground(Color.BLACK);
+        coinsLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        labelPanel.add(titleLabel);
+        labelPanel.add(coinsLabel);
+        add(labelPanel, BorderLayout.EAST);
     }
 
 
-        /**
+    /**
      * When a button is clicked this method calls notifyObservers
+     * @throws Exception
      */
     @Override
      public void handleButtonClick(TowerType type) {
-        notifyObservers(type);
+        try {
+            notifyObservers(type);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -53,9 +70,19 @@ public class CreateTowerController extends TowerController{
 
     /**
      * Notifies the observer (Map) that the player wants to create a tower of type towerType
+     * @throws Exception if the player doesn't have enough money to buy the tower
      */
     @Override
     public void notifyObservers(TowerType towerType) {
-        getObserver().createTower(getSavedMousePosX(), getSavedMousePosY(), towerType);
+        try {
+            getObserver().createTower(getSavedMousePosX(), getSavedMousePosY(), towerType);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void updateMoney(int curMoney) {
+        coinsLabel.setText("Coins: " + curMoney);
     }
 }

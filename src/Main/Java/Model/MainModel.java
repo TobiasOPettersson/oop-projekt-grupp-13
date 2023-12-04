@@ -7,6 +7,7 @@ import Controller.Interfaces.ITowerObserver;
 import Model.Enemies.AEnemy;
 import Model.Enemies.EnemyOne;
 import Model.Enums.Direction;
+import Model.Enums.TowerType;
 import Model.Interfaces.ITargetable;
 import Model.Map.AMap;
 import Model.Map.ATile;
@@ -14,7 +15,6 @@ import Model.Map.MapOne;
 import Model.Player.Player;
 import Model.Towers.ATower;
 import Model.Towers.AttackTower;
-import Model.Towers.TowerType;
 
 public class MainModel implements ITowerObserver{
     private AMap map;
@@ -24,13 +24,14 @@ public class MainModel implements ITowerObserver{
     private boolean activeWave;
 
     public MainModel(){
+        this.player = new Player(5, 200);
         this.map = new MapOne();
+        map.setPlayer(player);
         // Temp Wave thing. Spawns three enemies.
         for (int i = 0; i <= 10; i++){
             this.enemies.add(new EnemyOne(map.getStartPosition(), 0.02, map.getPathDirections()));
         }
         //this.enemies.add(new EnemyOne(this.map.getStartPosition(), 1, this.map.getPathDirections()));
-        this.player = new Player(10, 200);
         this.alive = true;
         this.activeWave = false;
     }
@@ -83,7 +84,7 @@ public class MainModel implements ITowerObserver{
     }
 
     @Override
-    public void createTower(int x, int y, TowerType type){
+    public void createTower(int x, int y, TowerType type) throws Exception{
         map.createTower(x, y, type);
     }
 
@@ -162,4 +163,9 @@ public class MainModel implements ITowerObserver{
     public List<ATower> getTowers(){
         return this.map.getTowers();
     }
+
+    public Player getPlayer() {
+        return player;
+    }
+
 }

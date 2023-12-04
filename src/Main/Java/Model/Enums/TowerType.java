@@ -1,4 +1,4 @@
-package Model.Towers;
+package Model.Enums;
 
 public enum TowerType {
     knife,

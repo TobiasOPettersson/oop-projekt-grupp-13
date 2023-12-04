@@ -1,6 +1,9 @@
 package Model.Towers;
 
 import Model.Enemies.AEnemy;
+import Model.Enums.TargetType;
+import Model.Enums.TowerType;
+import Model.Enums.Upgrade;
 
 public class MalletTower extends AttackTower{
 
@@ -13,4 +16,26 @@ public class MalletTower extends AttackTower{
         super(x, y, 3, 1, 1, 200, TowerType.mallet, 3);
         setTargetTypes(TargetType.first, TargetType.enemies);
     }
+   
+    @Override
+    public void upgrade(Upgrade upgrade){
+        switch (upgrade) {
+            case IncreaseAoeRange1:
+                setAoeRange(getAoeRange() + 0.5);
+                break;
+            case IncreasedRange1:
+                    setRange(getRange() + 0.5);
+                break;
+            case IncreasedDamage1:
+            case IncreasedDamage2:
+                setDamage(getDamage() + 1);
+                break;
+            default:
+                System.out.println("Tower  doesn't have that upgrade");
+                break;
+        }
+    }
+
+
+
 }

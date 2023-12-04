@@ -2,14 +2,14 @@ package Model.Map;
 
 import java.util.List;
 
-import Controller.Interfaces.ITowerObserver;
 import Model.Enums.Direction;
+import Model.Enums.TowerType;
+import Model.Player.Player;
 import Model.Towers.ATower;
 import Model.Towers.BlowtorchTower;
 import Model.Towers.KnifeTower;
 import Model.Towers.MalletTower;
 import Model.Towers.SlicerTower;
-import Model.Towers.TowerType;
 
 import java.util.ArrayList;
 
@@ -21,6 +21,7 @@ public class AMap{
     private int startPosition;
     private int[][] pathGrid;
     private List<Direction> pathDirections = new ArrayList<Direction>();
+    private Player player;
 
     public AMap(int[][] pathGrid) {
         this.pathGrid = pathGrid;
@@ -140,7 +141,7 @@ public class AMap{
     /*
      * Create a new tower on the grid
      */
-    public void createTower(int x, int y, TowerType type){
+    public void createTower(int x, int y, TowerType type) throws Exception{
         if(((TowerTile)getTile(x, y)).placeable){
             ATower tower = null;
             switch (type){
@@ -160,6 +161,7 @@ public class AMap{
                     System.out.println("Tower type given is not implemented");
                     break;
             }
+            player.subtractMoney(tower.getCost());
             this.towers.add(tower);
             getTile(x, y).setPlaceable(false);
             ((TowerTile)getTile(x, y)).setTower(tower);
@@ -202,5 +204,8 @@ public class AMap{
 
     public int[][] getPathGrid() {
         return this.pathGrid;
+    }
+    public void setPlayer(Player player){
+        this.player = player;
     }
 }

@@ -5,7 +5,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import Model.Towers.TowerType;
+import Model.Enums.TowerType;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

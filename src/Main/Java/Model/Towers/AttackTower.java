@@ -1,6 +1,7 @@
 package Model.Towers;
 
 import Model.Enemies.AEnemy;
+import Model.Enums.TowerType;
 import Model.Interfaces.IAttackable;
 
 public abstract class AttackTower extends ATower implements IAttackable{
@@ -30,5 +31,13 @@ public abstract class AttackTower extends ATower implements IAttackable{
             target.takeDamage(damage);
             resetCooldown();
         }
+    }
+
+    public int getDamage() {
+        return damage;
+    }
+
+    public int setDamage(int damage) {
+        return this.damage = damage;
     }
 }
