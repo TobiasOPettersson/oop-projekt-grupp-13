@@ -21,8 +21,10 @@ import java.util.List;
 import java.util.Map;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Double;
 
@@ -40,6 +42,7 @@ public class DrawPanel extends JPanel{
     private ArrayList<BufferedImage> pathSprites = new ArrayList<>();
     private int[][] pathGrid;
     private int[] selectedTile = new int[]{-1, -1};
+    private int[] hoveredTile = new int[]{-1, -1};
     private int animationIndex = 0;
     private int animationTick = 0;
 
@@ -49,6 +52,16 @@ public class DrawPanel extends JPanel{
             @Override
             public void mouseClicked(MouseEvent mEvent) {
                 handleTileClick(mEvent.getX(), mEvent.getY());
+            }
+            /*@Override
+            public void mouseExited(MouseEvent mEvent) {
+                hoveredTile = new int[]{-1, -1};
+            } */      
+        });
+        addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent mEvent) {
+                hoverOverTile(mEvent.getX(), mEvent.getY());
             }
         });
         this.gameView = gameView;
@@ -67,10 +80,6 @@ public class DrawPanel extends JPanel{
         createPathSprites();
     }
 
-    public void placeTower(int x, int y, String type) {
-
-    }
-
     private void handleTileClick(int x, int y) {
         for (int i = 0; i < gridWidth; i++) {
             if (x > 48 * i && x < 48 * (i + 1)) {
@@ -87,6 +96,20 @@ public class DrawPanel extends JPanel{
             }
         }
     }
+
+    private void hoverOverTile(int x, int y) {
+        for (int i = 0; i < gridWidth; i++) {
+            if (x > 48 * i && x < 48 * (i + 1)) {
+                for (int j = 0; j < gridHeight; j++) {
+                    if (y > 48 * j && y < 48 * (j + 1)) {
+                        hoveredTile[0] = i;
+                        hoveredTile[1] = j;
+                        return;
+                    }
+                }
+            }
+        }
+    } 
 
     private void updateAnimation() {
         animationTick++;
@@ -157,13 +180,25 @@ public class DrawPanel extends JPanel{
         drawPath(g);
         drawTowers(g);
         drawEnemies(g);
+        drawHoveredTile(g);
     }
 
     void drawSelectedTile(Graphics g) {
         if (selectedTile.length > 0) {
             Graphics2D g2 = (Graphics2D) g;
+            g2.setColor(Color.red);
             g2.setStroke(new BasicStroke(1));
             g2.drawRect(selectedTile[0] * 48, selectedTile[1] * 48, 48, 48);
+            g2.setStroke(g2.getStroke());
+        }
+    }
+
+    void drawHoveredTile(Graphics g) {
+        if (selectedTile.length > 0) {
+            Graphics2D g2 = (Graphics2D) g;
+            g2.setStroke(new BasicStroke(1));
+            g2.setColor(Color.yellow);
+            g2.drawRect(hoveredTile[0] * 48, hoveredTile[1] * 48, 48, 48);
             g2.setStroke(g2.getStroke());
         }
     }
@@ -196,6 +231,7 @@ public class DrawPanel extends JPanel{
             g.drawImage(towerImage, (int) tower.getX()*48, (int) tower.getY()*48, null);
             
             Graphics2D g2 = (Graphics2D) g;
+            g.setColor(Color.black);
             int rangeCircleX = (int)((tower.getX()-tower.getRange()));
             int rangeCircleY = (int)((tower.getY()-tower.getRange()));
             int rangeCircleD = (int)(tower.getRange()*2*48);
