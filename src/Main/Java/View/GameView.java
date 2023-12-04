@@ -55,6 +55,7 @@ public class GameView extends JFrame {
         InputStream isMallet = this.getClass().getResourceAsStream("res/mallet.png");
         InputStream isBlowtorch = this.getClass().getResourceAsStream("res/blowtorch.png");
         InputStream isSlicer = this.getClass().getResourceAsStream("res/slicer.png");
+        InputStream isFridge = this.getClass().getResourceAsStream("res/fridge.png");
 
         try {
             image = ImageIO.read(is);
@@ -62,8 +63,8 @@ public class GameView extends JFrame {
             towerImageMap.put(TowerType.mallet, ImageIO.read(isMallet));
             towerImageMap.put(TowerType.blowtorch, ImageIO.read(isBlowtorch));
             towerImageMap.put(TowerType.slicer, ImageIO.read(isSlicer));
+            towerImageMap.put(TowerType.freezer, ImageIO.read(isFridge));
         } catch (IOException e) {
-            e.printStackTrace();
             e.printStackTrace();
         }
     }

@@ -14,6 +14,7 @@ import Model.Towers.ATower;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +23,10 @@ import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Point2D;
+import java.awt.geom.Point2D.Double;
 
-public class DrawPanel extends JPanel {
+public class DrawPanel extends JPanel{
     private GameView gameView;
     private BufferedImage image;
     private Map<TowerType, BufferedImage> towerImageMap;
@@ -182,10 +185,16 @@ public class DrawPanel extends JPanel {
 
     private void drawTowers(Graphics g) {
         for (ATower tower : model.getMap().getTowers()) {
-            // TowerSprite: Knife
-            // System.out.println("Enemy X: " + enemy.getX() + ", Y: " + enemy.getY()); //
-            // DEL
-            g.drawImage(towerImageMap.get(tower.getTowerType()), (int) tower.getX()*48, (int) tower.getY()*48, null);
+            BufferedImage towerImage = towerImageMap.get(tower.getTowerType());
+            if(tower.getTargetPosition() != null){
+                Point2D.Double enemyCenterPoint = tower.getTargetPosition();
+                Point2D.Double towerCenterPoint = new Point2D.Double(tower.getX()+0.5, tower.getY()+0.5);
+                double angleBInRadians = Math.atan2(towerCenterPoint.getY() - enemyCenterPoint.getY(), towerCenterPoint.getX() - enemyCenterPoint.getX());
+                double angle = Math.toDegrees(angleBInRadians);
+                towerImage = SpriteHelper.rotateSprite(towerImage, (int)(angle)+270);
+            }
+            g.drawImage(towerImage, (int) tower.getX()*48, (int) tower.getY()*48, null);
+            
             Graphics2D g2 = (Graphics2D) g;
             int rangeCircleX = (int)((tower.getX()-tower.getRange()));
             int rangeCircleY = (int)((tower.getY()-tower.getRange()));

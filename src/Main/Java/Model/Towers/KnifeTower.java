@@ -14,8 +14,7 @@ public class KnifeTower extends AttackTower{
      * @param y the y-position of the tower as a grid-index, i.e. not the y-position of the sprite in view 
      */
     public KnifeTower(int x, int y) {
-        super(x, y, 1, 1, 0, 50, TowerType.knife, 2);
-        setTargetTypes(TargetType.first, TargetType.enemies);
+        super(x, y, 1, 1, 0, 50, TowerType.knife, 2, TargetType.first, TargetType.enemies);
     }
 
     @Override
@@ -23,21 +22,26 @@ public class KnifeTower extends AttackTower{
         switch (upgrade) {
             case IncreasedTargets1:
                 setTargetTypes(TargetType.firstTwo, TargetType.enemies);
+                addUpgrade(upgrade);
                 break;
             case IncreasedTargets2:
                 setTargetTypes(TargetType.firstThree, TargetType.enemies);
+                addUpgrade(upgrade);
                 break;
             case IncreasedRange1:
             case IncreasedRange2:
                 setRange(getRange() + 1);
+                addUpgrade(upgrade);
                 break;
             case IncreasedDamage1:
                 setDamage(getDamage() + 1);
+                addUpgrade(upgrade);
                 break;
             case IncreasedSpeed1:
             case IncreasedSpeed2:
                 setMaxCooldown(getMaxCooldown() - 10);
                 setMaxCooldown(getMaxCooldown() - 10);
+                addUpgrade(upgrade);
                 break;
             default:
                 System.out.println("Tower  doesn't have that upgrade");

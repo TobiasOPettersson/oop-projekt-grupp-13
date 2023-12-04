@@ -28,7 +28,7 @@ public class MainModel implements ITowerObserver{
         this.map = new MapOne();
         map.setPlayer(player);
         // Temp Wave thing. Spawns three enemies.
-        for (int i = 0; i <= 10; i++){
+        for (int i = 0; i <= 0; i++){
             this.enemies.add(new EnemyOne(map.getStartPosition(), 0.02, map.getPathDirections()));
         }
         //this.enemies.add(new EnemyOne(this.map.getStartPosition(), 1, this.map.getPathDirections()));
@@ -41,6 +41,7 @@ public class MainModel implements ITowerObserver{
         AEnemy enemyToRemove = null;
         for (AEnemy enemy : enemies){
             enemy.move();
+            enemy.triggerConditions();
             if (enemy.getX() > map.getMapSizeX()) {
                 player.takeDamage(enemy.getDamage());
                 enemyToRemove = enemy;
@@ -53,9 +54,9 @@ public class MainModel implements ITowerObserver{
         }
 
         // Spawn a new enemy if the last enemy has walked one tile
-        //if(enemies.isEmpty() || enemies.get(enemies.size()-1).getDirectionsSize() < map.getPathDirections().size()-2){
-        //    enemies.add(new EnemyOne(map.getStartPosition(), 0.02, this.map.getPathDirections()));
-        //}
+        if(enemies.isEmpty() || enemies.get(enemies.size()-1).getDirectionsSize() < map.getPathDirections().size()-2){
+            enemies.add(new EnemyOne(map.getStartPosition(), 0.02, this.map.getPathDirections()));
+        }
 
 
         for (ATower tower : map.getTowers()){

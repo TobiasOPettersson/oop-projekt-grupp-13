@@ -7,6 +7,7 @@ import Model.Enums.TowerType;
 import Model.Player.Player;
 import Model.Towers.ATower;
 import Model.Towers.BlowtorchTower;
+import Model.Towers.FreezerTower;
 import Model.Towers.KnifeTower;
 import Model.Towers.MalletTower;
 import Model.Towers.SlicerTower;
@@ -156,6 +157,9 @@ public class AMap{
                     break;
                 case slicer: 
                     tower = new SlicerTower(x, y);
+                    break;
+                case freezer:
+                    tower = new FreezerTower(x, y);
                     break;
                 default:
                     System.out.println("Tower type given is not implemented");

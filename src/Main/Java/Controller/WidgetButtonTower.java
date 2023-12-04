@@ -61,6 +61,7 @@ public class WidgetButtonTower extends JPanel {
         buttonImgPaths.put(TowerType.mallet, resPath + "mallet.png");
         buttonImgPaths.put(TowerType.blowtorch, resPath + "blowtorch.png");
         buttonImgPaths.put(TowerType.slicer, resPath + "slicer.png");
+        buttonImgPaths.put(TowerType.freezer, resPath + "fridge.png");
     }
 
     /**
@@ -69,7 +70,6 @@ public class WidgetButtonTower extends JPanel {
      */
     private void initTopPanel(){
         JPanel topPanel = new JPanel();
-        System.out.println(buttonImgPaths.get(type));
         JLabel towerImageLabel = new JLabel(new ImageIcon(buttonImgPaths.get(type)));
         topPanel.setBackground(Color.orange);
         topPanel.setLayout(new BorderLayout());

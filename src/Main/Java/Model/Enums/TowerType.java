@@ -5,5 +5,5 @@ public enum TowerType {
     mallet,
     blowtorch,
     slicer,
-    fridge
+    freezer
 }

@@ -22,7 +22,7 @@ public class CreateTowerController extends TowerController{
     public CreateTowerController(ITowerObserver observer) {
         super(observer);
         setBackground(Color.WHITE);
-        setLayout(new GridLayout(0, 5, 10, 20));
+        setLayout(new GridLayout(0, 6, 10, 20));
         setPreferredSize(new Dimension(300, 100));
         initTitle();
         initButtons();
@@ -66,6 +66,7 @@ public class CreateTowerController extends TowerController{
         add(new WidgetButtonTower(3, TowerType.mallet, this));
         add(new WidgetButtonTower(4, TowerType.blowtorch, this));
         add(new WidgetButtonTower(2, TowerType.slicer, this));
+        add(new WidgetButtonTower(3, TowerType.freezer, this));
     }
 
     /**

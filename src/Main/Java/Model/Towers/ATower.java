@@ -1,5 +1,6 @@
 package Model.Towers;
 
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +22,8 @@ public abstract class ATower implements ITargetable, IUpgradable{
     private int maxCooldown;
     private TowerType towerType;
     private TargetType[] targetType;
-    private List<Upgrade> upgrades;
+    private List<Upgrade> upgrades = new ArrayList<>();
+    private Point2D.Double targetPosition;
 
    /**
     * Constructor of abstract class ATower
@@ -33,7 +35,7 @@ public abstract class ATower implements ITargetable, IUpgradable{
     * @param maxCooldown is the maximum cooldown of the towers ability, the variable cooldown will reset to this after an ability has been used
     * @param towerType is the type of the tower, for example knife or mallet
     */
-    public ATower(double x, double y, int cost, double range, double aoeRange, int maxCooldown, TowerType towerType){
+    public ATower(double x, double y, int cost, double range, double aoeRange, int maxCooldown, TowerType towerType, TargetType nTargets, TargetType targetType){
         this.x = x;
         this.y = y;
         this.cost = cost;
@@ -41,6 +43,8 @@ public abstract class ATower implements ITargetable, IUpgradable{
         this.aoeRange = aoeRange;
         this.maxCooldown = maxCooldown;
         this.towerType = towerType;
+        this.targetPosition = null;
+        setTargetTypes(nTargets, targetType);
     }
 
     /**
@@ -52,10 +56,9 @@ public abstract class ATower implements ITargetable, IUpgradable{
         List<AEnemy> targets = new ArrayList<>();
         for (AEnemy enemy : enemies) {
             if(inRangeOf(this, enemy, range)){
-                targets.add(enemy);   
-                System.out.println(targetType[0]);     
+                targets.add(enemy);     
                 if(targetType[0] == TargetType.first){
-                    System.out.println(aoeRange);
+                    targetPosition = new Point2D.Double(enemy.getX(), enemy.getY());
                     if(aoeRange != 0){
                         targets.addAll(findAoeTargets(enemy, enemies));
                     }
@@ -97,7 +100,6 @@ public abstract class ATower implements ITargetable, IUpgradable{
     public boolean inRangeOf(ITargetable source, ITargetable targetable, double range){
         double distance = Math.sqrt(Math.pow(source.getX() - targetable.getX(), 2) + Math.pow(source.getY() - targetable.getY(), 2));
         distance -= 0.6;
-        System.out.println(distance);
         return distance <= range;
     }
 
@@ -183,6 +185,14 @@ public abstract class ATower implements ITargetable, IUpgradable{
 
     protected void setAoeRange(double aoeRange) {
         this.aoeRange = aoeRange;
+    }
+
+    public Point2D.Double getTargetPosition() {
+        return targetPosition;
+    }
+
+    public void setTargetPosition(Point2D.Double point) {
+        targetPosition = point;
     }
 
 

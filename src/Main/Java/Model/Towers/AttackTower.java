@@ -1,6 +1,7 @@
 package Model.Towers;
 
 import Model.Enemies.AEnemy;
+import Model.Enums.TargetType;
 import Model.Enums.TowerType;
 import Model.Interfaces.IAttackable;
 
@@ -17,8 +18,8 @@ public abstract class AttackTower extends ATower implements IAttackable{
      * @param towerType is the type of the tower, for example knife or mallet     
      * @param damage is the amount of damage an attack does
      */
-    public AttackTower(int x, int y, int cost, double range, double aoeRange, int maxCooldown, TowerType towerType, int damage) {
-        super(x, y, cost, range, aoeRange, maxCooldown, towerType);
+    public AttackTower(int x, int y, int cost, double range, double aoeRange, int maxCooldown, TowerType towerType, int damage, TargetType nTargets, TargetType targetType) {
+        super(x, y, cost, range, aoeRange, maxCooldown, towerType, nTargets, targetType);
         this.damage = damage;
     }
 
