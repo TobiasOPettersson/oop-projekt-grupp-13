@@ -42,6 +42,7 @@ public class MainModel implements ITowerObserver{
         for (AEnemy enemy : enemies){
             enemy.move();
             enemy.triggerConditions();
+            enemy.setStagger(false);
             if (enemy.getX() > map.getMapSizeX()) {
                 player.takeDamage(enemy.getDamage());
                 enemyToRemove = enemy;
@@ -64,9 +65,10 @@ public class MainModel implements ITowerObserver{
                 if (tower instanceof AttackTower){
                     List<AEnemy> targets = tower.findEnemiesInRange(enemies);
                     if(targets != null){
-                        System.out.println(targets.size());
                         for(AEnemy target : targets){
                             ((AttackTower)tower).attack(target);
+                            target.setStaggered(true);
+                            System.out.println(target.getHealth());
                             if (target.getHealth() <= 0) {
                                 player.addMoney(target.getMoney());
                                 enemies.remove(target);

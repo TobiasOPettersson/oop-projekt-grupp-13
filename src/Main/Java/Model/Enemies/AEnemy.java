@@ -25,6 +25,7 @@ public abstract class AEnemy implements IMovable, ITargetable {
     private int damage;
     private int moneyBag;
     private double tileOffset = 0.5;
+    private boolean isStaggered = false;
     private HashMap<Condition, Integer> conditions;
     
     public AEnemy(int health, double y, double speed, EnemyType type, List<Direction> directions, int damage, int moneyBag) {
@@ -237,6 +238,11 @@ public abstract class AEnemy implements IMovable, ITargetable {
             }
         }
     }
+
+    public void setStagger(boolean bool){
+        isStaggered = bool;
+    }
+
        
     // -------- Getters and setters ---------
 
@@ -268,6 +274,14 @@ public abstract class AEnemy implements IMovable, ITargetable {
         return type;
     }
     
+    public void setStaggered(boolean bool){
+        isStaggered = bool;
+    }
+
+    public boolean isStaggered(){
+        return isStaggered;
+    }
+
     /*
      * Updates the enemy health depending on the damage it takes
      */

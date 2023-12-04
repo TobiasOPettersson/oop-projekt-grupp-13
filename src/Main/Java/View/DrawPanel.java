@@ -208,11 +208,14 @@ public class DrawPanel extends JPanel{
         // position as center of enemysprite
         int offset = 24; // Sprite size / 2
         int spriteSize = 48;
-
-        for (ITargetable enemy : model.getEnemies()) {
+        
+        for (AEnemy enemy : model.getEnemies()) {
+            if(!enemy.isStaggered()){
+                int x = (int) (enemy.getX() * spriteSize) - offset;
+                int y = (int) (enemy.getY() * spriteSize) - offset;
+                g.drawImage(sprites.get(28), x, y, null);
+            }
             //System.out.println("Enemy X: " + enemy.getX() + ", Y: " + enemy.getY()); // DEL
-            g.drawImage(sprites.get(28), (int) (enemy.getX() * spriteSize) - offset,
-                    (int) (enemy.getY() * spriteSize) - offset, null);
             // Add method that gets the correct sprite for enemies according to
             // animationIndex.
         }
@@ -223,8 +226,7 @@ public class DrawPanel extends JPanel{
             BufferedImage towerImage = towerImageMap.get(tower.getTowerType());
             if(tower.getTargetPosition() != null){
                 Point2D.Double enemyCenterPoint = tower.getTargetPosition();
-                Point2D.Double towerCenterPoint = new Point2D.Double(tower.getX()+0.5, tower.getY()+0.5);
-                double angleBInRadians = Math.atan2(towerCenterPoint.getY() - enemyCenterPoint.getY(), towerCenterPoint.getX() - enemyCenterPoint.getX());
+                double angleBInRadians = Math.atan2(tower.getY()+0.5 - enemyCenterPoint.getY(), tower.getX()+0.5 - enemyCenterPoint.getX());
                 double angle = Math.toDegrees(angleBInRadians);
                 towerImage = SpriteHelper.rotateSprite(towerImage, (int)(angle)+270);
             }

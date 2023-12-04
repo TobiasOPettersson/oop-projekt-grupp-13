@@ -4,16 +4,18 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.util.List;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import Controller.Interfaces.ITowerObserver;
 import Model.Enums.TowerType;
-import Model.Interfaces.IMoneySubject;
 
 public class CreateTowerController extends TowerController{
     JLabel coinsLabel;
+    List<WidgetButtonTower> buttons;
 
     /**
      * Constructor for the Shop Widget
@@ -62,11 +64,16 @@ public class CreateTowerController extends TowerController{
      * Initializes the buttons that the player click on when they want to create a tower
      */
     private void initButtons(){
-        add(new WidgetButtonTower(1, TowerType.knife, this));
-        add(new WidgetButtonTower(3, TowerType.mallet, this));
-        add(new WidgetButtonTower(4, TowerType.blowtorch, this));
-        add(new WidgetButtonTower(2, TowerType.slicer, this));
-        add(new WidgetButtonTower(3, TowerType.freezer, this));
+        buttons = List.of(
+            new WidgetButtonTower(1, TowerType.knife, this),
+            new WidgetButtonTower(3, TowerType.mallet, this),
+            new WidgetButtonTower(4, TowerType.blowtorch, this),
+            new WidgetButtonTower(2, TowerType.slicer, this),
+            new WidgetButtonTower(3, TowerType.freezer, this)
+        );
+        for (WidgetButtonTower button : buttons) {
+            add(button);
+        }
     }
 
     /**
@@ -85,5 +92,8 @@ public class CreateTowerController extends TowerController{
     @Override
     public void updateMoney(int curMoney) {
         coinsLabel.setText("Coins: " + curMoney);
+        for (WidgetButtonTower button : buttons) {
+            button.setOpacity(button.getCost() > curMoney);
+        }
     }
 }
