@@ -2,6 +2,7 @@ package Model.Towers;
 
 import java.util.List;
 
+import Model.Enemies.EnemyType;
 import Model.Enums.TargetType;
 import Model.Enums.TowerType;
 import Model.Enums.Upgrade;
@@ -49,5 +50,13 @@ public class KnifeTower extends AttackTower{
         }
     }
 
-   
+    @Override
+    protected int getDamageWithTypeModifications(EnemyType type) {
+        switch (type) {
+            case cheese:
+                return getDamage()-1;
+            default:
+                return getDamage();
+        }
+    }
 }

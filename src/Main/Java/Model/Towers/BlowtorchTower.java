@@ -1,5 +1,6 @@
 package Model.Towers;
 
+import Model.Enemies.EnemyType;
 import Model.Enums.TargetType;
 import Model.Enums.TowerType;
 import Model.Enums.Upgrade;
@@ -14,6 +15,7 @@ public class BlowtorchTower extends AttackTower{
     public BlowtorchTower(int x, int y) {
         super(x, y, 4, 3, 0.5, 10, TowerType.blowtorch, 1, TargetType.first, TargetType.enemies);
     }
+
 
     @Override
     public void upgrade(Upgrade upgrade){
@@ -35,6 +37,18 @@ public class BlowtorchTower extends AttackTower{
             default:
                 System.out.println("Tower  doesn't have that upgrade");
                 break;
+        }
+    }
+
+    @Override
+    protected int getDamageWithTypeModifications(EnemyType type) {
+        switch (type) {
+            case chicken:
+                return getDamage()*2;   
+            case cheese:
+                return getDamage()-1;
+            default:
+                return getDamage();
         }
     }
 }

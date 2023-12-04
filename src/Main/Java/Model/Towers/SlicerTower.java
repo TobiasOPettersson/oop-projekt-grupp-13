@@ -1,5 +1,6 @@
 package Model.Towers;
 
+import Model.Enemies.EnemyType;
 import Model.Enums.TargetType;
 import Model.Enums.TowerType;
 import Model.Enums.Upgrade;
@@ -27,6 +28,16 @@ public class SlicerTower extends AttackTower{
             default:
                 System.out.println("Tower  doesn't have that upgrade");
                 break;
+        }
+    }
+
+    @Override
+    protected int getDamageWithTypeModifications(EnemyType type) {
+        switch (type) {
+            case cheese:
+                return getDamage()*2;   
+            default:
+                return getDamage();
         }
     }
 }

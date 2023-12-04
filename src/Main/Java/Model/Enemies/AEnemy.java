@@ -263,6 +263,10 @@ public abstract class AEnemy implements IMovable, ITargetable {
             conditions.put(condition, duration);
         }
     }
+
+    public EnemyType getType(){
+        return type;
+    }
     
     /*
      * Updates the enemy health depending on the damage it takes

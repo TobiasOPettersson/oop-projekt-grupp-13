@@ -1,6 +1,7 @@
 package Model.Towers;
 
 import Model.Enemies.AEnemy;
+import Model.Enemies.EnemyType;
 import Model.Enums.TargetType;
 import Model.Enums.TowerType;
 import Model.Enums.Upgrade;
@@ -35,6 +36,16 @@ public class MalletTower extends AttackTower{
         }
     }
 
-
+    @Override
+    protected int getDamageWithTypeModifications(EnemyType type) {
+        switch (type) {
+            case tomato:
+                return getDamage()*2;   
+            case cheese:
+                return getDamage()-3;
+            default:
+                return getDamage();
+        }
+    }
 
 }
