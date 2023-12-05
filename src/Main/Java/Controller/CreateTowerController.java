@@ -46,7 +46,7 @@ public class CreateTowerController extends TowerController {
 
         headpanel.setBackground(Color.RED);
 
-        headpanel.setPreferredSize(new Dimension(300, 50));
+        headpanel.setPreferredSize(new Dimension(300, 30));
         JLabel titleLabel = new JLabel("CREATE TOWERS");
         titleLabel.setForeground(Color.BLACK);
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);

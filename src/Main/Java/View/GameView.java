@@ -45,7 +45,7 @@ public class GameView extends JFrame {
         drawPanel.setBounds(0, 0, 960, 480);
         add(drawPanel);
         createWidget = new CreateTowerController(this.model);
-        createWidget.setBounds(0, 500, 960, 270);
+        createWidget.setBounds(0, 480, 960, 300);
         add(createWidget);
         model.getPlayer().setMoneyObservers(getMoneyObservers());
         initComponents();
