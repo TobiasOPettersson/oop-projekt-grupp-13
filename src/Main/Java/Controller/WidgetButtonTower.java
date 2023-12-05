@@ -89,7 +89,7 @@ public class WidgetButtonTower extends JPanel {
      */
     private void initBottomPanel() {
         bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        bottomPanel.setPreferredSize(new Dimension(100, 40));
+        bottomPanel.setPreferredSize(new Dimension(100, 180));
         bottomPanel.setBackground(Color.PINK);
         bottomPanel.setLayout(new GridLayout(2, 1, 0, 0));
 
