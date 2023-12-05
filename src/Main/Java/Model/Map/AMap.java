@@ -1,20 +1,17 @@
 package Model.Map;
 
 import java.util.List;
-import java.util.Map;
 
 import Controller.Interfaces.ITowerObserver;
 import Model.Enums.Direction;
 import Model.Towers.ATower;
+import Model.Towers.BlowtorchTower;
 import Model.Towers.KnifeTower;
+import Model.Towers.MalletTower;
+import Model.Towers.SlicerTower;
 import Model.Towers.TowerType;
 
-import java.awt.Point;
-import java.security.Key;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Dictionary;
-import java.util.HashMap;
 
 public class AMap{
     private final int MAP_HEIGHT = 10;
@@ -22,117 +19,127 @@ public class AMap{
     private List<ATower> towers = new ArrayList<ATower>();
     private ATile grid[][] = new ATile[MAP_HEIGHT][MAP_WIDTH];
     private int startPosition;
-    private int[][] pathGrid = {
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 0, 8, 9, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 0, 7, 0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 0, 6, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        { 1, 2, 3, 4, 5, 0, 13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 0, 0, 0, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27 },
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
-        };
-
+    private int[][] pathGrid;
     private List<Direction> pathDirections = new ArrayList<Direction>();
 
-    public AMap() {
-        createGrid();
+    public AMap(int[][] pathGrid) {
+        this.pathGrid = pathGrid;
+        createPathGrid();
+        fillGridTowerTile();
         setStartPosition();
     }
 
-    private void createPathDirections(PathTile start) {
-        PathTile next;
-        pathDirections.add(Direction.RIGHT);
-        while (start.getNext() != null) {
-            next = start.getNext();
-            if (start.getX() == next.getX() - 1) {
-                pathDirections.add(Direction.RIGHT);
-                start = next;
-                next = next.getNext();
-                continue;
-            } else if (start.getX() == next.getX() + 1) {
-                pathDirections.add(Direction.LEFT);
-                start = next;
-                next = next.getNext();
-                continue;
-            } else if (start.getY() == next.getY() - 1) {
-                pathDirections.add(Direction.DOWN);
-                start = next;
-                next = next.getNext();
-                continue;
-            } else if (start.getY() == next.getY() + 1) {
-                pathDirections.add(Direction.UP);
-                start = next;
-                next = next.getNext();
-                continue;
-            }
-        }
-        pathDirections.add(Direction.RIGHT);
-        for (int i = 0; i < pathDirections.size(); i++) {
-        }
-    }
 
+    //----------------------------Constructor methods----------------------//
 
-
-    private void createGrid() {
+    /*
+     * Create the instances of every pathTile on the grid
+     * Then fill the pathDirections with the directions of the path
+     */
+    private void createPathGrid() {
         int tempX = this.MAP_WIDTH - 1;
         int tempY = 0;
         int tempValue = 0;
         for(int i = 0 ; i < this.MAP_HEIGHT ; i++){
-            if (pathGrid[i][tempX] > tempValue){
-                tempValue = pathGrid[i][tempX];
+            if (this.pathGrid[i][tempX] > tempValue){
+                tempValue = this.pathGrid[i][tempX];
                 tempY = i;
             }
         }
-        // System.out.println("PathTile at: " + tempX + " " + tempY); // DEL
-        grid[tempY][tempX] = new PathTile(tempX, tempY, null);
+        
+        this.grid[tempY][tempX] = new PathTile(tempX, tempY, null);
 
-        //System.out.println("Temp value: " + tempValue); // DEL
+       
         while (tempValue > 1) {
-            ATile nextTile = grid[tempY][tempX];
+            ATile nextTile = this.grid[tempY][tempX];
             if (tempX - 1 >= 0 && pathGrid[tempY][tempX - 1] == tempValue - 1) {
-                tempValue--;
                 tempX--;
-            } else if (tempX + 1 < this.MAP_WIDTH - 1 && pathGrid[tempY][tempX + 1] == tempValue - 1) {
-                tempValue--;
+            } else if (tempX + 1 < this.MAP_WIDTH - 1 && this.pathGrid[tempY][tempX + 1] == tempValue - 1) {
                 tempX++;
-            } else if (tempY - 1 >= 0 && pathGrid[tempY - 1][tempX] == tempValue - 1) {
-                tempValue--;
+            } else if (tempY - 1 >= 0 && this.pathGrid[tempY - 1][tempX] == tempValue - 1) {
                 tempY--;
-            } else if (tempY + 1 < this.MAP_HEIGHT - 1 && pathGrid[tempY + 1][tempX] == tempValue - 1) {
-                tempValue--;
+            } else if (tempY + 1 < this.MAP_HEIGHT - 1 && this.pathGrid[tempY + 1][tempX] == tempValue - 1) {
                 tempY++;
             }
+            tempValue--;
 
             // Setting the next tile in the grid
-            if (nextTile instanceof PathTile) {
-                PathTile pt = (PathTile) nextTile;
-                grid[tempY][tempX] = new PathTile(tempX, tempY, pt);
-                //System.out.println("PathTile at: " + tempX + " " + tempY); // DEL
-            }
+            nextTileInGrid(nextTile, tempX, tempY);
         }
         createPathDirections((PathTile)grid[tempY][tempX]);
-
-        // Filling the rest of the grid with TowerTiles
+    }
+   
+    /*
+     * Fill the rest of the grid that isn't pathTile with towerTile
+     */
+    private void fillGridTowerTile(){
         for (int x = 0; x < this.MAP_WIDTH; x++) {
             for (int y = 0; y < this.MAP_HEIGHT; y++) {
-                if (!(grid[y][x] instanceof PathTile)) {
-                    grid[y][x] = new TowerTile(x, y, true);
-                    //System.out.println("TowerTile at: " + x + " " + y); // DEL
+                if (!(this.grid[y][x] instanceof PathTile)) {
+                    this.grid[y][x] = new TowerTile(x, y, true);
                 }
             }
         }
+    }
 
-        for (ATile[] aTiles : grid) {
-            for (ATile aTile : aTiles) {
-                // System.out.print((aTile instanceof PathTile) + " "); // DEL
-            }
-            // System.out.println(); // DEL
+    /*
+     * Find the starting position of the path
+     */
+    private void setStartPosition() {
+        for (int i = 0; i < this.MAP_HEIGHT; i++) {
+            if (this.pathGrid[i][0] == 1)
+                this.startPosition = i;
         }
     }
 
+
+    //----------------------------Constructor helper methods----------------------// 
+
+    /*
+     * Create the next pathTile and have it point at the previous pathTile
+     */
+    private void nextTileInGrid(ATile nextTile, int tempX, int tempY){
+        if (nextTile instanceof PathTile) {
+            PathTile pt = (PathTile) nextTile;
+            this.grid[tempY][tempX] = new PathTile(tempX, tempY, pt);
+        }
+    }
+
+    /*
+     * Fill the pathDirections with the directions for the path
+     */
+    private void createPathDirections(PathTile start) {
+        PathTile next;
+        this.pathDirections.add(Direction.RIGHT);
+        while (start.getNext() != null) {
+            next = start.getNext();
+            if (start.getX() == next.getX() - 1) {
+                addPathDirections(Direction.RIGHT);
+            } else if (start.getX() == next.getX() + 1) {
+                addPathDirections(Direction.LEFT);
+            } else if (start.getY() == next.getY() - 1) {
+                addPathDirections(Direction.DOWN);
+            } else if (start.getY() == next.getY() + 1) {
+                addPathDirections(Direction.UP);
+            }
+            start = next;
+            next = next.getNext();
+        }
+        this.pathDirections.add(Direction.RIGHT);
+    }
+
+    /*
+     * Add the direction to pathDirection
+     */
+    private void addPathDirections(Direction direction){
+        this.pathDirections.add(direction);
+    }
+
+    //----------------------------Changes from Controller----------------------//
+
+    /*
+     * Create a new tower on the grid
+     */
     public void createTower(int x, int y, TowerType type){
         if(((TowerTile)getTile(x, y)).placeable){
             ATower tower = null;
@@ -140,11 +147,20 @@ public class AMap{
                 case knife: 
                     tower = new KnifeTower(x, y);
                     break;
+                case mallet: 
+                    tower = new MalletTower(x, y);
+                    break;
+                case blowtorch: 
+                    tower = new BlowtorchTower(x, y);
+                    break;
+                case slicer: 
+                    tower = new SlicerTower(x, y);
+                    break;
                 default:
                     System.out.println("Tower type given is not implemented");
                     break;
             }
-            towers.add(tower);
+            this.towers.add(tower);
             getTile(x, y).setPlaceable(false);
             ((TowerTile)getTile(x, y)).setTower(tower);
         }
@@ -153,6 +169,9 @@ public class AMap{
     public void upgradeTower(int x, int y, int upgradeLvl) {
         //getTile(x, y).getTower().upgrade(upgradeLvl);
     }
+
+
+    //----------------------------Public Getter and Setters----------------------//
 
     public ATile getTile(int x, int y){
         return grid[y][x];
@@ -170,13 +189,6 @@ public class AMap{
         return this.startPosition;
     }
 
-    private void setStartPosition() {
-        for (int i = 0; i < this.MAP_HEIGHT; i++) {
-            if (pathGrid[i][0] == 1)
-                this.startPosition = i;
-        }
-    }
-
     public List<ATower> getTowers() {
         return this.towers;
     }
@@ -191,5 +203,4 @@ public class AMap{
     public int[][] getPathGrid() {
         return this.pathGrid;
     }
-
 }
