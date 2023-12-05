@@ -1,19 +1,20 @@
 package Model.Enemies;
 
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 
-import Model.Enums.Direction;
 import Model.Enums.EnemyType;
 
 public class Wave {
     private int currentWave;
     private Queue<Queue<EnemyType>> waves = new LinkedList<Queue<EnemyType>>();
+    private int spawnRate;
+    private final int MAX_SPAWN_RATE = 60;
     
     public Wave(){
         this.currentWave = 0;
         createWaves();
+        this.spawnRate = this.MAX_SPAWN_RATE;
     }
     public Queue<EnemyType> startWave(){
         this.currentWave++;
@@ -45,5 +46,21 @@ public class Wave {
 
     public boolean wavesIsEmpty(){
         return this.waves.isEmpty();
+    }
+
+    public int getCurrentWaveNumber(){
+        return this.currentWave;
+    }
+
+    public void updateSpawnRate(){
+        this.spawnRate--;
+        System.out.println("Current spawnRate: " + this.spawnRate);
+
+    }
+
+    public boolean checkIfSpawnable(){
+        if (this.spawnRate != 0) return false;
+        this.spawnRate = this.MAX_SPAWN_RATE;
+        return true;
     }
 }

@@ -2,11 +2,15 @@ package Model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
+import java.util.LinkedList;
 
 import Controller.Interfaces.ITowerObserver;
 import Model.Enemies.AEnemy;
 import Model.Enemies.EnemyOne;
+import Model.Enemies.Wave;
 import Model.Enums.Direction;
+import Model.Enums.EnemyType;
 import Model.Map.AMap;
 import Model.Map.ATile;
 import Model.Map.MapOne;
@@ -18,18 +22,22 @@ import Model.Towers.TowerType;
 public class MainModel implements ITowerObserver{
     private AMap map;
     private List<AEnemy> enemies = new ArrayList<AEnemy>();
+    private Queue<AEnemy> currentWaveEnemies = new LinkedList<AEnemy>();
     private Player player;
     private boolean alive;
     private boolean activeWave;
+    private Wave allWaves;
 
     public MainModel(){
         this.map = new MapOne();
+        this.allWaves = new Wave();
+        this.currentWaveEnemies = convertAllWavesToAEnemy();
         // Temp Wave thing. Spawns three enemies.
-        for (int i = 0; i <= 2; i++){
-            this.enemies.add(new EnemyOne(this.map.getStartPosition(), 0.02, this.map.getPathDirections()));
-        }
+        // for (int i = 0; i <= 2; i++){
+        //     this.enemies.add(new EnemyOne(this.map.getStartPosition(), 0.02, this.map.getPathDirections()));
+        // }
         //this.enemies.add(new EnemyOne(this.map.getStartPosition(), 1, this.map.getPathDirections()));
-        this.player = new Player(10, 200);
+        this.player = new Player(10, 2);
         this.alive = true;
         this.activeWave = false;
     }
@@ -50,10 +58,16 @@ public class MainModel implements ITowerObserver{
             enemies.remove(enemyToRemove);
         }
 
-        // Spawn a new enemy if the last enemy has walked one tile
-        if(enemies.isEmpty() || enemies.get(enemies.size()-1).getDirectionsSize() < map.getPathDirections().size()-2){
-            enemies.add(new EnemyOne(map.getStartPosition(), 0.02, this.map.getPathDirections()));
+        this.allWaves.updateSpawnRate();
+        if(this.allWaves.checkIfSpawnable() && this.currentWaveEnemies.isEmpty() == false){
+            System.out.println("Test");
+            this.enemies.add(this.currentWaveEnemies.poll());
         }
+
+        // Spawn a new enemy if the last enemy has walked one tile
+        // if(enemies.isEmpty() || enemies.get(enemies.size()-1).getDirectionsSize() < map.getPathDirections().size()-2){
+        //     enemies.add(new EnemyOne(map.getStartPosition(), 0.02, this.map.getPathDirections()));
+        // }
 
 
         for (ATower tower : map.getTowers()){
@@ -96,8 +110,24 @@ public class MainModel implements ITowerObserver{
         return player.getHealth() > 0;
     }
 
+
+    //------------------------Waves----------------------//
+    private Queue<AEnemy> convertAllWavesToAEnemy (){
+        Queue<AEnemy> thisWave = new LinkedList<AEnemy>();
+        Queue<EnemyType> thisWaveType = this.allWaves.startWave();
+        EnemyType currentEnemyType;
+        while (thisWaveType.isEmpty() == false) {
+            currentEnemyType = thisWaveType.poll();
+            if (currentEnemyType == EnemyType.banana) thisWave.add(new EnemyOne(this.map.getStartPosition(), 0.02, this.map.getPathDirections()));
+            //TODO
+            //if statements for every enemytype
+        }
+        return thisWave;
+    }
+
     private boolean activeWave(){
-        return enemies.isEmpty();
+        if (this.enemies.isEmpty() && this.currentWaveEnemies.isEmpty()) return false;
+        return true;
     }
 
     public boolean getAlive(){

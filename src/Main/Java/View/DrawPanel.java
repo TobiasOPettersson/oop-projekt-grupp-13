@@ -170,7 +170,7 @@ public class DrawPanel extends JPanel {
         int spriteSize = 48;
 
         for (AEnemy enemy : model.getEnemies()) {
-            System.out.println("Enemy X: " + enemy.getX() + ", Y: " + enemy.getY()); // DEL
+            //System.out.println("Enemy X: " + enemy.getX() + ", Y: " + enemy.getY()); // DEL
             g.drawImage(sprites.get(28), (int) (enemy.getX() * spriteSize) - offset,
                     (int) (enemy.getY() * spriteSize) - offset, null);
             // Add method that gets the correct sprite for enemies according to

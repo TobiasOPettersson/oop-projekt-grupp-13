@@ -14,7 +14,8 @@ import Model.Map.AMap;
 import Model.Map.MapOne;
 import Model.Enemies.EnemyOne;
 import Model.Enemies.Wave;
-import Model.Enemies.AEnemy;;
+import Model.Enemies.AEnemy;
+import Model.Interfaces.IAttackable;
 
 public class WaveTest {
 
