@@ -28,9 +28,11 @@ public class WidgetButtonTower extends JPanel {
 
     /**
      * The constructor of the tower widget buttonClick
-     * @param cost is the amount of money needed to purchace the tower
-     * @param type is the type of the tower, for example knife or mallet
-     * @param towerController is the tower controller widgit that the button is added to
+     * 
+     * @param cost            is the amount of money needed to purchace the tower
+     * @param type            is the type of the tower, for example knife or mallet
+     * @param towerController is the tower controller widgit that the button is
+     *                        added to
      */
     public WidgetButtonTower(int cost, TowerType type, CreateTowerController towerController) {
         this.type = type;
@@ -42,10 +44,10 @@ public class WidgetButtonTower extends JPanel {
         initTopPanel();
         initBottomPanel();
         setOpacity(true);
-       
 
         /**
-         * When clicked the button calls for its tower controller to handle the mouse click
+         * When clicked the button calls for its tower controller to handle the mouse
+         * click
          */
         addMouseListener(new MouseAdapter() {
             @Override
@@ -55,11 +57,10 @@ public class WidgetButtonTower extends JPanel {
         });
     }
 
-
     /**
      * Initializes the map containing the pats of button images
      */
-    private void initButtonImagePaths(){
+    private void initButtonImagePaths() {
         String resPath = "src\\Main\\Java\\Controller\\res\\";
         buttonImgPaths.put(TowerType.knife, resPath + "knife.png");
         buttonImgPaths.put(TowerType.mallet, resPath + "mallet.png");
@@ -68,18 +69,17 @@ public class WidgetButtonTower extends JPanel {
         buttonImgPaths.put(TowerType.freezer, resPath + "fridge.png");
     }
 
-
     /**
      * Initializes all components of the bottom panel, it contains:
      * An image of the tower
      */
-    private void initTopPanel(){
+    private void initTopPanel() {
         topPanel = new JPanel();
         JLabel towerImageLabel = new JLabel(new ImageIcon(buttonImgPaths.get(type)));
         topPanel.setBackground(Color.orange);
         topPanel.setLayout(new BorderLayout());
         topPanel.add(towerImageLabel, BorderLayout.CENTER);
-        add(topPanel, BorderLayout.CENTER);        
+        add(topPanel, BorderLayout.CENTER);
     }
 
     /**
@@ -87,12 +87,12 @@ public class WidgetButtonTower extends JPanel {
      * A label of the tower name
      * A label of the tower cost
      */
-    private void initBottomPanel(){
+    private void initBottomPanel() {
         bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        bottomPanel.setPreferredSize(new Dimension(100, 30));
+        bottomPanel.setPreferredSize(new Dimension(100, 40));
         bottomPanel.setBackground(Color.PINK);
         bottomPanel.setLayout(new GridLayout(2, 1, 0, 0));
-        
+
         String typeName = Character.toUpperCase(type.name().charAt(0)) + type.name().substring(1);
         JLabel nameLabel = new JLabel(typeName);
         JLabel costLabel = new JLabel(Integer.toString(cost));
@@ -103,13 +103,13 @@ public class WidgetButtonTower extends JPanel {
         add(bottomPanel, BorderLayout.SOUTH);
     }
 
-    public void setOpacity(boolean bool){
-        if(bool){
+    public void setOpacity(boolean bool) {
+        if (bool) {
             setOpaque(false);
             setBackground(new Color(0.0f, 0.0f, 0.0f, 0.5f));
             topPanel.setBackground(new Color(0.0f, 0.0f, 0.0f, 0.5f));
             bottomPanel.setBackground(new Color(0.0f, 0.0f, 0.0f, 0.5f));
-        } else{
+        } else {
             setOpaque(true);
             setBackground(Color.gray);
             topPanel.setBackground(Color.orange);
@@ -117,7 +117,7 @@ public class WidgetButtonTower extends JPanel {
         }
     }
 
-    protected int getCost(){
+    protected int getCost() {
         return cost;
     }
 }

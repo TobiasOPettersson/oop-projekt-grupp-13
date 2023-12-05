@@ -1,6 +1,8 @@
 package Controller;
 
 import java.awt.Color;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -23,9 +25,10 @@ public class PlayButtonController extends JPanel {
      */
     public PlayButtonController(MainModel model) {
         this.model = model;
-        setBackground(Color.red);
-        setSize(120, 75);
-        setBorder(BorderFactory.createEmptyBorder(200, 20, 20, 20));
+        setBackground(Color.pink);
+        setLayout(new GridLayout(1, 1, 0, 0));
+        // setSize(120, 75);
+        // setBorder(BorderFactory.createEmptyBorder(200, 20, 20, 20));
         initButton();
         // initPlayImage();
     }
@@ -35,7 +38,7 @@ public class PlayButtonController extends JPanel {
      */
     private void initButton() {
         JButton button = new JButton();
-        button.setSize(20, 20);
+        button.setSize(50, 50);
         button.setText("PLAY");
         button.addActionListener(e -> model.play());
         add(button);
