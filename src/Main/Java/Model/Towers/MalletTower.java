@@ -1,7 +1,7 @@
 package Model.Towers;
 
 import Model.Enemies.AEnemy;
-import Model.Enemies.EnemyType;
+import Model.Enums.EnemyType;
 import Model.Enums.TargetType;
 import Model.Enums.TowerType;
 import Model.Enums.Upgrade;
