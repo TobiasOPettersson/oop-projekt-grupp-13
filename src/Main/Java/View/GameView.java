@@ -34,7 +34,9 @@ public class GameView extends JFrame {
     CreateTowerController createWidget;
     List<UpgradeTowerController> upgradeWidgets;
 
-    // Constructor
+    /*
+     * Constructor
+     */ 
 
     public GameView(MainModel model) { // Moved initComponents down so setVisible is done last
         importImg();
@@ -47,7 +49,9 @@ public class GameView extends JFrame {
         initComponents();
     }
 
-    // import sprite sheet
+    /*
+     *  import sprite sheet
+    */
     private void importImg() {
         InputStream is = this.getClass().getResourceAsStream("res/spriteatlas.png");
         InputStream is2 = this.getClass().getResourceAsStream("res/knife2.png");
@@ -67,7 +71,7 @@ public class GameView extends JFrame {
         }
     }
 
-    public void update() {
+    public void update(){
         drawPanel.update();
     }
 
@@ -86,11 +90,14 @@ public class GameView extends JFrame {
         }
     }
 
-    // initialize swing window
+    /* 
+     * initialize swing window
+    */
     private void initComponents() {
         setSize(GraphicsDependencies.getWidth(), GraphicsDependencies.getHeight());
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
+        setResizable(false);
     }
 }
