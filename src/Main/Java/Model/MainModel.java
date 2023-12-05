@@ -26,7 +26,6 @@ public class MainModel implements ITowerObserver{
     public MainModel(){
         this.player = new Player(5, 200);
         this.map = new MapOne();
-        map.setPlayer(player);
         // Temp Wave thing. Spawns three enemies.
         for (int i = 0; i <= 0; i++){
             this.enemies.add(new EnemyOne(map.getStartPosition(), 0.02, map.getPathDirections()));
@@ -168,6 +167,7 @@ public class MainModel implements ITowerObserver{
     }
 
     public Player getPlayer() {
+        map.setPlayer(player);
         return player;
     }
 
