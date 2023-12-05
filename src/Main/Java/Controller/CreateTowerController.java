@@ -35,7 +35,7 @@ public class CreateTowerController extends TowerController {
 
         setLayout(new BorderLayout());
 
-        setPreferredSize(new Dimension(300, 100));
+        setPreferredSize(new Dimension(300, 300));
 
         initHeader();
         intiCostAndLife();
@@ -60,7 +60,7 @@ public class CreateTowerController extends TowerController {
      */
     private void intiCostAndLife() {
         JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        labelPanel.setLayout(new GridLayout(2, 1, 0, 0));
+        labelPanel.setLayout(new GridLayout(3, 1, 0, 0));
         JLabel titleLabel = new JLabel("CREATE TOWERS");
         coinsLabel = new JLabel("Coins: ");
         titleLabel.setForeground(Color.BLACK);

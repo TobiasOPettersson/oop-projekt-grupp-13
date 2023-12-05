@@ -91,7 +91,7 @@ public class WidgetButtonTower extends JPanel {
         bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         bottomPanel.setPreferredSize(new Dimension(100, 180));
         bottomPanel.setBackground(Color.PINK);
-        bottomPanel.setLayout(new GridLayout(2, 1, 0, 0));
+        bottomPanel.setLayout(new GridLayout(3, 1, 0, 0));
 
         String typeName = Character.toUpperCase(type.name().charAt(0)) + type.name().substring(1);
         JLabel nameLabel = new JLabel(typeName);
