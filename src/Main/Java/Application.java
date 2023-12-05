@@ -5,9 +5,9 @@ public class Application {
     private final double FPS = 60.0;
     MainModel model = new MainModel();
     GameView view = new GameView(model);
-
+    
     public static void main(String[] args) {
-
+        
         new Application().run();
 
     }

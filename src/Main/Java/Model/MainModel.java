@@ -10,6 +10,8 @@ import Model.Enemies.AEnemy;
 import Model.Enemies.EnemyOne;
 import Model.Enemies.Wave;
 import Model.Enums.Direction;
+import Model.Enums.TowerType;
+import Model.Interfaces.ITargetable;
 import Model.Enums.EnemyType;
 import Model.Map.AMap;
 import Model.Map.ATile;
@@ -17,7 +19,6 @@ import Model.Map.MapOne;
 import Model.Player.Player;
 import Model.Towers.ATower;
 import Model.Towers.AttackTower;
-import Model.Towers.TowerType;
 
 public class MainModel implements ITowerObserver{
     private AMap map;
@@ -29,15 +30,17 @@ public class MainModel implements ITowerObserver{
     private Wave allWaves;
 
     public MainModel(){
+        this.player = new Player(5, 200);
         this.map = new MapOne();
         this.allWaves = new Wave();
         this.currentWaveEnemies = convertAllWavesToAEnemy();
+        map.setPlayer(player);
         // Temp Wave thing. Spawns three enemies.
         // for (int i = 0; i <= 2; i++){
         //     this.enemies.add(new EnemyOne(this.map.getStartPosition(), 0.02, this.map.getPathDirections()));
         // }
         //this.enemies.add(new EnemyOne(this.map.getStartPosition(), 1, this.map.getPathDirections()));
-        this.player = new Player(10, 2);
+        this.player = new Player(10, 200);
         this.alive = true;
         this.activeWave = false;
     }
@@ -47,6 +50,8 @@ public class MainModel implements ITowerObserver{
         AEnemy enemyToRemove = null;
         for (AEnemy enemy : enemies){
             enemy.move();
+            enemy.triggerConditions();
+            enemy.setStagger(false);
             if (enemy.getX() > map.getMapSizeX()) {
                 player.takeDamage(enemy.getDamage());
                 enemyToRemove = enemy;
@@ -73,12 +78,16 @@ public class MainModel implements ITowerObserver{
         for (ATower tower : map.getTowers()){
             if(!tower.isOnCooldown()){
                 if (tower instanceof AttackTower){
-                    AEnemy target = tower.findFirstTarget(enemies);
-                    if(target != null){
-                        ((AttackTower)tower).attack(target);
-                        if (target.getHealth() <= 0) {
-                            player.addMoney(target.getMoney());
-                            enemies.remove(target);
+                    List<AEnemy> targets = tower.findEnemiesInRange(enemies);
+                    if(targets != null){
+                        for(AEnemy target : targets){
+                            ((AttackTower)tower).attack(target);
+                            target.setStaggered(true);
+                            System.out.println(target.getHealth());
+                            if (target.getHealth() <= 0) {
+                                player.addMoney(target.getMoney());
+                                enemies.remove(target);
+                            }
                         }
                     }
                 }
@@ -93,7 +102,7 @@ public class MainModel implements ITowerObserver{
     }
 
     @Override
-    public void createTower(int x, int y, TowerType type){
+    public void createTower(int x, int y, TowerType type) throws Exception{
         map.createTower(x, y, type);
     }
 
@@ -104,6 +113,23 @@ public class MainModel implements ITowerObserver{
 
     public void play(){
         activeWave = true;
+    }
+
+
+    public List<ITargetable> convertEnemiesToTargetables(){
+        List<ITargetable> targetables = new ArrayList<>();
+        for (AEnemy enemy : enemies) {
+            targetables.add(enemy);
+        }
+        return targetables;
+    }
+
+    public List<ITargetable> convertTowersToTargetables(){
+        List<ITargetable> targetables = new ArrayList<>();
+        for (ATower tower : map.getTowers()) {
+            targetables.add(tower);
+        }
+        return targetables;
     }
 
     private boolean alive(){
@@ -171,4 +197,9 @@ public class MainModel implements ITowerObserver{
     public List<ATower> getTowers(){
         return this.map.getTowers();
     }
+
+    public Player getPlayer() {
+        return player;
+    }
+
 }
