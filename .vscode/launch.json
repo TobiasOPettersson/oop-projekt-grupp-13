@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "ImageResizer",
+            "request": "launch",
+            "mainClass": "Controller.ImageResizer",
+            "projectName": "towerdefensegame"
+        },
+        {
+            "type": "java",
             "name": "Application",
             "request": "launch",
             "mainClass": "src.Main.Java.Application",
