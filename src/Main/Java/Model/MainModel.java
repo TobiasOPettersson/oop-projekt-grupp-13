@@ -34,7 +34,6 @@ public class MainModel implements ITowerObserver{
         this.map = new MapOne();
         this.allWaves = new Wave();
         this.currentWaveEnemies = convertAllWavesToAEnemy();
-        map.setPlayer(player);
         this.alive = true;
         this.activeWave = false;
     }
@@ -193,6 +192,7 @@ public class MainModel implements ITowerObserver{
     }
 
     public Player getPlayer() {
+        map.setPlayer(player);
         return player;
     }
 
