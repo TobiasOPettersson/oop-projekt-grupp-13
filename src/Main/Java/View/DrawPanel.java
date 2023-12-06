@@ -27,6 +27,13 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+ * TO DO
+ * sprites for towers should be in one image. They should be like the knife sprites, animated in a row.
+ * animation index should get updated correctly in towers so we need to have a getter in each tower that supplies the correct index.
+ * That index should be used in draw tower method
+ * After that has been done maybe the towers should have their own paint methods same with enemies.
+ */
 public class DrawPanel extends JPanel {
     private GameView gameView;
     private BufferedImage image;
@@ -39,14 +46,15 @@ public class DrawPanel extends JPanel {
     private int gridHeight;
     private ArrayList<BufferedImage> pathSprites = new ArrayList<>();
     private int[][] pathGrid;
-    private int[] selectedTile = new int[]{-1, -1};
-    private int animationIndex = 0;
-    private int animationTick = 0;
+    private int[] selectedTile = new int[] { -1, -1 };
+    
     private BufferedImage[] knifeSprites = new BufferedImage[4];
-/*
- * Constructor
- */
-    public DrawPanel(GameView gameView, MainModel model, BufferedImage image, BufferedImage imageKnife) {
+    private final int SPRITE_SIZE = 48;
+
+    /*
+     * Constructor
+     */
+    //public DrawPanel(GameView gameView, MainModel model, BufferedImage image, BufferedImage imageKnife) {
 
     // Constructor
     public DrawPanel(GameView gameView, MainModel model, BufferedImage image, Map<TowerType, BufferedImage> towerImageMap) {
@@ -97,26 +105,6 @@ public class DrawPanel extends JPanel {
     }
 
     /*
-     * Used to pick what sprite in a animation sequence to show
-     */
-    private void updateAnimation() {
-        animationTick++;
-        if (animationTick >= 10) {
-            animationTick = 0;
-            updateAnimationIndex();
-        }
-    }
-
-    /*
-     * Used in updateAnimation() to cycle sprite indexes
-     */
-    private void updateAnimationIndex() {
-        animationIndex++;
-        if (animationIndex >= 4) {
-            animationIndex = 0;
-        }
-    }
-    /*
     * Create Sprite sheet by taking subimages from image and then scale them
     */
     private void loadSprites() {
@@ -127,16 +115,16 @@ public class DrawPanel extends JPanel {
                 sprites.add(SpriteHelper.scaleSprite(image.getSubimage(x * 32, y * 32, 32, 32), 1.5));
             }
         }
-        for (int i = 0; i < 4; i++){
+        /*for (int i = 0; i < 4; i++){
             knifeSprites[i] = (imageKnife.getSubimage(i * 48, 0, 48, 48));
-        }
+        }*/
     }
 
     /*
      * Creates an array of sprites oriented the correct way and in the correct order according
      * to the pathDirection array
      */
-    private void createPathSprites() { // Behöver fixas, Mycket redundant kod
+    private void createPathSprites() {
         // pathTurn = sprites.get(8)
         int pathTurn = 8;
         // pathStraight = sprites.get(9)
@@ -145,30 +133,18 @@ public class DrawPanel extends JPanel {
         Direction current;
         for (int i = 1; i < this.pathDirections.size(); i++) {
             current = this.pathDirections.get(i);
-            if (previous == Direction.RIGHT && current == Direction.RIGHT) {
-                pathSprites.add(sprites.get(pathStraight)); // >
-            } else if (previous == Direction.RIGHT && current == Direction.DOWN) {
-                pathSprites.add(SpriteHelper.rotateSprite(sprites.get(pathTurn), 90)); // >v
-            } else if (previous == Direction.RIGHT && current == Direction.UP) {
-                pathSprites.add(SpriteHelper.rotateSprite(sprites.get(pathTurn), 180)); // >^
-            } else if (previous == Direction.DOWN && current == Direction.DOWN) {
-                pathSprites.add(SpriteHelper.rotateSprite(sprites.get(pathStraight), 90)); // v
-            } else if (previous == Direction.DOWN && current == Direction.LEFT) {
-                pathSprites.add(SpriteHelper.rotateSprite(sprites.get(pathTurn), 180)); // v<
-            } else if (previous == Direction.DOWN && current == Direction.RIGHT) {
-                pathSprites.add(SpriteHelper.rotateSprite(sprites.get(pathTurn), -90)); // v>
-            } else if (previous == Direction.LEFT && current == Direction.LEFT) {
-                pathSprites.add(sprites.get(pathStraight)); // <
-            } else if (previous == Direction.LEFT && current == Direction.UP) {
-                pathSprites.add(SpriteHelper.rotateSprite(sprites.get(pathTurn), -90)); // <^
-            } else if (previous == Direction.LEFT && current == Direction.DOWN) {
-                pathSprites.add(sprites.get(pathTurn)); // <v
-            } else if (previous == Direction.UP && current == Direction.UP) {
-                pathSprites.add(SpriteHelper.rotateSprite(sprites.get(pathStraight), 90)); // ^
-            } else if (previous == Direction.UP && current == Direction.RIGHT) {
-                pathSprites.add(sprites.get(pathTurn)); // ^>
-            } else if (previous == Direction.UP && current == Direction.LEFT) {
-                SpriteHelper.rotateSprite(sprites.get(pathTurn), 90); // ^<
+            if (previous == Direction.RIGHT && current == Direction.RIGHT || previous == Direction.LEFT && current == Direction.LEFT) {
+                pathSprites.add(sprites.get(pathStraight)); // > || <
+            } else if (previous == Direction.RIGHT && current == Direction.DOWN || previous == Direction.UP && current == Direction.LEFT) {
+                pathSprites.add(SpriteHelper.rotateSprite(sprites.get(pathTurn), 90)); // >v || ^<
+            } else if (previous == Direction.RIGHT && current == Direction.UP || previous == Direction.DOWN && current == Direction.LEFT) {
+                pathSprites.add(SpriteHelper.rotateSprite(sprites.get(pathTurn), 180)); // >^ || v<
+            } else if (previous == Direction.DOWN && current == Direction.DOWN || previous == Direction.UP && current == Direction.UP) {
+                pathSprites.add(SpriteHelper.rotateSprite(sprites.get(pathStraight), 90)); // v || ^
+            } else if (previous == Direction.DOWN && current == Direction.RIGHT || previous == Direction.LEFT && current == Direction.UP) {
+                pathSprites.add(SpriteHelper.rotateSprite(sprites.get(pathTurn), -90)); // v> || <^
+            } else if (previous == Direction.LEFT && current == Direction.DOWN || previous == Direction.UP && current == Direction.RIGHT) {
+                pathSprites.add(sprites.get(pathTurn)); // <v || ^>
             }
             previous = current;
         }
@@ -177,8 +153,6 @@ public class DrawPanel extends JPanel {
     private void drawMap(Graphics g) {
         drawTerrain(g);
         drawPath(g);
-        drawTowers(g);
-        drawEnemies(g);
     }
 
     /*
@@ -214,13 +188,19 @@ public class DrawPanel extends JPanel {
     /*
      * Use the towerArray to draw towers 
      */
+
+     /*private void drawTowers(Graphics g) {
+        for (ATower tower : model.getMap().getTowers()) { // Tror att detta är det bättre sättet att göra det på då kan alla enemies och towers ha sina egna animation timers utan att view ska behöva gå in i alla objekt och läsa av.
+            tower.paint(g);
+        }
+    }*/
     private void drawTowers(Graphics g) {
         for (ATower tower : model.getMap().getTowers()) {
             // TowerSprite: Knife
             // System.out.println("Enemy X: " + enemy.getX() + ", Y: " + enemy.getY()); //
             // DEL
-                    //g.drawImage(knifeSprites[animationIndex], (int) (tower.getX() * 48) - 24, (int) tower.getY() * 48, null); // implement animations
-            g.drawImage(towerImageMap.get(tower.getTowerType()), (int) tower.getX()*48, (int) tower.getY()*48, null);
+          //g.drawImage(knifeSprites[animationIndex], (int) (tower.getX() * 48) - 24, (int) tower.getY() * 48, null); // implement animations
+            g.drawImage(towerImageMap.get(tower.getTowerType()), (int) tower.getX()*48, (int) tower.getY()*48, null); // Need to make it so tower.getTowerType will accept an animation index
             Graphics2D g2 = (Graphics2D) g;
             int rangeCircleX = (int)((tower.getX()-tower.getRange()));
             int rangeCircleY = (int)((tower.getY()-tower.getRange()));
@@ -250,17 +230,15 @@ public class DrawPanel extends JPanel {
         int plains = 18;
         // Water = sprites.get(60)
         int water = 60;
-        // size of sprites, originalsize * scale = 32*1.5 = 48
-        int sSize = 48;
 
         for (int i = 0; i < gridWidth; i++) {
             for (int j = 0; j < gridHeight; j++) {
                 switch (mapGrid[j][i].getTerrain()) {
                     case Plains:
-                        g.drawImage(sprites.get(plains), i * sSize, j * sSize, null);
+                        g.drawImage(sprites.get(plains), i * SPRITE_SIZE, j * SPRITE_SIZE, null);
                         break;
                     case Water:
-                        g.drawImage(sprites.get(water), i * sSize, j * sSize, null);
+                        g.drawImage(sprites.get(water), i * SPRITE_SIZE, j * SPRITE_SIZE, null);
                         break;
                 }
             }

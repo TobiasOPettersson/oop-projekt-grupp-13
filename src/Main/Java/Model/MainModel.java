@@ -22,6 +22,7 @@ public class MainModel implements ITowerObserver{
     private Player player;
     private boolean alive;
     private boolean activeWave;
+    private int animationTick = 0;
 
     public MainModel(){
         this.map = new MapOne();
@@ -36,6 +37,7 @@ public class MainModel implements ITowerObserver{
     }
 
     public void run(){
+        updateAnimationTick();
         if(activeWave){
         AEnemy enemyToRemove = null;
         for (AEnemy enemy : enemies){
@@ -96,6 +98,20 @@ public class MainModel implements ITowerObserver{
         activeWave = true;
     }
 
+
+    /*
+     * Used to pick what sprite in a animation sequence to show
+     */
+    private void updateAnimationTick() {
+        animationTick++;
+        if (animationTick >= 10) {
+            animationTick = 0;
+            for (ATower tower : map.getTowers()){
+                tower.updateAnimationIndex();
+            }
+            
+        }
+    }
 
     public List<ITargetable> convertEnemiesToTargetables(){
         List<ITargetable> targetables = new ArrayList<>();
