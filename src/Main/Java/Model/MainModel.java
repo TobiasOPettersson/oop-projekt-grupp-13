@@ -35,12 +35,6 @@ public class MainModel implements ITowerObserver{
         this.allWaves = new Wave();
         this.currentWaveEnemies = convertAllWavesToAEnemy();
         map.setPlayer(player);
-        // Temp Wave thing. Spawns three enemies.
-        // for (int i = 0; i <= 2; i++){
-        //     this.enemies.add(new EnemyOne(this.map.getStartPosition(), 0.02, this.map.getPathDirections()));
-        // }
-        //this.enemies.add(new EnemyOne(this.map.getStartPosition(), 1, this.map.getPathDirections()));
-        this.player = new Player(10, 200);
         this.alive = true;
         this.activeWave = false;
     }
