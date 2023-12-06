@@ -54,10 +54,10 @@ public class GameView extends JFrame {
     */
     private void importImg() {
         InputStream is = this.getClass().getResourceAsStream("res/spriteatlas.png");
-        InputStream is2 = this.getClass().getResourceAsStream("res/knife2.png");
-        InputStream isMallet = this.getClass().getResourceAsStream("res/mallet.png");
-        InputStream isBlowtorch = this.getClass().getResourceAsStream("res/blowtorch.png");
-        InputStream isSlicer = this.getClass().getResourceAsStream("res/slicer.png");
+        InputStream is2 = this.getClass().getResourceAsStream("res/knifeTower.png");
+        InputStream isMallet = this.getClass().getResourceAsStream("res/malletTower.png");
+        InputStream isBlowtorch = this.getClass().getResourceAsStream("res/blowtorchTower.png");
+        InputStream isSlicer = this.getClass().getResourceAsStream("res/slicerTower.png");
 
         try {
             image = ImageIO.read(is);

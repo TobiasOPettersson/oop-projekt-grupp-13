@@ -48,7 +48,10 @@ public class DrawPanel extends JPanel {
     private int[][] pathGrid;
     private int[] selectedTile = new int[] { -1, -1 };
     
-    private BufferedImage[] knifeSprites = new BufferedImage[4];
+    private BufferedImage[] knifeTowerSprites = new BufferedImage[4];
+    private BufferedImage[] malletTowerSprites = new BufferedImage[4];
+    private BufferedImage[] blowtorchTowerSprites = new BufferedImage[4];
+    private BufferedImage[] slicerTowerSprites = new BufferedImage[4];
     private final int SPRITE_SIZE = 48;
 
     /*
@@ -115,9 +118,18 @@ public class DrawPanel extends JPanel {
                 sprites.add(SpriteHelper.scaleSprite(image.getSubimage(x * 32, y * 32, 32, 32), 1.5));
             }
         }
-        /*for (int i = 0; i < 4; i++){
-            knifeSprites[i] = (imageKnife.getSubimage(i * 48, 0, 48, 48));
-        }*/
+        for (int i = 0; i < 4; i++){
+            knifeTowerSprites[i] = (towerImageMap.get(TowerType.knife).getSubimage(i * 48, 0, 48, 48));
+        }
+        for (int i = 0; i < 4; i++){
+            malletTowerSprites[i] = (towerImageMap.get(TowerType.mallet).getSubimage(i * 48, 0, 48, 48));
+        }
+        for (int i = 0; i < 4; i++){
+            blowtorchTowerSprites[i] = (towerImageMap.get(TowerType.blowtorch).getSubimage(i * 48, 0, 48, 48));
+        }
+        for (int i = 0; i < 4; i++){
+            slicerTowerSprites[i] = (towerImageMap.get(TowerType.slicer).getSubimage(i * 48, 0, 48, 48));
+        }
     }
 
     /*
@@ -195,12 +207,32 @@ public class DrawPanel extends JPanel {
         }
     }*/
     private void drawTowers(Graphics g) {
+        TowerType towerType;
         for (ATower tower : model.getMap().getTowers()) {
             // TowerSprite: Knife
             // System.out.println("Enemy X: " + enemy.getX() + ", Y: " + enemy.getY()); //
             // DEL
           //g.drawImage(knifeSprites[animationIndex], (int) (tower.getX() * 48) - 24, (int) tower.getY() * 48, null); // implement animations
-            g.drawImage(towerImageMap.get(tower.getTowerType()), (int) tower.getX()*48, (int) tower.getY()*48, null); // Need to make it so tower.getTowerType will accept an animation index
+            //g.drawImage(towerImageMap.get(tower.getTowerType()), (int) tower.getX()*48, (int) tower.getY()*48, null); // Need to make it so tower.getTowerType will accept an animation index
+            towerType = tower.getTowerType();
+            switch (towerType) {
+                case knife:
+                    g.drawImage(knifeTowerSprites[tower.getAnimationIndex()], (int) (tower.getX() * 48) - 24, (int) tower.getY() * 48, null);
+                    break;
+            
+                case mallet:
+                    g.drawImage(malletTowerSprites[tower.getAnimationIndex()], (int) (tower.getX() * 48) - 24, (int) tower.getY() * 48, null);
+                    break;
+
+                case blowtorch: 
+                    g.drawImage(blowtorchTowerSprites[tower.getAnimationIndex()], (int) (tower.getX() * 48) - 24, (int) tower.getY() * 48, null);
+                    break;
+
+                case slicer:
+                    g.drawImage(slicerTowerSprites[tower.getAnimationIndex()], (int) (tower.getX() * 48) - 24, (int) tower.getY() * 48, null);
+                    break;
+            }
+            
             Graphics2D g2 = (Graphics2D) g;
             int rangeCircleX = (int)((tower.getX()-tower.getRange()));
             int rangeCircleY = (int)((tower.getY()-tower.getRange()));
@@ -269,7 +301,6 @@ public class DrawPanel extends JPanel {
     }
 
     public void update() {
-        updateAnimation();
         repaint();
     }
 

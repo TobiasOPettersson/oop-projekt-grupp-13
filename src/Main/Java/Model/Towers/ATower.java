@@ -120,20 +120,23 @@ public abstract class ATower implements ITargetable {
      * Updates animationIndex when the tower is not on cooldown
      */
     public void updateAnimationIndex() {
-        if (!isOnCooldown()) {
+        //if (!isOnCooldown()) {
             animationIndex++;
             if (animationIndex >= 4) {
                 animationIndex = 0;
-            }
+            /*}
         } else {
             if (animationIndex != 0) {
                 animationIndex++;
                 if (animationIndex >= 4) {
                     animationIndex = 0;
                 }
-            }
+            }*/
+            //animationIndex = 0;
         }
-
+    }
+    public void resetAnimation(){
+        animationIndex = 0;
     }
 
     /**
@@ -155,6 +158,11 @@ public abstract class ATower implements ITargetable {
     public TowerType getTowerType() {
         return towerType;
     }
+
+    public int getAnimationIndex(){
+        return animationIndex;
+    }
+        
 
     @Override
     public double getX() {
