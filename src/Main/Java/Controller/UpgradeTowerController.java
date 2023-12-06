@@ -1,6 +1,6 @@
 package Controller;
 import Controller.Interfaces.ITowerObserver;
-import Model.Towers.TowerType;
+import Model.Enums.TowerType;
 
 public class UpgradeTowerController extends TowerController{
     TowerType towerType;
@@ -22,5 +22,11 @@ public class UpgradeTowerController extends TowerController{
     @Override
     public void notifyObservers(TowerType towerType) {
         getObserver().upgradeTower(getSavedMousePosX(), getSavedMousePosY(), 0);
+    }
+
+    @Override
+    public void updateMoney(int curMoney) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'updateMoney'");
     }
 }

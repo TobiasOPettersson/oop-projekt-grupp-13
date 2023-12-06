@@ -3,6 +3,7 @@ package Model.Enemies;
 import java.util.List;
 
 import Model.Enums.Direction;
+import Model.Enums.EnemyType;
 
 /**
  * A sub-class representing EnemyOne in the game.
@@ -11,6 +12,6 @@ import Model.Enums.Direction;
 public class EnemyOne extends AEnemy{
     
     public EnemyOne(double y, double speed, List<Direction> directions) {
-        super(1, y, speed, EnemyType.tomato, directions, 1, 1);
+        super(100, y, speed, EnemyType.tomato, directions, 1, 1);
     }
 }

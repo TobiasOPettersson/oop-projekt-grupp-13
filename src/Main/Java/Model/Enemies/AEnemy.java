@@ -1,9 +1,14 @@
 package Model.Enemies;
 
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import Model.Enums.Condition;
 import Model.Enums.Direction;
+import Model.Enums.EnemyType;
 import Model.Interfaces.IMovable;
 import Model.Interfaces.ITargetable;
 
@@ -15,23 +20,34 @@ public abstract class AEnemy implements IMovable, ITargetable {
     private int health; //health points
     private double x, y; //position
     private double speed; //movement speed of an enemy
+    private double maxSpeed;
     private EnemyType type; //The type of enemy
     private List<Direction> directions; //List of directions for the enemy to follow when moving
     private int damage;
     private int moneyBag;
     private double tileOffset = 0.5;
+    private boolean isStaggered = false;
+    private HashMap<Condition, Integer> conditions;
     
     public AEnemy(int health, double y, double speed, EnemyType type, List<Direction> directions, int damage, int moneyBag) {
         this.health = health;
         this.x = 0;
         this.y = y + tileOffset;
         this.speed = speed;
+        this.maxSpeed = speed;
         this.type = type;
         this.directions = directions;
         this.damage = damage;
         this.moneyBag = moneyBag;
+        initConditionMap();
     } 
     
+    private void initConditionMap(){
+        conditions = new HashMap<Condition, Integer>();
+        conditions.put(Condition.chilled, 0);
+        conditions.put(Condition.superChilled, 0);
+        conditions.put(Condition.onFire, 0);
+    }
     /*
      * Computes the horizontal vector.
      * Returns the horizontal vector depending on an enemy's direciton.
@@ -192,6 +208,7 @@ public abstract class AEnemy implements IMovable, ITargetable {
                 oneAxisMove(h, v);
             }
         }
+        speed = maxSpeed;
     }
 
     /*
@@ -203,6 +220,30 @@ public abstract class AEnemy implements IMovable, ITargetable {
             moveEnemy();
         }
     }
+
+    public void triggerConditions(){
+        if(conditions.get(Condition.chilled) > 0){
+            speed = maxSpeed*0.5;
+        } else if(conditions.get(Condition.superChilled) > 0){
+            speed = maxSpeed*0.2;
+        } else{
+            speed = maxSpeed;
+        }
+        decrementConditionDurations();
+    }
+
+    public void decrementConditionDurations(){
+        for (Map.Entry<Condition, Integer> entry : conditions.entrySet()) {
+            if(entry.getValue() > 0){
+                conditions.put(entry.getKey(), entry.getValue() - 1);
+            }
+        }
+    }
+
+    public void setStagger(boolean bool){
+        isStaggered = bool;
+    }
+
        
     // -------- Getters and setters ---------
 
@@ -219,7 +260,29 @@ public abstract class AEnemy implements IMovable, ITargetable {
     public int getDamage() {
         return this.damage;
     }
+
+    public boolean isChilled(){
+        return conditions.get(Condition.chilled) > 0 || conditions.get(Condition.superChilled) > 0; 
+    }
+
+    public void setCondition(Condition condition, int duration){
+        if (conditions.get(condition) < duration){
+            conditions.put(condition, duration);
+        }
+    }
+
+    public EnemyType getType(){
+        return type;
+    }
     
+    public void setStaggered(boolean bool){
+        isStaggered = bool;
+    }
+
+    public boolean isStaggered(){
+        return isStaggered;
+    }
+
     /*
      * Updates the enemy health depending on the damage it takes
      */

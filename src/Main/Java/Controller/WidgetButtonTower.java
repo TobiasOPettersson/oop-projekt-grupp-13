@@ -5,20 +5,23 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import Model.Towers.TowerType;
+import Model.Enums.TowerType;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.Map;
 
 public class WidgetButtonTower extends JPanel {
-
+    JPanel topPanel;
+    JPanel bottomPanel;
     private TowerType type;
     private int cost;
     private Map<TowerType, String> buttonImgPaths = new HashMap<>();
@@ -32,13 +35,14 @@ public class WidgetButtonTower extends JPanel {
     public WidgetButtonTower(int cost, TowerType type, CreateTowerController towerController) {
         this.type = type;
         this.cost = cost;
-        
         setSize(new Dimension(100, 200));
         setBackground(Color.gray);
         setLayout(new BorderLayout());
         initButtonImagePaths();
         initTopPanel();
         initBottomPanel();
+        setOpacity(true);
+       
 
         /**
          * When clicked the button calls for its tower controller to handle the mouse click
@@ -61,15 +65,16 @@ public class WidgetButtonTower extends JPanel {
         buttonImgPaths.put(TowerType.mallet, resPath + "mallet.png");
         buttonImgPaths.put(TowerType.blowtorch, resPath + "blowtorch.png");
         buttonImgPaths.put(TowerType.slicer, resPath + "slicer.png");
+        buttonImgPaths.put(TowerType.freezer, resPath + "fridge.png");
     }
+
 
     /**
      * Initializes all components of the bottom panel, it contains:
      * An image of the tower
      */
     private void initTopPanel(){
-        JPanel topPanel = new JPanel();
-        System.out.println(buttonImgPaths.get(type));
+        topPanel = new JPanel();
         JLabel towerImageLabel = new JLabel(new ImageIcon(buttonImgPaths.get(type)));
         topPanel.setBackground(Color.orange);
         topPanel.setLayout(new BorderLayout());
@@ -83,7 +88,7 @@ public class WidgetButtonTower extends JPanel {
      * A label of the tower cost
      */
     private void initBottomPanel(){
-        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         bottomPanel.setPreferredSize(new Dimension(100, 30));
         bottomPanel.setBackground(Color.PINK);
         bottomPanel.setLayout(new GridLayout(2, 1, 0, 0));
@@ -96,5 +101,23 @@ public class WidgetButtonTower extends JPanel {
         bottomPanel.add(nameLabel);
         bottomPanel.add(costLabel);
         add(bottomPanel, BorderLayout.SOUTH);
+    }
+
+    public void setOpacity(boolean bool){
+        if(bool){
+            setOpaque(false);
+            setBackground(new Color(0.0f, 0.0f, 0.0f, 0.5f));
+            topPanel.setBackground(new Color(0.0f, 0.0f, 0.0f, 0.5f));
+            bottomPanel.setBackground(new Color(0.0f, 0.0f, 0.0f, 0.5f));
+        } else{
+            setOpaque(true);
+            setBackground(Color.gray);
+            topPanel.setBackground(Color.orange);
+            bottomPanel.setBackground(Color.pink);
+        }
+    }
+
+    protected int getCost(){
+        return cost;
     }
 }

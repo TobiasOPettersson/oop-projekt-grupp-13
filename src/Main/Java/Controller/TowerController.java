@@ -5,12 +5,13 @@ import static java.util.Map.entry;
 import java.awt.Dimension;
 import javax.swing.JPanel;
 
+import Controller.Interfaces.IMoneyObserver;
 import Controller.Interfaces.ITowerObserver;
 import Controller.Interfaces.ITowerSubject;
-import Model.Towers.TowerType;
+import Model.Enums.TowerType;
 import View.GraphicsDependencies;
 
-public abstract class TowerController extends JPanel implements ITowerSubject{
+public abstract class TowerController extends JPanel implements ITowerSubject, IMoneyObserver{
     private int savedMousePosX;
     private int savedMousePosY;
     private ITowerObserver observer;
@@ -31,8 +32,9 @@ public abstract class TowerController extends JPanel implements ITowerSubject{
 
     /**
      * When a button is clicked this method calls notifyObservers
+     * @throws Exception
      */
-    protected void handleButtonClick(TowerType type) {
+    protected void handleButtonClick(TowerType type) throws Exception {
         notifyObservers(type);
     }
 

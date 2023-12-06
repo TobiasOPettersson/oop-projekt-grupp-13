@@ -1,5 +1,10 @@
 package Model.Towers;
 
+import Model.Enums.EnemyType;
+import Model.Enums.TargetType;
+import Model.Enums.TowerType;
+import Model.Enums.Upgrade;
+
 public class SlicerTower extends AttackTower{
 
     /**
@@ -8,7 +13,31 @@ public class SlicerTower extends AttackTower{
      * @param y the y-position of the tower as a grid-index, i.e. not the y-position of the sprite in view 
      */
     public SlicerTower(int x, int y) {
-        super(x, y, 2, 1, 0, 30, TowerType.slicer, 2);
-        setTargetTypes(TargetType.first, TargetType.enemies);
+        super(x, y, 2, 1, 0, 30, TowerType.slicer, 2, TargetType.first, TargetType.enemies);
+    }
+
+    @Override
+    public void upgrade(Upgrade upgrade){
+        switch (upgrade) {
+            case IncreasedSpeed1:
+                    setMaxCooldown(getMaxCooldown() - 5);
+                break;
+            case IncreasedDamage1:
+                setDamage(getDamage() + 1);
+                break;
+            default:
+                System.out.println("Tower  doesn't have that upgrade");
+                break;
+        }
+    }
+
+    @Override
+    protected int getDamageWithTypeModifications(EnemyType type) {
+        switch (type) {
+            case cheese:
+                return getDamage()*2;   
+            default:
+                return getDamage();
+        }
     }
 }

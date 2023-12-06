@@ -1,6 +1,10 @@
 package Model.Towers;
 
 import Model.Enemies.AEnemy;
+import Model.Enums.EnemyType;
+import Model.Enums.TargetType;
+import Model.Enums.TowerType;
+import Model.Enums.Upgrade;
 
 public class MalletTower extends AttackTower{
 
@@ -10,7 +14,38 @@ public class MalletTower extends AttackTower{
      * @param y the y-position of the tower as a grid-index, i.e. not the y-position of the sprite in view 
      */
     public MalletTower(int x, int y) {
-        super(x, y, 3, 1, 1, 200, TowerType.mallet, 3);
-        setTargetTypes(TargetType.first, TargetType.enemies);
+        super(x, y, 3, 1, 1, 200, TowerType.mallet, 3, TargetType.first, TargetType.enemies);
     }
+   
+    @Override
+    public void upgrade(Upgrade upgrade){
+        switch (upgrade) {
+            case IncreaseAoeRange1:
+                setAoeRange(getAoeRange() + 0.5);
+                break;
+            case IncreasedRange1:
+                    setRange(getRange() + 0.5);
+                break;
+            case IncreasedDamage1:
+            case IncreasedDamage2:
+                setDamage(getDamage() + 1);
+                break;
+            default:
+                System.out.println("Tower  doesn't have that upgrade");
+                break;
+        }
+    }
+
+    @Override
+    protected int getDamageWithTypeModifications(EnemyType type) {
+        switch (type) {
+            case tomato:
+                return getDamage()*2;   
+            case cheese:
+                return getDamage()-3;
+            default:
+                return getDamage();
+        }
+    }
+
 }

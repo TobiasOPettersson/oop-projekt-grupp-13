@@ -1,12 +1,18 @@
 package Model.Towers;
 
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
 import Model.Enemies.AEnemy;
+import Model.Enums.TargetType;
+import Model.Enums.TowerType;
+import Model.Enums.Upgrade;
 import Model.Interfaces.ITargetable;
+import Model.Interfaces.IUpgradable;
 
-public abstract class ATower implements ITargetable {
+
+public abstract class ATower implements ITargetable, IUpgradable{
     private double x;
     private double y;
     private int cost;
@@ -16,25 +22,21 @@ public abstract class ATower implements ITargetable {
     private int maxCooldown;
     private TowerType towerType;
     private TargetType[] targetType;
+    private List<Upgrade> upgrades = new ArrayList<>();
+    private Point2D.Double targetPosition;
     private int animationIndex;
 
-    /**
-     * Constructor of abstract class ATower
-     * 
-     * @param x           the x-position of the tower as a grid-index, i.e. not the
-     *                    x-position of the sprite in view
-     * @param y           the y-position of the tower as a grid-index, i.e. not the
-     *                    y-position of the sprite in view
-     * @param cost        is the amount of money needed to buy one tower
-     * @param range       is the range of the towers ability
-     * @param aoeRange    is the aoerange of the towers ability, 0 if the ability
-     *                    isn't an aoe
-     * @param maxCooldown is the maximum cooldown of the towers ability, the
-     *                    variable cooldown will reset to this after an ability has
-     *                    been used
-     * @param towerType   is the type of the tower, for example knife or mallet
-     */
-    public ATower(double x, double y, int cost, double range, double aoeRange, int maxCooldown, TowerType towerType) {
+   /**
+    * Constructor of abstract class ATower
+    * @param x the x-position of the tower as a grid-index, i.e. not the x-position of the sprite in view
+    * @param y the y-position of the tower as a grid-index, i.e. not the y-position of the sprite in view 
+    * @param cost is the amount of money needed to buy one tower
+    * @param range is the range of the towers ability 
+    * @param aoeRange is the aoerange of the towers ability, 0 if the ability isn't an aoe 
+    * @param maxCooldown is the maximum cooldown of the towers ability, the variable cooldown will reset to this after an ability has been used
+    * @param towerType is the type of the tower, for example knife or mallet
+    */
+    public ATower(double x, double y, int cost, double range, double aoeRange, int maxCooldown, TowerType towerType, TargetType nTargets, TargetType targetType){
         this.x = x;
         this.y = y;
         this.cost = cost;
@@ -43,6 +45,8 @@ public abstract class ATower implements ITargetable {
         this.maxCooldown = maxCooldown;
         this.towerType = towerType;
         this.animationIndex = 0;
+        this.targetPosition = null;
+        setTargetTypes(nTargets, targetType);
     }
 
     /**
@@ -54,10 +58,13 @@ public abstract class ATower implements ITargetable {
     public List<AEnemy> findEnemiesInRange(List<AEnemy> enemies) {
         List<AEnemy> targets = new ArrayList<>();
         for (AEnemy enemy : enemies) {
-            if (inRangeOf(this, enemy, range)) {
-                targets.add(enemy);
-                if (targetType[0] == TargetType.first) {
-                    targets.addAll(findAoeTargets(enemy, enemies));
+            if(inRangeOf(this, enemy, range)){
+                targets.add(enemy);     
+                if(targetType[0] == TargetType.first){
+                    targetPosition = new Point2D.Double(enemy.getX(), enemy.getY());
+                    if(aoeRange != 0){
+                        targets.addAll(findAoeTargets(enemy, enemies));
+                    }
                     return targets;
                 }
             }
@@ -77,7 +84,7 @@ public abstract class ATower implements ITargetable {
      */
     public List<AEnemy> findAoeTargets(AEnemy source, List<AEnemy> enemies) {
         List<AEnemy> aoeTargets = new ArrayList<>();
-        if (aoeRange != 0) {
+  
             List<AEnemy> aoeTargetables = enemies;
             aoeTargetables.remove(source);
             for (AEnemy enemy : aoeTargetables) {
@@ -85,7 +92,6 @@ public abstract class ATower implements ITargetable {
                     aoeTargets.add(enemy);
                 }
             }
-        }
         return aoeTargets;
     }
 
@@ -101,7 +107,6 @@ public abstract class ATower implements ITargetable {
         double distance = Math
                 .sqrt(Math.pow(source.getX() - targetable.getX(), 2) + Math.pow(source.getY() - targetable.getY(), 2));
         distance -= 0.6;
-        System.out.println(distance);
         return distance <= range;
     }
 
@@ -182,8 +187,48 @@ public abstract class ATower implements ITargetable {
         return range;
     }
 
-    public void setTargetTypes(TargetType targetable, TargetType target) {
-        targetType = new TargetType[] { target, targetable };
+    public void setTargetTypes(TargetType targetable, TargetType target){
+        targetType = new TargetType[]{targetable, target};
+    }
+
+    public TargetType[] getTargetTypes() {
+        return targetType;
+    }
+
+    public void setRange(double range) {
+        this.range = range;
+    }
+
+    protected void addUpgrade(Upgrade upgrade){
+        upgrades.add(upgrade);
+    }
+
+    protected boolean hasUpgrade(Upgrade targetUpgrade){
+        return upgrades.contains(targetUpgrade);
+    }
+
+    public void setMaxCooldown(int maxCooldown) {
+        this.maxCooldown = maxCooldown;
+    }
+
+    public int getMaxCooldown() {
+        return maxCooldown;
+    }
+
+    protected double getAoeRange() {
+        return aoeRange;
+    }
+
+    protected void setAoeRange(double aoeRange) {
+        this.aoeRange = aoeRange;
+    }
+
+    public Point2D.Double getTargetPosition() {
+        return targetPosition;
+    }
+
+    public void setTargetPosition(Point2D.Double point) {
+        targetPosition = point;
     }
 
     /**
