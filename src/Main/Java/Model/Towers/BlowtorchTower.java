@@ -1,11 +1,14 @@
 package Model.Towers;
 
+import Model.Enemies.AEnemy;
+import Model.Enums.Condition;
 import Model.Enums.EnemyType;
 import Model.Enums.TargetType;
 import Model.Enums.TowerType;
 import Model.Enums.Upgrade;
 
 public class BlowtorchTower extends AttackTower{
+    int burnDuration = 2;
 
     /**
      * Constructor for knife tower that uses the default attack from AttackTower
@@ -14,41 +17,37 @@ public class BlowtorchTower extends AttackTower{
      */
     public BlowtorchTower(int x, int y) {
         super(x, y, 4, 3, 0.5, 10, TowerType.blowtorch, 1, TargetType.first, TargetType.enemies);
+        upgradeMap.put(Upgrade.AoeRange, 0.2);
+        upgradeMap.put(Upgrade.Range, 0.5);
+        upgradeMap.put(Upgrade.Damage, 1);
+        upgradeMap.put(Upgrade.SetOnFire, 0);
     }
 
-
     @Override
-    public void upgrade(Upgrade upgrade){
-        switch (upgrade) {
-            case IncreaseAoeRange1:
-            case IncreaseAoeRange2:
-                setAoeRange(getAoeRange() + 0.2);
-                addUpgrade(upgrade);
-            break;
-            case IncreasedRange1:
-                setRange(getRange() + 0.5);
-                addUpgrade(upgrade);
-                break;
-            case IncreasedDamage1:
-            case IncreasedDamage2:
-                setDamage(getDamage() + 1);
-                addUpgrade(upgrade);
-                break;
-            default:
-                System.out.println("Tower  doesn't have that upgrade");
-                break;
+    public void attack(AEnemy target) {
+        if(target != null){
+            System.out.println(getDamage(target.getType()));
+            if(hasUpgrade(Upgrade.SetOnFire)){
+                target.setCondition(Condition.onFire, burnDuration);
+            }
+            resetCooldown();
         }
-    }
+    }  
 
+    /**
+     * Blowtorch does more damage to chickens and less to cheese
+     * @param type The type of enemy that the tower does increased or decreased damage to
+     * @return The damage after modifications
+     */
     @Override
-    protected int getDamageWithTypeModifications(EnemyType type) {
+    protected int getDamage(EnemyType type) {
         switch (type) {
             case chicken:
-                return getDamage()*2;   
+                return damage*2;
             case cheese:
-                return getDamage()-1;
+                return damage-1;
             default:
-                return getDamage();
+                return damage;
         }
     }
 }

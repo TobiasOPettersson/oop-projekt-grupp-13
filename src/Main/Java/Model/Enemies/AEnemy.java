@@ -229,6 +229,9 @@ public abstract class AEnemy implements IMovable, ITargetable {
         } else{
             speed = maxSpeed;
         }
+        if(conditions.get(Condition.onFire) > 0){
+            health -= 1;
+        }
         decrementConditionDurations();
     }
 

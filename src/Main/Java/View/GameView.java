@@ -7,10 +7,11 @@ import javax.swing.LayoutStyle;
 import Controller.CreateTowerController;
 import Controller.UpgradeTowerController;
 import Controller.Interfaces.IMoneyObserver;
-import Controller.Interfaces.ITowerObserver;
-import Controller.Interfaces.ITowerSubject;
+import Controller.Interfaces.ITowerUpgradeObserver;
+import Controller.Interfaces.IUpgradeTowerSubject;
 import Model.MainModel;
 import Model.Enums.TowerType;
+import Model.Enums.Upgrade;
 import Model.Map.AMap;
 import Model.Map.TowerTile;
 import Model.Towers.ATower;
@@ -32,8 +33,8 @@ public class GameView extends JFrame {
     DrawPanel drawPanel;
     private BufferedImage image;
     private Map<TowerType, BufferedImage> towerImageMap = new HashMap<TowerType, BufferedImage>();
-    CreateTowerController createWidget;
-    List<UpgradeTowerController> upgradeWidgets;
+    CreateTowerController createWidgit;
+    List<UpgradeTowerController> upgradeWidgits;
 
     // Constructor
 
@@ -44,11 +45,31 @@ public class GameView extends JFrame {
         setLayout(null);
         drawPanel.setBounds(0, 0, 960, 480);
         add(drawPanel);
-        createWidget = new CreateTowerController(this.model);
-        createWidget.setBounds(0, 480, 960, 300);
-        add(createWidget);
-        model.getPlayer().setMoneyObservers(getMoneyObservers());
+        initWidgits();
         initComponents();
+    }
+
+    private void initWidgits(){
+        upgradeWidgits = List.of(
+            new UpgradeTowerController(model, TowerType.knife),
+            new UpgradeTowerController(model, TowerType.mallet),
+            new UpgradeTowerController(model, TowerType.blowtorch),
+            new UpgradeTowerController(model, TowerType.slicer),
+            new UpgradeTowerController(model, TowerType.freezer)
+        );
+
+        for(UpgradeTowerController upgradeWidgit : upgradeWidgits){
+            upgradeWidgit.setBounds(0, 480, 960, 300);
+            add(upgradeWidgit);
+            upgradeWidgit.setVisible(false);
+        }
+
+        createWidgit = new CreateTowerController(drawPanel);
+        createWidgit.setBounds(0, 480, 960, 300);
+        add(createWidgit);
+        createWidgit.setVisible(true);
+
+        model.getPlayer().setMoneyObservers(getMoneyObservers());
     }
 
     // import sprite sheet
@@ -76,20 +97,21 @@ public class GameView extends JFrame {
         drawPanel.update();
     }
 
-    public void openWidgit(int x, int y) {
-        if (model.getMap().getTile(x, y).placeable) {
-            createWidget.setVisible(true);
-            createWidget.setSavedMousePos(x, y);
-        } else {
-            for (UpgradeTowerController upgradeWidget : upgradeWidgets) {
-                TowerType type = ((TowerTile) model.getMap().getTile(x, y)).getTower().getTowerType(); // too much
-                                                                                                       // method
-                                                                                                       // chaining?
-                if (type.equals(upgradeWidget.getTowerType())) {
-                    upgradeWidget.setVisible(true);
-                    upgradeWidget.setSavedMousePos(x, y);
-                }
+    public void openUpgradeWidgit(int x, int y, TowerType type, List<Upgrade> currentUpgrades) {
+        createWidgit.setVisible(true);
+        for (UpgradeTowerController upgradeWidget : upgradeWidgits) {
+            if (type.equals(upgradeWidget.getTowerType())) {
+                upgradeWidget.setVisible(true);
+                upgradeWidget.setSavedMousePos(x, y);
+                upgradeWidget.updateAvailableUpgrades(currentUpgrades);
             }
+        }
+    }
+
+    public void openCreateWidgit(){
+        createWidgit.setVisible(true);
+        for (UpgradeTowerController upgradeWidget : upgradeWidgits) {
+            upgradeWidget.setVisible(false);
         }
     }
 
@@ -107,12 +129,12 @@ public class GameView extends JFrame {
 
     public List<IMoneyObserver> getMoneyObservers() {
         List<IMoneyObserver> observers = new ArrayList<>();
-        if (upgradeWidgets != null) {
-            for (UpgradeTowerController upWidget : upgradeWidgets) {
+        if (upgradeWidgits != null) {
+            for (UpgradeTowerController upWidget : upgradeWidgits) {
                 observers.add(upWidget);
             }
         }
-        observers.add(createWidget);
+        observers.add(createWidgit);
         return observers;
     }
 }

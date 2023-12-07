@@ -14,30 +14,19 @@ public class SlicerTower extends AttackTower{
      */
     public SlicerTower(int x, int y) {
         super(x, y, 2, 1, 0, 30, TowerType.slicer, 2, TargetType.first, TargetType.enemies);
+        upgradeMap.put(Upgrade.AoeRange, 0.5);
+        upgradeMap.put(Upgrade.AoeDamage, 0.5);
+        upgradeMap.put(Upgrade.Damage, 1);
+        upgradeMap.put(Upgrade.Damage2, 1);
     }
 
     @Override
-    public void upgrade(Upgrade upgrade){
-        switch (upgrade) {
-            case IncreasedSpeed1:
-                    setMaxCooldown(getMaxCooldown() - 5);
-                break;
-            case IncreasedDamage1:
-                setDamage(getDamage() + 1);
-                break;
-            default:
-                System.out.println("Tower  doesn't have that upgrade");
-                break;
-        }
-    }
-
-    @Override
-    protected int getDamageWithTypeModifications(EnemyType type) {
+    protected int getDamage(EnemyType type) {
         switch (type) {
             case cheese:
-                return getDamage()*2;   
+                return damage*2;   
             default:
-                return getDamage();
+                return damage;
         }
     }
 }
