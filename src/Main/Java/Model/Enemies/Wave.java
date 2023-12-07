@@ -16,6 +16,7 @@ public class Wave {
         createWaves();
         this.spawnRate = this.MAX_SPAWN_RATE;
     }
+    
     public Queue<EnemyType> startWave(){
         this.currentWave++;
         if (waves.isEmpty() == true) new Exception("Wave is empty");
@@ -35,7 +36,19 @@ public class Wave {
         createCurrentWave.addAll(createPartWave(10, EnemyType.banana));
         createCurrentWave.addAll(createPartWave(2, EnemyType.tomato));
         this.waves.add(new LinkedList<EnemyType>(createCurrentWave));
+        createCurrentWave.clear();
+
+        /* -------------------------- Mall for each wave
+        //Wave #
+        createCurrentWave.addAll(createPartWave(10, EnemyType.banana));
+        createCurrentWave.addAll(createPartWave(10, EnemyType.tomato));
+        createCurrentWave.addAll(createPartWave(10, EnemyType.cheese));
+        createCurrentWave.addAll(createPartWave(10, EnemyType.chicken));
+        this.waves.add(new LinkedList<EnemyType>(createCurrentWave));
+        createCurrentWave.clear();
+         */
     }
+
     private Queue<EnemyType> createPartWave(int numberOfEnemies, EnemyType enemieType){
         Queue<EnemyType> currentEnemieType = new LinkedList<EnemyType>();
         for(int i = 0 ; i < numberOfEnemies ; i++){
@@ -54,7 +67,6 @@ public class Wave {
 
     public void updateSpawnRate(){
         this.spawnRate--;
-        System.out.println("Current spawnRate: " + this.spawnRate);
 
     }
 

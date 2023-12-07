@@ -62,12 +62,6 @@ public class MainModel implements ITowerObserver{
             this.enemies.add(this.currentWaveEnemies.poll());
         }
 
-        // Spawn a new enemy if the last enemy has walked one tile
-        // if(enemies.isEmpty() || enemies.get(enemies.size()-1).getDirectionsSize() < map.getPathDirections().size()-2){
-        //     enemies.add(new EnemyOne(map.getStartPosition(), 0.02, this.map.getPathDirections()));
-        // }
-
-
         for (ATower tower : map.getTowers()){
             if(!tower.isOnCooldown()){
                 if (tower instanceof AttackTower){
