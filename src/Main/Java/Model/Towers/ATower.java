@@ -11,8 +11,7 @@ import Model.Enums.Upgrade;
 import Model.Interfaces.ITargetable;
 import Model.Interfaces.IUpgradable;
 
-
-public abstract class ATower implements ITargetable, IUpgradable{
+public abstract class ATower implements ITargetable, IUpgradable {
     private double x;
     private double y;
     private int cost;
@@ -26,17 +25,24 @@ public abstract class ATower implements ITargetable, IUpgradable{
     private Point2D.Double targetPosition;
     private int animationIndex;
 
-   /**
-    * Constructor of abstract class ATower
-    * @param x the x-position of the tower as a grid-index, i.e. not the x-position of the sprite in view
-    * @param y the y-position of the tower as a grid-index, i.e. not the y-position of the sprite in view 
-    * @param cost is the amount of money needed to buy one tower
-    * @param range is the range of the towers ability 
-    * @param aoeRange is the aoerange of the towers ability, 0 if the ability isn't an aoe 
-    * @param maxCooldown is the maximum cooldown of the towers ability, the variable cooldown will reset to this after an ability has been used
-    * @param towerType is the type of the tower, for example knife or mallet
-    */
-    public ATower(double x, double y, int cost, double range, double aoeRange, int maxCooldown, TowerType towerType, TargetType nTargets, TargetType targetType){
+    /**
+     * Constructor of abstract class ATower
+     * 
+     * @param x           the x-position of the tower as a grid-index, i.e. not the
+     *                    x-position of the sprite in view
+     * @param y           the y-position of the tower as a grid-index, i.e. not the
+     *                    y-position of the sprite in view
+     * @param cost        is the amount of money needed to buy one tower
+     * @param range       is the range of the towers ability
+     * @param aoeRange    is the aoerange of the towers ability, 0 if the ability
+     *                    isn't an aoe
+     * @param maxCooldown is the maximum cooldown of the towers ability, the
+     *                    variable cooldown will reset to this after an ability has
+     *                    been used
+     * @param towerType   is the type of the tower, for example knife or mallet
+     */
+    public ATower(double x, double y, int cost, double range, double aoeRange, int maxCooldown, TowerType towerType,
+            TargetType nTargets, TargetType targetType) {
         this.x = x;
         this.y = y;
         this.cost = cost;
@@ -58,11 +64,11 @@ public abstract class ATower implements ITargetable, IUpgradable{
     public List<AEnemy> findEnemiesInRange(List<AEnemy> enemies) {
         List<AEnemy> targets = new ArrayList<>();
         for (AEnemy enemy : enemies) {
-            if(inRangeOf(this, enemy, range)){
-                targets.add(enemy);     
-                if(targetType[0] == TargetType.first){
+            if (inRangeOf(this, enemy, range)) {
+                targets.add(enemy);
+                if (targetType[0] == TargetType.first) {
                     targetPosition = new Point2D.Double(enemy.getX(), enemy.getY());
-                    if(aoeRange != 0){
+                    if (aoeRange != 0) {
                         targets.addAll(findAoeTargets(enemy, enemies));
                     }
                     return targets;
@@ -84,14 +90,14 @@ public abstract class ATower implements ITargetable, IUpgradable{
      */
     public List<AEnemy> findAoeTargets(AEnemy source, List<AEnemy> enemies) {
         List<AEnemy> aoeTargets = new ArrayList<>();
-  
-            List<AEnemy> aoeTargetables = enemies;
-            aoeTargetables.remove(source);
-            for (AEnemy enemy : aoeTargetables) {
-                if (inRangeOf(source, enemy, aoeRange)) {
-                    aoeTargets.add(enemy);
-                }
+
+        List<AEnemy> aoeTargetables = enemies;
+        aoeTargetables.remove(source);
+        for (AEnemy enemy : aoeTargetables) {
+            if (inRangeOf(source, enemy, aoeRange)) {
+                aoeTargets.add(enemy);
             }
+        }
         return aoeTargets;
     }
 
@@ -125,23 +131,31 @@ public abstract class ATower implements ITargetable, IUpgradable{
      * Updates animationIndex when the tower is not on cooldown
      */
     public void updateAnimationIndex() {
-        //if (!isOnCooldown()) {
+        // if (!isOnCooldown()) {
+        animationIndex++;
+        if (animationIndex >= 4) {
+            animationIndex = 0;
+            /*
+             * }
+             * } else {
+             * if (animationIndex != 0) {
+             * animationIndex++;
+             * if (animationIndex >= 4) {
+             * animationIndex = 0;
+             * }
+             * }
+             */
+            // animationIndex = 0;
+        }
+    }
+
+    public void resetAnimation() {
+        if (animationIndex != 0) {
             animationIndex++;
             if (animationIndex >= 4) {
                 animationIndex = 0;
-            /*}
-        } else {
-            if (animationIndex != 0) {
-                animationIndex++;
-                if (animationIndex >= 4) {
-                    animationIndex = 0;
-                }
-            }*/
-            //animationIndex = 0;
+            }
         }
-    }
-    public void resetAnimation(){
-        animationIndex = 0;
     }
 
     /**
@@ -164,10 +178,9 @@ public abstract class ATower implements ITargetable, IUpgradable{
         return towerType;
     }
 
-    public int getAnimationIndex(){
+    public int getAnimationIndex() {
         return animationIndex;
     }
-        
 
     @Override
     public double getX() {
@@ -187,8 +200,8 @@ public abstract class ATower implements ITargetable, IUpgradable{
         return range;
     }
 
-    public void setTargetTypes(TargetType targetable, TargetType target){
-        targetType = new TargetType[]{targetable, target};
+    public void setTargetTypes(TargetType targetable, TargetType target) {
+        targetType = new TargetType[] { targetable, target };
     }
 
     public TargetType[] getTargetTypes() {
@@ -199,11 +212,11 @@ public abstract class ATower implements ITargetable, IUpgradable{
         this.range = range;
     }
 
-    protected void addUpgrade(Upgrade upgrade){
+    protected void addUpgrade(Upgrade upgrade) {
         upgrades.add(upgrade);
     }
 
-    protected boolean hasUpgrade(Upgrade targetUpgrade){
+    protected boolean hasUpgrade(Upgrade targetUpgrade) {
         return upgrades.contains(targetUpgrade);
     }
 
