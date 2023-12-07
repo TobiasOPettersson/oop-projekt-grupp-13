@@ -68,7 +68,7 @@ public class EnemyOneTest {
             directions.add(Direction.RIGHT);
         }
         for (int i = 0; i < 2; i++) {
-            directions.add(Direction.UP);
+            directions.add(Direction.DOWN);
         }
         AEnemy enemy = new EnemyOne(2, 0.3, directions);
         while (enemy.getY() < 4.5) {

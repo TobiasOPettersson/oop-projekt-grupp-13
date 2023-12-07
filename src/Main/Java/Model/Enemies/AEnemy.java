@@ -279,7 +279,7 @@ public abstract class AEnemy implements IMovable, ITargetable {
     public boolean isStaggered(){
         return isStaggered;
     }
-
+    
     /*
      * Updates the enemy health depending on the damage it takes
      */
