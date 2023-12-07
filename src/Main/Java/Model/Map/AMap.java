@@ -4,6 +4,7 @@ import java.util.List;
 
 import Model.Enums.Direction;
 import Model.Enums.TowerType;
+import Model.Enums.Upgrade;
 import Model.Player.Player;
 import Model.Towers.ATower;
 import Model.Towers.BlowtorchTower;
@@ -184,8 +185,10 @@ public class AMap{
         }
     }
 
-    public void upgradeTower(int x, int y, int upgradeLvl) {
-        //getTile(x, y).getTower().upgrade(upgradeLvl);
+    public void upgradeTower(int x, int y, Upgrade upgrade) {
+        if(!getTowerOnTile(x, y).getUpgrades().contains(upgrade)){
+            getTowerOnTile(x, y).upgrade(upgrade);
+        }
     }
 
 
@@ -193,6 +196,10 @@ public class AMap{
 
     public ATile getTile(int x, int y){
         return grid[y][x];
+    }
+
+    public ATower getTowerOnTile(int x, int y){
+        return ((TowerTile)getTile(x, y)).getTower();
     }
 
     public ATile[][] getTileGrid() {

@@ -10,41 +10,27 @@ public class MalletTower extends AttackTower{
 
     /**
      * Constructor for knife tower that uses the default attack from AttackTower
+     * Can upgrade damage twice, aoe range, and range
      * @param x the x-position of the tower as a grid-index, i.e. not the x-position of the sprite in view
      * @param y the y-position of the tower as a grid-index, i.e. not the y-position of the sprite in view 
      */
     public MalletTower(int x, int y) {
         super(x, y, 3, 1, 1, 200, TowerType.mallet, 3, TargetType.first, TargetType.enemies);
-    }
-   
-    @Override
-    public void upgrade(Upgrade upgrade){
-        switch (upgrade) {
-            case IncreaseAoeRange1:
-                setAoeRange(getAoeRange() + 0.5);
-                break;
-            case IncreasedRange1:
-                    setRange(getRange() + 0.5);
-                break;
-            case IncreasedDamage1:
-            case IncreasedDamage2:
-                setDamage(getDamage() + 1);
-                break;
-            default:
-                System.out.println("Tower  doesn't have that upgrade");
-                break;
-        }
+        upgradeMap.put(Upgrade.AoeRange, 0.5);
+        upgradeMap.put(Upgrade.Range, 0.5);
+        upgradeMap.put(Upgrade.Damage, 1);
+        upgradeMap.put(Upgrade.Damage2, 1);
     }
 
     @Override
-    protected int getDamageWithTypeModifications(EnemyType type) {
+    protected int getDamage(EnemyType type) {
         switch (type) {
             case tomato:
-                return getDamage()*2;   
+                return damage*2;   
             case cheese:
-                return getDamage()-3;
+                return damage-3;
             default:
-                return getDamage();
+                return damage;
         }
     }
 

@@ -5,12 +5,13 @@ import java.util.List;
 import java.util.Queue;
 import java.util.LinkedList;
 
-import Controller.Interfaces.ITowerObserver;
+import Controller.Interfaces.ITowerUpgradeObserver;
 import Model.Enemies.AEnemy;
 import Model.Enemies.EnemyOne;
 import Model.Enemies.Wave;
 import Model.Enums.Direction;
 import Model.Enums.TowerType;
+import Model.Enums.Upgrade;
 import Model.Interfaces.ITargetable;
 import Model.Enums.EnemyType;
 import Model.Map.AMap;
@@ -20,7 +21,7 @@ import Model.Player.Player;
 import Model.Towers.ATower;
 import Model.Towers.AttackTower;
 
-public class MainModel implements ITowerObserver{
+public class MainModel implements ITowerUpgradeObserver{
     private AMap map;
     private List<AEnemy> enemies = new ArrayList<AEnemy>();
     private Queue<AEnemy> currentWaveEnemies = new LinkedList<AEnemy>();
@@ -40,10 +41,11 @@ public class MainModel implements ITowerObserver{
 
     public void run(){
         if(activeWave){
+
         AEnemy enemyToRemove = null;
         for (AEnemy enemy : enemies){
+            //enemy.triggerConditions();
             enemy.move();
-            enemy.triggerConditions();
             enemy.setStagger(false);
             if (enemy.getX() > map.getMapSizeX()) {
                 player.takeDamage(enemy.getDamage());
@@ -76,7 +78,6 @@ public class MainModel implements ITowerObserver{
                         for(AEnemy target : targets){
                             ((AttackTower)tower).attack(target);
                             target.setStaggered(true);
-                            System.out.println(target.getHealth());
                             if (target.getHealth() <= 0) {
                                 player.addMoney(target.getMoney());
                                 enemies.remove(target);
@@ -94,14 +95,13 @@ public class MainModel implements ITowerObserver{
         }
     }
 
-    @Override
     public void createTower(int x, int y, TowerType type) throws Exception{
         map.createTower(x, y, type);
     }
 
     @Override
-    public void upgradeTower(int x, int y, int upgradeLvl) {
-        map.upgradeTower(x, y, upgradeLvl);
+    public void upgradeTower(int x, int y, Upgrade upgrade) {
+        map.upgradeTower(x, y, upgrade);
     }
 
     public void play(){
@@ -144,7 +144,7 @@ public class MainModel implements ITowerObserver{
         return thisWave;
     }
 
-    private boolean activeWave(){
+    public boolean activeWave(){
         if (this.enemies.isEmpty() && this.currentWaveEnemies.isEmpty()) return false;
         return true;
     }
@@ -195,5 +195,4 @@ public class MainModel implements ITowerObserver{
         map.setPlayer(player);
         return player;
     }
-
 }

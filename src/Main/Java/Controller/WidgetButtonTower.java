@@ -11,19 +11,16 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Graphics;
 import java.awt.GridLayout;
-import java.awt.Rectangle;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.Map;
 
 public class WidgetButtonTower extends JPanel {
-    JPanel topPanel;
-    JPanel bottomPanel;
-    private TowerType type;
+    protected JPanel topPanel;
+    protected JPanel bottomPanel;
+    protected JLabel nameLabel;
     private int cost;
+    protected TowerType type;
     private Map<TowerType, String> buttonImgPaths = new HashMap<>();
 
     /**
@@ -34,27 +31,16 @@ public class WidgetButtonTower extends JPanel {
      * @param towerController is the tower controller widgit that the button is
      *                        added to
      */
-    public WidgetButtonTower(int cost, TowerType type, CreateTowerController towerController) {
-        this.type = type;
+    public WidgetButtonTower(int cost, TowerType type, TowerController towerController) {
         this.cost = cost;
+        this.type = type;
         setSize(new Dimension(100, 200));
         setBackground(Color.gray);
         setLayout(new BorderLayout());
         initButtonImagePaths();
         initTopPanel();
         initBottomPanel();
-        setOpacity(true);
-
-        /**
-         * When clicked the button calls for its tower controller to handle the mouse
-         * click
-         */
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent mEvent) {
-                towerController.handleButtonClick(type);
-            }
-        });
+        setOpacity(Color.gray, true);
     }
 
     /**
@@ -94,7 +80,7 @@ public class WidgetButtonTower extends JPanel {
         bottomPanel.setLayout(new GridLayout(3, 1, 0, 0));
 
         String typeName = Character.toUpperCase(type.name().charAt(0)) + type.name().substring(1);
-        JLabel nameLabel = new JLabel(typeName);
+        nameLabel = new JLabel(typeName);
         JLabel costLabel = new JLabel(Integer.toString(cost));
         nameLabel.setHorizontalAlignment(SwingConstants.CENTER);
         costLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -103,12 +89,16 @@ public class WidgetButtonTower extends JPanel {
         add(bottomPanel, BorderLayout.SOUTH);
     }
 
-    public void setOpacity(boolean bool) {
+    public void setOpacity(Color color, boolean bool) {
+        if(color == Color.gray){
+            color = new Color(0.0f, 0.0f, 0.0f, 0.5f);
+        }
+        
         if (bool) {
-            setOpaque(false);
-            setBackground(new Color(0.0f, 0.0f, 0.0f, 0.5f));
-            topPanel.setBackground(new Color(0.0f, 0.0f, 0.0f, 0.5f));
-            bottomPanel.setBackground(new Color(0.0f, 0.0f, 0.0f, 0.5f));
+                setOpaque(false);
+                setBackground(color);
+                topPanel.setBackground(color);
+                bottomPanel.setBackground(color);
         } else {
             setOpaque(true);
             setBackground(Color.gray);
