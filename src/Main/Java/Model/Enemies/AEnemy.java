@@ -1,7 +1,5 @@
 package Model.Enemies;
 
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -286,7 +284,10 @@ public abstract class AEnemy implements IMovable, ITargetable {
      * Updates the enemy health depending on the damage it takes
      */
     public void takeDamage(int damage){
-        this.health -= damage;
+        if (damage >= 0) {
+            this.health -= damage;
+        }
+        
     }
 
     public int getHealth(){
