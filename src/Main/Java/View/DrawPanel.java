@@ -28,7 +28,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Double;
 
-public class DrawPanel extends JPanel{
+public class DrawPanel extends JPanel {
     private GameView gameView;
     private BufferedImage image;
     private Map<TowerType, BufferedImage> towerImageMap;
@@ -41,22 +41,25 @@ public class DrawPanel extends JPanel{
     private int gridHeight;
     private ArrayList<BufferedImage> pathSprites = new ArrayList<>();
     private int[][] pathGrid;
-    private int[] selectedTile = new int[]{-1, -1};
-    private int[] hoveredTile = new int[]{-1, -1};
+    private int[] selectedTile = new int[] { -1, -1 };
+    private int[] hoveredTile = new int[] { -1, -1 };
     private int animationIndex = 0;
     private int animationTick = 0;
 
     // Constructor
-    public DrawPanel(GameView gameView, MainModel model, BufferedImage image, Map<TowerType, BufferedImage> towerImageMap) {
+    public DrawPanel(GameView gameView, MainModel model, BufferedImage image,
+            Map<TowerType, BufferedImage> towerImageMap) {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent mEvent) {
                 handleTileClick(mEvent.getX(), mEvent.getY());
             }
-            /*@Override
-            public void mouseExited(MouseEvent mEvent) {
-                hoveredTile = new int[]{-1, -1};
-            } */      
+            /*
+             * @Override
+             * public void mouseExited(MouseEvent mEvent) {
+             * hoveredTile = new int[]{-1, -1};
+             * }
+             */
         });
         addMouseMotionListener(new MouseAdapter() {
             @Override
@@ -73,8 +76,12 @@ public class DrawPanel extends JPanel{
         this.gridWidth = this.model.getMapSizeX();
         this.gridHeight = this.model.getMapSizeY();
         this.pathGrid = this.model.getPathGrid();
-        setLayout(new BorderLayout());
-        add(new PlayButtonController(model), BorderLayout.PAGE_END);
+        // made some changes here
+        // set the layout to null to get absolut psotio
+        setLayout(null);
+        PlayButtonController playButton = new PlayButtonController(model);
+        playButton.setBounds(836, 384, 96, 96);
+        add(playButton);
         loadSprites();
         update();
         createPathSprites();
@@ -109,7 +116,7 @@ public class DrawPanel extends JPanel{
                 }
             }
         }
-    } 
+    }
 
     private void updateAnimation() {
         animationTick++;
@@ -208,14 +215,15 @@ public class DrawPanel extends JPanel{
         // position as center of enemysprite
         int offset = 24; // Sprite size / 2
         int spriteSize = 48;
-        
+
         for (AEnemy enemy : model.getEnemies()) {
-            if(!enemy.isStaggered()){
+            if (!enemy.isStaggered()) {
                 int x = (int) (enemy.getX() * spriteSize) - offset;
                 int y = (int) (enemy.getY() * spriteSize) - offset;
                 g.drawImage(sprites.get(28), x, y, null);
             }
-            //System.out.println("Enemy X: " + enemy.getX() + ", Y: " + enemy.getY()); // DEL
+            // System.out.println("Enemy X: " + enemy.getX() + ", Y: " + enemy.getY()); //
+            // DEL
             // Add method that gets the correct sprite for enemies according to
             // animationIndex.
         }
@@ -224,20 +232,21 @@ public class DrawPanel extends JPanel{
     private void drawTowers(Graphics g) {
         for (ATower tower : model.getMap().getTowers()) {
             BufferedImage towerImage = towerImageMap.get(tower.getTowerType());
-            if(tower.getTargetPosition() != null){
+            if (tower.getTargetPosition() != null) {
                 Point2D.Double enemyCenterPoint = tower.getTargetPosition();
-                double angleBInRadians = Math.atan2(tower.getY()+0.5 - enemyCenterPoint.getY(), tower.getX()+0.5 - enemyCenterPoint.getX());
+                double angleBInRadians = Math.atan2(tower.getY() + 0.5 - enemyCenterPoint.getY(),
+                        tower.getX() + 0.5 - enemyCenterPoint.getX());
                 double angle = Math.toDegrees(angleBInRadians);
-                towerImage = SpriteHelper.rotateSprite(towerImage, (int)(angle)+270);
+                towerImage = SpriteHelper.rotateSprite(towerImage, (int) (angle) + 270);
             }
-            g.drawImage(towerImage, (int) tower.getX()*48, (int) tower.getY()*48, null);
-            
+            g.drawImage(towerImage, (int) tower.getX() * 48, (int) tower.getY() * 48, null);
+
             Graphics2D g2 = (Graphics2D) g;
             g.setColor(Color.black);
-            int rangeCircleX = (int)((tower.getX()-tower.getRange()));
-            int rangeCircleY = (int)((tower.getY()-tower.getRange()));
-            int rangeCircleD = (int)(tower.getRange()*2*48);
-            g2.drawOval(rangeCircleX*48, rangeCircleY*48, rangeCircleD+48, rangeCircleD+48);
+            int rangeCircleX = (int) ((tower.getX() - tower.getRange()));
+            int rangeCircleY = (int) ((tower.getY() - tower.getRange()));
+            int rangeCircleD = (int) (tower.getRange() * 2 * 48);
+            g2.drawOval(rangeCircleX * 48, rangeCircleY * 48, rangeCircleD + 48, rangeCircleD + 48);
         }
     }
 
