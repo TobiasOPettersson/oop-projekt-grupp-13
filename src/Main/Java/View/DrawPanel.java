@@ -217,16 +217,31 @@ public class DrawPanel extends JPanel {
         int spriteSize = 48;
 
         for (AEnemy enemy : model.getEnemies()) {
+            int x = (int) (enemy.getX() * spriteSize) - offset;
+            int y = (int) (enemy.getY() * spriteSize) - offset;
             if (!enemy.isStaggered()) {
-                int x = (int) (enemy.getX() * spriteSize) - offset;
-                int y = (int) (enemy.getY() * spriteSize) - offset;
                 g.drawImage(sprites.get(28), x, y, null);
+                drawEnemyHP(g, spriteSize, enemy, x, y);
             }
-            // System.out.println("Enemy X: " + enemy.getX() + ", Y: " + enemy.getY()); //
-            // DEL
             // Add method that gets the correct sprite for enemies according to
             // animationIndex.
         }
+    }
+
+    private void drawEnemyHP(Graphics g, int spriteSize, AEnemy enemy, int x, int y) {
+        if ((double) (enemy.getHealth()/enemy.getMaxHealth()) > 0.75) {
+            g.setColor(Color.GREEN);
+        }
+        else if (((double) (enemy.getHealth()/enemy.getMaxHealth()) <= 0.75) && ((double) (enemy.getHealth()/enemy.getMaxHealth()) > 0.5)) {
+            g.setColor(Color.YELLOW);
+        }
+        else if (((double) (enemy.getHealth()/enemy.getMaxHealth()) <= 0.5) && ((double) (enemy.getHealth()/enemy.getMaxHealth()) > 0.25)) {
+            g.setColor(Color.ORANGE);
+        }
+        else {
+            g.setColor(Color.RED);
+        }
+        g.drawLine(x, y+spriteSize, (int) (x + (spriteSize * enemy.getHealth())/enemy.getMaxHealth()), y+spriteSize);
     }
 
     private void drawTowers(Graphics g) {

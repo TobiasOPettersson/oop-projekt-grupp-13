@@ -54,7 +54,7 @@ public class Wave {
 
     public void updateSpawnRate(){
         this.spawnRate--;
-        System.out.println("Current spawnRate: " + this.spawnRate);
+        //System.out.println("Current spawnRate: " + this.spawnRate);
 
     }
 

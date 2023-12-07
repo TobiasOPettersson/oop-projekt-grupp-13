@@ -17,7 +17,8 @@ import Model.Interfaces.ITargetable;
  * This class implements the IMovable interface.
  */
 public abstract class AEnemy implements IMovable, ITargetable {
-    private int health; //health points
+    private double health; //health points
+    private double maxHealth;
     private double x, y; //position
     private double speed; //movement speed of an enemy
     private double maxSpeed;
@@ -29,8 +30,9 @@ public abstract class AEnemy implements IMovable, ITargetable {
     private boolean isStaggered = false;
     private HashMap<Condition, Integer> conditions;
     
-    public AEnemy(int health, double y, double speed, EnemyType type, List<Direction> directions, int damage, int moneyBag) {
+    public AEnemy(double health, double y, double speed, EnemyType type, List<Direction> directions, int damage, int moneyBag) {
         this.health = health;
+        this.maxHealth = health;
         this.x = 0;
         this.y = y + tileOffset;
         this.speed = speed;
@@ -290,8 +292,12 @@ public abstract class AEnemy implements IMovable, ITargetable {
         this.health -= damage;
     }
 
-    public int getHealth(){
+    public double getHealth(){
         return this.health;
+    }
+
+    public double getMaxHealth(){
+        return this.maxHealth;
     }
 
     public int getMoney(){
