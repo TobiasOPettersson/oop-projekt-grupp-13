@@ -31,7 +31,7 @@ public class GameView extends JFrame {
     MainModel model;
     DrawPanel drawPanel;
     private BufferedImage image;
-    private Map<TowerType, BufferedImage> towerImageMap = new HashMap<TowerType,BufferedImage>();
+    private Map<TowerType, BufferedImage> towerImageMap = new HashMap<TowerType, BufferedImage>();
     CreateTowerController createWidget;
     List<UpgradeTowerController> upgradeWidgets;
 
@@ -41,9 +41,12 @@ public class GameView extends JFrame {
         importImg();
         this.model = model;
         this.drawPanel = new DrawPanel(this, model, image, towerImageMap);
-        add(drawPanel, BorderLayout.CENTER);
+        setLayout(null);
+        drawPanel.setBounds(0, 0, 960, 480);
+        add(drawPanel);
         createWidget = new CreateTowerController(this.model);
-        add(createWidget, BorderLayout.SOUTH);
+        createWidget.setBounds(0, 480, 960, 300);
+        add(createWidget);
         model.getPlayer().setMoneyObservers(getMoneyObservers());
         initComponents();
     }
@@ -79,7 +82,9 @@ public class GameView extends JFrame {
             createWidget.setSavedMousePos(x, y);
         } else {
             for (UpgradeTowerController upgradeWidget : upgradeWidgets) {
-                TowerType type = ((TowerTile) model.getMap().getTile(x, y)).getTower().getTowerType(); // too much method chaining?
+                TowerType type = ((TowerTile) model.getMap().getTile(x, y)).getTower().getTowerType(); // too much
+                                                                                                       // method
+                                                                                                       // chaining?
                 if (type.equals(upgradeWidget.getTowerType())) {
                     upgradeWidget.setVisible(true);
                     upgradeWidget.setSavedMousePos(x, y);
@@ -88,7 +93,7 @@ public class GameView extends JFrame {
         }
     }
 
-    public DrawPanel getDrawPanel(){
+    public DrawPanel getDrawPanel() {
         return drawPanel;
     }
 
@@ -100,9 +105,9 @@ public class GameView extends JFrame {
         setVisible(true);
     }
 
-    public List<IMoneyObserver> getMoneyObservers(){
+    public List<IMoneyObserver> getMoneyObservers() {
         List<IMoneyObserver> observers = new ArrayList<>();
-        if(upgradeWidgets != null){
+        if (upgradeWidgets != null) {
             for (UpgradeTowerController upWidget : upgradeWidgets) {
                 observers.add(upWidget);
             }
