@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
@@ -219,19 +220,20 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver{
      * @param y
      */
     private void drawEnemyHP(Graphics g, int spriteSize, AEnemy enemy, int x, int y) {
-        if ((double) (enemy.getHealth()/enemy.getMaxHealth()) > 0.75) {
+        double percentOfHP = enemy.getHealth()/enemy.getMaxHealth();
+        if (percentOfHP > 0.75) {
             g.setColor(Color.GREEN);
         }
-        else if (((double) (enemy.getHealth()/enemy.getMaxHealth()) <= 0.75) && ((double) (enemy.getHealth()/enemy.getMaxHealth()) > 0.5)) {
+        else if ((percentOfHP <= 0.75) && (percentOfHP > 0.5)) {
             g.setColor(Color.YELLOW);
         }
-        else if (((double) (enemy.getHealth()/enemy.getMaxHealth()) <= 0.5) && ((double) (enemy.getHealth()/enemy.getMaxHealth()) > 0.25)) {
+        else if ((percentOfHP <= 0.5) && ((percentOfHP) > 0.25)) {
             g.setColor(Color.ORANGE);
         }
         else {
             g.setColor(Color.RED);
         }
-        g.drawLine(x, y+spriteSize, (int) (x + (spriteSize * enemy.getHealth())/enemy.getMaxHealth()), y+spriteSize);
+        g.drawLine(x, y+spriteSize, (int) (x + (spriteSize * percentOfHP)), y+spriteSize);
     }
 
     /**
@@ -343,7 +345,30 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver{
                 }
             }
         }
+    }
 
+    private void drawEndScreen(Graphics g) {
+        if (!model.getAlive()) {
+            g.setColor(new Color(0, 0, 0, 150));
+            g.fillRect(0, 0, getWidth(), getHeight());
+            g.setColor(Color.RED);
+            g.setFont(new Font("Arial", Font.BOLD, 30));
+            drawCenteredText(g, "YOU LOST!");
+        }
+        if (!model.activeWave() && model.getAlive()) {
+            g.setColor(new Color(0, 0, 0, 150));
+            g.fillRect(0, 0, getWidth(), getHeight());
+            g.setColor(Color.GREEN);
+            g.setFont(new Font("Arial", Font.BOLD, 30));
+            drawCenteredText(g, "YOU WON!");
+        }
+    }
+
+    private void drawCenteredText(Graphics g, String text) {
+        int messageWidth = g.getFontMetrics().stringWidth(text);
+        int x = (getWidth() - messageWidth) / 2;
+        int y = getHeight() / 2;
+        g.drawString(text, x, y);
     }
 
     // TODO javadoc comment
@@ -379,6 +404,7 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver{
         drawEnemies(g);
         drawTowers(g);
         drawSelectedTile(g);
+        drawEndScreen(g);
  
         if(getTowerAtMousePos() != null){
             drawHoveredTowerRange(g, getTowerAtMousePos());
