@@ -1,4 +1,5 @@
 package Controller;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -12,13 +13,15 @@ import javax.swing.SwingConstants;
 
 import Controller.Interfaces.ITowerUpgradeObserver;
 import Controller.Interfaces.IUpgradeTowerSubject;
+import Model.MainModel;
 import Model.Enums.TowerType;
 import Model.Enums.Upgrade;
 
-public class UpgradeTowerController extends TowerController implements IUpgradeTowerSubject{
-    JLabel coinsLabel;
+public class UpgradeTowerController extends TowerController implements IUpgradeTowerSubject {
+    // JLabel coinsLabel;
     List<WidgetButton> buttons;
     PlayButtonController playbutton;
+    MainModel model;
     JPanel buttonPanel = new JPanel();
     JPanel headpanel = new JPanel();
     TowerType towerType;
@@ -26,27 +29,29 @@ public class UpgradeTowerController extends TowerController implements IUpgradeT
     private int savedMousePosX;
     private int savedMousePosY;
 
-    public UpgradeTowerController(ITowerUpgradeObserver observer, TowerType towerType) {
+    public UpgradeTowerController(ITowerUpgradeObserver observer, TowerType towerType, MainModel model) {
         this.observer = observer;
         this.towerType = towerType;
         setBackground(Color.WHITE);
+        this.model = model;
 
-        buttonPanel.setLayout(new GridLayout(0, 6, 10, 20));
+        buttonPanel.setLayout(new GridLayout(0, 5, 5, 20));
 
         setLayout(new BorderLayout());
 
         setPreferredSize(new Dimension(300, 300));
 
         initHeader();
-        intiCostAndLife();
+
         initButtons();
+        intiCostAndLife();
     }
 
     private void initHeader() {
         headpanel.setBackground(Color.gray);
 
         headpanel.setPreferredSize(new Dimension(300, 25));
-        JLabel titleLabel = new JLabel("CREATE TOWERS");
+        JLabel titleLabel = new JLabel("Upgrade " + getTowerType().name());
         titleLabel.setForeground(Color.BLACK);
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         headpanel.add(titleLabel);
@@ -58,59 +63,61 @@ public class UpgradeTowerController extends TowerController implements IUpgradeT
      * Initializes the title label
      */
     private void intiCostAndLife() {
-        JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        labelPanel.setLayout(new GridLayout(3, 1, 0, 0));
-        JLabel titleLabel = new JLabel("Upgrade " + getTowerType().name());
-        coinsLabel = new JLabel("Coins: ");
-        titleLabel.setForeground(Color.BLACK);
-        coinsLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        // JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        // labelPanel.setLayout(new GridLayout(3, 1, 0, 0));
+        // JLabel titleLabel = new JLabel("Upgrade " + getTowerType().name());
+        // coinsLabel = new JLabel("Coins: ");
+        // titleLabel.setForeground(Color.BLACK);
+        // coinsLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        // titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         // add(playbutton);
-        labelPanel.add(titleLabel);
-        labelPanel.add(coinsLabel);
-        buttonPanel.add(labelPanel, BorderLayout.EAST);
+        // labelPanel.add(titleLabel);
+        // labelPanel.add(coinsLabel);
+        // buttonPanel.add(labelPanel, BorderLayout.EAST);
+        playbutton = new PlayButtonController(model);
+        buttonPanel.add(playbutton);
     }
 
     private void initButtons() {
         switch (towerType) {
             case knife:
                 buttons = List.of(
-                    new UpgradeButton(1, this, Upgrade.Damage, towerType),
-                    new UpgradeButton(3, this, Upgrade.Speed, towerType),
-                    new UpgradeButton(4, this, Upgrade.Targets, towerType),
-                    new UpgradeButton(2, this, Upgrade.Range, towerType));                
+                        new UpgradeButton(1, this, Upgrade.Damage, towerType),
+                        new UpgradeButton(3, this, Upgrade.Speed, towerType),
+                        new UpgradeButton(4, this, Upgrade.Targets, towerType),
+                        new UpgradeButton(2, this, Upgrade.Range, towerType));
                 break;
             case mallet:
                 buttons = List.of(
-                    new UpgradeButton(1, this, Upgrade.Damage, towerType),
-                    new UpgradeButton(3, this, Upgrade.Damage2, towerType),
-                    new UpgradeButton(4, this, Upgrade.AoeRange, towerType),
-                    new UpgradeButton(2, this, Upgrade.Range, towerType));                
+                        new UpgradeButton(1, this, Upgrade.Damage, towerType),
+                        new UpgradeButton(3, this, Upgrade.Damage2, towerType),
+                        new UpgradeButton(4, this, Upgrade.AoeRange, towerType),
+                        new UpgradeButton(2, this, Upgrade.Range, towerType));
                 break;
             case blowtorch:
                 buttons = List.of(
-                    new UpgradeButton(1, this, Upgrade.Damage, towerType),
-                    new UpgradeButton(3, this, Upgrade.Range, towerType),
-                    new UpgradeButton(4, this, Upgrade.AoeRange, towerType),
-                    new UpgradeButton(2, this, Upgrade.SetOnFire, towerType));    
+                        new UpgradeButton(1, this, Upgrade.Damage, towerType),
+                        new UpgradeButton(3, this, Upgrade.Range, towerType),
+                        new UpgradeButton(4, this, Upgrade.AoeRange, towerType),
+                        new UpgradeButton(2, this, Upgrade.SetOnFire, towerType));
                 break;
             case slicer:
                 buttons = List.of(
-                    new UpgradeButton(1, this, Upgrade.Damage, towerType),
-                    new UpgradeButton(3, this, Upgrade.Damage2, towerType),
-                    new UpgradeButton(4, this, Upgrade.AoeRange, towerType));
+                        new UpgradeButton(1, this, Upgrade.Damage, towerType),
+                        new UpgradeButton(3, this, Upgrade.Damage2, towerType),
+                        new UpgradeButton(4, this, Upgrade.AoeRange, towerType));
                 break;
             case freezer:
                 buttons = List.of(
-                    new UpgradeButton(1, this, Upgrade.Frostbite, towerType),
-                    new UpgradeButton(3, this, Upgrade.SuperChill, towerType),
-                    new UpgradeButton(4, this, Upgrade.ConditionDuration, towerType),
-                    new UpgradeButton(2, this, Upgrade.Range, towerType));
+                        new UpgradeButton(1, this, Upgrade.Frostbite, towerType),
+                        new UpgradeButton(3, this, Upgrade.SuperChill, towerType),
+                        new UpgradeButton(4, this, Upgrade.ConditionDuration, towerType),
+                        new UpgradeButton(2, this, Upgrade.Range, towerType));
                 break;
             default:
                 break;
         }
-        
+
         for (WidgetButton button : buttons) {
             buttonPanel.add(button);
         }
@@ -124,7 +131,7 @@ public class UpgradeTowerController extends TowerController implements IUpgradeT
     @Override
     public void notifyObservers(Upgrade upgrade) {
         for (WidgetButton button : buttons) {
-            if(upgrade == ((UpgradeButton)button).upgrade){
+            if (upgrade == ((UpgradeButton) button).upgrade) {
                 button.setOpacity(Color.blue, true);
             }
         }
@@ -137,7 +144,7 @@ public class UpgradeTowerController extends TowerController implements IUpgradeT
      */
     @Override
     public void updateMoney(int curMoney) {
-        coinsLabel.setText("Coins: " + curMoney);
+        // coinsLabel.setText("Coins: " + curMoney);
         for (WidgetButton button : buttons) {
             button.setOpacity(Color.gray, button.getCost() > curMoney);
         }
@@ -149,7 +156,7 @@ public class UpgradeTowerController extends TowerController implements IUpgradeT
      */
     public void updateAvailableUpgrades(List<Upgrade> currentUpgrades) {
         for (WidgetButton button : buttons) {
-            if(currentUpgrades.contains(((UpgradeButton)button).upgrade)){
+            if (currentUpgrades.contains(((UpgradeButton) button).upgrade)) {
                 button.setOpacity(Color.blue, true);
             }
         }
@@ -157,10 +164,11 @@ public class UpgradeTowerController extends TowerController implements IUpgradeT
 
     /**
      * Saves the position of the mouse as grid-indicies
+     * 
      * @param x is the x-position of the mouse as grid-indicies
      * @param y is the y-position of the mouse as grid-indicies
      */
-    public void setSavedMousePos(int x, int y){
+    public void setSavedMousePos(int x, int y) {
         savedMousePosX = x;
         savedMousePosY = y;
     }

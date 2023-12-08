@@ -45,7 +45,7 @@ public class CreateTowerController extends TowerController implements ICreateTow
         initHeader();
 
         initButtons();
-        intiCostAndLife();
+        intiPlaybutton();
     }
 
     private void initHeader() {
@@ -64,7 +64,7 @@ public class CreateTowerController extends TowerController implements ICreateTow
     /**
      * Initializes the title label
      */
-    private void intiCostAndLife() {
+    private void intiPlaybutton() {
         // JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         // labelPanel.setLayout(new GridLayout(3, 1, 0, 0));
         // JLabel titleLabel = new JLabel("CREATE TOWERS");

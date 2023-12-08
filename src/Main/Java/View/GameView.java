@@ -51,11 +51,11 @@ public class GameView extends JFrame {
 
     private void initWidgits() {
         upgradeWidgits = List.of(
-                new UpgradeTowerController(model, TowerType.knife),
-                new UpgradeTowerController(model, TowerType.mallet),
-                new UpgradeTowerController(model, TowerType.blowtorch),
-                new UpgradeTowerController(model, TowerType.slicer),
-                new UpgradeTowerController(model, TowerType.freezer));
+                new UpgradeTowerController(model, TowerType.knife, model),
+                new UpgradeTowerController(model, TowerType.mallet, model),
+                new UpgradeTowerController(model, TowerType.blowtorch, model),
+                new UpgradeTowerController(model, TowerType.slicer, model),
+                new UpgradeTowerController(model, TowerType.freezer, model));
 
         for (UpgradeTowerController upgradeWidgit : upgradeWidgits) {
             upgradeWidgit.setBounds(0, 480, 960, 300);

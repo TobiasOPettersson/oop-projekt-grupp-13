@@ -58,9 +58,9 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
         // made some changes here
         // set the layout to null to get absolut psotio
         setLayout(null);
-        PlayButtonController playButton = new PlayButtonController(model);
-        playButton.setBounds(836, 384, 96, 96);
-        add(playButton);
+        // PlayButtonController playButton = new PlayButtonController(model);
+        // playButton.setBounds(836, 384, 96, 96);
+        // add(playButton);
         loadSprites();
         update();
         createPathSprites();
