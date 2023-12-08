@@ -60,7 +60,7 @@ public class UpgradeTowerController extends TowerController implements IUpgradeT
     private void intiCostAndLife() {
         JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         labelPanel.setLayout(new GridLayout(3, 1, 0, 0));
-        JLabel titleLabel = new JLabel("UPGRADE TOWERS");
+        JLabel titleLabel = new JLabel("Upgrade " + getTowerType().name());
         coinsLabel = new JLabel("Coins: ");
         titleLabel.setForeground(Color.BLACK);
         coinsLabel.setHorizontalAlignment(SwingConstants.CENTER);

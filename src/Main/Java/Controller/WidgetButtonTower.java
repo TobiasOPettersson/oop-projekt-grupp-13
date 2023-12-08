@@ -15,13 +15,13 @@ import java.awt.GridLayout;
 import java.util.HashMap;
 import java.util.Map;
 
-public class WidgetButtonTower extends JPanel {
+public abstract class WidgetButtonTower extends JPanel {
     protected JPanel topPanel;
     protected JPanel bottomPanel;
     protected JLabel nameLabel;
     private int cost;
     protected TowerType type;
-    private Map<TowerType, String> buttonImgPaths = new HashMap<>();
+    protected Map<TowerType, String> buttonImgPaths = new HashMap<>();
 
     /**
      * The constructor of the tower widget buttonClick
@@ -46,14 +46,7 @@ public class WidgetButtonTower extends JPanel {
     /**
      * Initializes the map containing the pats of button images
      */
-    private void initButtonImagePaths() {
-        String resPath = "src\\Main\\Java\\Controller\\res\\";
-        buttonImgPaths.put(TowerType.knife, resPath + "knife.png");
-        buttonImgPaths.put(TowerType.mallet, resPath + "mallet.png");
-        buttonImgPaths.put(TowerType.blowtorch, resPath + "blowtorch.png");
-        buttonImgPaths.put(TowerType.slicer, resPath + "slicer.png");
-        buttonImgPaths.put(TowerType.freezer, resPath + "fridge.png");
-    }
+    protected abstract void initButtonImagePaths();
 
     /**
      * Initializes all components of the bottom panel, it contains:

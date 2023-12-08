@@ -20,4 +20,14 @@ public class UpgradeButton extends WidgetButtonTower{
             }
         });
     }
+
+    @Override
+    protected void initButtonImagePaths() {
+        String resPath = "src\\Main\\Java\\Controller\\res\\";
+        buttonImgPaths.put(TowerType.knife, resPath + "knife.png");
+        buttonImgPaths.put(TowerType.mallet, resPath + "mallet.png");
+        buttonImgPaths.put(TowerType.blowtorch, resPath + "blowtorch.png");
+        buttonImgPaths.put(TowerType.slicer, resPath + "slicer.png");
+        buttonImgPaths.put(TowerType.freezer, resPath + "fridge.png");
+    }
 }
