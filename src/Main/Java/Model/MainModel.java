@@ -164,23 +164,6 @@ public class MainModel implements ITowerUpgradeObserver {
     }
 
     //----------------------------Waves--------------------------// 
-    
-    /**
-     * TODO Javadoc comment
-     * @return
-     */
-    private Queue<AEnemy> convertAllWavesToAEnemy (){
-        Queue<AEnemy> thisWave = new LinkedList<AEnemy>();
-        Queue<EnemyType> thisWaveType = this.allWaves.startWave();
-        EnemyType currentEnemyType;
-        while (thisWaveType.isEmpty() == false) {
-            currentEnemyType = thisWaveType.poll();
-            if (currentEnemyType == EnemyType.banana) thisWave.add(new EnemyOne(this.map.getStartPosition(), 0.02, this.map.getPathDirections()));
-            //TODO
-            //if statements for every enemytype
-        }
-        return thisWave;
-    }
 
     /**
      * TODO Javadoc comment
@@ -190,8 +173,6 @@ public class MainModel implements ITowerUpgradeObserver {
         if (this.enemies.isEmpty() && this.currentWaveEnemies.isEmpty()) return false;
         return true;
     }
-
-    //----------------------------Getters and setters--------------------------// 
 
     //----------------------------Getters and setters--------------------------// 
 
