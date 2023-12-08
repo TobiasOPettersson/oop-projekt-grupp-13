@@ -31,7 +31,7 @@ public class MainModel implements ITowerUpgradeObserver{
     private Wave allWaves;
 
     public MainModel(){
-        this.player = new Player(5, 200);
+        this.player = new Player(5, 3);
         this.map = new MapOne();
         this.allWaves = new Wave();
         this.currentWaveEnemies = convertAllWavesToAEnemy();
@@ -60,7 +60,6 @@ public class MainModel implements ITowerUpgradeObserver{
 
         this.allWaves.updateSpawnRate();
         if(this.allWaves.checkIfSpawnable() && this.currentWaveEnemies.isEmpty() == false){
-            System.out.println("Test");
             this.enemies.add(this.currentWaveEnemies.poll());
         }
 
@@ -194,5 +193,9 @@ public class MainModel implements ITowerUpgradeObserver{
     public Player getPlayer() {
         map.setPlayer(player);
         return player;
+    }
+
+    public boolean allWavesDead() {
+        return this.allWaves.wavesIsEmpty();
     }
 }
