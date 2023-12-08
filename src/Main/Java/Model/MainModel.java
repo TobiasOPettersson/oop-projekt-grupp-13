@@ -9,6 +9,7 @@ import Controller.Interfaces.ITowerObserver;
 import Model.Enemies.AEnemy;
 import Model.Enemies.EnemyOne;
 import Model.Enemies.Wave;
+import Model.Enemies.WaveFactory;
 import Model.Enums.Direction;
 import Model.Enums.TowerType;
 import Model.Interfaces.ITargetable;
@@ -32,8 +33,7 @@ public class MainModel implements ITowerObserver{
     public MainModel(){
         this.player = new Player(5, 200);
         this.map = new MapOne();
-        this.allWaves = new Wave();
-        this.currentWaveEnemies = convertAllWavesToAEnemy();
+        this.allWaves = new Wave(this.map.getStartPosition(), this.map.getPathDirections());
         this.alive = true;
         this.activeWave = false;
     }
@@ -56,6 +56,7 @@ public class MainModel implements ITowerObserver{
             enemies.remove(enemyToRemove);
         }
 
+        System.out.println("Test 1");
         this.allWaves.updateSpawnRate();
         if(this.allWaves.checkIfSpawnable() && this.currentWaveEnemies.isEmpty() == false){
             System.out.println("Test");
@@ -84,7 +85,7 @@ public class MainModel implements ITowerObserver{
         }
 
         this.alive = alive();
-        //this.activeWave = activeWave(); Commented since it doesnt check if the wave is finished, only if there are no enemies currently on the panel/ in the list
+        this.activeWave = activeWave(); //Commented since it doesnt check if the wave is finished, only if there are no enemies currently on the panel/ in the list
         }
     }
 
@@ -99,7 +100,16 @@ public class MainModel implements ITowerObserver{
     }
 
     public void play(){
-        activeWave = true;
+        System.out.println(this.currentWaveEnemies);
+        if (canStartNewWave()){
+            this.currentWaveEnemies = this.allWaves.getWave();
+            this.activeWave = true;
+        }
+    }
+
+    private boolean canStartNewWave(){
+        if (this.activeWave == false && this.alive == true && this.currentWaveEnemies.isEmpty() == true && this.enemies.isEmpty() == true) return true;
+        return false;
     }
 
 
@@ -121,21 +131,6 @@ public class MainModel implements ITowerObserver{
 
     private boolean alive(){
         return player.getHealth() > 0;
-    }
-
-
-    //------------------------Waves----------------------//
-    private Queue<AEnemy> convertAllWavesToAEnemy (){
-        Queue<AEnemy> thisWave = new LinkedList<AEnemy>();
-        Queue<EnemyType> thisWaveType = this.allWaves.startWave();
-        EnemyType currentEnemyType;
-        while (thisWaveType.isEmpty() == false) {
-            currentEnemyType = thisWaveType.poll();
-            if (currentEnemyType == EnemyType.banana) thisWave.add(new EnemyOne(this.map.getStartPosition(), 0.02, this.map.getPathDirections()));
-            //TODO
-            //if statements for every enemytype
-        }
-        return thisWave;
     }
 
     private boolean activeWave(){
