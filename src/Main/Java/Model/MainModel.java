@@ -5,13 +5,14 @@ import java.util.List;
 import java.util.Queue;
 import java.util.LinkedList;
 
-import Controller.Interfaces.ITowerObserver;
+import Controller.Interfaces.ITowerUpgradeObserver;
 import Model.Enemies.AEnemy;
 import Model.Enemies.EnemyOne;
 import Model.Enemies.Wave;
 import Model.Enemies.WaveFactory;
 import Model.Enums.Direction;
 import Model.Enums.TowerType;
+import Model.Enums.Upgrade;
 import Model.Interfaces.ITargetable;
 import Model.Enums.EnemyType;
 import Model.Map.AMap;
@@ -21,7 +22,7 @@ import Model.Player.Player;
 import Model.Towers.ATower;
 import Model.Towers.AttackTower;
 
-public class MainModel implements ITowerObserver{
+public class MainModel implements ITowerUpgradeObserver{
     private AMap map;
     private List<AEnemy> enemies = new ArrayList<AEnemy>();
     private Queue<AEnemy> currentWaveEnemies = new LinkedList<AEnemy>();
@@ -40,11 +41,12 @@ public class MainModel implements ITowerObserver{
 
     public void run(){
         if(activeWave){
+        System.out.println(enemies.size());
         AEnemy enemyToRemove = null;
         for (AEnemy enemy : enemies){
-            enemy.move();
             enemy.triggerConditions();
-            enemy.setStagger(false);
+            enemy.move();
+            enemy.setStaggered(false);
             if (enemy.getX() > map.getMapSizeX()) {
                 player.takeDamage(enemy.getDamage());
                 enemyToRemove = enemy;
@@ -59,7 +61,7 @@ public class MainModel implements ITowerObserver{
         System.out.println("Test 1");
         this.allWaves.updateSpawnRate();
         if(this.allWaves.checkIfSpawnable() && this.currentWaveEnemies.isEmpty() == false){
-            System.out.println("Test");
+            //System.out.println("Test");
             this.enemies.add(this.currentWaveEnemies.poll());
         }
 
@@ -70,8 +72,6 @@ public class MainModel implements ITowerObserver{
                     if(targets != null){
                         for(AEnemy target : targets){
                             ((AttackTower)tower).attack(target);
-                            target.setStaggered(true);
-                            System.out.println(target.getHealth());
                             if (target.getHealth() <= 0) {
                                 player.addMoney(target.getMoney());
                                 enemies.remove(target);
@@ -89,14 +89,13 @@ public class MainModel implements ITowerObserver{
         }
     }
 
-    @Override
     public void createTower(int x, int y, TowerType type) throws Exception{
         map.createTower(x, y, type);
     }
 
     @Override
-    public void upgradeTower(int x, int y, int upgradeLvl) {
-        map.upgradeTower(x, y, upgradeLvl);
+    public void upgradeTower(int x, int y, Upgrade upgrade) {
+        map.upgradeTower(x, y, upgrade);
     }
 
     public void play(){
@@ -184,5 +183,4 @@ public class MainModel implements ITowerObserver{
         map.setPlayer(player);
         return player;
     }
-
 }

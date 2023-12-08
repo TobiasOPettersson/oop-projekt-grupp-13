@@ -4,6 +4,7 @@ import java.util.List;
 
 import Model.Enums.Direction;
 import Model.Enums.TowerType;
+import Model.Enums.Upgrade;
 import Model.Player.Player;
 import Model.Towers.ATower;
 import Model.Towers.BlowtorchTower;
@@ -27,6 +28,7 @@ public class AMap{
     public AMap(int[][] pathGrid) {
         this.pathGrid = pathGrid;
         createPathGrid();
+        fillOccupiedTile();
         fillGridTowerTile();
         setStartPosition();
     }
@@ -77,11 +79,12 @@ public class AMap{
     private void fillGridTowerTile(){
         for (int x = 0; x < this.MAP_WIDTH; x++) {
             for (int y = 0; y < this.MAP_HEIGHT; y++) {
-                if (!(this.grid[y][x] instanceof PathTile)) {
+                if (!(this.grid[y][x] instanceof PathTile || this.grid[y][x] instanceof OccupiedTile)) {
                     this.grid[y][x] = new TowerTile(x, y, true);
                 }
             }
         }
+
     }
 
     /*
@@ -92,6 +95,16 @@ public class AMap{
             if (this.pathGrid[i][0] == 1)
                 this.startPosition = i;
         }
+    }
+
+    /*
+     * Place the tiles where the player can't place towers and isn't a path
+     */
+    private void fillOccupiedTile(){
+        this.grid[this.MAP_HEIGHT-1][this.MAP_WIDTH-1] = new OccupiedTile(MAP_WIDTH-1, MAP_HEIGHT-1);
+        this.grid[this.MAP_HEIGHT-2][this.MAP_WIDTH-1] = new OccupiedTile(MAP_WIDTH-2, MAP_HEIGHT-1);
+        this.grid[this.MAP_HEIGHT-2][this.MAP_WIDTH-2] = new OccupiedTile(MAP_WIDTH-2, MAP_HEIGHT-2);
+        this.grid[this.MAP_HEIGHT-1][this.MAP_WIDTH-2] = new OccupiedTile(MAP_WIDTH-1, MAP_HEIGHT-2);
     }
 
 
@@ -172,8 +185,10 @@ public class AMap{
         }
     }
 
-    public void upgradeTower(int x, int y, int upgradeLvl) {
-        //getTile(x, y).getTower().upgrade(upgradeLvl);
+    public void upgradeTower(int x, int y, Upgrade upgrade) {
+        if(!getTowerOnTile(x, y).getUpgrades().contains(upgrade)){
+            getTowerOnTile(x, y).upgrade(upgrade);
+        }
     }
 
 
@@ -181,6 +196,10 @@ public class AMap{
 
     public ATile getTile(int x, int y){
         return grid[y][x];
+    }
+
+    public ATower getTowerOnTile(int x, int y){
+        return ((TowerTile)getTile(x, y)).getTower();
     }
 
     public ATile[][] getTileGrid() {

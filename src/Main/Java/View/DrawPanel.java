@@ -7,28 +7,23 @@ import Model.MainModel;
 import Model.Enemies.AEnemy;
 import Model.Enums.Direction;
 import Model.Enums.TowerType;
-import Model.Interfaces.ITargetable;
 import Model.Map.ATile;
 import Model.Map.TowerTile;
 import Model.Towers.ATower;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.awt.BasicStroke;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
 import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Double;
 
-public class DrawPanel extends JPanel {
+public class DrawPanel extends JPanel implements ICreateTowerObserver{
     private GameView gameView;
     private BufferedImage image;
     private Map<TowerType, BufferedImage> towerImageMap;
@@ -45,28 +40,11 @@ public class DrawPanel extends JPanel {
     private int[] hoveredTile = new int[] { -1, -1 };
     private int animationIndex = 0;
     private int animationTick = 0;
+    private TowerType towerTypeToPlace = null;
+    private boolean isPlacingTower = false;
 
     // Constructor
-    public DrawPanel(GameView gameView, MainModel model, BufferedImage image,
-            Map<TowerType, BufferedImage> towerImageMap) {
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent mEvent) {
-                handleTileClick(mEvent.getX(), mEvent.getY());
-            }
-            /*
-             * @Override
-             * public void mouseExited(MouseEvent mEvent) {
-             * hoveredTile = new int[]{-1, -1};
-             * }
-             */
-        });
-        addMouseMotionListener(new MouseAdapter() {
-            @Override
-            public void mouseMoved(MouseEvent mEvent) {
-                hoverOverTile(mEvent.getX(), mEvent.getY());
-            }
-        });
+    public DrawPanel(GameView gameView, MainModel model, BufferedImage image, Map<TowerType, BufferedImage> towerImageMap) {
         this.gameView = gameView;
         this.image = image;
         this.towerImageMap = towerImageMap;
@@ -85,39 +63,14 @@ public class DrawPanel extends JPanel {
         loadSprites();
         update();
         createPathSprites();
+        addMouseListeners();
     }
 
-    private void handleTileClick(int x, int y) {
-        for (int i = 0; i < gridWidth; i++) {
-            if (x > 48 * i && x < 48 * (i + 1)) {
-                for (int j = 0; j < gridHeight; j++) {
-                    if (y > 48 * j && y < 48 * (j + 1)) {
-                        if (model.getMap().getTile(i, j) instanceof TowerTile) {
-                            selectedTile[0] = i;
-                            selectedTile[1] = j;
-                            gameView.openWidgit(i, j);
-                            return;
-                        }
-                    }
-                }
-            }
-        }
-    }
 
-    private void hoverOverTile(int x, int y) {
-        for (int i = 0; i < gridWidth; i++) {
-            if (x > 48 * i && x < 48 * (i + 1)) {
-                for (int j = 0; j < gridHeight; j++) {
-                    if (y > 48 * j && y < 48 * (j + 1)) {
-                        hoveredTile[0] = i;
-                        hoveredTile[1] = j;
-                        return;
-                    }
-                }
-            }
-        }
-    }
-
+    // TODO Javadoc comment
+    /**
+     * 
+     */
     private void updateAnimation() {
         animationTick++;
         if (animationTick >= 20) {
@@ -126,6 +79,10 @@ public class DrawPanel extends JPanel {
         }
     }
 
+    // TODO Javadoc comment
+    /**
+     * 
+     */
     private void updateAnimationIndex() {
         animationIndex++;
         if (animationIndex >= 4) {
@@ -133,7 +90,9 @@ public class DrawPanel extends JPanel {
         }
     }
 
-    // Create Sprite sheet by taking subimages from image and then scale them
+    /**
+     * Create Sprite sheet by taking subimages from image and then scale them
+     */
     private void loadSprites() {
         for (int y = 0; y < 10; y++) {
             for (int x = 0; x < 10; x++) {
@@ -144,6 +103,10 @@ public class DrawPanel extends JPanel {
         }
     }
 
+    // TODO Javadoc comment, refactor if possible
+    /**
+     * 
+     */
     private void createPathSprites() { // Behöver fixas, Mycket redundant kod
         // pathTurn = sprites.get(8)
         int pathTurn = 8;
@@ -182,6 +145,11 @@ public class DrawPanel extends JPanel {
         }
     }
 
+    // TODO Javadoc comment, duplicate methodcalls in paintComponents() and here
+    /**
+     * 
+     * @param g
+     */
     private void drawMap(Graphics g) {
         drawTerrain(g);
         drawPath(g);
@@ -190,6 +158,10 @@ public class DrawPanel extends JPanel {
         drawHoveredTile(g);
     }
 
+    /**
+     * Draws a square border around the tile the player has clicked on
+     * @param g Graphics
+     */
     void drawSelectedTile(Graphics g) {
         if (selectedTile.length > 0) {
             Graphics2D g2 = (Graphics2D) g;
@@ -200,6 +172,10 @@ public class DrawPanel extends JPanel {
         }
     }
 
+    /**
+     * Draws a square border around the tile the player is hovering over
+     * @param g Graphics
+     */
     void drawHoveredTile(Graphics g) {
         if (selectedTile.length > 0) {
             Graphics2D g2 = (Graphics2D) g;
@@ -210,6 +186,11 @@ public class DrawPanel extends JPanel {
         }
     }
 
+    // TODO Javadoc comment
+    /**
+     * 
+     * @param g
+     */
     void drawEnemies(Graphics g) {
         // offset half of sprite size so the calculated position of enemy will be same
         // position as center of enemysprite
@@ -217,39 +198,110 @@ public class DrawPanel extends JPanel {
         int spriteSize = 48;
 
         for (AEnemy enemy : model.getEnemies()) {
+            int x = (int) (enemy.getX() * spriteSize) - offset;
+            int y = (int) (enemy.getY() * spriteSize) - offset;
+            drawEnemyHP(g, spriteSize, enemy, x, y);
             if (!enemy.isStaggered()) {
-                int x = (int) (enemy.getX() * spriteSize) - offset;
-                int y = (int) (enemy.getY() * spriteSize) - offset;
                 g.drawImage(sprites.get(28), x, y, null);
             }
-            // System.out.println("Enemy X: " + enemy.getX() + ", Y: " + enemy.getY()); //
-            // DEL
             // Add method that gets the correct sprite for enemies according to
             // animationIndex.
         }
     }
 
+    // TODO Javadoc comment
+    /**
+     * 
+     * @param g
+     * @param spriteSize
+     * @param enemy
+     * @param x
+     * @param y
+     */
+    private void drawEnemyHP(Graphics g, int spriteSize, AEnemy enemy, int x, int y) {
+        if ((double) (enemy.getHealth()/enemy.getMaxHealth()) > 0.75) {
+            g.setColor(Color.GREEN);
+        }
+        else if (((double) (enemy.getHealth()/enemy.getMaxHealth()) <= 0.75) && ((double) (enemy.getHealth()/enemy.getMaxHealth()) > 0.5)) {
+            g.setColor(Color.YELLOW);
+        }
+        else if (((double) (enemy.getHealth()/enemy.getMaxHealth()) <= 0.5) && ((double) (enemy.getHealth()/enemy.getMaxHealth()) > 0.25)) {
+            g.setColor(Color.ORANGE);
+        }
+        else {
+            g.setColor(Color.RED);
+        }
+        g.drawLine(x, y+spriteSize, (int) (x + (spriteSize * enemy.getHealth())/enemy.getMaxHealth()), y+spriteSize);
+    }
+
+    /**
+     * Draws all towers in the MainModel list of towers
+     * If the tower is currently targeting an enemy, rotate its image toward the target
+     * @param g Graphics
+     */
     private void drawTowers(Graphics g) {
         for (ATower tower : model.getMap().getTowers()) {
             BufferedImage towerImage = towerImageMap.get(tower.getTowerType());
             if (tower.getTargetPosition() != null) {
-                Point2D.Double enemyCenterPoint = tower.getTargetPosition();
-                double angleBInRadians = Math.atan2(tower.getY() + 0.5 - enemyCenterPoint.getY(),
-                        tower.getX() + 0.5 - enemyCenterPoint.getX());
-                double angle = Math.toDegrees(angleBInRadians);
-                towerImage = SpriteHelper.rotateSprite(towerImage, (int) (angle) + 270);
+                towerImage = rotateTowerTowardTarget(tower, towerImage);
             }
             g.drawImage(towerImage, (int) tower.getX() * 48, (int) tower.getY() * 48, null);
-
-            Graphics2D g2 = (Graphics2D) g;
-            g.setColor(Color.black);
-            int rangeCircleX = (int) ((tower.getX() - tower.getRange()));
-            int rangeCircleY = (int) ((tower.getY() - tower.getRange()));
-            int rangeCircleD = (int) (tower.getRange() * 2 * 48);
-            g2.drawOval(rangeCircleX * 48, rangeCircleY * 48, rangeCircleD + 48, rangeCircleD + 48);
         }
     }
 
+    /**
+     * Rotates the tower image toward the enemy its targeting
+     * @param tower The tower that is attacking the enemy
+     * @param towerImage The original tower image
+     * @return The rotated tower image
+     */
+    private BufferedImage rotateTowerTowardTarget(ATower tower, BufferedImage towerImage){
+        Point2D.Double enemyCenterPoint = tower.getTargetPosition();
+        double angleBInRadians = Math.atan2(tower.getY() + 0.5 - enemyCenterPoint.getY(), tower.getX() + 0.5 - enemyCenterPoint.getX());
+        double angle = Math.toDegrees(angleBInRadians);
+        return SpriteHelper.rotateSprite(towerImage, (int) (angle) + 270);
+    }
+
+    /**
+     * Draws the tower that the player wants to create at the mouse cursor
+     * @param g Graphics
+     */
+    private void drawTowerAtMousePos(Graphics g) {
+            BufferedImage towerImage = towerImageMap.get(towerTypeToPlace);
+            g.drawImage(towerImage, hoveredTile[0] * 48, hoveredTile[1] * 48, null);
+            drawTowerRange(g, hoveredTile[0], hoveredTile[1], 1);
+    }
+
+    /**
+     * If the player is hovering over an already placed tower this draws its range
+     * @param g Graphics
+     * @param towerAtMousePos The tower the player is hovering over
+     */
+    private void drawHoveredTowerRange(Graphics g, ATower towerAtMousePos) {
+        drawTowerRange(g, towerAtMousePos.getX(), towerAtMousePos.getY(), towerAtMousePos.getRange());
+    }
+    
+    /**
+     * Draws a circle around the tower representing its range
+     * @param g Graphics
+     * @param x Index x of the tile the tower is placed on
+     * @param y Index y of the tile the tower is placed on
+     * @param range The towers range
+     */
+    private void drawTowerRange(Graphics g, double x, double y, double range){
+        Graphics2D g2 = (Graphics2D) g;
+        g.setColor(Color.black);
+        int rangeCircleX = (int) (x - range);
+        int rangeCircleY = (int) (y - range);
+        int rangeCircleD = (int) (range * 2 * 48);
+        g2.drawOval(rangeCircleX * 48, rangeCircleY * 48, rangeCircleD + 48, rangeCircleD + 48);
+    }
+
+    // TODO javadoc comment
+    /**
+     * 
+     * @param g
+     */
     private void drawPath(Graphics g) {
         int spriteSize = 48;
         for (int i = 0; i < gridWidth; i++) {
@@ -261,7 +313,10 @@ public class DrawPanel extends JPanel {
         }
     }
 
-    // Draws the map to the screen according to the blueprint
+    /**
+     * Draws the map to the screen according to the blueprint
+     * @param g Graphics
+     */
     private void drawTerrain(Graphics g) {
         // Grass = sprites.get(18)
         int plains = 18;
@@ -279,20 +334,35 @@ public class DrawPanel extends JPanel {
                     case Water:
                         g.drawImage(sprites.get(water), i * sSize, j * sSize, null);
                         break;
+                    case Forrest:
+                        break;
+                    case Mountains:
+                        break;
+                    default:
+                        break;
                 }
             }
         }
 
     }
 
+    // TODO javadoc comment
+    /**
+     * 
+     */
     public void update() {
         updateAnimation();
         repaint();
     }
 
+    // TODO what are these variables for? Where should they be?
     public int walk = 0;
     int c = 1;
 
+    // TODO javadoc comment
+    /**
+     * 
+     */
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         drawMap(g);
@@ -309,6 +379,113 @@ public class DrawPanel extends JPanel {
         drawEnemies(g);
         drawTowers(g);
         drawSelectedTile(g);
+ 
+        if(getTowerAtMousePos() != null){
+            drawHoveredTowerRange(g, getTowerAtMousePos());
+        }
+        
+        if(isPlacingTower){
+            drawTowerAtMousePos(g);
+        }
     }
 
+
+    /** -------- Related to mouse events -------- */
+
+    /**
+     * Adds mouselisteners to DrawPanel
+     * MouseClicked left: Exits placing towers
+     * MouseClicked right: Creates a tower at the mouse position
+     * MouseMoved: Saves which tile the player is hovering over in the hoveredTile variable 
+     */
+    private void addMouseListeners(){
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent mEvent) {
+                if (mEvent.getButton() == MouseEvent.BUTTON3) {
+                    isPlacingTower = false;
+                    gameView.openCreateWidgit();
+                } else{
+                    try {
+                        handleTileClick();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent mEvent) {
+                //if(!model.activeWave()){
+                    hoverOverTile(mEvent.getX(), mEvent.getY());
+                //}
+            }
+        });
+    }
+
+    /**
+     * Creates a tower at the mouse position if the player is placing towers
+     * OR
+     * Opens the upgrade widget for the tower at the mouse position
+     */
+    private void handleTileClick() throws Exception {
+        if (isHoveredTileTowerTile()) {
+            if(isPlacingTower){
+                model.createTower(hoveredTile[0], hoveredTile[1], towerTypeToPlace);
+            } else if(getTowerAtMousePos() != null){
+                selectedTile[0] = hoveredTile[0];
+                selectedTile[1] = hoveredTile[1];
+                gameView.openUpgradeWidgit(hoveredTile[0], hoveredTile[1], getTowerAtMousePos().getTowerType(), getTowerAtMousePos().getUpgrades());
+            }
+        }
+    }
+
+    /**
+     * Saves which tile the player is hovering over in the hoveredTile variable 
+     * @param x Mouse x-pos
+     * @param y Mouse y-pos
+     */
+    private void hoverOverTile(int x, int y) {
+        for (int i = 0; i < gridWidth; i++) {
+            if (x > 48 * i && x < 48 * (i + 1)) {
+                for (int j = 0; j < gridHeight; j++) {
+                    if (y > 48 * j && y < 48 * (j + 1)) {
+                        hoveredTile[0] = i;
+                        hoveredTile[1] = j;
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Called when the player clicks on a widget button in "create mode"
+     * Saves which type of tower they want to create in towerTypeToPlace
+     */
+    @Override
+    public void selectTowerToCreate(TowerType type) {
+        towerTypeToPlace = type;
+        isPlacingTower = true;
+    }
+
+    // TODO reduce method chaining
+    /**
+     * Gets the tower object at the current mouse position
+     * @return Tower at mouse position or null if the tile doesn't have a tower
+     */
+    private ATower getTowerAtMousePos(){
+        if(hoveredTile[0] > -1 && hoveredTile[1] > -1){
+            if(isHoveredTileTowerTile()){
+                return ((TowerTile)model.getMap().getTile(hoveredTile[0], hoveredTile[1])).getTower();
+            }
+        }
+        return null;
+    }
+
+    // TODO reduce method chaining?
+    private boolean isHoveredTileTowerTile(){
+        return model.getMap().getTile(hoveredTile[0], hoveredTile[1]) instanceof TowerTile;
+    }
 }

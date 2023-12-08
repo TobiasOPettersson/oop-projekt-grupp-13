@@ -11,12 +11,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import Controller.Interfaces.ITowerObserver;
+import Controller.Interfaces.ICreateTowerSubject;
 import Model.Enums.TowerType;
+import View.ICreateTowerObserver;
 
-public class CreateTowerController extends TowerController {
+public class CreateTowerController extends TowerController implements ICreateTowerSubject {
+    ICreateTowerObserver observer;
     JLabel coinsLabel;
-    List<WidgetButtonTower> buttons;
+    List<WidgetButton> buttons;
     PlayButtonController playbutton;
     JPanel buttonPanel = new JPanel();
     JPanel headpanel = new JPanel();
@@ -24,11 +26,11 @@ public class CreateTowerController extends TowerController {
     /**
      * Constructor for the Shop Widget
      * 
-     * @param observer is the Map which is notified when the player wants to create
-     *                 a tower
+     * @param observer The DrawPanel that is notified when the player wants to
+     *                 create a tower
      */
-    public CreateTowerController(ITowerObserver observer) {
-        super(observer);
+    public CreateTowerController(ICreateTowerObserver observer) {
+        this.observer = observer;
         setBackground(Color.WHITE);
 
         buttonPanel.setLayout(new GridLayout(0, 6, 10, 20));
@@ -73,57 +75,46 @@ public class CreateTowerController extends TowerController {
     }
 
     /**
-     * When a button is clicked this method calls notifyObservers
-     * 
-     * @throws Exception
-     */
-    @Override
-    public void handleButtonClick(TowerType type) {
-        try {
-            notifyObservers(type);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
      * Initializes the buttons that the player click on when they want to create a
      * tower
      */
     private void initButtons() {
         buttons = List.of(
-                new WidgetButtonTower(1, TowerType.knife, this),
-                new WidgetButtonTower(3, TowerType.mallet, this),
-                new WidgetButtonTower(4, TowerType.blowtorch, this),
-                new WidgetButtonTower(2, TowerType.slicer, this),
-                new WidgetButtonTower(3, TowerType.freezer, this));
-        for (WidgetButtonTower button : buttons) {
+                new CreateButton(1, TowerType.knife, this),
+                new CreateButton(3, TowerType.mallet, this),
+                new CreateButton(4, TowerType.blowtorch, this),
+                new CreateButton(2, TowerType.slicer, this),
+                new CreateButton(3, TowerType.freezer, this));
+        for (WidgetButton button : buttons) {
             buttonPanel.add(button);
         }
         add(buttonPanel, BorderLayout.CENTER);
-
     }
 
     /**
-     * Notifies the observer (Map) that the player wants to create a tower of type
-     * towerType
+     * Notifies the observer (DrawPanel) that the player wants to create a tower of
+     * type towerType
      * 
      * @throws Exception if the player doesn't have enough money to buy the tower
      */
     @Override
     public void notifyObservers(TowerType towerType) {
         try {
-            getObserver().createTower(getSavedMousePosX(), getSavedMousePosY(), towerType);
+            observer.selectTowerToCreate(towerType);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Called whenever the players bank changes
+     * Calls setOpacity(), turns buttons grey if the player cant afford the tower
+     */
     @Override
     public void updateMoney(int curMoney) {
         coinsLabel.setText("Coins: " + curMoney);
-        for (WidgetButtonTower button : buttons) {
-            button.setOpacity(button.getCost() > curMoney);
+        for (WidgetButton button : buttons) {
+            button.setOpacity(Color.gray, button.getCost() > curMoney);
         }
     }
 }

@@ -11,14 +11,19 @@ public class FreezerTower extends AttackTower {
 
     public FreezerTower(int x, int y) {
         super(x, y, 4, 1, 1, 30, TowerType.freezer, 0, TargetType.all, TargetType.enemies);
+        upgradeMap.put(Upgrade.Frostbite, 0);
+        upgradeMap.put(Upgrade.SuperChill, 0);
+        upgradeMap.put(Upgrade.ConditionDuration, 10);
+        upgradeMap.put(Upgrade.Range, 0.5);
     }
 
     @Override
     public void attack(AEnemy target) {
         if(target != null){
+            System.out.println("Freezer attack");
             if(hasUpgrade(Upgrade.Frostbite)){
                 if(target.isChilled()){
-                    target.takeDamage(getDamage()+1);                
+                    target.takeDamage(damage+1);
                 }
             }
             if(hasUpgrade(Upgrade.SuperChill)){
@@ -28,29 +33,5 @@ public class FreezerTower extends AttackTower {
             }
             resetCooldown();
         }
-    }
-
-    @Override
-    public void upgrade(Upgrade upgrade) {
-        switch (upgrade) {
-            case IncreasedRange1:
-                setRange(getRange() + 0.5);
-                addUpgrade(upgrade);
-                break;
-            case IncreasedConditionDuration:
-                setDamage(chillDuration += 10);
-                addUpgrade(upgrade);
-                break;
-            case Frostbite:
-            case SuperChill:
-                addUpgrade(upgrade);
-                break;
-            case IncreasedSpeed1:
-                setMaxCooldown(getMaxCooldown() - 10);
-                addUpgrade(upgrade);
-            default:
-                System.out.println("Tower  doesn't have that upgrade");
-                break;
-        }
-    }   
+    }  
 }

@@ -2,7 +2,9 @@ package Model.Towers;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import Model.Enemies.AEnemy;
 import Model.Enums.TargetType;
@@ -22,7 +24,9 @@ public abstract class ATower implements ITargetable, IUpgradable{
     private int maxCooldown;
     private TowerType towerType;
     private TargetType[] targetType;
-    private List<Upgrade> upgrades = new ArrayList<>();
+    private int nTargets;
+    protected List<Upgrade> upgrades = new ArrayList<>();
+    protected Map<Upgrade, Number> upgradeMap;
     private Point2D.Double targetPosition;
 
    /**
@@ -35,7 +39,7 @@ public abstract class ATower implements ITargetable, IUpgradable{
     * @param maxCooldown is the maximum cooldown of the towers ability, the variable cooldown will reset to this after an ability has been used
     * @param towerType is the type of the tower, for example knife or mallet
     */
-    public ATower(double x, double y, int cost, double range, double aoeRange, int maxCooldown, TowerType towerType, TargetType nTargets, TargetType targetType){
+    public ATower(double x, double y, int cost, double range, double aoeRange, int maxCooldown, TowerType towerType, TargetType targetType1, TargetType targetType2){
         this.x = x;
         this.y = y;
         this.cost = cost;
@@ -44,9 +48,14 @@ public abstract class ATower implements ITargetable, IUpgradable{
         this.maxCooldown = maxCooldown;
         this.towerType = towerType;
         this.targetPosition = null;
-        setTargetTypes(nTargets, targetType);
+        targetType = new TargetType[]{targetType1, targetType2};
+        nTargets = 1;
+        upgradeMap = new HashMap<>();
     }
 
+
+    //----------------------------Methods for range----------------------//
+    
     /**
     * Finds enemies in range
     * @param enemies All enemies on the map
@@ -80,12 +89,12 @@ public abstract class ATower implements ITargetable, IUpgradable{
     */
     public List<AEnemy> findAoeTargets(AEnemy source, List<AEnemy> enemies) {
         List<AEnemy> aoeTargets = new ArrayList<>();
-  
-            List<AEnemy> aoeTargetables = enemies;
-            aoeTargetables.remove(source);
-            for (AEnemy enemy : aoeTargetables) {
-                if(inRangeOf(source, enemy, aoeRange)){
-                    aoeTargets.add(enemy);
+        List<AEnemy> aoeTargetables = new ArrayList<>(enemies);    
+        for (AEnemy enemy : aoeTargetables) {
+                if(!enemy.equals(source)){
+                    if(inRangeOf(source, enemy, aoeRange)){
+                        aoeTargets.add(enemy);
+                    }
                 }
             }
         return aoeTargets;
@@ -102,7 +111,40 @@ public abstract class ATower implements ITargetable, IUpgradable{
         distance -= 0.6;
         return distance <= range;
     }
+    
 
+    //----------------------------Upgrade method----------------------//
+    
+    /**
+     * Upgrades the tower 
+     * @param The upgrade to add 
+     * @return whether or not the enemy is in range of the towers attack
+     */
+    @Override
+    public void upgrade(Upgrade upgrade){
+        Number upgradeValue = upgradeMap.get(upgrade);
+        if(upgradeValue == null){
+            System.out.println("Tower  doesn't have that upgrade");
+        }
+
+        switch (upgrade) {
+            case Targets:
+                nTargets += upgradeValue.intValue();
+                break;
+            case Range:
+                range += upgradeValue.intValue();
+            case AoeRange:
+                aoeRange += upgradeValue.doubleValue();
+                break;
+            case Speed:
+                maxCooldown -= upgradeValue.doubleValue();
+            default:
+                break;
+        }
+        upgrades.add(upgrade);
+    }
+
+    //----------------------------Cooldown methods----------------------//
     /**
      * Decrements cooldown unless it's already at 0
      */
@@ -129,6 +171,9 @@ public abstract class ATower implements ITargetable, IUpgradable{
         this.cooldown = maxCooldown;
     }
 
+
+    //----------------------------Getters and setters----------------------//
+
     public TowerType getTowerType(){
         return towerType;
     }
@@ -151,20 +196,12 @@ public abstract class ATower implements ITargetable, IUpgradable{
         return range;
     }
 
-    public void setTargetTypes(TargetType targetable, TargetType target){
-        targetType = new TargetType[]{targetable, target};
-    }
-
     public TargetType[] getTargetTypes() {
         return targetType;
     }
 
     public void setRange(double range) {
         this.range = range;
-    }
-
-    protected void addUpgrade(Upgrade upgrade){
-        upgrades.add(upgrade);
     }
 
     protected boolean hasUpgrade(Upgrade targetUpgrade){
@@ -195,10 +232,12 @@ public abstract class ATower implements ITargetable, IUpgradable{
         targetPosition = point;
     }
 
+    public List<Upgrade> getUpgrades() {
+        return upgrades;
+    }
 
-    /**
-     * ------------------- Targeting methods that use ITargetable ------------------------ 
-     */
+
+    //------------------- Targeting methods that use ITargetable ------------------------//
 
     /**
     * Finds each targetable in range
@@ -207,11 +246,15 @@ public abstract class ATower implements ITargetable, IUpgradable{
     */
     public List<ITargetable> findTargets(List<ITargetable> targetables){
         List<ITargetable> targets = new ArrayList<>();
+        int targetsFound = 0;
         for (ITargetable targetable : targetables) {
             if(inRangeOf((ITargetable)this, targetable, range)){
-                targets.add(targetable);        
-                if(targetType[0] == TargetType.first){
+                targets.add(targetable);
+                targetsFound++;    
+                if(targetsFound == 1){
                     targets.addAll(findAoeTargets(targetable, targetables));
+                }    
+                if(targetsFound == nTargets){
                     return targets;
                 }
             }

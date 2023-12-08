@@ -1,7 +1,5 @@
 package Model.Enemies;
 
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +15,8 @@ import Model.Interfaces.ITargetable;
  * This class implements the IMovable interface.
  */
 public abstract class AEnemy implements IMovable, ITargetable {
-    private int health; //health points
+    private double health; //health points
+    private double maxHealth;
     private double x, y; //position
     private double speed; //movement speed of an enemy
     private double maxSpeed;
@@ -29,8 +28,9 @@ public abstract class AEnemy implements IMovable, ITargetable {
     private boolean isStaggered = false;
     private HashMap<Condition, Integer> conditions;
     
-    public AEnemy(int health, double y, double speed, EnemyType type, List<Direction> directions, int damage, int moneyBag) {
+    public AEnemy(double health, double y, double speed, EnemyType type, List<Direction> directions, int damage, int moneyBag) {
         this.health = health;
+        this.maxHealth = health;
         this.x = 0;
         this.y = y + tileOffset;
         this.speed = speed;
@@ -229,6 +229,9 @@ public abstract class AEnemy implements IMovable, ITargetable {
         } else{
             speed = maxSpeed;
         }
+        if(conditions.get(Condition.onFire) > 0){
+            health -= 1;
+        }
         decrementConditionDurations();
     }
 
@@ -238,10 +241,6 @@ public abstract class AEnemy implements IMovable, ITargetable {
                 conditions.put(entry.getKey(), entry.getValue() - 1);
             }
         }
-    }
-
-    public void setStagger(boolean bool){
-        isStaggered = bool;
     }
 
        
@@ -282,16 +281,23 @@ public abstract class AEnemy implements IMovable, ITargetable {
     public boolean isStaggered(){
         return isStaggered;
     }
-
+    
     /*
      * Updates the enemy health depending on the damage it takes
      */
     public void takeDamage(int damage){
-        this.health -= damage;
+        if (damage >= 0) {
+            this.health -= damage;
+        }
+        
     }
 
-    public int getHealth(){
+    public double getHealth(){
         return this.health;
+    }
+
+    public double getMaxHealth(){
+        return this.maxHealth;
     }
 
     public int getMoney(){
