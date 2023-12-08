@@ -207,7 +207,7 @@ public class AMap{
     }
 
     public List<Direction> getPathDirections() {
-        return new ArrayList<>(this.pathDirections);
+        return this.pathDirections;
     }
 
     public int getStartPosition() {

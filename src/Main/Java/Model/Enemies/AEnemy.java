@@ -1,5 +1,6 @@
 package Model.Enemies;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +37,7 @@ public abstract class AEnemy implements IMovable, ITargetable {
         this.speed = speed;
         this.maxSpeed = speed;
         this.type = type;
-        this.directions = directions;
+        this.directions = new ArrayList<>(directions);
         this.damage = damage;
         this.moneyBag = moneyBag;
         initConditionMap();
