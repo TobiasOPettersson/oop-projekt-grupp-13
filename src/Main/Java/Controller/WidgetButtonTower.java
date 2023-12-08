@@ -47,7 +47,7 @@ public class WidgetButtonTower extends JPanel {
      * Initializes the map containing the pats of button images
      */
     private void initButtonImagePaths() {
-        String resPath = "src\\Main\\Java\\Controller\\res\\";
+        String resPath = "src/Main/Java/Controller/res/";
         buttonImgPaths.put(TowerType.knife, resPath + "knife.png");
         buttonImgPaths.put(TowerType.mallet, resPath + "mallet.png");
         buttonImgPaths.put(TowerType.blowtorch, resPath + "blowtorch.png");
