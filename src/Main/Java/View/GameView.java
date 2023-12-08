@@ -32,9 +32,20 @@ public class GameView extends JFrame {
     DrawPanel drawPanel;
     private BufferedImage image;
     private BufferedImage imageKnife;
-    private Map<TowerType, BufferedImage> towerImageMap = new HashMap<TowerType,BufferedImage>();
+    private Map<TowerType, BufferedImage[]> towerImageMap = new HashMap<TowerType,BufferedImage[]>();
     CreateTowerController createWidget;
     List<UpgradeTowerController> upgradeWidgets;
+    private BufferedImage knifeTowerSprite;
+    private BufferedImage malletTowerSprite;
+    private BufferedImage blowtorchTowerSprite;
+    private BufferedImage slicerTowerSprite;
+    private BufferedImage fridgeTowerSprite;
+    private BufferedImage[] knifeTowerSpritesArr;
+    private BufferedImage[] malletTowerSpritesArr;
+    private BufferedImage[] blowtorchTowerSpritesArr;
+    private BufferedImage[] slicerTowerSpritesArr;
+    private BufferedImage[] fridgeTowerSpritesArr;
+    
 
     /*
      * Constructor
@@ -57,21 +68,45 @@ public class GameView extends JFrame {
     */
     private void importImg() {
         InputStream is = this.getClass().getResourceAsStream("res/spriteatlas.png");
-        InputStream is2 = this.getClass().getResourceAsStream("res/knifeTower.png");
+        /*InputStream is2 = this.getClass().getResourceAsStream("res/knifeTower.png");
         InputStream isMallet = this.getClass().getResourceAsStream("res/malletTower.png");
         InputStream isBlowtorch = this.getClass().getResourceAsStream("res/blowtorchTower.png");
         InputStream isSlicer = this.getClass().getResourceAsStream("res/slicerTower.png");
-        InputStream isFridge = this.getClass().getResourceAsStream("res/slicerTower.png");
+        InputStream isFridge = this.getClass().getResourceAsStream("res/slicerTower.png"); // change to fridge*/
 
         try {
             image = ImageIO.read(is);
-            towerImageMap.put(TowerType.knife, ImageIO.read(is2));
-            towerImageMap.put(TowerType.mallet, ImageIO.read(isMallet));
-            towerImageMap.put(TowerType.blowtorch, ImageIO.read(isBlowtorch));
-            towerImageMap.put(TowerType.slicer, ImageIO.read(isSlicer));
-            towerImageMap.put(TowerType.freezer, ImageIO.read(isFridge));
+            /*knifeTowerSprite = ImageIO.read(is2);
+            malletTowerSprite = ImageIO.read(isMallet);
+            blowtorchTowerSprite = ImageIO.read(isBlowtorch);
+            slicerTowerSprite = ImageIO.read(isSlicer);
+            fridgeTowerSprite = ImageIO.read(isFridge);*/
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+    private void loadSprites() {
+        /*for (int y = 0; y < 10; y++) {
+            for (int x = 0; x < 10; x++) {
+                // Get the subimage that is 32x32 and scale it before putting it in the array of
+                // sprites
+                sprites.add(SpriteHelper.scaleSprite(image.getSubimage(x * 32, y * 32, 32, 32), 1.5));
+            }
+        }*/
+        for (int i = 0; i < 4; i++){
+            knifeTowerSpritesArr[i] = (knifeTowerSprite.getSubimage(i * 48, 0, 48, 48));
+        }
+        for (int i = 0; i < 4; i++){
+            malletTowerSpritesArr[i] = (malletTowerSprite.getSubimage(i * 48, 0, 48, 48));
+        }
+        for (int i = 0; i < 4; i++){
+            blowtorchTowerSpritesArr[i] = (blowtorchTowerSprite.getSubimage(i * 48, 0, 48, 48));
+        }
+        for (int i = 0; i < 4; i++){
+            slicerTowerSpritesArr[i] = (slicerTowerSprite.getSubimage(i * 48, 0, 48, 48));
+        }
+        for (int i = 0; i < 4; i++){
+            fridgeTowerSpritesArr[i] = (fridgeTowerSprite.getSubimage(i * 48, 0, 48, 48));
         }
     }
 

@@ -115,22 +115,7 @@ public class MainModel implements ITowerObserver {
     public void play() {
         activeWave = true;
     }
-
-    /*
-     * Used to pick what sprite in a animation sequence to show
-     */
-    private void updateAnimationTick() {
-        animationTick++;
-        /*
-         * if (animationTick >= 10) {
-         * animationTick = 0;
-         * for (ATower tower : map.getTowers()){
-         * tower.updateAnimationIndex();
-         * }
-         * 
-         * }
-         */
-    }
+   
 
     public List<ITargetable> convertEnemiesToTargetables() {
         List<ITargetable> targetables = new ArrayList<>();

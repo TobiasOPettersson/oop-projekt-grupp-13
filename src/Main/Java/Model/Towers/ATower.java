@@ -1,6 +1,10 @@
 package Model.Towers;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +14,8 @@ import Model.Enums.TowerType;
 import Model.Enums.Upgrade;
 import Model.Interfaces.ITargetable;
 import Model.Interfaces.IUpgradable;
+import View.SpriteHelper;
+import View.SpriteManager;
 
 public abstract class ATower implements ITargetable, IUpgradable {
     private double x;
@@ -24,6 +30,9 @@ public abstract class ATower implements ITargetable, IUpgradable {
     private List<Upgrade> upgrades = new ArrayList<>();
     private Point2D.Double targetPosition;
     private int animationIndex;
+    private BufferedImage[] towerSprites;
+    protected SpriteManager spriteManager;
+    private int animationTick;
 
     /**
      * Constructor of abstract class ATower
@@ -53,6 +62,8 @@ public abstract class ATower implements ITargetable, IUpgradable {
         this.animationIndex = 0;
         this.targetPosition = null;
         setTargetTypes(nTargets, targetType);
+        this.spriteManager = new SpriteManager();
+        this.towerSprites = spriteManager.getTowerSprites(towerType);
     }
 
     /**
@@ -128,6 +139,38 @@ public abstract class ATower implements ITargetable, IUpgradable {
     }
 
     /*
+     * Paint: How to paint a tower
+     */
+    public void paint(Graphics g) {
+        BufferedImage towerImage = towerSprites[animationIndex];
+        if (this.targetPosition != null) {
+            Point2D.Double enemyCenterPoint = this.targetPosition;
+            double angleBInRadians = Math.atan2(this.y + 0.5 - enemyCenterPoint.getY(),
+                    this.x + 0.5 - enemyCenterPoint.getX());
+            double angle = Math.toDegrees(angleBInRadians);
+            towerImage = SpriteHelper.rotateSprite(towerImage, (int) (angle) + 270);
+        }
+        g.drawImage(towerImage, (int) this.x * 48, (int) this.y * 48, null);
+
+        Graphics2D g2 = (Graphics2D) g;
+        g.setColor(Color.black);
+        int rangeCircleX = (int) ((this.x - this.range));
+        int rangeCircleY = (int) ((this.y - this.range));
+        int rangeCircleD = (int) (this.range * 2 * 48);
+        g2.drawOval(rangeCircleX * 48, rangeCircleY * 48, rangeCircleD + 48, rangeCircleD + 48);
+    }
+
+    private void updateAnimationTick() {
+        animationTick++;
+        if (animationTick >= 10) {
+            animationTick = 0;
+                updateAnimationIndex();
+
+        }
+
+    }
+
+    /*
      * Updates animationIndex when the tower is not on cooldown
      */
     public void updateAnimationIndex() {
@@ -176,10 +219,6 @@ public abstract class ATower implements ITargetable, IUpgradable {
 
     public TowerType getTowerType() {
         return towerType;
-    }
-
-    public int getAnimationIndex() {
-        return animationIndex;
     }
 
     @Override
