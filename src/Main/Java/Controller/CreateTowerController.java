@@ -12,12 +12,13 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import Controller.Interfaces.ICreateTowerSubject;
+import Model.MainModel;
 import Model.Enums.TowerType;
 import View.ICreateTowerObserver;
 
 public class CreateTowerController extends TowerController implements ICreateTowerSubject {
     ICreateTowerObserver observer;
-    JLabel coinsLabel;
+    // JLabel coinsLabel;
     List<WidgetButton> buttons;
     PlayButtonController playbutton;
     JPanel buttonPanel = new JPanel();
@@ -29,49 +30,43 @@ public class CreateTowerController extends TowerController implements ICreateTow
      * @param observer The DrawPanel that is notified when the player wants to
      *                 create a tower
      */
-    public CreateTowerController(ICreateTowerObserver observer) {
+    public CreateTowerController(ICreateTowerObserver observer, MainModel model) {
+        super(model);
+
         this.observer = observer;
+        this.model = model;
+
         setBackground(Color.WHITE);
-
-        buttonPanel.setLayout(new GridLayout(0, 6, 10, 20));
-
+        buttonPanel.setLayout(new GridLayout(0, 6, 5, 10));
         setLayout(new BorderLayout());
-
         setPreferredSize(new Dimension(300, 300));
 
         initHeader();
-        intiCostAndLife();
         initButtons();
+        intiPlaybutton();
     }
 
+    /**
+     * Initializes the Header of the CreateTowerController
+     */
     private void initHeader() {
-
         headpanel.setBackground(Color.gray);
-
         headpanel.setPreferredSize(new Dimension(300, 25));
+
         JLabel titleLabel = new JLabel("CREATE TOWERS");
         titleLabel.setForeground(Color.BLACK);
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        headpanel.add(titleLabel);
 
+        headpanel.add(titleLabel);
         add(headpanel, BorderLayout.PAGE_START);
     }
 
     /**
-     * Initializes the title label
+     * Initializes the Playbutton label
      */
-    private void intiCostAndLife() {
-        JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        labelPanel.setLayout(new GridLayout(3, 1, 0, 0));
-        JLabel titleLabel = new JLabel("CREATE TOWERS");
-        coinsLabel = new JLabel("Coins: ");
-        titleLabel.setForeground(Color.BLACK);
-        coinsLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        // add(playbutton);
-        labelPanel.add(titleLabel);
-        labelPanel.add(coinsLabel);
-        buttonPanel.add(labelPanel, BorderLayout.EAST);
+    private void intiPlaybutton() {
+        playbutton = new PlayButtonController(model);
+        buttonPanel.add(playbutton);
     }
 
     /**
@@ -112,7 +107,7 @@ public class CreateTowerController extends TowerController implements ICreateTow
      */
     @Override
     public void updateMoney(int curMoney) {
-        coinsLabel.setText("Coins: " + curMoney);
+        // coinsLabel.setText("Coins: " + curMoney);
         for (WidgetButton button : buttons) {
             button.setOpacity(Color.gray, button.getCost() > curMoney);
         }
