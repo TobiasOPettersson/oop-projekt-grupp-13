@@ -17,7 +17,7 @@ import Model.Enums.Upgrade;
 
 public class UpgradeTowerController extends TowerController implements IUpgradeTowerSubject{
     JLabel coinsLabel;
-    List<WidgetButtonTower> buttons;
+    List<WidgetButton> buttons;
     PlayButtonController playbutton;
     JPanel buttonPanel = new JPanel();
     JPanel headpanel = new JPanel();
@@ -111,7 +111,7 @@ public class UpgradeTowerController extends TowerController implements IUpgradeT
                 break;
         }
         
-        for (WidgetButtonTower button : buttons) {
+        for (WidgetButton button : buttons) {
             buttonPanel.add(button);
         }
         add(buttonPanel, BorderLayout.CENTER);
@@ -123,7 +123,7 @@ public class UpgradeTowerController extends TowerController implements IUpgradeT
 
     @Override
     public void notifyObservers(Upgrade upgrade) {
-        for (WidgetButtonTower button : buttons) {
+        for (WidgetButton button : buttons) {
             if(upgrade == ((UpgradeButton)button).upgrade){
                 button.setOpacity(Color.blue, true);
             }
@@ -138,7 +138,7 @@ public class UpgradeTowerController extends TowerController implements IUpgradeT
     @Override
     public void updateMoney(int curMoney) {
         coinsLabel.setText("Coins: " + curMoney);
-        for (WidgetButtonTower button : buttons) {
+        for (WidgetButton button : buttons) {
             button.setOpacity(Color.gray, button.getCost() > curMoney);
         }
     }
@@ -148,7 +148,7 @@ public class UpgradeTowerController extends TowerController implements IUpgradeT
      * Calls setOpacity(), turns buttons grey if the player cant afford the upgrade
      */
     public void updateAvailableUpgrades(List<Upgrade> currentUpgrades) {
-        for (WidgetButtonTower button : buttons) {
+        for (WidgetButton button : buttons) {
             if(currentUpgrades.contains(((UpgradeButton)button).upgrade)){
                 button.setOpacity(Color.blue, true);
             }

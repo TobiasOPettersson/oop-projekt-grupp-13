@@ -15,7 +15,7 @@ import java.awt.GridLayout;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class WidgetButtonTower extends JPanel {
+public abstract class WidgetButton extends JPanel {
     protected JPanel topPanel;
     protected JPanel bottomPanel;
     protected JLabel nameLabel;
@@ -31,7 +31,7 @@ public abstract class WidgetButtonTower extends JPanel {
      * @param towerController is the tower controller widgit that the button is
      *                        added to
      */
-    public WidgetButtonTower(int cost, TowerType type, TowerController towerController) {
+    public WidgetButton(int cost, TowerType type, TowerController towerController) {
         this.cost = cost;
         this.type = type;
         setSize(new Dimension(100, 200));

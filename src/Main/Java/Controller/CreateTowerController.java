@@ -18,7 +18,7 @@ import View.ICreateTowerObserver;
 public class CreateTowerController extends TowerController implements ICreateTowerSubject {
     ICreateTowerObserver observer;
     JLabel coinsLabel;
-    List<WidgetButtonTower> buttons;
+    List<WidgetButton> buttons;
     PlayButtonController playbutton;
     JPanel buttonPanel = new JPanel();
     JPanel headpanel = new JPanel();
@@ -84,7 +84,7 @@ public class CreateTowerController extends TowerController implements ICreateTow
                 new CreateButton(4, TowerType.blowtorch, this),
                 new CreateButton(2, TowerType.slicer, this),
                 new CreateButton(3, TowerType.freezer, this));
-        for (WidgetButtonTower button : buttons) {
+        for (WidgetButton button : buttons) {
             buttonPanel.add(button);
         }
         add(buttonPanel, BorderLayout.CENTER);
@@ -110,7 +110,7 @@ public class CreateTowerController extends TowerController implements ICreateTow
     @Override
     public void updateMoney(int curMoney) {
         coinsLabel.setText("Coins: " + curMoney);
-        for (WidgetButtonTower button : buttons) {
+        for (WidgetButton button : buttons) {
             button.setOpacity(Color.gray, button.getCost() > curMoney);
         }
     }

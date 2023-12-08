@@ -5,7 +5,7 @@ import java.awt.event.MouseEvent;
 
 import Model.Enums.TowerType;
 
-public class CreateButton extends WidgetButtonTower{
+public class CreateButton extends WidgetButton{
 
     public CreateButton(int cost, TowerType type, CreateTowerController towerController) {
         super(cost, type, towerController);

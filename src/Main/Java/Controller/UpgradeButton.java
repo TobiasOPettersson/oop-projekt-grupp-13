@@ -6,7 +6,7 @@ import Model.Enums.Upgrade;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class UpgradeButton extends WidgetButtonTower{
+public class UpgradeButton extends WidgetButton{
     protected Upgrade upgrade;
 
     public UpgradeButton(int cost, UpgradeTowerController towerController, Upgrade upgrade, TowerType type) {
