@@ -21,7 +21,7 @@ public class UpgradeTowerController extends TowerController implements IUpgradeT
     // JLabel coinsLabel;
     List<WidgetButton> buttons;
     PlayButtonController playbutton;
-    MainModel model;
+    // MainModel model;
     JPanel buttonPanel = new JPanel();
     JPanel headpanel = new JPanel();
     TowerType towerType;
