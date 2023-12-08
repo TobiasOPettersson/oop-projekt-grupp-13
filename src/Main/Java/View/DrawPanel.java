@@ -362,7 +362,7 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
             g.setFont(new Font("Arial", Font.BOLD, 30));
             drawCenteredText(g, "YOU LOST!");
         }
-        if (!model.activeWave() && model.getAlive()) {
+        if (!model.getActiveWave() && model.allWavesDead() && model.getAlive()) {
             g.setColor(new Color(0, 0, 0, 150));
             g.fillRect(0, 0, getWidth(), getHeight());
             g.setColor(Color.GREEN);
