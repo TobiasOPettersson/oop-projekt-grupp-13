@@ -49,16 +49,15 @@ public class GameView extends JFrame {
         initComponents();
     }
 
-    private void initWidgits(){
+    private void initWidgits() {
         upgradeWidgits = List.of(
-            new UpgradeTowerController(model, TowerType.knife),
-            new UpgradeTowerController(model, TowerType.mallet),
-            new UpgradeTowerController(model, TowerType.blowtorch),
-            new UpgradeTowerController(model, TowerType.slicer),
-            new UpgradeTowerController(model, TowerType.freezer)
-        );
+                new UpgradeTowerController(model, TowerType.knife),
+                new UpgradeTowerController(model, TowerType.mallet),
+                new UpgradeTowerController(model, TowerType.blowtorch),
+                new UpgradeTowerController(model, TowerType.slicer),
+                new UpgradeTowerController(model, TowerType.freezer));
 
-        for(UpgradeTowerController upgradeWidgit : upgradeWidgits){
+        for (UpgradeTowerController upgradeWidgit : upgradeWidgits) {
             upgradeWidgit.setBounds(0, 480, 960, 300);
             add(upgradeWidgit);
             upgradeWidgit.setVisible(false);
@@ -74,12 +73,12 @@ public class GameView extends JFrame {
 
     // import sprite sheet
     private void importImg() {
-        InputStream is = this.getClass().getResourceAsStream("res1/spriteatlas.png");
-        InputStream is2 = this.getClass().getResourceAsStream("res1/knife2.png");
-        InputStream isMallet = this.getClass().getResourceAsStream("res1/mallet.png");
-        InputStream isBlowtorch = this.getClass().getResourceAsStream("res1/blowtorch.png");
-        InputStream isSlicer = this.getClass().getResourceAsStream("res1/slicer.png");
-        InputStream isFridge = this.getClass().getResourceAsStream("res1/fridge.png");
+        InputStream is = this.getClass().getResourceAsStream("res/spriteatlas.png");
+        InputStream is2 = this.getClass().getResourceAsStream("res/knife2.png");
+        InputStream isMallet = this.getClass().getResourceAsStream("res/mallet.png");
+        InputStream isBlowtorch = this.getClass().getResourceAsStream("res/blowtorch.png");
+        InputStream isSlicer = this.getClass().getResourceAsStream("res/slicer.png");
+        InputStream isFridge = this.getClass().getResourceAsStream("res/fridge.png");
 
         try {
             image = ImageIO.read(is);
@@ -108,7 +107,7 @@ public class GameView extends JFrame {
         }
     }
 
-    public void openCreateWidgit(){
+    public void openCreateWidgit() {
         createWidgit.setVisible(true);
         for (UpgradeTowerController upgradeWidget : upgradeWidgits) {
             upgradeWidget.setVisible(false);
