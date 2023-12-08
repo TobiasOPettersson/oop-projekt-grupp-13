@@ -26,7 +26,8 @@ public class CreateTowerController extends TowerController implements ICreateTow
     /**
      * Constructor for the Shop Widget
      * 
-     * @param observer The DrawPanel that is notified when the player wants to create a tower
+     * @param observer The DrawPanel that is notified when the player wants to
+     *                 create a tower
      */
     public CreateTowerController(ICreateTowerObserver observer) {
         this.observer = observer;
@@ -91,7 +92,9 @@ public class CreateTowerController extends TowerController implements ICreateTow
     }
 
     /**
-     * Notifies the observer (DrawPanel) that the player wants to create a tower of type towerType
+     * Notifies the observer (DrawPanel) that the player wants to create a tower of
+     * type towerType
+     * 
      * @throws Exception if the player doesn't have enough money to buy the tower
      */
     @Override
