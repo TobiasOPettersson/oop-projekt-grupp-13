@@ -49,16 +49,15 @@ public class GameView extends JFrame {
         initComponents();
     }
 
-    private void initWidgits(){
+    private void initWidgits() {
         upgradeWidgits = List.of(
-            new UpgradeTowerController(model, TowerType.knife),
-            new UpgradeTowerController(model, TowerType.mallet),
-            new UpgradeTowerController(model, TowerType.blowtorch),
-            new UpgradeTowerController(model, TowerType.slicer),
-            new UpgradeTowerController(model, TowerType.freezer)
-        );
+                new UpgradeTowerController(model, TowerType.knife),
+                new UpgradeTowerController(model, TowerType.mallet),
+                new UpgradeTowerController(model, TowerType.blowtorch),
+                new UpgradeTowerController(model, TowerType.slicer),
+                new UpgradeTowerController(model, TowerType.freezer));
 
-        for(UpgradeTowerController upgradeWidgit : upgradeWidgits){
+        for (UpgradeTowerController upgradeWidgit : upgradeWidgits) {
             upgradeWidgit.setBounds(0, 480, 960, 300);
             add(upgradeWidgit);
             upgradeWidgit.setVisible(false);
@@ -108,7 +107,7 @@ public class GameView extends JFrame {
         }
     }
 
-    public void openCreateWidgit(){
+    public void openCreateWidgit() {
         createWidgit.setVisible(true);
         for (UpgradeTowerController upgradeWidget : upgradeWidgits) {
             upgradeWidget.setVisible(false);
