@@ -17,6 +17,11 @@ public class FreezerTower extends AttackTower {
         upgradeMap.put(Upgrade.Range, 0.5);
     }
 
+    /**
+     * Blowtorch overrides the default attack method in order to apply the chill condition if it has the right upgrade
+     * Also since if it has the upgrade Frostbite, it can deal damage to chilled enemies
+     * @param target The target of the attack
+     */
     @Override
     public void attack(AEnemy target) {
         if(target != null){

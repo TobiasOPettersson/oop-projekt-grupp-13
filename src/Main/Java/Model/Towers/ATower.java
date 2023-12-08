@@ -54,7 +54,7 @@ public abstract class ATower implements ITargetable, IUpgradable{
     }
 
 
-    //----------------------------Methods for range----------------------//
+    //----------------------------Methods for targeting----------------------//
     
     /**
     * Finds enemies in range

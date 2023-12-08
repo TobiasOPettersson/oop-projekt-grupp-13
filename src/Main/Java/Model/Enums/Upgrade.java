@@ -1,5 +1,8 @@
 package Model.Enums;
 
+/**
+ * The types of upgrades in the game
+ */
 public enum Upgrade {
     // Upgrades for specific towers
     SuperChill,

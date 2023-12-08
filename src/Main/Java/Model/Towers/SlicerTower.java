@@ -20,6 +20,11 @@ public class SlicerTower extends AttackTower{
         upgradeMap.put(Upgrade.Damage2, 1);
     }
 
+    /**
+     * Slicer does more damage to cheese and the only one who doesn't deal reduced damage to it
+     * @param type The type of enemy that the tower does increased or decreased damage to
+     * @return The damage after modifications
+     */
     @Override
     protected int getDamage(EnemyType type) {
         switch (type) {

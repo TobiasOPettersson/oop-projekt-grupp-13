@@ -7,6 +7,12 @@ import Model.Enums.TowerType;
 
 public class CreateButton extends WidgetButton{
 
+    /**
+     * Constructor for CreateButton
+     * @param cost The cost of the tower
+     * @param towerController The CreateTowerController the button will be added to
+     * @param type The type of the tower
+     */
     public CreateButton(int cost, TowerType type, CreateTowerController towerController) {
         super(cost, type, towerController);
 

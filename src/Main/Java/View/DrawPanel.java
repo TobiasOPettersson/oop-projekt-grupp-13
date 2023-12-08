@@ -68,9 +68,9 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
         addMouseListeners();
     }
 
-    // TODO Javadoc comment
+
     /**
-     * 
+     * TODO Javadoc comment
      */
     private void updateAnimation() {
         animationTick++;
@@ -80,9 +80,8 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
         }
     }
 
-    // TODO Javadoc comment
     /**
-     * 
+     * TODO Javadoc comment
      */
     private void updateAnimationIndex() {
         animationIndex++;
@@ -104,9 +103,8 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
         }
     }
 
-    // TODO Javadoc comment, refactor if possible
     /**
-     * 
+     * TODO Javadoc comment, refactor if possible
      */
     private void createPathSprites() { // Behöver fixas, Mycket redundant kod
         // pathTurn = sprites.get(8)
@@ -146,9 +144,40 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
         }
     }
 
-    // TODO Javadoc comment, duplicate methodcalls in paintComponents() and here
+    //----------------------------Draw & paint methods-----------------------//
+
     /**
-     * 
+     * TODO javadoc comment
+     * @param g
+     */
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        drawMap(g);
+
+        // Testing
+        /*
+         * if (c == 1)
+         * for (DirChange item : dirChangeArray) {
+         * System.out.println("x: " + item.getX() + ", y: " + item.getY() + ", dir: " +
+         * item.getDir());
+         * c = 0;
+         * }
+         */
+        drawEnemies(g);
+        drawTowers(g);
+        drawSelectedTile(g);
+ 
+        if(getTowerAtMousePos() != null){
+            drawHoveredTowerRange(g, getTowerAtMousePos());
+        }
+        
+        if(isPlacingTower){
+            drawTowerAtMousePos(g);
+        }
+    }
+
+    /**
+     * TODO Javadoc comment, duplicate methodcalls in paintComponents() and here 
      * @param g
      */
     private void drawMap(Graphics g) {
@@ -305,9 +334,8 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
         g2.drawOval(rangeCircleX * 48, rangeCircleY * 48, rangeCircleD + 48, rangeCircleD + 48);
     }
 
-    // TODO javadoc comment
     /**
-     * 
+     * TODO javadoc comment
      * @param g
      */
     private void drawPath(Graphics g) {
@@ -378,9 +406,10 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
         g.drawString(text, x, y);
     }
 
-    // TODO javadoc comment
+    //----------------------------Other methods--------------------------//
+
     /**
-     * 
+     * TODO javadoc comment
      */
     public void update() {
         updateAnimation();
@@ -391,36 +420,6 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
     public int walk = 0;
     int c = 1;
 
-    // TODO javadoc comment
-    /**
-     * 
-     */
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        drawMap(g);
-
-        // Testing
-        /*
-         * if (c == 1)
-         * for (DirChange item : dirChangeArray) {
-         * System.out.println("x: " + item.getX() + ", y: " + item.getY() + ", dir: " +
-         * item.getDir());
-         * c = 0;
-         * }
-         */
-        drawEnemies(g);
-        drawTowers(g);
-        drawSelectedTile(g);
-        drawEndScreen(g);
-
-        if (getTowerAtMousePos() != null) {
-            drawHoveredTowerRange(g, getTowerAtMousePos());
-        }
-
-        if (isPlacingTower) {
-            drawTowerAtMousePos(g);
-        }
-    }
 
     /** -------- Related to mouse events -------- */
 

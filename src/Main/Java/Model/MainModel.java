@@ -31,6 +31,9 @@ public class MainModel implements ITowerUpgradeObserver {
     private boolean activeWave;
     private Wave allWaves;
 
+    /**
+     * TODO Javadoc comment
+     */
     public MainModel() {
         this.player = new Player(5, 3);
         this.map = new MapOne();
@@ -39,6 +42,9 @@ public class MainModel implements ITowerUpgradeObserver {
         this.activeWave = false;
     }
 
+    /**
+     * TODO Javadoc comment, refactor into seperate methods?
+     */
     public void run() {
         if (activeWave) {
             System.out.println(enemies.size());
@@ -90,15 +96,36 @@ public class MainModel implements ITowerUpgradeObserver {
         }
     }
 
+    //-----------------------Tower methods---------------------// 
+
+    /**
+     * Calls createTower() in map that creates a new instance of a tower
+     * @param x Grid x-index of where the tower will be created
+     * @param y Grid y-index of where the tower will be created
+     * @param type Type of the tower
+     * @throws Exception if the player doesn't have enough money to buy the tower
+     */
     public void createTower(int x, int y, TowerType type) throws Exception {
         map.createTower(x, y, type);
     }
 
     @Override
+    
+    /**
+     * Calls upgradeTower() in map that upgrades the tower at tile (x, y)
+     * @param x The towers x-index on the grid
+     * @param y The towers y-index on the grid
+     * @param upgrade The type of upgrade that will be added
+     */
     public void upgradeTower(int x, int y, Upgrade upgrade) {
         map.upgradeTower(x, y, upgrade);
     }
 
+    //-----------------------Other methods---------------------// 
+
+    /**
+     * Starts the wave
+     */
     public void play() {
         System.out.println(this.currentWaveEnemies);
         if (canStartNewWave()) {
@@ -113,6 +140,12 @@ public class MainModel implements ITowerUpgradeObserver {
             return true;
         return false;
     }
+    private boolean alive(){
+        return player.getHealth() > 0;
+    }
+
+
+    //-----------------------ITargetale convertion methods (Might use)---------------------// 
 
     public List<ITargetable> convertEnemiesToTargetables() {
         List<ITargetable> targetables = new ArrayList<>();
@@ -130,15 +163,37 @@ public class MainModel implements ITowerUpgradeObserver {
         return targetables;
     }
 
-    private boolean alive() {
-        return player.getHealth() > 0;
+    //----------------------------Waves--------------------------// 
+    
+    /**
+     * TODO Javadoc comment
+     * @return
+     */
+    private Queue<AEnemy> convertAllWavesToAEnemy (){
+        Queue<AEnemy> thisWave = new LinkedList<AEnemy>();
+        Queue<EnemyType> thisWaveType = this.allWaves.startWave();
+        EnemyType currentEnemyType;
+        while (thisWaveType.isEmpty() == false) {
+            currentEnemyType = thisWaveType.poll();
+            if (currentEnemyType == EnemyType.banana) thisWave.add(new EnemyOne(this.map.getStartPosition(), 0.02, this.map.getPathDirections()));
+            //TODO
+            //if statements for every enemytype
+        }
+        return thisWave;
     }
 
-    public boolean activeWave() {
-        if (this.enemies.isEmpty() && this.currentWaveEnemies.isEmpty())
-            return false;
+    /**
+     * TODO Javadoc comment
+     * @return
+     */
+    public boolean activeWave(){
+        if (this.enemies.isEmpty() && this.currentWaveEnemies.isEmpty()) return false;
         return true;
     }
+
+    //----------------------------Getters and setters--------------------------// 
+
+    //----------------------------Getters and setters--------------------------// 
 
     public boolean getAlive() {
         return this.alive;

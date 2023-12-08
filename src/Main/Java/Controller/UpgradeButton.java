@@ -9,6 +9,13 @@ import java.awt.event.MouseEvent;
 public class UpgradeButton extends WidgetButton{
     protected Upgrade upgrade;
 
+    /**
+     * Constructor
+     * @param cost The cost of the upgrade
+     * @param towerController The UpgradeTowerController the button will be added to
+     * @param upgrade The upgrade the button has
+     * @param type The type of tower the upgrade is for
+     */
     public UpgradeButton(int cost, UpgradeTowerController towerController, Upgrade upgrade, TowerType type) {
         super(cost, type, towerController);
         this.upgrade = upgrade;
@@ -21,6 +28,9 @@ public class UpgradeButton extends WidgetButton{
         });
     }
 
+    /**
+     * Initializes the map containing each upgrades image
+     */
     @Override
     protected void initButtonImagePaths() {
         String resPath = "src/Main/Java/Controller/resController/";
