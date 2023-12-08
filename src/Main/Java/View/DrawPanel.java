@@ -200,9 +200,9 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver{
         for (AEnemy enemy : model.getEnemies()) {
             int x = (int) (enemy.getX() * spriteSize) - offset;
             int y = (int) (enemy.getY() * spriteSize) - offset;
+            drawEnemyHP(g, spriteSize, enemy, x, y);
             if (!enemy.isStaggered()) {
                 g.drawImage(sprites.get(28), x, y, null);
-                drawEnemyHP(g, spriteSize, enemy, x, y);
             }
             // Add method that gets the correct sprite for enemies according to
             // animationIndex.
