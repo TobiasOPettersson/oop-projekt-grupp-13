@@ -22,7 +22,7 @@ import Model.Player.Player;
 import Model.Towers.ATower;
 import Model.Towers.AttackTower;
 
-public class MainModel implements ITowerUpgradeObserver{
+public class MainModel implements ITowerUpgradeObserver {
     private AMap map;
     private List<AEnemy> enemies = new ArrayList<AEnemy>();
     private Queue<AEnemy> currentWaveEnemies = new LinkedList<AEnemy>();
@@ -31,7 +31,7 @@ public class MainModel implements ITowerUpgradeObserver{
     private boolean activeWave;
     private Wave allWaves;
 
-    public MainModel(){
+    public MainModel() {
         this.player = new Player(5, 3);
         this.map = new MapOne();
         this.allWaves = new Wave(this.map.getStartPosition(), this.map.getPathDirections());
@@ -39,56 +39,58 @@ public class MainModel implements ITowerUpgradeObserver{
         this.activeWave = false;
     }
 
-    public void run(){
-        if(activeWave){
-        System.out.println(enemies.size());
-        AEnemy enemyToRemove = null;
-        for (AEnemy enemy : enemies){
-            enemy.triggerConditions();
-            enemy.move();
-            enemy.setStaggered(false);
-            if (enemy.getX() > map.getMapSizeX()) {
-                player.takeDamage(enemy.getDamage());
-                enemyToRemove = enemy;
+    public void run() {
+        if (activeWave) {
+            System.out.println(enemies.size());
+            AEnemy enemyToRemove = null;
+            for (AEnemy enemy : enemies) {
+                enemy.triggerConditions();
+                enemy.move();
+                enemy.setStaggered(false);
+                if (enemy.getX() > map.getMapSizeX()) {
+                    player.takeDamage(enemy.getDamage());
+                    enemyToRemove = enemy;
+                }
             }
-        }
 
-        // Removal is outside the for-loop so that the list size doesnt chance while inside the for-loop
-        if(enemyToRemove != null){
-            enemies.remove(enemyToRemove);
-        }
+            // Removal is outside the for-loop so that the list size doesnt chance while
+            // inside the for-loop
+            if (enemyToRemove != null) {
+                enemies.remove(enemyToRemove);
+            }
 
-        System.out.println("Test 1");
-        this.allWaves.updateSpawnRate();
-        if(this.allWaves.checkIfSpawnable() && this.currentWaveEnemies.isEmpty() == false){
-            this.enemies.add(this.currentWaveEnemies.poll());
-        }
+            System.out.println("Test 1");
+            this.allWaves.updateSpawnRate();
+            if (this.allWaves.checkIfSpawnable() && this.currentWaveEnemies.isEmpty() == false) {
+                this.enemies.add(this.currentWaveEnemies.poll());
+            }
 
-        for (ATower tower : map.getTowers()){
-            if(!tower.isOnCooldown()){
-                if (tower instanceof AttackTower){
-                    List<AEnemy> targets = tower.findEnemiesInRange(enemies);
-                    if(targets != null){
-                        for(AEnemy target : targets){
-                            ((AttackTower)tower).attack(target);
-                            if (target.getHealth() <= 0) {
-                                player.addMoney(target.getMoney());
-                                enemies.remove(target);
+            for (ATower tower : map.getTowers()) {
+                if (!tower.isOnCooldown()) {
+                    if (tower instanceof AttackTower) {
+                        List<AEnemy> targets = tower.findEnemiesInRange(enemies);
+                        if (targets != null) {
+                            for (AEnemy target : targets) {
+                                ((AttackTower) tower).attack(target);
+                                if (target.getHealth() <= 0) {
+                                    player.addMoney(target.getMoney());
+                                    enemies.remove(target);
+                                }
                             }
                         }
                     }
+                } else {
+                    tower.decrementCooldown();
                 }
-            } else{
-                tower.decrementCooldown();
             }
-        }
 
-        this.alive = alive();
-        this.activeWave = activeWave(); //Commented since it doesnt check if the wave is finished, only if there are no enemies currently on the panel/ in the list
+            this.alive = alive();
+            this.activeWave = activeWave(); // Commented since it doesnt check if the wave is finished, only if there
+                                            // are no enemies currently on the panel/ in the list
         }
     }
 
-    public void createTower(int x, int y, TowerType type) throws Exception{
+    public void createTower(int x, int y, TowerType type) throws Exception {
         map.createTower(x, y, type);
     }
 
@@ -97,21 +99,22 @@ public class MainModel implements ITowerUpgradeObserver{
         map.upgradeTower(x, y, upgrade);
     }
 
-    public void play(){
+    public void play() {
         System.out.println(this.currentWaveEnemies);
-        if (canStartNewWave()){
+        if (canStartNewWave()) {
             this.currentWaveEnemies = this.allWaves.getWave();
             this.activeWave = true;
         }
     }
 
-    private boolean canStartNewWave(){
-        if (this.activeWave == false && this.alive == true && this.currentWaveEnemies.isEmpty() == true && this.enemies.isEmpty() == true) return true;
+    private boolean canStartNewWave() {
+        if (this.activeWave == false && this.alive == true && this.currentWaveEnemies.isEmpty() == true
+                && this.enemies.isEmpty() == true)
+            return true;
         return false;
     }
 
-
-    public List<ITargetable> convertEnemiesToTargetables(){
+    public List<ITargetable> convertEnemiesToTargetables() {
         List<ITargetable> targetables = new ArrayList<>();
         for (AEnemy enemy : enemies) {
             targetables.add(enemy);
@@ -119,7 +122,7 @@ public class MainModel implements ITowerUpgradeObserver{
         return targetables;
     }
 
-    public List<ITargetable> convertTowersToTargetables(){
+    public List<ITargetable> convertTowersToTargetables() {
         List<ITargetable> targetables = new ArrayList<>();
         for (ATower tower : map.getTowers()) {
             targetables.add(tower);
@@ -127,37 +130,41 @@ public class MainModel implements ITowerUpgradeObserver{
         return targetables;
     }
 
-    private boolean alive(){
+    private boolean alive() {
         return player.getHealth() > 0;
     }
 
-    private boolean activeWave(){
-        if (this.enemies.isEmpty() && this.currentWaveEnemies.isEmpty()) return false;
+    public boolean activeWave() {
+        if (this.enemies.isEmpty() && this.currentWaveEnemies.isEmpty())
+            return false;
         return true;
     }
 
-    public boolean getAlive(){
+    public boolean getAlive() {
         return this.alive;
     }
 
-    public boolean getActiveWave(){
+    public boolean getActiveWave() {
         return this.activeWave;
     }
 
-   public ATile [][] getTileGrid(){
+    public ATile[][] getTileGrid() {
         return map.getTileGrid();
     }
 
-    public List<Direction> getPathDirections(){
+    public List<Direction> getPathDirections() {
         return map.getPathDirections();
     }
-    public int getStartPosition(){
+
+    public int getStartPosition() {
         return map.getStartPosition();
     }
-    public int[][] getPathGrid(){
+
+    public int[][] getPathGrid() {
         return map.getPathGrid();
     }
-    public AMap getMap(){
+
+    public AMap getMap() {
         return map;
     }
 
@@ -168,13 +175,16 @@ public class MainModel implements ITowerUpgradeObserver{
     public int getMapSizeX() {
         return map.getMapSizeX();
     }
+
     public int getMapSizeY() {
         return map.getMapSizeY();
     }
-    public List<AEnemy> getEnemyArray(){
+
+    public List<AEnemy> getEnemyArray() {
         return this.enemies;
     }
-    public List<ATower> getTowers(){
+
+    public List<ATower> getTowers() {
         return this.map.getTowers();
     }
 
