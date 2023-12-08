@@ -20,9 +20,10 @@ public class FreezerTower extends AttackTower {
     @Override
     public void attack(AEnemy target) {
         if(target != null){
+            System.out.println("Freezer attack");
             if(hasUpgrade(Upgrade.Frostbite)){
                 if(target.isChilled()){
-                    target.takeDamage(damage+1);                
+                    target.takeDamage(damage+1);
                 }
             }
             if(hasUpgrade(Upgrade.SuperChill)){

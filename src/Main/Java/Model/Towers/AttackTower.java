@@ -7,7 +7,7 @@ import Model.Enums.TowerType;
 import Model.Enums.Upgrade;
 import Model.Interfaces.IAttackable;
 
-public abstract class AttackTower extends ATower implements IAttackable{
+public abstract class AttackTower extends ATower{
     protected int damage;
 
     /**
@@ -29,10 +29,10 @@ public abstract class AttackTower extends ATower implements IAttackable{
     * The default attack for attack towers, dealing damage to the first enemy in range. Method is from the interface IAttackable
     * @param target The enemy the tower is attacking 
     */
-    @Override
     public void attack(AEnemy target) {
         if(target != null){
             target.takeDamage(getDamage(target.getType()));
+            target.setStaggered(true);
             resetCooldown();
         }
     }

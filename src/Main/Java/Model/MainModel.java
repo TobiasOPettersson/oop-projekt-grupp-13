@@ -41,12 +41,12 @@ public class MainModel implements ITowerUpgradeObserver{
 
     public void run(){
         if(activeWave){
-
+        System.out.println(enemies.size());
         AEnemy enemyToRemove = null;
         for (AEnemy enemy : enemies){
-            //enemy.triggerConditions();
+            enemy.triggerConditions();
             enemy.move();
-            enemy.setStagger(false);
+            enemy.setStaggered(false);
             if (enemy.getX() > map.getMapSizeX()) {
                 player.takeDamage(enemy.getDamage());
                 enemyToRemove = enemy;
@@ -60,14 +60,14 @@ public class MainModel implements ITowerUpgradeObserver{
 
         this.allWaves.updateSpawnRate();
         if(this.allWaves.checkIfSpawnable() && this.currentWaveEnemies.isEmpty() == false){
-            System.out.println("Test");
+            //System.out.println("Test");
             this.enemies.add(this.currentWaveEnemies.poll());
         }
 
         // Spawn a new enemy if the last enemy has walked one tile
-        // if(enemies.isEmpty() || enemies.get(enemies.size()-1).getDirectionsSize() < map.getPathDirections().size()-2){
+        //if(enemies.isEmpty() || enemies.get(enemies.size()-1).getDirectionsSize() < map.getPathDirections().size()-2){
         //     enemies.add(new EnemyOne(map.getStartPosition(), 0.02, this.map.getPathDirections()));
-        // }
+        //}
 
 
         for (ATower tower : map.getTowers()){
@@ -77,7 +77,6 @@ public class MainModel implements ITowerUpgradeObserver{
                     if(targets != null){
                         for(AEnemy target : targets){
                             ((AttackTower)tower).attack(target);
-                            target.setStaggered(true);
                             if (target.getHealth() <= 0) {
                                 player.addMoney(target.getMoney());
                                 enemies.remove(target);
