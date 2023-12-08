@@ -33,24 +33,24 @@ public class UpgradeTowerController extends TowerController implements IUpgradeT
         super(model);
         this.observer = observer;
         this.towerType = towerType;
+
         setBackground(Color.WHITE);
-
         buttonPanel.setLayout(new GridLayout(0, 5, 5, 20));
-
         setLayout(new BorderLayout());
-
         setPreferredSize(new Dimension(300, 300));
 
         initHeader();
-
         initButtons();
-        intiCostAndLife();
+        intiPlaybutton();
     }
 
+    /**
+     * Initializes the Header of the UpgradTowerController
+     */
     private void initHeader() {
         headpanel.setBackground(Color.gray);
-
         headpanel.setPreferredSize(new Dimension(300, 25));
+
         JLabel titleLabel = new JLabel("Upgrade " + getTowerType().name());
         titleLabel.setForeground(Color.BLACK);
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -62,18 +62,7 @@ public class UpgradeTowerController extends TowerController implements IUpgradeT
     /**
      * Initializes the title label
      */
-    private void intiCostAndLife() {
-        // JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        // labelPanel.setLayout(new GridLayout(3, 1, 0, 0));
-        // JLabel titleLabel = new JLabel("Upgrade " + getTowerType().name());
-        // coinsLabel = new JLabel("Coins: ");
-        // titleLabel.setForeground(Color.BLACK);
-        // coinsLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        // titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        // add(playbutton);
-        // labelPanel.add(titleLabel);
-        // labelPanel.add(coinsLabel);
-        // buttonPanel.add(labelPanel, BorderLayout.EAST);
+    private void intiPlaybutton() {
         playbutton = new PlayButtonController(model);
         buttonPanel.add(playbutton);
     }
