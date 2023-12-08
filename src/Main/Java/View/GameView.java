@@ -63,7 +63,7 @@ public class GameView extends JFrame {
             upgradeWidgit.setVisible(false);
         }
 
-        createWidgit = new CreateTowerController(drawPanel);
+        createWidgit = new CreateTowerController(drawPanel, model);
         createWidgit.setBounds(0, 480, 960, 300);
         add(createWidgit);
         createWidgit.setVisible(true);

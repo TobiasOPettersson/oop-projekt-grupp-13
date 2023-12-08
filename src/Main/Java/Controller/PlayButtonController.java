@@ -26,7 +26,7 @@ public class PlayButtonController extends JPanel {
     public PlayButtonController(MainModel model) {
         this.model = model;
         setBackground(Color.pink);
-        setLayout(new GridLayout(1, 1, 0, 0));
+        setLayout(new GridLayout(0, 1, 0, 0));
         // setSize(120, 75);
         // setBorder(BorderFactory.createEmptyBorder(200, 20, 20, 20));
         initButton();
@@ -39,7 +39,7 @@ public class PlayButtonController extends JPanel {
     private void initButton() {
         JButton button = new JButton();
         button.setSize(50, 50);
-        button.setText("PLAY");
+        button.setText("START WAVE");
         button.addActionListener(e -> model.play());
         add(button);
     }
