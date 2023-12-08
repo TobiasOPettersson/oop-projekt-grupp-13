@@ -26,11 +26,14 @@ public class BlowtorchTower extends AttackTower{
     @Override
     public void attack(AEnemy target) {
         if(target != null){
-            System.out.println(getDamage(target.getType()));
+            System.out.println("Blowtorch attack");
             if(hasUpgrade(Upgrade.SetOnFire)){
                 target.setCondition(Condition.onFire, burnDuration);
             }
+            target.takeDamage(getDamage(target.getType()));
+            target.setStaggered(true);
             resetCooldown();
+            System.out.println(target.getHealth());
         }
     }  
 

@@ -89,15 +89,14 @@ public abstract class ATower implements ITargetable, IUpgradable{
     */
     public List<AEnemy> findAoeTargets(AEnemy source, List<AEnemy> enemies) {
         List<AEnemy> aoeTargets = new ArrayList<>();
-  
-            List<AEnemy> aoeTargetables = enemies;
-            aoeTargetables.remove(source);
-            for (AEnemy enemy : aoeTargetables) {
-                if(inRangeOf(source, enemy, aoeRange)){
-                    aoeTargets.add(enemy);
+        List<AEnemy> aoeTargetables = new ArrayList<>(enemies);    
+        for (AEnemy enemy : aoeTargetables) {
+                if(!enemy.equals(source)){
+                    if(inRangeOf(source, enemy, aoeRange)){
+                        aoeTargets.add(enemy);
+                    }
                 }
             }
-        System.out.println(aoeTargets.size());
         return aoeTargets;
     }
 

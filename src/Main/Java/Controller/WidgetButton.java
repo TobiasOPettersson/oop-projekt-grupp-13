@@ -84,7 +84,7 @@ public abstract class WidgetButton extends JPanel {
 
     public void setOpacity(Color color, boolean bool) {
         if(color == Color.gray){
-            color = new Color(0.0f, 0.0f, 0.0f, 0.5f);
+            color = new Color(0, 0, 0, 150);
         }
         
         if (bool) {

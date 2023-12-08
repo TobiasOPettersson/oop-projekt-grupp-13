@@ -243,10 +243,6 @@ public abstract class AEnemy implements IMovable, ITargetable {
         }
     }
 
-    public void setStagger(boolean bool){
-        isStaggered = bool;
-    }
-
        
     // -------- Getters and setters ---------
 
