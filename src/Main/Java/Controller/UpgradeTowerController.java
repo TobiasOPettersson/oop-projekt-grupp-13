@@ -30,10 +30,10 @@ public class UpgradeTowerController extends TowerController implements IUpgradeT
     private int savedMousePosY;
 
     public UpgradeTowerController(ITowerUpgradeObserver observer, TowerType towerType, MainModel model) {
+        super(model);
         this.observer = observer;
         this.towerType = towerType;
         setBackground(Color.WHITE);
-        this.model = model;
 
         buttonPanel.setLayout(new GridLayout(0, 5, 5, 20));
 

@@ -8,19 +8,24 @@ import javax.swing.JPanel;
 import Controller.Interfaces.IMoneyObserver;
 import Controller.Interfaces.ITowerUpgradeObserver;
 import Controller.Interfaces.IUpgradeTowerSubject;
+import Model.MainModel;
 import Model.Enums.TowerType;
 import View.GraphicsDependencies;
 
-public abstract class TowerController extends JPanel implements IMoneyObserver{
+public abstract class TowerController extends JPanel implements IMoneyObserver {
     private final int MAP_HEIGHT = 480;
     private final int FRAME_HEIGHT = GraphicsDependencies.getHeight();
+    MainModel model;
 
     /**
      * Constructor of the abstract Tower Controller class
-     * @param observer is the Map which is notified when the player wants to create a tower
+     * 
+     * @param observer is the Map which is notified when the player wants to create
+     *                 a tower
      */
-    public TowerController() {
+    public TowerController(MainModel model) {
         setSize(new Dimension(600, FRAME_HEIGHT - MAP_HEIGHT));
         setVisible(true);
+        this.model = model;
     }
 }

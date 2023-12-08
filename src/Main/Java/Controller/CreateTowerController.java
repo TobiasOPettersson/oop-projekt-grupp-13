@@ -24,8 +24,6 @@ public class CreateTowerController extends TowerController implements ICreateTow
     JPanel buttonPanel = new JPanel();
     JPanel headpanel = new JPanel();
 
-    MainModel model;
-
     /**
      * Constructor for the Shop Widget
      * 
@@ -33,6 +31,8 @@ public class CreateTowerController extends TowerController implements ICreateTow
      *                 create a tower
      */
     public CreateTowerController(ICreateTowerObserver observer, MainModel model) {
+        super(model);
+
         this.observer = observer;
         setBackground(Color.WHITE);
 
