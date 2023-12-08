@@ -12,6 +12,7 @@ import View.GameView;
 
 import java.util.ArrayList;
 
+// TODO Remove class-file?
 
 public class TempMain {
     // Frame rate

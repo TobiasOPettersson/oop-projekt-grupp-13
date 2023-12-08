@@ -23,6 +23,10 @@ public class BlowtorchTower extends AttackTower{
         upgradeMap.put(Upgrade.SetOnFire, 0);
     }
 
+    /**
+     * Blowtorch overrides the default attack method in order to apply burning condition if it has the right upgrade
+     * @param target The target of the attack
+     */
     @Override
     public void attack(AEnemy target) {
         if(target != null){

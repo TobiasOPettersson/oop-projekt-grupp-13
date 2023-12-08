@@ -12,15 +12,12 @@ import javax.swing.JPanel;
 
 import Model.MainModel;
 
-// todo: implement and add an image, maybe an arrow representing "play"
-
 public class PlayButtonController extends JPanel {
     String playImagePath;
     MainModel model;
 
     /**
      * The button that starts a new wave, i.e. starts the game
-     * 
      * @param model is the main model where the method play() is called on
      */
     public PlayButtonController(MainModel model) {

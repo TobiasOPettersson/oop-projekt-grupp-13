@@ -36,8 +36,10 @@ public class GameView extends JFrame {
     CreateTowerController createWidgit;
     List<UpgradeTowerController> upgradeWidgits;
 
-    // Constructor
-
+    /**
+     * TODO Javadoc comment
+     * @param model
+     */
     public GameView(MainModel model) { // Moved initComponents down so setVisible is done last
         importImg();
         this.model = model;
@@ -49,6 +51,21 @@ public class GameView extends JFrame {
         initComponents();
     }
 
+    //----------------------------Constructor helper methods--------------------------//
+
+    /**
+     * Initialize swing window
+     */
+    private void initComponents() {
+        setSize(GraphicsDependencies.getWidth(), GraphicsDependencies.getHeight());
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setVisible(true);
+    }
+
+    /**
+     * Initializes all wigits, one for buying new towers and one for upgrading for each tower type
+     */
     private void initWidgits() {
         upgradeWidgits = List.of(
                 new UpgradeTowerController(model, TowerType.knife),
@@ -71,7 +88,9 @@ public class GameView extends JFrame {
         model.getPlayer().setMoneyObservers(getMoneyObservers());
     }
 
-    // import sprite sheet
+    /**
+     * Imports sprite sheet
+     */
     private void importImg() {
         InputStream is = this.getClass().getResourceAsStream("resView/spriteatlas.png");
         InputStream is2 = this.getClass().getResourceAsStream("resView/knife2.png");
@@ -92,10 +111,23 @@ public class GameView extends JFrame {
         }
     }
 
+    /**
+     * // TODO Javadoc comment
+     */
     public void update() {
         drawPanel.update();
     }
 
+
+    //----------------------------Wigit methods--------------------------//
+
+    /**
+     * Opens the upgrade wigit of the clicked towers type, and closes all other wigits
+     * @param x The grid x-position of the tile the player clicked on
+     * @param y The grid y-position of the tile the player clicked on
+     * @param type The the type of the tower that is on the tile the player clicked on
+     * @param currentUpgrades The current upgrades of the tower
+     */
     public void openUpgradeWidgit(int x, int y, TowerType type, List<Upgrade> currentUpgrades) {
         createWidgit.setVisible(true);
         for (UpgradeTowerController upgradeWidget : upgradeWidgits) {
@@ -107,6 +139,9 @@ public class GameView extends JFrame {
         }
     }
 
+    /**
+     * Opens the create wigit, and closes all other wigits
+     */
     public void openCreateWidgit() {
         createWidgit.setVisible(true);
         for (UpgradeTowerController upgradeWidget : upgradeWidgits) {
@@ -114,18 +149,10 @@ public class GameView extends JFrame {
         }
     }
 
-    public DrawPanel getDrawPanel() {
-        return drawPanel;
-    }
-
-    // initialize swing window
-    private void initComponents() {
-        setSize(GraphicsDependencies.getWidth(), GraphicsDependencies.getHeight());
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setVisible(true);
-    }
-
+    /**
+     * Converts all TowerControllers into IMoneyObservers
+     * @return TowerControllers as IMoneyObservers
+     */
     public List<IMoneyObserver> getMoneyObservers() {
         List<IMoneyObserver> observers = new ArrayList<>();
         if (upgradeWidgits != null) {
@@ -135,5 +162,11 @@ public class GameView extends JFrame {
         }
         observers.add(createWidgit);
         return observers;
+    }
+
+    //----------------------------Getters and setters--------------------------// 
+
+    public DrawPanel getDrawPanel() {
+        return drawPanel;
     }
 }

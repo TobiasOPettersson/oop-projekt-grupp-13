@@ -22,6 +22,11 @@ public class MalletTower extends AttackTower{
         upgradeMap.put(Upgrade.Damage2, 1);
     }
 
+    /**
+     * Mallet does more damage to tomatoes and less damage to cheese
+     * @param type The type of enemy that the tower does increased or decreased damage to
+     * @return The damage after modifications
+     */
     @Override
     protected int getDamage(EnemyType type) {
         switch (type) {
