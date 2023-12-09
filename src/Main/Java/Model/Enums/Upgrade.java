@@ -1,27 +1,23 @@
 package Model.Enums;
 
+/**
+ * The types of upgrades in the game
+ */
 public enum Upgrade {
+    // Upgrades for specific towers
     SuperChill,
     Frostbite,
-    IncreasedConditionDuration,
+    SetOnFire,
 
-    IncreasedRange1,
-    IncreasedRange2,
-
-    IncreasedDamage1,
-    IncreasedDamage2,
-    IncreasedDamage3,
-    
-    IncreasedTargets1,
-    IncreasedTargets2,
-    
+    // General upgrades
+    ConditionDuration,
+    Range,
+    Damage, 
+    Damage2,   
+    Targets,    
     TurnIntoAoe,
-    
-    IncreaseAoeRange1,
-    IncreaseAoeRange2,
-    
-    IncreasedAoeDamage, 
-    IncreasedSpeed1, 
-    IncreasedSpeed2
+    AoeRange,    
+    AoeDamage, 
+    Speed, 
     
 }

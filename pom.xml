@@ -23,6 +23,7 @@
 
     <build>
         <sourceDirectory>src/Main/Java</sourceDirectory>
+        <testSourceDirectory>src/test/Java</testSourceDirectory>
         <!-- other build configurations -->
     </build>
 

@@ -11,52 +11,30 @@ public class KnifeTower extends AttackTower{
 
     /**
      * Constructor for knife tower that uses the default attack from AttackTower
+     * Can upgrade damage, speed, number of targets and range
      * @param x the x-position of the tower as a grid-index, i.e. not the x-position of the sprite in view
      * @param y the y-position of the tower as a grid-index, i.e. not the y-position of the sprite in view 
      */
     public KnifeTower(int x, int y) {
         super(x, y, 1, 1, 0, 50, TowerType.knife, 2, TargetType.first, TargetType.enemies);
+        upgradeMap.put(Upgrade.Damage, 3);
+        upgradeMap.put(Upgrade.Speed, 1);
+        upgradeMap.put(Upgrade.Targets, 1);
+        upgradeMap.put(Upgrade.Range, 1);
     }
 
+    /**
+     * Knife does less damage to cheese
+     * @param type The type of enemy that the tower does increased or decreased damage to
+     * @return The damage after modifications
+     */
     @Override
-    public void upgrade(Upgrade upgrade){
-        switch (upgrade) {
-            case IncreasedTargets1:
-                setTargetTypes(TargetType.firstTwo, TargetType.enemies);
-                addUpgrade(upgrade);
-                break;
-            case IncreasedTargets2:
-                setTargetTypes(TargetType.firstThree, TargetType.enemies);
-                addUpgrade(upgrade);
-                break;
-            case IncreasedRange1:
-            case IncreasedRange2:
-                setRange(getRange() + 1);
-                addUpgrade(upgrade);
-                break;
-            case IncreasedDamage1:
-                setDamage(getDamage() + 1);
-                addUpgrade(upgrade);
-                break;
-            case IncreasedSpeed1:
-            case IncreasedSpeed2:
-                setMaxCooldown(getMaxCooldown() - 10);
-                setMaxCooldown(getMaxCooldown() - 10);
-                addUpgrade(upgrade);
-                break;
-            default:
-                System.out.println("Tower  doesn't have that upgrade");
-                break;
-        }
-    }
-
-    @Override
-    protected int getDamageWithTypeModifications(EnemyType type) {
+    protected int getDamage(EnemyType type) {
         switch (type) {
             case cheese:
-                return getDamage()-1;
+                return damage-1;
             default:
-                return getDamage();
+                return damage;
         }
     }
 }

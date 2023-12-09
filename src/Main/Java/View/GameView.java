@@ -7,10 +7,11 @@ import javax.swing.LayoutStyle;
 import Controller.CreateTowerController;
 import Controller.UpgradeTowerController;
 import Controller.Interfaces.IMoneyObserver;
-import Controller.Interfaces.ITowerObserver;
-import Controller.Interfaces.ITowerSubject;
+import Controller.Interfaces.ITowerUpgradeObserver;
+import Controller.Interfaces.IUpgradeTowerSubject;
 import Model.MainModel;
 import Model.Enums.TowerType;
+import Model.Enums.Upgrade;
 import Model.Map.AMap;
 import Model.Map.TowerTile;
 import Model.Towers.ATower;
@@ -50,37 +51,58 @@ public class GameView extends JFrame {
     /*
      * Constructor
      */ 
+    CreateTowerController createWidgit;
+    List<UpgradeTowerController> upgradeWidgits;
 
+    /**
+     * TODO Javadoc comment
+     * @param model
+     */
     public GameView(MainModel model) { // Moved initComponents down so setVisible is done last
         importImg();
         this.model = model;
         //this.drawPanel = new DrawPanel(this, model, image, imageKnife);
         this.drawPanel = new DrawPanel(this, model, image, towerImageMap);
-        add(drawPanel, BorderLayout.CENTER);
-        createWidget = new CreateTowerController(this.model);
-        add(createWidget, BorderLayout.SOUTH);
-        model.getPlayer().setMoneyObservers(getMoneyObservers());
+        setLayout(null);
+        drawPanel.setBounds(0, 0, 960, 480);
+        add(drawPanel);
+        initWidgits();
         initComponents();
+    }S
+
+    /**
+     * Initializes all wigits, one for buying new towers and one for upgrading for each tower type
+     */
+    private void initWidgits() {
+        upgradeWidgits = List.of(
+                new UpgradeTowerController(model, TowerType.knife, model),
+                new UpgradeTowerController(model, TowerType.mallet, model),
+                new UpgradeTowerController(model, TowerType.blowtorch, model),
+                new UpgradeTowerController(model, TowerType.slicer, model),
+                new UpgradeTowerController(model, TowerType.freezer, model));
+
+        for (UpgradeTowerController upgradeWidgit : upgradeWidgits) {
+            upgradeWidgit.setBounds(0, 480, 960, 300);
+            add(upgradeWidgit);
+            upgradeWidgit.setVisible(false);
+        }
+
+        createWidgit = new CreateTowerController(drawPanel, model);
+        createWidgit.setBounds(0, 480, 960, 300);
+        add(createWidgit);
+        createWidgit.setVisible(true);
+
+        model.getPlayer().setMoneyObservers(getMoneyObservers());
     }
 
-    /*
-     *  import sprite sheet
-    */
+    /**
+     * Imports sprite sheet
+     */
     private void importImg() {
-        InputStream is = this.getClass().getResourceAsStream("res/spriteatlas.png");
-        /*InputStream is2 = this.getClass().getResourceAsStream("res/knifeTower.png");
-        InputStream isMallet = this.getClass().getResourceAsStream("res/malletTower.png");
-        InputStream isBlowtorch = this.getClass().getResourceAsStream("res/blowtorchTower.png");
-        InputStream isSlicer = this.getClass().getResourceAsStream("res/slicerTower.png");
-        InputStream isFridge = this.getClass().getResourceAsStream("res/slicerTower.png"); // change to fridge*/
+        InputStream is = this.getClass().getResourceAsStream("resView/spriteatlas.png");
 
         try {
             image = ImageIO.read(is);
-            /*knifeTowerSprite = ImageIO.read(is2);
-            malletTowerSprite = ImageIO.read(isMallet);
-            blowtorchTowerSprite = ImageIO.read(isBlowtorch);
-            slicerTowerSprite = ImageIO.read(isSlicer);
-            fridgeTowerSprite = ImageIO.read(isFridge);*/
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -110,27 +132,42 @@ public class GameView extends JFrame {
         }
     }
 
-    public void update(){
+    /**
+     * // TODO Javadoc comment
+     */
+    public void update() {
         drawPanel.update();
     }
 
-    public void openWidgit(int x, int y) {
-        if (model.getMap().getTile(x, y).placeable) {
-            createWidget.setVisible(true);
-            createWidget.setSavedMousePos(x, y);
-        } else {
-            for (UpgradeTowerController upgradeWidget : upgradeWidgets) {
-                TowerType type = ((TowerTile) model.getMap().getTile(x, y)).getTower().getTowerType(); // too much method chaining?
-                if (type.equals(upgradeWidget.getTowerType())) {
-                    upgradeWidget.setVisible(true);
-                    upgradeWidget.setSavedMousePos(x, y);
-                }
+
+    //----------------------------Wigit methods--------------------------//
+
+    /**
+     * Opens the upgrade wigit of the clicked towers type, and closes all other wigits
+     * @param x The grid x-position of the tile the player clicked on
+     * @param y The grid y-position of the tile the player clicked on
+     * @param type The the type of the tower that is on the tile the player clicked on
+     * @param currentUpgrades The current upgrades of the tower
+     */
+    public void openUpgradeWidgit(int x, int y, TowerType type, List<Upgrade> currentUpgrades) {
+        createWidgit.setVisible(true);
+        for (UpgradeTowerController upgradeWidget : upgradeWidgits) {
+            if (type.equals(upgradeWidget.getTowerType())) {
+                upgradeWidget.setVisible(true);
+                upgradeWidget.setSavedMousePos(x, y);
+                upgradeWidget.updateAvailableUpgrades(currentUpgrades);
             }
         }
     }
 
-    public DrawPanel getDrawPanel(){
-        return drawPanel;
+    /**
+     * Opens the create wigit, and closes all other wigits
+     */
+    public void openCreateWidgit() {
+        createWidgit.setVisible(true);
+        for (UpgradeTowerController upgradeWidget : upgradeWidgits) {
+            upgradeWidget.setVisible(false);
+        }
     }
 
     // initialize swing window
@@ -143,13 +180,24 @@ public class GameView extends JFrame {
     }
 
     public List<IMoneyObserver> getMoneyObservers(){
+    /**
+     * Converts all TowerControllers into IMoneyObservers
+     * @return TowerControllers as IMoneyObservers
+     */
+    public List<IMoneyObserver> getMoneyObservers() {
         List<IMoneyObserver> observers = new ArrayList<>();
-        if(upgradeWidgets != null){
-            for (UpgradeTowerController upWidget : upgradeWidgets) {
+        if (upgradeWidgits != null) {
+            for (UpgradeTowerController upWidget : upgradeWidgits) {
                 observers.add(upWidget);
             }
         }
-        observers.add(createWidget);
+        observers.add(createWidgit);
         return observers;
+    }
+
+    //----------------------------Getters and setters--------------------------// 
+
+    public DrawPanel getDrawPanel() {
+        return drawPanel;
     }
 }

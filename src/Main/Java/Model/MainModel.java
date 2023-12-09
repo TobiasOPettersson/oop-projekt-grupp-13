@@ -5,12 +5,14 @@ import java.util.List;
 import java.util.Queue;
 import java.util.LinkedList;
 
-import Controller.Interfaces.ITowerObserver;
+import Controller.Interfaces.ITowerUpgradeObserver;
 import Model.Enemies.AEnemy;
 import Model.Enemies.EnemyOne;
 import Model.Enemies.Wave;
+import Model.Enemies.WaveFactory;
 import Model.Enums.Direction;
 import Model.Enums.TowerType;
+import Model.Enums.Upgrade;
 import Model.Interfaces.ITargetable;
 import Model.Enums.EnemyType;
 import Model.Map.AMap;
@@ -20,7 +22,7 @@ import Model.Player.Player;
 import Model.Towers.ATower;
 import Model.Towers.AttackTower;
 
-public class MainModel implements ITowerObserver {
+public class MainModel implements ITowerUpgradeObserver {
     private AMap map;
     private List<AEnemy> enemies = new ArrayList<AEnemy>();
     private Queue<AEnemy> currentWaveEnemies = new LinkedList<AEnemy>();
@@ -29,88 +31,124 @@ public class MainModel implements ITowerObserver {
     private boolean activeWave;
     private Wave allWaves;
 
-    public MainModel(){
-        this.player = new Player(5, 200);
+    /**
+     * TODO Javadoc comment
+     */
+    public MainModel() {
+        this.player = new Player(5, 3);
         this.map = new MapOne();
-        this.allWaves = new Wave();
-        this.currentWaveEnemies = convertAllWavesToAEnemy();
+        this.allWaves = new Wave(this.map.getStartPosition(), this.map.getPathDirections());
         this.alive = true;
         this.activeWave = false;
     }
 
-    public void run(){
-        if(activeWave){
-        AEnemy enemyToRemove = null;
-        for (AEnemy enemy : enemies){
-            enemy.updateAnimationTick();
-            enemy.move();
-            enemy.triggerConditions();
-            enemy.setStagger(false);
-            if (enemy.getX() > map.getMapSizeX()) {
-                player.takeDamage(enemy.getDamage());
-                enemyToRemove = enemy;
+    /**
+     * TODO Javadoc comment, refactor into seperate methods?
+     */
+    public void run() {
+        if (activeWave) {
+            System.out.println(enemies.size());
+            AEnemy enemyToRemove = null;
+            for (AEnemy enemy : enemies) {
+                enemy.updateAnimationTick();
+                enemy.triggerConditions();
+                enemy.move();
+                enemy.setStaggered(false);
+                if (enemy.getX() > map.getMapSizeX()) {
+                    player.takeDamage(enemy.getDamage());
+                    enemyToRemove = enemy;
+                }
             }
-        }
 
-        // Removal is outside the for-loop so that the list size doesnt chance while inside the for-loop
-        if(enemyToRemove != null){
-            enemies.remove(enemyToRemove);
-        }
+            // Removal is outside the for-loop so that the list size doesnt chance while
+            // inside the for-loop
+            if (enemyToRemove != null) {
+                enemies.remove(enemyToRemove);
+            }
 
-        this.allWaves.updateSpawnRate();
-        if(this.allWaves.checkIfSpawnable() && this.currentWaveEnemies.isEmpty() == false){
-            System.out.println("Test");
-            this.enemies.add(this.currentWaveEnemies.poll());
-        }
+            System.out.println("Test 1");
+            this.allWaves.updateSpawnRate();
+            if (this.allWaves.checkIfSpawnable() && this.currentWaveEnemies.isEmpty() == false) {
+                this.enemies.add(this.currentWaveEnemies.poll());
+            }
 
-        // Spawn a new enemy if the last enemy has walked one tile
-        // if(enemies.isEmpty() || enemies.get(enemies.size()-1).getDirectionsSize() < map.getPathDirections().size()-2){
-        //     enemies.add(new EnemyOne(map.getStartPosition(), 0.02, this.map.getPathDirections()));
-        // }
-
-
-        for (ATower tower : map.getTowers()){
-            tower.updateAnimationTick();
-            if(!tower.isOnCooldown()){
-                if (tower instanceof AttackTower){
-                    List<AEnemy> targets = tower.findEnemiesInRange(enemies);
-                    if(targets != null){
-                        System.out.println("target size: " + targets.size());
-                        for(AEnemy target : targets){
-                            ((AttackTower)tower).attack(target);
-                            target.setStaggered(true);
-                            System.out.println(target.getHealth());
-                            if (target.getHealth() <= 0) {
-                                player.addMoney(target.getMoney());
-                                enemies.remove(target);
+            for (ATower tower : map.getTowers()) {
+                tower.updateAnimationTick();
+                if (!tower.isOnCooldown()) {
+                    if (tower instanceof AttackTower) {
+                        List<AEnemy> targets = tower.findEnemiesInRange(enemies);
+                        if (targets != null) {
+                            for (AEnemy target : targets) {
+                                ((AttackTower) tower).attack(target);
+                                if (target.getHealth() <= 0) {
+                                    player.addMoney(target.getMoney());
+                                    enemies.remove(target);
+                                }
                             }
                         }
                     }
+                } else {
+                    tower.decrementCooldown();
                 }
-            } else{
-                tower.decrementCooldown();
             }
-        }
 
-        this.alive = alive();
-        //this.activeWave = activeWave(); Commented since it doesnt check if the wave is finished, only if there are no enemies currently on the panel/ in the list
+            this.alive = alive();
+            this.activeWave = activeWave(); // Commented since it doesnt check if the wave is finished, only if there
+                                            // are no enemies currently on the panel/ in the list
         }
     }
 
-    @Override
-    public void createTower(int x, int y, TowerType type) throws Exception{
+    //-----------------------Tower methods---------------------// 
+
+    /**
+     * Calls createTower() in map that creates a new instance of a tower
+     * @param x Grid x-index of where the tower will be created
+     * @param y Grid y-index of where the tower will be created
+     * @param type Type of the tower
+     * @throws Exception if the player doesn't have enough money to buy the tower
+     */
+    public void createTower(int x, int y, TowerType type) throws Exception {
         map.createTower(x, y, type);
     }
 
     @Override
-    public void upgradeTower(int x, int y, int upgradeLvl) {
-        map.upgradeTower(x, y, upgradeLvl);
+    
+    /**
+     * Calls upgradeTower() in map that upgrades the tower at tile (x, y)
+     * @param x The towers x-index on the grid
+     * @param y The towers y-index on the grid
+     * @param upgrade The type of upgrade that will be added
+     */
+    public void upgradeTower(int x, int y, Upgrade upgrade) {
+        map.upgradeTower(x, y, upgrade);
     }
 
+    //-----------------------Other methods---------------------// 
+
+    /**
+     * Starts the wave
+     */
     public void play() {
-        activeWave = true;
+        System.out.println(this.currentWaveEnemies);
+        if (canStartNewWave()) {
+            this.currentWaveEnemies = this.allWaves.getWave();
+            this.activeWave = true;
+        }
+    }
+
+    private boolean canStartNewWave() {
+        if (this.activeWave == false && this.alive == true && this.currentWaveEnemies.isEmpty() == true
+                && this.enemies.isEmpty() == true)
+            return true;
+        return false;
+    }
+    private boolean alive(){
+        return player.getHealth() > 0;
     }
    
+
+
+    //-----------------------ITargetale convertion methods (Might use)---------------------// 
 
     public List<ITargetable> convertEnemiesToTargetables() {
         List<ITargetable> targetables = new ArrayList<>();
@@ -128,29 +166,18 @@ public class MainModel implements ITowerObserver {
         return targetables;
     }
 
-    private boolean alive() {
-        return player.getHealth() > 0;
-    }
+    //----------------------------Waves--------------------------// 
 
-
-    //------------------------Waves----------------------//
-    private Queue<AEnemy> convertAllWavesToAEnemy (){
-        Queue<AEnemy> thisWave = new LinkedList<AEnemy>();
-        Queue<EnemyType> thisWaveType = this.allWaves.startWave();
-        EnemyType currentEnemyType;
-        while (thisWaveType.isEmpty() == false) {
-            currentEnemyType = thisWaveType.poll();
-            if (currentEnemyType == EnemyType.banana) thisWave.add(new EnemyOne(this.map.getStartPosition(), 0.02, this.map.getPathDirections()));
-            //TODO
-            //if statements for every enemytype
-        }
-        return thisWave;
-    }
-
-    private boolean activeWave(){
+    /**
+     * TODO Javadoc comment
+     * @return
+     */
+    public boolean activeWave(){
         if (this.enemies.isEmpty() && this.currentWaveEnemies.isEmpty()) return false;
         return true;
     }
+
+    //----------------------------Getters and setters--------------------------// 
 
     public boolean getAlive() {
         return this.alive;
@@ -205,4 +232,7 @@ public class MainModel implements ITowerObserver {
         return player;
     }
 
+    public boolean allWavesDead() {
+        return this.allWaves.wavesIsEmpty();
+    }
 }

@@ -1,4 +1,4 @@
-package Model;
+package Model.Enemies;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -22,7 +22,7 @@ public class WaveTest {
     @Test
     public void check_if_queue_has_right_values() {
         AMap map = new MapOne();
-        Wave wave = new Wave();
+        Wave wave = new Wave(map.getStartPosition(), map.getPathDirections());
         Queue<EnemyType> enemies = wave.startWave();
         assertEquals(EnemyType.banana, enemies.peek());
         enemies.clear();
@@ -35,7 +35,7 @@ public class WaveTest {
     @Test
     public void check_if_queue_becomes_empty() {
         AMap map = new MapOne();
-        Wave wave = new Wave();
+        Wave wave = new Wave(map.getStartPosition(), map.getPathDirections());
         Queue<EnemyType> enemies = wave.startWave();
         for(int i = 0 ; i < 5 ; i++) assertEquals(EnemyType.banana, enemies.poll());
         assertEquals(true, enemies.isEmpty());

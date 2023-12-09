@@ -1,5 +1,7 @@
 package View;
 
+// TODO Javadoc comments
+
 public class GraphicsDependencies {
     // Window size
     private static final int WIDTH = 960;
@@ -11,15 +13,26 @@ public class GraphicsDependencies {
     // sprite size in pixels
     private static final int SPRITESIZE = 48;
     
-
+    /**
+     * 
+     * @return
+     */
     public static int getWidth() {
         return WIDTH;
     }
 
+    /**
+     * 
+     * @return
+     */
     public static int getHeight() {
         return HEIGHT;
     }
 
+    /**
+     * 
+     * @return
+     */
     public static int getBottomPanel() {
         return BOTTOMPANEL;
     }

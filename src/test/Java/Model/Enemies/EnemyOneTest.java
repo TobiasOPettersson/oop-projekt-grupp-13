@@ -6,67 +6,75 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.ArrayList;
 
 import Model.Enums.Direction;
-import Model.Enemies.EnemyOne;
-import Model.Enemies.AEnemy;;
 
 public class EnemyOneTest {
 
     @Test
-    public void next_tile_is_left() {
+    public void enemy_should_be_able_to_walk_in_a_straight_line() {
         ArrayList<Direction> directions = new ArrayList<Direction>();
-        directions.add(Direction.RIGHT); // (3.5, 3.5)
-        directions.add(Direction.UP);
-        directions.add(Direction.RIGHT);
-        directions.add(Direction.DOWN);
-        directions.add(Direction.RIGHT);
-        directions.add(Direction.RIGHT);
-        directions.add(Direction.DOWN);
-        directions.add(Direction.DOWN);
-        AEnemy enemy = new EnemyOne(1, 0.3, directions);
-        // 1.5,1.5 2.5,1.5 -----> move(1.5,1) move()
-
-        enemy.move();
-        enemy.move();
-        enemy.move();
-        enemy.move();
-        enemy.move();
-        enemy.move();
-        enemy.move();
-        enemy.move();
-        enemy.move();
-        enemy.move();
-        enemy.move();
-        enemy.move();
-        enemy.move();
-        enemy.move();
-        enemy.move();
-        enemy.move();
-        enemy.move();
-        enemy.move();
-        enemy.move();
-        enemy.move();
-        enemy.move();
-        enemy.move();
-        enemy.move();
-        enemy.move();
-        enemy.move();
-        enemy.move();
-        enemy.move();
-        enemy.move();
-        enemy.move();
-        enemy.move();
-        enemy.move();
-        enemy.move();
-        enemy.move();
-        enemy.move();
-        enemy.move();
-        enemy.move();
-        enemy.move();
-        enemy.move();
-        enemy.move();
-
-        assertEquals(3.5, enemy.getX());
-        assertEquals(3.5, enemy.getY());
+        /*
+         * 0  0  0  0  0
+         * 0  0  0  0  0
+         * 1  2  3  4  5
+         * 0  0  0  0  0
+         * 0  0  0  0  0
+         */
+        for (int i = 0; i < 5; i++) {
+            directions.add(Direction.RIGHT);
+        }
+        AEnemy enemy = new EnemyOne(2, 0.3, directions);
+        while (enemy.getX() < 4.5) {
+            enemy.move();
+        }
+        assertEquals(4.5, enemy.getX());
+        assertEquals(2.5, enemy.getY());
     }
 
+    @Test
+    public void enemy_should_be_able_to_walk_right_and_then_turn_up() {
+        ArrayList<Direction> directions = new ArrayList<Direction>();
+        /*
+         * 0  0  5  0  0
+         * 0  0  4  0  0
+         * 1  2  3  0  0
+         * 0  0  0  0  0
+         * 0  0  0  0  0
+         */
+        for (int i = 0; i < 3; i++) {
+            directions.add(Direction.RIGHT);
+        }
+        for (int i = 0; i < 2; i++) {
+            directions.add(Direction.UP);
+        }
+        AEnemy enemy = new EnemyOne(2, 0.3, directions);
+        while (enemy.getY() > 0.5) {
+            enemy.move();
+        }
+        assertEquals(2.5, enemy.getX());
+        assertEquals(0.5, enemy.getY());
+    }
+
+    @Test
+    public void enemy_should_be_able_to_walk_right_and_then_turn_down() {
+        ArrayList<Direction> directions = new ArrayList<Direction>();
+        /*
+         * 0  0  0  0  0
+         * 0  0  0  0  0
+         * 1  2  3  0  0
+         * 0  0  4  0  0
+         * 0  0  5  0  0
+         */
+        for (int i = 0; i < 3; i++) {
+            directions.add(Direction.RIGHT);
+        }
+        for (int i = 0; i < 2; i++) {
+            directions.add(Direction.DOWN);
+        }
+        AEnemy enemy = new EnemyOne(2, 0.3, directions);
+        while (enemy.getY() < 4.5) {
+            enemy.move();
+        }
+        assertEquals(2.5, enemy.getX());
+        assertEquals(4.5, enemy.getY());
+    }
 }

@@ -10,8 +10,7 @@ import Model.Enums.EnemyType;
  * This class extends the AEnemy abstract class.
  */
 public class EnemyOne extends AEnemy{
-    
     public EnemyOne(double y, double speed, List<Direction> directions) {
-        super(100, y, speed, EnemyType.tomato, directions, 1, 1);
+        super(10, y, speed, EnemyType.tomato, directions, 1, 1);
     }
 }

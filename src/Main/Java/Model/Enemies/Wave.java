@@ -1,8 +1,10 @@
 package Model.Enemies;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
+import Model.Enums.Direction;
 import Model.Enums.EnemyType;
 
 public class Wave {
@@ -10,12 +12,15 @@ public class Wave {
     private Queue<Queue<EnemyType>> waves = new LinkedList<Queue<EnemyType>>();
     private int spawnRate;
     private final int MAX_SPAWN_RATE = 60;
+    private WaveFactory waveFactory;
     
-    public Wave(){
+    public Wave(int startPosition, List<Direction> pathDirections){
         this.currentWave = 0;
         createWaves();
         this.spawnRate = this.MAX_SPAWN_RATE;
+        this.waveFactory = new WaveFactory(startPosition, pathDirections);
     }
+
     public Queue<EnemyType> startWave(){
         this.currentWave++;
         if (waves.isEmpty() == true) new Exception("Wave is empty");
@@ -35,7 +40,19 @@ public class Wave {
         createCurrentWave.addAll(createPartWave(10, EnemyType.banana));
         createCurrentWave.addAll(createPartWave(2, EnemyType.tomato));
         this.waves.add(new LinkedList<EnemyType>(createCurrentWave));
+        createCurrentWave.clear();
+
+        /* -------------------------- Mall for each wave
+        //Wave #
+        createCurrentWave.addAll(createPartWave(1, EnemyType.banana));
+        createCurrentWave.addAll(createPartWave(1, EnemyType.tomato));
+        createCurrentWave.addAll(createPartWave(1, EnemyType.cheese));
+        createCurrentWave.addAll(createPartWave(1, EnemyType.chicken));
+        this.waves.add(new LinkedList<EnemyType>(createCurrentWave));
+        createCurrentWave.clear();
+         */
     }
+
     private Queue<EnemyType> createPartWave(int numberOfEnemies, EnemyType enemieType){
         Queue<EnemyType> currentEnemieType = new LinkedList<EnemyType>();
         for(int i = 0 ; i < numberOfEnemies ; i++){
@@ -54,7 +71,6 @@ public class Wave {
 
     public void updateSpawnRate(){
         this.spawnRate--;
-        //System.out.println("Current spawnRate: " + this.spawnRate);
 
     }
 
@@ -62,5 +78,10 @@ public class Wave {
         if (this.spawnRate != 0) return false;
         this.spawnRate = this.MAX_SPAWN_RATE;
         return true;
+    }
+
+    public Queue<AEnemy> getWave(){
+        this.currentWave++;
+        return this.waveFactory.createCurrentWave(this.waves.poll());
     }
 }

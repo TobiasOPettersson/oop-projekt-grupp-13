@@ -8,6 +8,12 @@ public class ATile{
     public TileTerrain terrain;
     public boolean placeable;
 
+    /**
+     * TODO Javadoc comment
+     * @param x
+     * @param y
+     * @param placeable
+     */
     public ATile(int x, int y, boolean placeable){
         this.x = x;
         this.y = y;
@@ -15,16 +21,18 @@ public class ATile{
         this.placeable = placeable;
     }
 
+    //----------------------------Getter and setters----------------------//
+
     public int getX() {
-        return this.x;
+        return x;
     }
 
     public int getY() {
-        return this.y;
+        return y;
     }
 
     public TileTerrain getTerrain(){
-        return this.terrain;
+        return terrain;
     }
 
     public void setTerrain(TileTerrain changeTerrain){
@@ -32,7 +40,7 @@ public class ATile{
     }
 
     public boolean getPlaceable() {
-        return this.placeable;
+        return placeable;
     }
 
     public void setPlaceable(boolean change) {
