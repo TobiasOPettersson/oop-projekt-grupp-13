@@ -15,7 +15,7 @@ import Model.Enums.Upgrade;
 import Model.Interfaces.ITargetable;
 import Model.Interfaces.IUpgradable;
 import View.SpriteHelper;
-import View.SpriteManager;
+import View.TowerSpriteManager;
 
 public abstract class ATower implements ITargetable, IUpgradable {
     private double x;
@@ -30,9 +30,10 @@ public abstract class ATower implements ITargetable, IUpgradable {
     private List<Upgrade> upgrades = new ArrayList<>();
     private Point2D.Double targetPosition;
     private int animationIndex;
-    private BufferedImage[] towerSprites;
-    protected SpriteManager spriteManager;
     private int animationTick;
+    private BufferedImage[] towerSprites;
+    protected TowerSpriteManager spriteManager;
+    private boolean enemiesInRange = false;
 
     /**
      * Constructor of abstract class ATower
@@ -59,11 +60,13 @@ public abstract class ATower implements ITargetable, IUpgradable {
         this.aoeRange = aoeRange;
         this.maxCooldown = maxCooldown;
         this.towerType = towerType;
+        this.animationTick = 0;
         this.animationIndex = 0;
         this.targetPosition = null;
         setTargetTypes(nTargets, targetType);
-        this.spriteManager = new SpriteManager();
+        this.spriteManager = new TowerSpriteManager();
         this.towerSprites = spriteManager.getTowerSprites(towerType);
+
     }
 
     /**
@@ -87,8 +90,10 @@ public abstract class ATower implements ITargetable, IUpgradable {
             }
         }
         if (targets.size() > 0) {
+            this.enemiesInRange = true;
             return targets;
         }
+        this.enemiesInRange = false;
         return null;
     }
 
@@ -148,8 +153,10 @@ public abstract class ATower implements ITargetable, IUpgradable {
             double angleBInRadians = Math.atan2(this.y + 0.5 - enemyCenterPoint.getY(),
                     this.x + 0.5 - enemyCenterPoint.getX());
             double angle = Math.toDegrees(angleBInRadians);
+            System.out.println("rotation: " + angle);
             towerImage = SpriteHelper.rotateSprite(towerImage, (int) (angle) + 270);
         }
+        System.out.println("AnimationIndex:" + animationIndex);
         g.drawImage(towerImage, (int) this.x * 48, (int) this.y * 48, null);
 
         Graphics2D g2 = (Graphics2D) g;
@@ -160,42 +167,33 @@ public abstract class ATower implements ITargetable, IUpgradable {
         g2.drawOval(rangeCircleX * 48, rangeCircleY * 48, rangeCircleD + 48, rangeCircleD + 48);
     }
 
-    private void updateAnimationTick() {
+    public void updateAnimationTick() {
         animationTick++;
         if (animationTick >= 10) {
             animationTick = 0;
-                updateAnimationIndex();
-
+            incrementAnimationIndex();
+            /*if (this.enemiesInRange) {                        // Need to find some variable to use so towers only nimate when close to n enemy
+                incrementAnimationIndex();
+            } else {
+                resetAnimation();
+            }*/
         }
-
     }
 
     /*
-     * Updates animationIndex when the tower is not on cooldown
+     * Updates animationIndex
      */
-    public void updateAnimationIndex() {
-        // if (!isOnCooldown()) {
+    public void incrementAnimationIndex() {
         animationIndex++;
-        if (animationIndex >= 4) {
+        if (animationIndex >= towerSprites.length) {
             animationIndex = 0;
-            /*
-             * }
-             * } else {
-             * if (animationIndex != 0) {
-             * animationIndex++;
-             * if (animationIndex >= 4) {
-             * animationIndex = 0;
-             * }
-             * }
-             */
-            // animationIndex = 0;
         }
     }
 
     public void resetAnimation() {
         if (animationIndex != 0) {
             animationIndex++;
-            if (animationIndex >= 4) {
+            if (animationIndex >= towerSprites.length) {
                 animationIndex = 0;
             }
         }

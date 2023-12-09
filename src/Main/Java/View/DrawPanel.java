@@ -45,12 +45,8 @@ public class DrawPanel extends JPanel {
     /*
      * Constructor
      */
-    // public DrawPanel(GameView gameView, MainModel model, BufferedImage image,
-    // BufferedImage imageKnife) {
     private int[] selectedTile = new int[] { -1, -1 };
     private int[] hoveredTile = new int[] { -1, -1 };
-    private int animationIndex = 0;
-    private int animationTick = 0;
 
     // Constructor
     public DrawPanel(GameView gameView, MainModel model, BufferedImage image,
@@ -116,21 +112,6 @@ public class DrawPanel extends JPanel {
                     }
                 }
             }
-        }
-    }
-
-    private void updateAnimation() {
-        animationTick++;
-        if (animationTick >= 20) {
-            animationTick = 0;
-            updateAnimationIndex();
-        }
-    }
-
-    private void updateAnimationIndex() {
-        animationIndex++;
-        if (animationIndex >= 4) {
-            animationIndex = 0;
         }
     }
 
@@ -212,21 +193,8 @@ public class DrawPanel extends JPanel {
     }
 
     void drawEnemies(Graphics g) {
-        // offset half of sprite size so the calculated position of enemy will be same
-        // position as center of enemysprite
-        int offset = 24; // Sprite size / 2
-        int spriteSize = 48;
-
         for (AEnemy enemy : model.getEnemies()) {
-            if (!enemy.isStaggered()) {
-                int x = (int) (enemy.getX() * spriteSize) - offset;
-                int y = (int) (enemy.getY() * spriteSize) - offset;
-                g.drawImage(sprites.get(28), x, y, null);
-            }
-            // System.out.println("Enemy X: " + enemy.getX() + ", Y: " + enemy.getY()); //
-            // DEL
-            // Add method that gets the correct sprite for enemies according to
-            // animationIndex.
+            enemy.paint(g);
         }
     }
 
@@ -238,8 +206,6 @@ public class DrawPanel extends JPanel {
     private void drawTowers(Graphics g) {
         for (ATower tower : model.getTowers()) {
             tower.paint(g);
-            // g.drawImage(knifeSprites[animationIndex], (int) (tower.getX() * 48) - 24,
-            // (int) tower.getY() * 48, null); // implement animations
         }
     }
 

@@ -13,6 +13,7 @@ public class TowerSpriteManager {
     private HashMap<TowerType, BufferedImage> towerSprites;
 
     public TowerSpriteManager(){
+        towerSprites = new HashMap<>();
         importTowerImg();
     }
 

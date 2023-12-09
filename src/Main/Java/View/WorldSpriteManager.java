@@ -13,10 +13,11 @@ public class WorldSpriteManager {
     private HashMap<TileTerrain, BufferedImage> worldSprites;
 
     public WorldSpriteManager(){
+        worldSprites = new HashMap<>();
         importTowerImg();
     }
 
-    public BufferedImage[] getTowerSprites(TileTerrain TileTerrain) {
+    public BufferedImage[] getWorldSprites(TileTerrain TileTerrain) {
         BufferedImage sprite = worldSprites.get(TileTerrain);
         BufferedImage[] spriteArray = new BufferedImage[4];
         for(int i = 0; i < 4; i++){
@@ -30,7 +31,7 @@ public class WorldSpriteManager {
         
 
         try {
-            worldSprites.put(TileTerrain.Plains, ImageIO.read(isKitchenTiles)); // change to tile
+            worldSprites.put(TileTerrain.Plains, ImageIO.read(isKitchenTiles));
            
         } catch (IOException e) {
             e.printStackTrace();

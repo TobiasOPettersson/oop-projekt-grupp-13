@@ -13,10 +13,11 @@ public class EnemySpriteManager {
     private HashMap<EnemyType, BufferedImage> enemySprites;
 
     public EnemySpriteManager(){
-        importTowerImg();
+        enemySprites = new HashMap<>();
+        importEnemyImg();
     }
 
-    public BufferedImage[] getTowerSprites(EnemyType enemyType) {
+    public BufferedImage[] getEnemySprites(EnemyType enemyType) {
         BufferedImage sprite = enemySprites.get(enemyType);
         BufferedImage[] spriteArray = new BufferedImage[4];
         for(int i = 0; i < 4; i++){
@@ -25,8 +26,8 @@ public class EnemySpriteManager {
         return spriteArray;
     }
 
-    private void importTowerImg() {
-        InputStream isTomatoEnemy = this.getClass().getResourceAsStream("res/enemies/tomato.png");
+    private void importEnemyImg() {
+        InputStream isTomatoEnemy = this.getClass().getResourceAsStream("res/enemies/tomatoEnemy.png");
         
 
         try {

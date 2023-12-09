@@ -28,7 +28,6 @@ public class MainModel implements ITowerObserver {
     private boolean alive;
     private boolean activeWave;
     private Wave allWaves;
-    private int animationTick;
 
     public MainModel(){
         this.player = new Player(5, 200);
@@ -40,10 +39,10 @@ public class MainModel implements ITowerObserver {
     }
 
     public void run(){
-        updateAnimationTick();
         if(activeWave){
         AEnemy enemyToRemove = null;
         for (AEnemy enemy : enemies){
+            enemy.updateAnimationTick();
             enemy.move();
             enemy.triggerConditions();
             enemy.setStagger(false);
@@ -71,14 +70,11 @@ public class MainModel implements ITowerObserver {
 
 
         for (ATower tower : map.getTowers()){
+            tower.updateAnimationTick();
             if(!tower.isOnCooldown()){
                 if (tower instanceof AttackTower){
                     List<AEnemy> targets = tower.findEnemiesInRange(enemies);
                     if(targets != null){
-                        if (animationTick >= 10) {
-                            animationTick = 0;
-                            tower.updateAnimationIndex();
-                        }
                         System.out.println("target size: " + targets.size());
                         for(AEnemy target : targets){
                             ((AttackTower)tower).attack(target);
@@ -92,7 +88,6 @@ public class MainModel implements ITowerObserver {
                     }
                 }
             } else{
-                tower.resetAnimation();
                 tower.decrementCooldown();
             }
         }
