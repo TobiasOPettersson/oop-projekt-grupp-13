@@ -7,7 +7,7 @@ import java.util.LinkedList;
 
 import Controller.Interfaces.ITowerUpgradeObserver;
 import Model.Enemies.AEnemy;
-import Model.Enemies.EnemyOne;
+import Model.Enemies.TomatoEnemy;
 import Model.Enemies.Wave;
 import Model.Enemies.WaveFactory;
 import Model.Enums.Direction;

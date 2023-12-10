@@ -22,7 +22,7 @@ public class EnemyOneTest {
         for (int i = 0; i < 5; i++) {
             directions.add(Direction.RIGHT);
         }
-        AEnemy enemy = new EnemyOne(2, 0.3, directions);
+        AEnemy enemy = new TomatoEnemy(2, directions);
         while (enemy.getX() < 4.5) {
             enemy.move();
         }
@@ -46,7 +46,7 @@ public class EnemyOneTest {
         for (int i = 0; i < 2; i++) {
             directions.add(Direction.UP);
         }
-        AEnemy enemy = new EnemyOne(2, 0.3, directions);
+        AEnemy enemy = new TomatoEnemy(2, directions);
         while (enemy.getY() > 0.5) {
             enemy.move();
         }
@@ -70,7 +70,7 @@ public class EnemyOneTest {
         for (int i = 0; i < 2; i++) {
             directions.add(Direction.DOWN);
         }
-        AEnemy enemy = new EnemyOne(2, 0.3, directions);
+        AEnemy enemy = new TomatoEnemy(2, directions);
         while (enemy.getY() < 4.5) {
             enemy.move();
         }

@@ -378,4 +378,8 @@ public abstract class AEnemy implements IMovable, ITargetable {
     public int getDirectionsSize(){
         return directions.size();
     }
+
+    public EnemyType getEnemyType() {
+        return this.type;
+    }
 }

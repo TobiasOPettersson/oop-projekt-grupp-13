@@ -12,7 +12,7 @@ import Model.Enums.Direction;
 import Model.Enums.EnemyType;
 import Model.Map.AMap;
 import Model.Map.MapOne;
-import Model.Enemies.EnemyOne;
+import Model.Enemies.TomatoEnemy;
 import Model.Enemies.Wave;
 import Model.Enemies.AEnemy;
 import Model.Interfaces.IAttackable;

@@ -6,6 +6,7 @@ import Controller.PlayButtonController;
 import Model.MainModel;
 import Model.Enemies.AEnemy;
 import Model.Enums.Direction;
+import Model.Enums.EnemyType;
 import Model.Enums.TowerType;
 import Model.Map.ATile;
 import Model.Map.TowerTile;
@@ -28,6 +29,7 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
     private GameView gameView;
     private BufferedImage image;
     private Map<TowerType, BufferedImage> towerImageMap;
+    private Map<EnemyType, BufferedImage> enemyImageMap;
     private MainModel model;
     private ArrayList<BufferedImage> sprites = new ArrayList<>();
     // public ArrayList<DirNode> dirChangeArray = new ArrayList<>(); // Temp map
@@ -46,10 +48,11 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
 
     // Constructor
     public DrawPanel(GameView gameView, MainModel model, BufferedImage image,
-            Map<TowerType, BufferedImage> towerImageMap) {
+            Map<TowerType, BufferedImage> towerImageMap, Map<EnemyType, BufferedImage> enemyImageMap) {
         this.gameView = gameView;
         this.image = image;
         this.towerImageMap = towerImageMap;
+        this.enemyImageMap = enemyImageMap;
         this.model = model;
         this.pathDirections = this.model.getPathDirections();
         this.mapGrid = this.model.getTileGrid();
@@ -231,11 +234,12 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
         int spriteSize = 48;
 
         for (AEnemy enemy : model.getEnemies()) {
+            BufferedImage enemyImage = enemyImageMap.get(enemy.getEnemyType());
             int x = (int) (enemy.getX() * spriteSize) - offset;
             int y = (int) (enemy.getY() * spriteSize) - offset;
             drawEnemyHP(g, spriteSize, enemy, x, y);
             if (!enemy.isStaggered()) {
-                g.drawImage(sprites.get(28), x, y, null);
+                g.drawImage(enemyImage, x, y, null);
             }
             // Add method that gets the correct sprite for enemies according to
             // animationIndex.

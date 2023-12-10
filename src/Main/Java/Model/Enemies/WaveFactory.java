@@ -25,8 +25,8 @@ public class WaveFactory {
         EnemyType currentEnemyType;
         while (this.currentWaveType.isEmpty() == false) {
             currentEnemyType = this.currentWaveType.poll();
-            if (currentEnemyType == EnemyType.banana) this.currentWave.add(new EnemyOne(this.startPosition, 0.02, this.pathDirection));
-            //TODO
+            if (currentEnemyType == EnemyType.tomato) this.currentWave.add(new TomatoEnemy(this.startPosition, this.pathDirection));
+            if (currentEnemyType == EnemyType.banana) this.currentWave.add(new BananaEnemy(this.startPosition, this.pathDirection));
             //if statements for every enemytype
         }
 

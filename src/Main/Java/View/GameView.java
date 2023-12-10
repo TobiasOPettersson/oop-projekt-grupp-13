@@ -10,6 +10,7 @@ import Controller.Interfaces.IMoneyObserver;
 import Controller.Interfaces.ITowerUpgradeObserver;
 import Controller.Interfaces.IUpgradeTowerSubject;
 import Model.MainModel;
+import Model.Enums.EnemyType;
 import Model.Enums.TowerType;
 import Model.Enums.Upgrade;
 import Model.Map.AMap;
@@ -33,6 +34,7 @@ public class GameView extends JFrame {
     DrawPanel drawPanel;
     private BufferedImage image;
     private Map<TowerType, BufferedImage> towerImageMap = new HashMap<TowerType, BufferedImage>();
+    private Map<EnemyType, BufferedImage> enemyImageMap = new HashMap<EnemyType, BufferedImage>();
     CreateTowerController createWidgit;
     List<UpgradeTowerController> upgradeWidgits;
 
@@ -43,7 +45,7 @@ public class GameView extends JFrame {
     public GameView(MainModel model) { // Moved initComponents down so setVisible is done last
         importImg();
         this.model = model;
-        this.drawPanel = new DrawPanel(this, model, image, towerImageMap);
+        this.drawPanel = new DrawPanel(this, model, image, towerImageMap, enemyImageMap);
         setLayout(null);
         drawPanel.setBounds(0, 0, 960, 480);
         add(drawPanel);
@@ -98,6 +100,8 @@ public class GameView extends JFrame {
         InputStream isBlowtorch = this.getClass().getResourceAsStream("resView/blowtorch.png");
         InputStream isSlicer = this.getClass().getResourceAsStream("resView/slicer.png");
         InputStream isFridge = this.getClass().getResourceAsStream("resView/fridge.png");
+        InputStream isTomato = this.getClass().getResourceAsStream("resView/tomato.png");
+        InputStream isBanana = this.getClass().getResourceAsStream("resView/banana.png");
 
         try {
             image = ImageIO.read(is);
@@ -106,6 +110,9 @@ public class GameView extends JFrame {
             towerImageMap.put(TowerType.blowtorch, ImageIO.read(isBlowtorch));
             towerImageMap.put(TowerType.slicer, ImageIO.read(isSlicer));
             towerImageMap.put(TowerType.freezer, ImageIO.read(isFridge));
+            enemyImageMap.put(EnemyType.tomato, ImageIO.read(isTomato));
+            enemyImageMap.put(EnemyType.banana, ImageIO.read(isBanana));
+            
         } catch (IOException e) {
             e.printStackTrace();
         }

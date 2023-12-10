@@ -11,7 +11,7 @@ public class Wave {
     private int currentWave;
     private Queue<Queue<EnemyType>> waves = new LinkedList<Queue<EnemyType>>();
     private int spawnRate;
-    private final int MAX_SPAWN_RATE = 60;
+    private final int MAX_SPAWN_RATE = 120;
     private WaveFactory waveFactory;
     
     public Wave(int startPosition, List<Direction> pathDirections){
@@ -33,6 +33,7 @@ public class Wave {
         
         //Waves 1
         createCurrentWave.addAll(createPartWave(5, EnemyType.banana));
+        createCurrentWave.addAll(createPartWave(3, EnemyType.tomato));
         this.waves.add(new LinkedList<EnemyType>(createCurrentWave));
         createCurrentWave.clear();
         
