@@ -37,4 +37,12 @@ public class GraphicsDependencies {
         return BOTTOMPANEL;
     }
 
+    /**
+     * 
+     * @return
+     */
+    public static int getSpriteSize() {
+        return SPRITESIZE;
+    }
+
 }

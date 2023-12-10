@@ -27,7 +27,7 @@ public class EnemySpriteManager {
     }
 
     private void importEnemyImg() {
-        InputStream isTomatoEnemy = this.getClass().getResourceAsStream("res/enemies/tomatoEnemy.png");
+        InputStream isTomatoEnemy = this.getClass().getResourceAsStream("resView/enemies/tomatoEnemy.png");
         
 
         try {

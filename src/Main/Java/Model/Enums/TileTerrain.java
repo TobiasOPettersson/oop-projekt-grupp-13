@@ -7,5 +7,6 @@ public enum TileTerrain {
     Plains,
     Water,
     Forrest,
-    Mountains
+    Mountains,
+    Kitchen
 }

@@ -31,47 +31,29 @@ import javax.imageio.ImageIO;
 public class GameView extends JFrame {
     MainModel model;
     DrawPanel drawPanel;
-    private BufferedImage image;
-    private BufferedImage imageKnife;
-    private Map<TowerType, BufferedImage[]> towerImageMap = new HashMap<TowerType,BufferedImage[]>();
     CreateTowerController createWidget;
     List<UpgradeTowerController> upgradeWidgets;
-    private BufferedImage knifeTowerSprite;
-    private BufferedImage malletTowerSprite;
-    private BufferedImage blowtorchTowerSprite;
-    private BufferedImage slicerTowerSprite;
-    private BufferedImage fridgeTowerSprite;
-    private BufferedImage[] knifeTowerSpritesArr;
-    private BufferedImage[] malletTowerSpritesArr;
-    private BufferedImage[] blowtorchTowerSpritesArr;
-    private BufferedImage[] slicerTowerSpritesArr;
-    private BufferedImage[] fridgeTowerSpritesArr;
-    
-
-    /*
-     * Constructor
-     */ 
     CreateTowerController createWidgit;
     List<UpgradeTowerController> upgradeWidgits;
 
     /**
      * TODO Javadoc comment
+     * 
      * @param model
      */
-    public GameView(MainModel model) { // Moved initComponents down so setVisible is done last
-        importImg();
+    public GameView(MainModel model) {
         this.model = model;
-        //this.drawPanel = new DrawPanel(this, model, image, imageKnife);
-        this.drawPanel = new DrawPanel(this, model, image, towerImageMap);
+        this.drawPanel = new DrawPanel(this, model);
         setLayout(null);
         drawPanel.setBounds(0, 0, 960, 480);
         add(drawPanel);
         initWidgits();
         initComponents();
-    }S
+    }
 
     /**
-     * Initializes all wigits, one for buying new towers and one for upgrading for each tower type
+     * Initializes all wigits, one for buying new towers and one for upgrading for
+     * each tower type
      */
     private void initWidgits() {
         upgradeWidgits = List.of(
@@ -96,57 +78,22 @@ public class GameView extends JFrame {
     }
 
     /**
-     * Imports sprite sheet
-     */
-    private void importImg() {
-        InputStream is = this.getClass().getResourceAsStream("resView/spriteatlas.png");
-
-        try {
-            image = ImageIO.read(is);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    private void loadSprites() {
-        /*for (int y = 0; y < 10; y++) {
-            for (int x = 0; x < 10; x++) {
-                // Get the subimage that is 32x32 and scale it before putting it in the array of
-                // sprites
-                sprites.add(SpriteHelper.scaleSprite(image.getSubimage(x * 32, y * 32, 32, 32), 1.5));
-            }
-        }*/
-        for (int i = 0; i < 4; i++){
-            knifeTowerSpritesArr[i] = (knifeTowerSprite.getSubimage(i * 48, 0, 48, 48));
-        }
-        for (int i = 0; i < 4; i++){
-            malletTowerSpritesArr[i] = (malletTowerSprite.getSubimage(i * 48, 0, 48, 48));
-        }
-        for (int i = 0; i < 4; i++){
-            blowtorchTowerSpritesArr[i] = (blowtorchTowerSprite.getSubimage(i * 48, 0, 48, 48));
-        }
-        for (int i = 0; i < 4; i++){
-            slicerTowerSpritesArr[i] = (slicerTowerSprite.getSubimage(i * 48, 0, 48, 48));
-        }
-        for (int i = 0; i < 4; i++){
-            fridgeTowerSpritesArr[i] = (fridgeTowerSprite.getSubimage(i * 48, 0, 48, 48));
-        }
-    }
-
-    /**
      * // TODO Javadoc comment
      */
     public void update() {
         drawPanel.update();
     }
 
-
-    //----------------------------Wigit methods--------------------------//
+    // ----------------------------Wigit methods--------------------------//
 
     /**
-     * Opens the upgrade wigit of the clicked towers type, and closes all other wigits
-     * @param x The grid x-position of the tile the player clicked on
-     * @param y The grid y-position of the tile the player clicked on
-     * @param type The the type of the tower that is on the tile the player clicked on
+     * Opens the upgrade wigit of the clicked towers type, and closes all other
+     * wigits
+     * 
+     * @param x               The grid x-position of the tile the player clicked on
+     * @param y               The grid y-position of the tile the player clicked on
+     * @param type            The the type of the tower that is on the tile the
+     *                        player clicked on
      * @param currentUpgrades The current upgrades of the tower
      */
     public void openUpgradeWidgit(int x, int y, TowerType type, List<Upgrade> currentUpgrades) {
@@ -179,9 +126,9 @@ public class GameView extends JFrame {
         setResizable(false);
     }
 
-    public List<IMoneyObserver> getMoneyObservers(){
     /**
      * Converts all TowerControllers into IMoneyObservers
+     * 
      * @return TowerControllers as IMoneyObservers
      */
     public List<IMoneyObserver> getMoneyObservers() {
@@ -195,7 +142,7 @@ public class GameView extends JFrame {
         return observers;
     }
 
-    //----------------------------Getters and setters--------------------------// 
+    // ----------------------------Getters and setters--------------------------//
 
     public DrawPanel getDrawPanel() {
         return drawPanel;

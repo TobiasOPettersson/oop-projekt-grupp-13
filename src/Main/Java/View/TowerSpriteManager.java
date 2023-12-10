@@ -27,11 +27,11 @@ public class TowerSpriteManager {
     }
 
     private void importTowerImg() {
-        InputStream isKnifeTower = this.getClass().getResourceAsStream("res/towers/knifeTower.png");
-        InputStream isMalletTower = this.getClass().getResourceAsStream("res/towers/malletTower.png");
-        InputStream isBlowtorchTower = this.getClass().getResourceAsStream("res/towers/blowtorchTower.png");
-        InputStream isSlicerTower = this.getClass().getResourceAsStream("res/towers/slicerTower.png");
-        InputStream isFreezerTower = this.getClass().getResourceAsStream("res/towers/fridgeTower.png");
+        InputStream isKnifeTower = this.getClass().getResourceAsStream("resView/towers/knifeTower.png");
+        InputStream isMalletTower = this.getClass().getResourceAsStream("resView/towers/malletTower.png");
+        InputStream isBlowtorchTower = this.getClass().getResourceAsStream("resView/towers/blowtorchTower.png");
+        InputStream isSlicerTower = this.getClass().getResourceAsStream("resView/towers/slicerTower.png");
+        InputStream isFreezerTower = this.getClass().getResourceAsStream("resView/towers/fridgeTower.png");
 
         try {
             towerSprites.put(TowerType.knife, ImageIO.read(isKnifeTower));
@@ -40,6 +40,7 @@ public class TowerSpriteManager {
             towerSprites.put(TowerType.slicer, ImageIO.read(isSlicerTower));
             towerSprites.put(TowerType.freezer, ImageIO.read(isFreezerTower));
         } catch (IOException e) {
+            System.out.println("Couldn't find image file");
             e.printStackTrace();
         }
     }
