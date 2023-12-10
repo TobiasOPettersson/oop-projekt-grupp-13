@@ -50,6 +50,7 @@ public class MainModel implements ITowerUpgradeObserver {
             System.out.println(enemies.size());
             AEnemy enemyToRemove = null;
             for (AEnemy enemy : enemies) {
+                enemy.updateAnimationTick();
                 enemy.triggerConditions();
                 enemy.move();
                 enemy.setStaggered(false);
@@ -72,6 +73,7 @@ public class MainModel implements ITowerUpgradeObserver {
             }
 
             for (ATower tower : map.getTowers()) {
+                tower.updateAnimationTick();
                 if (!tower.isOnCooldown()) {
                     if (tower instanceof AttackTower) {
                         List<AEnemy> targets = tower.findEnemiesInRange(enemies);
@@ -143,6 +145,7 @@ public class MainModel implements ITowerUpgradeObserver {
     private boolean alive(){
         return player.getHealth() > 0;
     }
+   
 
 
     //-----------------------ITargetale convertion methods (Might use)---------------------// 

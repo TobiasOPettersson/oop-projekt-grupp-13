@@ -32,20 +32,19 @@ import javax.imageio.ImageIO;
 public class GameView extends JFrame {
     MainModel model;
     DrawPanel drawPanel;
-    private BufferedImage image;
-    private Map<TowerType, BufferedImage> towerImageMap = new HashMap<TowerType, BufferedImage>();
-    private Map<EnemyType, BufferedImage> enemyImageMap = new HashMap<EnemyType, BufferedImage>();
+    CreateTowerController createWidget;
+    List<UpgradeTowerController> upgradeWidgets;
     CreateTowerController createWidgit;
     List<UpgradeTowerController> upgradeWidgits;
 
     /**
      * TODO Javadoc comment
+     * 
      * @param model
      */
-    public GameView(MainModel model) { // Moved initComponents down so setVisible is done last
-        importImg();
+    public GameView(MainModel model) {
         this.model = model;
-        this.drawPanel = new DrawPanel(this, model, image, towerImageMap, enemyImageMap);
+        this.drawPanel = new DrawPanel(this, model);
         setLayout(null);
         drawPanel.setBounds(0, 0, 960, 480);
         add(drawPanel);
@@ -53,20 +52,9 @@ public class GameView extends JFrame {
         initComponents();
     }
 
-    //----------------------------Constructor helper methods--------------------------//
-
     /**
-     * Initialize swing window
-     */
-    private void initComponents() {
-        setSize(GraphicsDependencies.getWidth(), GraphicsDependencies.getHeight());
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setVisible(true);
-    }
-
-    /**
-     * Initializes all wigits, one for buying new towers and one for upgrading for each tower type
+     * Initializes all wigits, one for buying new towers and one for upgrading for
+     * each tower type
      */
     private void initWidgits() {
         upgradeWidgits = List.of(
@@ -91,48 +79,22 @@ public class GameView extends JFrame {
     }
 
     /**
-     * Imports sprite sheet
-     */
-    private void importImg() {
-        InputStream is = this.getClass().getResourceAsStream("resView/spriteatlas.png");
-        InputStream is2 = this.getClass().getResourceAsStream("resView/knife2.png");
-        InputStream isMallet = this.getClass().getResourceAsStream("resView/mallet.png");
-        InputStream isBlowtorch = this.getClass().getResourceAsStream("resView/blowtorch.png");
-        InputStream isSlicer = this.getClass().getResourceAsStream("resView/slicer.png");
-        InputStream isFridge = this.getClass().getResourceAsStream("resView/fridge.png");
-        InputStream isTomato = this.getClass().getResourceAsStream("resView/tomato.png");
-        InputStream isBanana = this.getClass().getResourceAsStream("resView/banana.png");
-
-        try {
-            image = ImageIO.read(is);
-            towerImageMap.put(TowerType.knife, ImageIO.read(is2));
-            towerImageMap.put(TowerType.mallet, ImageIO.read(isMallet));
-            towerImageMap.put(TowerType.blowtorch, ImageIO.read(isBlowtorch));
-            towerImageMap.put(TowerType.slicer, ImageIO.read(isSlicer));
-            towerImageMap.put(TowerType.freezer, ImageIO.read(isFridge));
-            enemyImageMap.put(EnemyType.tomato, ImageIO.read(isTomato));
-            enemyImageMap.put(EnemyType.banana, ImageIO.read(isBanana));
-            
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
      * // TODO Javadoc comment
      */
     public void update() {
         drawPanel.update();
     }
 
-
-    //----------------------------Wigit methods--------------------------//
+    // ----------------------------Wigit methods--------------------------//
 
     /**
-     * Opens the upgrade wigit of the clicked towers type, and closes all other wigits
-     * @param x The grid x-position of the tile the player clicked on
-     * @param y The grid y-position of the tile the player clicked on
-     * @param type The the type of the tower that is on the tile the player clicked on
+     * Opens the upgrade wigit of the clicked towers type, and closes all other
+     * wigits
+     * 
+     * @param x               The grid x-position of the tile the player clicked on
+     * @param y               The grid y-position of the tile the player clicked on
+     * @param type            The the type of the tower that is on the tile the
+     *                        player clicked on
      * @param currentUpgrades The current upgrades of the tower
      */
     public void openUpgradeWidgit(int x, int y, TowerType type, List<Upgrade> currentUpgrades) {
@@ -156,8 +118,18 @@ public class GameView extends JFrame {
         }
     }
 
+    // initialize swing window
+    private void initComponents() {
+        setSize(GraphicsDependencies.getWidth(), GraphicsDependencies.getHeight());
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setVisible(true);
+        setResizable(false);
+    }
+
     /**
      * Converts all TowerControllers into IMoneyObservers
+     * 
      * @return TowerControllers as IMoneyObservers
      */
     public List<IMoneyObserver> getMoneyObservers() {
@@ -171,7 +143,7 @@ public class GameView extends JFrame {
         return observers;
     }
 
-    //----------------------------Getters and setters--------------------------// 
+    // ----------------------------Getters and setters--------------------------//
 
     public DrawPanel getDrawPanel() {
         return drawPanel;

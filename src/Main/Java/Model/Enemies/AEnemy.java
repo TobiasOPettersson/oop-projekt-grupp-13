@@ -1,5 +1,7 @@
 package Model.Enemies;
 
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +12,8 @@ import Model.Enums.Direction;
 import Model.Enums.EnemyType;
 import Model.Interfaces.IMovable;
 import Model.Interfaces.ITargetable;
+import View.SpriteHelper;
+import View.EnemySpriteManager;
 
 // TODO seperate methods into groups if possible (with for example //----------------------------Getter and setters----------------------//)
 
@@ -23,13 +27,17 @@ public abstract class AEnemy implements IMovable, ITargetable {
     private double x, y; //position
     private double speed; //movement speed of an enemy
     private double maxSpeed;
-    private EnemyType type; //The type of enemy
-    private List<Direction> directions; //List of directions for the enemy to follow when moving
+    private EnemyType type; // The type of enemy
+    private List<Direction> directions; // List of directions for the enemy to follow when moving
     private int damage;
     private int moneyBag;
     private double tileOffset = 0.5;
     private boolean isStaggered = false;
     private HashMap<Condition, Integer> conditions;
+    private int animationTick = 0;
+    private int animationIndex = 0;
+    private EnemySpriteManager spriteManager;
+    private BufferedImage[] enemySprites;
     
     /**
      * TODO Javadoc comment
@@ -53,12 +61,14 @@ public abstract class AEnemy implements IMovable, ITargetable {
         this.damage = damage;
         this.moneyBag = moneyBag;
         initConditionMap();
-    } 
-    
-    /**
+        this.spriteManager = new EnemySpriteManager();
+        this.enemySprites = spriteManager.getEnemySprites(type);
+    }
+/**
      * TODO Javadoc comment
      */
-    private void initConditionMap(){
+    private void initConditionMap() {
+
         conditions = new HashMap<Condition, Integer>();
         conditions.put(Condition.chilled, 0);
         conditions.put(Condition.superChilled, 0);
@@ -87,8 +97,50 @@ public abstract class AEnemy implements IMovable, ITargetable {
         return ((dir == Direction.DOWN) ? 1 : 0) - ((dir == Direction.UP) ? 1 : 0);
     }
 
-    /**
-     * TODO comment parameter and return
+    public void updateAnimationTick() {
+        animationTick++;
+        if (animationTick >= 10) {
+            animationTick = 0;
+            incrementAnimationIndex();
+        }
+    }
+
+    /*
+     * Updates animationIndex
+     */
+    public void incrementAnimationIndex() {
+        animationIndex++;
+        if (animationIndex >= enemySprites.length) {
+            animationIndex = 0;
+        }
+    }
+
+    public void resetAnimation() {
+        if (animationIndex != 0) {
+            animationIndex++;
+            if (animationIndex >= enemySprites.length) {
+                animationIndex = 0;
+            }
+        }
+    }
+
+    /*
+     * Paint: How to paint a tower
+     */
+    public void paint(Graphics g) {
+        // offset half of sprite size so the calculated position of enemy will be same
+        // position as center of enemysprite
+        int spriteSize = 48;
+        int offset = spriteSize / 2; // Sprite size / 2
+
+           if (!this.isStaggered()) {
+                int x = (int) (this.x * spriteSize) - offset;
+                int y = (int) (this.y * spriteSize) - offset;
+                g.drawImage(enemySprites[animationIndex], x, y, null);
+            }
+    }
+
+    /*
      * Computes the closest tile centerpoint x- or y-corodinate.
      * h must be -1, 0 or 1. Throws IllegalArgumentException if not.
      * Else return the closest coordinate depending on the enemy's position
@@ -105,16 +157,16 @@ public abstract class AEnemy implements IMovable, ITargetable {
         if (vector != 0) {
             double number;
             double offset = vector / 2;
-    
+
             if (coordinate == Math.floor(coordinate) + this.tileOffset) {
                 number = Math.round(coordinate + offset);
             } else {
                 number = Math.round(coordinate);
             }
-    
+
             return number + offset;
         }
-    
+
         double number = Math.floor(coordinate);
         return number + 0.5;
     }
@@ -151,10 +203,12 @@ public abstract class AEnemy implements IMovable, ITargetable {
      * @return
      */
     private boolean nextPosIsPassedCenterPoint(double nextX, double nextY, Direction currentDir, double h, double v) {
-        if ((nextX >= tileCenterPointX(h) && currentDir == Direction.RIGHT) || (nextX <= tileCenterPointX(h) && currentDir == Direction.LEFT)) {
+        if ((nextX >= tileCenterPointX(h) && currentDir == Direction.RIGHT)
+                || (nextX <= tileCenterPointX(h) && currentDir == Direction.LEFT)) {
             return true;
         }
-        if ((nextY <= tileCenterPointY(v) && currentDir == Direction.UP) || (nextY >= tileCenterPointY(v) && currentDir == Direction.DOWN)) {
+        if ((nextY <= tileCenterPointY(v) && currentDir == Direction.UP)
+                || (nextY >= tileCenterPointY(v) && currentDir == Direction.DOWN)) {
             return true;
         }
         return false;
@@ -171,7 +225,8 @@ public abstract class AEnemy implements IMovable, ITargetable {
      * @return
      */
     private boolean currentPosIsPassedCenterPoint(double centerPointX, double centerPointY, double h, double v) {
-        return ((Math.signum(this.y - centerPointY) == v) || (this.y == centerPointY)) && (Math.signum(this.x - centerPointX) == h || (this.x == centerPointX));
+        return ((Math.signum(this.y - centerPointY) == v) || (this.y == centerPointY))
+                && (Math.signum(this.x - centerPointX) == h || (this.x == centerPointX));
     }
 
     /**
@@ -181,7 +236,7 @@ public abstract class AEnemy implements IMovable, ITargetable {
      * @param v
      */
     private void oneAxisMove(double h, double v) {
-        if (h!= 0 && v!= 0) {
+        if (h != 0 && v != 0) {
             throw new IllegalArgumentException("The enemy can only walk in one direction");
         }
         this.x += h * speed;
@@ -245,28 +300,26 @@ public abstract class AEnemy implements IMovable, ITargetable {
 
         double h = horizontalVector(currentDir);
         double v = verticalVector(currentDir);
-        
+
         finalDirectionMove(h, v);
-        
+
         if (directions.size() > 1) {
             Direction nextDir = directions.get(1);
 
             double hNext = horizontalVector(nextDir);
             double vNext = verticalVector(nextDir);
-            
+
             double nextX = this.x + h * speed;
             double nextY = this.y + v * speed;
 
             if (nextPosIsPassedCenterPoint(nextX, nextY, currentDir, h, v)) {
                 if (currentDir == nextDir) {
                     oneAxisMove(h, v);
-                }
-                else {
+                } else {
                     turningMove(h, v, hNext, vNext, nextX, nextY);
                 }
                 directions.remove(0);
-            }
-            else {
+            } else {
                 oneAxisMove(h, v);
             }
         }
@@ -307,7 +360,7 @@ public abstract class AEnemy implements IMovable, ITargetable {
      */
     public void decrementConditionDurations(){
         for (Map.Entry<Condition, Integer> entry : conditions.entrySet()) {
-            if(entry.getValue() > 0){
+            if (entry.getValue() > 0) {
                 conditions.put(entry.getKey(), entry.getValue() - 1);
             }
         }
@@ -341,25 +394,25 @@ public abstract class AEnemy implements IMovable, ITargetable {
         return this.damage;
     }
 
-    public boolean isChilled(){
-        return conditions.get(Condition.chilled) > 0 || conditions.get(Condition.superChilled) > 0; 
+    public boolean isChilled() {
+        return conditions.get(Condition.chilled) > 0 || conditions.get(Condition.superChilled) > 0;
     }
 
-    public void setCondition(Condition condition, int duration){
-        if (conditions.get(condition) < duration){
+    public void setCondition(Condition condition, int duration) {
+        if (conditions.get(condition) < duration) {
             conditions.put(condition, duration);
         }
     }
 
-    public EnemyType getType(){
+    public EnemyType getType() {
         return type;
     }
-    
-    public void setStaggered(boolean bool){
+
+    public void setStaggered(boolean bool) {
         isStaggered = bool;
     }
 
-    public boolean isStaggered(){
+    public boolean isStaggered() {
         return isStaggered;
     }
 
@@ -371,11 +424,11 @@ public abstract class AEnemy implements IMovable, ITargetable {
         return this.maxHealth;
     }
 
-    public int getMoney(){
+    public int getMoney() {
         return this.moneyBag;
     }
 
-    public int getDirectionsSize(){
+    public int getDirectionsSize() {
         return directions.size();
     }
 

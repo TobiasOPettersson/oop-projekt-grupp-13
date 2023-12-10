@@ -16,6 +16,13 @@
             "name": "Application",
             "request": "launch",
             "mainClass": "src.Main.Java.Application",
+            "projectName": "oop-projekt_d4756a49"
+        },
+        {
+            "type": "java",
+            "name": "Application",
+            "request": "launch",
+            "mainClass": "src.Main.Java.Application",
             "projectName": "oop-projekt_7da34af"
         },
         {

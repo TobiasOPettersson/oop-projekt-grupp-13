@@ -7,6 +7,7 @@ import Model.MainModel;
 import Model.Enemies.AEnemy;
 import Model.Enums.Direction;
 import Model.Enums.EnemyType;
+import Model.Enums.TileTerrain;
 import Model.Enums.TowerType;
 import Model.Map.ATile;
 import Model.Map.TowerTile;
@@ -31,8 +32,6 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
     private Map<TowerType, BufferedImage> towerImageMap;
     private Map<EnemyType, BufferedImage> enemyImageMap;
     private MainModel model;
-    private ArrayList<BufferedImage> sprites = new ArrayList<>();
-    // public ArrayList<DirNode> dirChangeArray = new ArrayList<>(); // Temp map
     private ATile mapGrid[][];
     private List<Direction> pathDirections;
     private int gridWidth;
@@ -41,18 +40,15 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
     private int[][] pathGrid;
     private int[] selectedTile = new int[] { -1, -1 };
     private int[] hoveredTile = new int[] { -1, -1 };
-    private int animationIndex = 0;
-    private int animationTick = 0;
     private TowerType towerTypeToPlace = null;
     private boolean isPlacingTower = false;
+    protected TowerSpriteManager towerSpriteManager = new TowerSpriteManager();
+    protected WorldSpriteManager WorldSpriteManager = new WorldSpriteManager();
+    private final int SPRITESIZE = GraphicsDependencies.getSpriteSize();
 
     // Constructor
-    public DrawPanel(GameView gameView, MainModel model, BufferedImage image,
-            Map<TowerType, BufferedImage> towerImageMap, Map<EnemyType, BufferedImage> enemyImageMap) {
+    public DrawPanel(GameView gameView, MainModel model) {
         this.gameView = gameView;
-        this.image = image;
-        this.towerImageMap = towerImageMap;
-        this.enemyImageMap = enemyImageMap;
         this.model = model;
         this.pathDirections = this.model.getPathDirections();
         this.mapGrid = this.model.getTileGrid();
@@ -65,130 +61,72 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
         // PlayButtonController playButton = new PlayButtonController(model);
         // playButton.setBounds(836, 384, 96, 96);
         // add(playButton);
-        loadSprites();
         update();
         createPathSprites();
         addMouseListeners();
     }
 
-
-    /**
-     * TODO Javadoc comment
-     */
-    private void updateAnimation() {
-        animationTick++;
-        if (animationTick >= 20) {
-            animationTick = 0;
-            updateAnimationIndex();
-        }
-    }
-
-    /**
-     * TODO Javadoc comment
-     */
-    private void updateAnimationIndex() {
-        animationIndex++;
-        if (animationIndex >= 4) {
-            animationIndex = 0;
-        }
-    }
-
-    /**
-     * Create Sprite sheet by taking subimages from image and then scale them
-     */
-    private void loadSprites() {
-        for (int y = 0; y < 10; y++) {
-            for (int x = 0; x < 10; x++) {
-                // Get the subimage that is 32x32 and scale it before putting it in the array of
-                // sprites
-                sprites.add(SpriteHelper.scaleSprite(image.getSubimage(x * 32, y * 32, 32, 32), 1.5));
+    private void handleTileClick(int x, int y) {
+        for (int i = 0; i < gridWidth; i++) {
+            if (x > 48 * i && x < 48 * (i + 1)) {
+                for (int j = 0; j < gridHeight; j++) {
+                    if (y > 48 * j && y < 48 * (j + 1)) {
+                        if (model.getMap().getTile(i, j) instanceof TowerTile) {
+                            selectedTile[0] = i;
+                            selectedTile[1] = j;
+                            //gameView.openWidgit(i, j);
+                            return;
+                        }
+                    }
+                }
             }
         }
     }
 
-    /**
-     * TODO Javadoc comment, refactor if possible
+    /*
+     * Creates an array of sprites oriented the correct way and in the correct order
+     * according
+     * to the pathDirection array
      */
-    private void createPathSprites() { // Behöver fixas, Mycket redundant kod
-        // pathTurn = sprites.get(8)
-        int pathTurn = 8;
-        // pathStraight = sprites.get(9)
-        int pathStraight = 9;
-        Direction previous = this.pathDirections.get(0);
-        Direction current;
+    private void createPathSprites() {
         for (int i = 1; i < this.pathDirections.size(); i++) {
-            current = this.pathDirections.get(i);
-            if (previous == Direction.RIGHT && current == Direction.RIGHT) {
-                pathSprites.add(sprites.get(pathStraight)); // >
-            } else if (previous == Direction.RIGHT && current == Direction.DOWN) {
-                pathSprites.add(SpriteHelper.rotateSprite(sprites.get(pathTurn), 90)); // >v
-            } else if (previous == Direction.RIGHT && current == Direction.UP) {
-                pathSprites.add(SpriteHelper.rotateSprite(sprites.get(pathTurn), 180)); // >^
-            } else if (previous == Direction.DOWN && current == Direction.DOWN) {
-                pathSprites.add(SpriteHelper.rotateSprite(sprites.get(pathStraight), 90)); // v
-            } else if (previous == Direction.DOWN && current == Direction.LEFT) {
-                pathSprites.add(SpriteHelper.rotateSprite(sprites.get(pathTurn), 180)); // v<
-            } else if (previous == Direction.DOWN && current == Direction.RIGHT) {
-                pathSprites.add(SpriteHelper.rotateSprite(sprites.get(pathTurn), -90)); // v>
-            } else if (previous == Direction.LEFT && current == Direction.LEFT) {
-                pathSprites.add(sprites.get(pathStraight)); // <
-            } else if (previous == Direction.LEFT && current == Direction.UP) {
-                pathSprites.add(SpriteHelper.rotateSprite(sprites.get(pathTurn), -90)); // <^
-            } else if (previous == Direction.LEFT && current == Direction.DOWN) {
-                pathSprites.add(sprites.get(pathTurn)); // <v
-            } else if (previous == Direction.UP && current == Direction.UP) {
-                pathSprites.add(SpriteHelper.rotateSprite(sprites.get(pathStraight), 90)); // ^
-            } else if (previous == Direction.UP && current == Direction.RIGHT) {
-                pathSprites.add(sprites.get(pathTurn)); // ^>
-            } else if (previous == Direction.UP && current == Direction.LEFT) {
-                SpriteHelper.rotateSprite(sprites.get(pathTurn), 90); // ^<
-            }
-            previous = current;
+            pathSprites.add(
+                    WorldSpriteManager.getPathTurn(this.pathDirections.get(i - 1), this.pathDirections.get(i)));
         }
     }
-
-    //----------------------------Draw & paint methods-----------------------//
+    // ----------------------------Draw & paint methods-----------------------//
 
     /**
      * TODO javadoc comment
+     * 
      * @param g
      */
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         drawMap(g);
-
-        // Testing
-        /*
-         * if (c == 1)
-         * for (DirChange item : dirChangeArray) {
-         * System.out.println("x: " + item.getX() + ", y: " + item.getY() + ", dir: " +
-         * item.getDir());
-         * c = 0;
-         * }
-         */
         drawEnemies(g);
         drawTowers(g);
         drawSelectedTile(g);
         drawEndScreen(g);
- 
-        if(getTowerAtMousePos() != null){
+        drawVisibleGrid(g);
+
+        if (getTowerAtMousePos() != null) {
             drawHoveredTowerRange(g, getTowerAtMousePos());
         }
-        
-        if(isPlacingTower){
+
+        if (isPlacingTower) {
             drawTowerAtMousePos(g);
         }
     }
 
     /**
-     * TODO Javadoc comment, duplicate methodcalls in paintComponents() and here 
+     * TODO Javadoc comment, duplicate methodcalls in paintComponents() and here
+     * 
      * @param g
      */
     private void drawMap(Graphics g) {
         drawTerrain(g);
         drawPath(g);
-        drawTowers(g);
-        drawEnemies(g);
         drawHoveredTile(g);
     }
 
@@ -228,63 +166,20 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
      * @param g
      */
     void drawEnemies(Graphics g) {
-        // offset half of sprite size so the calculated position of enemy will be same
-        // position as center of enemysprite
-        int offset = 24; // Sprite size / 2
-        int spriteSize = 48;
-
         for (AEnemy enemy : model.getEnemies()) {
-            BufferedImage enemyImage = enemyImageMap.get(enemy.getEnemyType());
-            int x = (int) (enemy.getX() * spriteSize) - offset;
-            int y = (int) (enemy.getY() * spriteSize) - offset;
-            drawEnemyHP(g, spriteSize, enemy, x, y);
-            if (!enemy.isStaggered()) {
-                g.drawImage(enemyImage, x, y, null);
-            }
-            // Add method that gets the correct sprite for enemies according to
-            // animationIndex.
+            enemy.paint(g);
         }
     }
 
-    // TODO Javadoc comment
-    /**
-     * 
-     * @param g
-     * @param spriteSize
-     * @param enemy
-     * @param x
-     * @param y
-     */
-    private void drawEnemyHP(Graphics g, int spriteSize, AEnemy enemy, int x, int y) {
-        double percentOfHP = enemy.getHealth() / enemy.getMaxHealth();
-        if (percentOfHP > 0.75) {
-            g.setColor(Color.GREEN);
-        } else if ((percentOfHP <= 0.75) && (percentOfHP > 0.5)) {
-            g.setColor(Color.YELLOW);
-        } else if ((percentOfHP <= 0.5) && ((percentOfHP) > 0.25)) {
-            g.setColor(Color.ORANGE);
-        } else {
-            g.setColor(Color.RED);
-        }
-        g.drawLine(x, y + spriteSize, (int) (x + (spriteSize * percentOfHP)), y + spriteSize);
-    }
-
-    /**
-     * Draws all towers in the MainModel list of towers
-     * If the tower is currently targeting an enemy, rotate its image toward the
-     * target
-     * 
-     * @param g Graphics
+    /*
+     * draw towers
      */
     private void drawTowers(Graphics g) {
-        for (ATower tower : model.getMap().getTowers()) {
-            BufferedImage towerImage = towerImageMap.get(tower.getTowerType());
-            if (tower.getTargetPosition() != null) {
-                towerImage = rotateTowerTowardTarget(tower, towerImage);
-            }
-            g.drawImage(towerImage, (int) tower.getX() * 48, (int) tower.getY() * 48, null);
+        for (ATower tower : model.getTowers()) {
+            tower.paint(g);
         }
     }
+
 
     /**
      * Rotates the tower image toward the enemy its targeting
@@ -307,8 +202,8 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
      * @param g Graphics
      */
     private void drawTowerAtMousePos(Graphics g) {
-        BufferedImage towerImage = towerImageMap.get(towerTypeToPlace);
-        g.drawImage(towerImage, hoveredTile[0] * 48, hoveredTile[1] * 48, null);
+        BufferedImage[] towerImage = towerSpriteManager.getTowerSprites(towerTypeToPlace);
+        g.drawImage(towerImage[0], hoveredTile[0] * 48, hoveredTile[1] * 48, null);
         drawTowerRange(g, hoveredTile[0], hoveredTile[1], 1);
     }
 
@@ -341,6 +236,7 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
 
     /**
      * TODO javadoc comment
+     * 
      * @param g
      */
     private void drawPath(Graphics g) {
@@ -360,30 +256,52 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
      * @param g Graphics
      */
     private void drawTerrain(Graphics g) {
-        // Grass = sprites.get(18)
-        int plains = 18;
-        // Water = sprites.get(60)
-        int water = 60;
-        // size of sprites, originalsize * scale = 32*1.5 = 48
-        int sSize = 48;
-
         for (int i = 0; i < gridWidth; i++) {
             for (int j = 0; j < gridHeight; j++) {
                 switch (mapGrid[j][i].getTerrain()) {
                     case Plains:
-                        g.drawImage(sprites.get(plains), i * sSize, j * sSize, null);
+                        g.drawImage(WorldSpriteManager.getTileSprite(), i * SPRITESIZE, j * SPRITESIZE, null);
                         break;
                     case Water:
-                        g.drawImage(sprites.get(water), i * sSize, j * sSize, null);
+                        g.drawImage(WorldSpriteManager.getTileSprite(), i * SPRITESIZE, j * SPRITESIZE, null);
                         break;
                     case Forrest:
+                        g.drawImage(WorldSpriteManager.getTileSprite(), i * SPRITESIZE, j * SPRITESIZE, null);
                         break;
                     case Mountains:
+                        g.drawImage(WorldSpriteManager.getTileSprite(), i * SPRITESIZE, j * SPRITESIZE, null);
+                        break;
+                    case Kitchen:
+                        g.drawImage(WorldSpriteManager.getTileSprite(), i * SPRITESIZE, j * SPRITESIZE, null);
                         break;
                     default:
+                        g.drawImage(WorldSpriteManager.getTileSprite(), i * SPRITESIZE, j * SPRITESIZE, null);
                         break;
                 }
             }
+        }
+    }
+
+    /*
+     * Draw a grid on the whole map
+     */
+    private void drawVisibleGrid(Graphics g) {
+        for (int i = 0; i < gridWidth; i++) {
+            g.setColor(new Color(77, 77, 77));
+            g.drawLine(i * SPRITESIZE, 0, i * SPRITESIZE, gridHeight * SPRITESIZE);
+        }
+        for (int j = 0; j < gridHeight; j++) {
+            g.drawLine(0, j * SPRITESIZE, gridWidth * SPRITESIZE, j * SPRITESIZE);
+        }
+    }
+
+    /*
+     * Draw a border around the selected tile to emphasize that it is the selected
+     * tile
+     */
+    private void drawTileBorder(Graphics g) {
+        for (int j = 0; j < gridWidth; j++) {
+            g.drawLine(0, j * SPRITESIZE, gridWidth, j * SPRITESIZE);
         }
     }
 
@@ -411,20 +329,14 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
         g.drawString(text, x, y);
     }
 
-    //----------------------------Other methods--------------------------//
+    // ----------------------------Other methods--------------------------//
 
     /**
      * TODO javadoc comment
      */
     public void update() {
-        updateAnimation();
         repaint();
     }
-
-    // TODO what are these variables for? Where should they be?
-    public int walk = 0;
-    int c = 1;
-
 
     /** -------- Related to mouse events -------- */
 
