@@ -1,5 +1,6 @@
 package Model.Enemies;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import Model.Interfaces.IMovable;
 import Model.Interfaces.ITargetable;
 import View.SpriteHelper;
 import View.EnemySpriteManager;
+import View.GraphicsDependencies;
 
 // TODO seperate methods into groups if possible (with for example //----------------------------Getter and setters----------------------//)
 
@@ -38,6 +40,7 @@ public abstract class AEnemy implements IMovable, ITargetable {
     private int animationIndex = 0;
     private EnemySpriteManager spriteManager;
     private BufferedImage[] enemySprites;
+    private final int SPRITESIZE = GraphicsDependencies.getSpriteSize();
     
     /**
      * TODO Javadoc comment
@@ -137,7 +140,31 @@ public abstract class AEnemy implements IMovable, ITargetable {
                 int x = (int) (this.x * spriteSize) - offset;
                 int y = (int) (this.y * spriteSize) - offset;
                 g.drawImage(enemySprites[animationIndex], x, y, null);
+                drawEnemyHP(g, x, y);
             }
+    }
+
+    // TODO Javadoc comment
+    /**
+     * 
+     * @param g
+     * @param spriteSize
+     * @param enemy
+     * @param x
+     * @param y
+     */
+    private void drawEnemyHP(Graphics g, int x, int y) {
+        double percentOfHP = this.getHealth() / this.getMaxHealth();
+        if (percentOfHP > 0.75) {
+            g.setColor(Color.GREEN);
+        } else if ((percentOfHP <= 0.75) && (percentOfHP > 0.5)) {
+            g.setColor(Color.YELLOW);
+        } else if ((percentOfHP <= 0.5) && ((percentOfHP) > 0.25)) {
+            g.setColor(Color.ORANGE);
+        } else {
+            g.setColor(Color.RED);
+        }
+        g.drawLine(x, y + SPRITESIZE, (int) (x + (SPRITESIZE * percentOfHP)), y + SPRITESIZE);
     }
 
     /*
