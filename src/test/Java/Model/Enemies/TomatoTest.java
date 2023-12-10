@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import Model.Enums.Direction;
 
-public class EnemyOneTest {
+public class TomatoTest {
 
     @Test
     public void enemy_should_be_able_to_walk_in_a_straight_line() {
