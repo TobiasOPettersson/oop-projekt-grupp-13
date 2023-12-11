@@ -96,7 +96,7 @@ public class GameView extends JFrame {
      * @param currentUpgrades The current upgrades of the tower
      */
     public void openUpgradeWidgit(int x, int y, TowerType type, List<Upgrade> currentUpgrades) {
-        this.createWidgit.setVisible(true);
+        this.createWidgit.setVisible(false);
         for (UpgradeTowerController upgradeWidget : upgradeWidgits) {
             if (type.equals(upgradeWidget.getTowerType())) {
                 upgradeWidget.setVisible(true);
