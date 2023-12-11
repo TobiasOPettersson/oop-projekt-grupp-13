@@ -26,13 +26,15 @@ public class UpgradeTowerController extends TowerController implements IUpgradeT
     JPanel headpanel = new JPanel();
     TowerType towerType;
     private ITowerUpgradeObserver observer;
-    private int savedMousePosX;
-    private int savedMousePosY;
+    private int savedTowerPosX;
+    private int savedTowerPosY;
 
-    public UpgradeTowerController(ITowerUpgradeObserver observer, TowerType towerType, MainModel model) {
+    public UpgradeTowerController(ITowerUpgradeObserver observer, TowerType towerType, MainModel model, int towerPosX, int towerPosY) {
         super(model);
         this.observer = observer;
         this.towerType = towerType;
+        savedTowerPosX = towerPosX;
+        savedTowerPosY = towerPosY;
 
         setBackground(Color.WHITE);
         buttonPanel.setLayout(new GridLayout(0, 5, 5, 20));
@@ -42,6 +44,7 @@ public class UpgradeTowerController extends TowerController implements IUpgradeT
         initHeader();
         initButtons();
         intiPlaybutton();
+        
     }
 
     /**
@@ -124,7 +127,7 @@ public class UpgradeTowerController extends TowerController implements IUpgradeT
                 button.setOpacity(Color.blue, true);
             }
         }
-        observer.upgradeTower(getSavedMousePosX(), getSavedMousePosY(), upgrade);
+        observer.upgradeTower(getSavedTowerPosX(), getSavedTowerPosY(), upgrade);
     }
 
     /**
@@ -157,16 +160,16 @@ public class UpgradeTowerController extends TowerController implements IUpgradeT
      * @param x is the x-position of the mouse as grid-indicies
      * @param y is the y-position of the mouse as grid-indicies
      */
-    public void setSavedMousePos(int x, int y) {
-        savedMousePosX = x;
-        savedMousePosY = y;
+    public void setSavedTowerPos(int x, int y) {
+        savedTowerPosX = x;
+        savedTowerPosY = y;
     }
 
-    protected int getSavedMousePosY() {
-        return savedMousePosY;
+    public int getSavedTowerPosY() {
+        return savedTowerPosY;
     }
 
-    protected int getSavedMousePosX() {
-        return savedMousePosX;
+    public int getSavedTowerPosX() {
+        return savedTowerPosX;
     }
 }

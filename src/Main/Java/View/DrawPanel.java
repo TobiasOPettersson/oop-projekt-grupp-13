@@ -382,6 +382,7 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
         if (isHoveredTileTowerTile()) {
             if (isPlacingTower) {
                 model.createTower(hoveredTile[0], hoveredTile[1], towerTypeToPlace);
+                gameView.addNewUpgradeWidget(towerTypeToPlace, hoveredTile[0], hoveredTile[1]);
             } else if (getTowerAtMousePos() != null) {
                 selectedTile[0] = hoveredTile[0];
                 selectedTile[1] = hoveredTile[1];
