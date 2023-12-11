@@ -92,15 +92,16 @@ public abstract class ATower implements ITargetable, IUpgradable {
                     if (aoeRange != 0) {
                         targets.addAll(findAoeTargets(enemy, enemies));
                     }
+                    enemiesInRange = true;
                     return targets;
                 }
             }
         }
         if (targets.size() > 0) {
-            this.enemiesInRange = true;
+            enemiesInRange = true;
             return targets;
         }
-        this.enemiesInRange = false;
+        enemiesInRange = false;
         return null;
     }
 
@@ -184,19 +185,18 @@ public abstract class ATower implements ITargetable, IUpgradable {
         }
     }
 
+    // ----------------------------Animation methods----------------------//
+
     public void updateAnimationTick() {
         animationTick++;
         if (animationTick >= 10) {
             animationTick = 0;
-            incrementAnimationIndex();
-            /*
-             * if (this.enemiesInRange) { // Need to find some variable to use so towers
-             * only nimate when close to n enemy
-             * incrementAnimationIndex();
-             * } else {
-             * resetAnimation();
-             * }
-             */
+            
+            if (enemiesInRange) { // Need to find some variable to use so towers only nimate when close to n enemy
+                incrementAnimationIndex();
+            } else {
+                resetAnimation();
+            }
         }
     }
 
@@ -207,6 +207,7 @@ public abstract class ATower implements ITargetable, IUpgradable {
         animationIndex++;
         if (animationIndex >= towerSprites.length) {
             animationIndex = 0;
+            enemiesInRange = false;
         }
     }
 
