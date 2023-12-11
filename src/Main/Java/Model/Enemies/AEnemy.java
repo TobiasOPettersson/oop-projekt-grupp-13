@@ -128,7 +128,7 @@ public abstract class AEnemy implements IMovable, ITargetable {
     }
 
     /*
-     * Paint: How to paint a tower
+     * Paint: How to paint an enemy
      */
     public void paint(Graphics g) {
         // offset half of sprite size so the calculated position of enemy will be same
@@ -136,12 +136,12 @@ public abstract class AEnemy implements IMovable, ITargetable {
         int spriteSize = 48;
         int offset = spriteSize / 2; // Sprite size / 2
 
-           if (!this.isStaggered()) {
-                int x = (int) (this.x * spriteSize) - offset;
-                int y = (int) (this.y * spriteSize) - offset;
-                g.drawImage(enemySprites[animationIndex], x, y, null);
-                drawEnemyHP(g, x, y);
-            }
+        int x = (int) (this.x * spriteSize) - offset;
+        int y = (int) (this.y * spriteSize) - offset;
+        drawEnemyHP(g, x, y);
+        if (!this.isStaggered()) {
+            g.drawImage(enemySprites[animationIndex], x, y, null);
+        }
     }
 
     // TODO Javadoc comment
@@ -154,6 +154,7 @@ public abstract class AEnemy implements IMovable, ITargetable {
      * @param y
      */
     private void drawEnemyHP(Graphics g, int x, int y) {
+        int onePixel = 1;
         double percentOfHP = this.getHealth() / this.getMaxHealth();
         if (percentOfHP > 0.75) {
             g.setColor(Color.GREEN);
@@ -164,7 +165,7 @@ public abstract class AEnemy implements IMovable, ITargetable {
         } else {
             g.setColor(Color.RED);
         }
-        g.drawLine(x, y + SPRITESIZE, (int) (x + (SPRITESIZE * percentOfHP)), y + SPRITESIZE);
+        g.drawLine(x, y + SPRITESIZE - onePixel*3, (int) (x + (SPRITESIZE * percentOfHP)), y + SPRITESIZE - onePixel*3);
     }
 
     /*

@@ -32,8 +32,7 @@ import javax.imageio.ImageIO;
 public class GameView extends JFrame {
     MainModel model;
     DrawPanel drawPanel;
-    CreateTowerController createWidget;
-    List<UpgradeTowerController> upgradeWidgets;
+
     CreateTowerController createWidgit;
     List<UpgradeTowerController> upgradeWidgits;
 
@@ -98,7 +97,7 @@ public class GameView extends JFrame {
      * @param currentUpgrades The current upgrades of the tower
      */
     public void openUpgradeWidgit(int x, int y, TowerType type, List<Upgrade> currentUpgrades) {
-        createWidgit.setVisible(true);
+        createWidgit.setVisible(false);
         for (UpgradeTowerController upgradeWidget : upgradeWidgits) {
             if (type.equals(upgradeWidget.getTowerType())) {
                 upgradeWidget.setVisible(true);
