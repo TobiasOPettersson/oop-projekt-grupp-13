@@ -42,6 +42,14 @@ public class Wave {
         this.waves.add(new LinkedList<EnemyType>(createCurrentWave));
         createCurrentWave.clear();
 
+        //Wave 3
+        createCurrentWave.addAll(createPartWave(3, EnemyType.banana));
+        createCurrentWave.addAll(createPartWave(3, EnemyType.tomato));
+        createCurrentWave.addAll(createPartWave(3, EnemyType.cheese));
+        createCurrentWave.addAll(createPartWave(3, EnemyType.chicken));
+        this.waves.add(new LinkedList<EnemyType>(createCurrentWave));
+        createCurrentWave.clear();
+
         /* -------------------------- Mall for each wave
         //Wave #
         createCurrentWave.addAll(createPartWave(1, EnemyType.banana));
