@@ -154,7 +154,7 @@ public abstract class AEnemy implements IMovable, ITargetable {
      * @param y
      */
     private void drawEnemyHP(Graphics g, int x, int y) {
-        int onePixel = 1;
+        int yPositionOffset = 3;
         double percentOfHP = this.getHealth() / this.getMaxHealth();
         if (percentOfHP > 0.75) {
             g.setColor(Color.GREEN);
@@ -165,7 +165,7 @@ public abstract class AEnemy implements IMovable, ITargetable {
         } else {
             g.setColor(Color.RED);
         }
-        g.drawLine(x, y + SPRITESIZE - onePixel*3, (int) (x + (SPRITESIZE * percentOfHP)), y + SPRITESIZE - onePixel*3);
+        g.drawLine(x, y + SPRITESIZE - yPositionOffset, (int) (x + (SPRITESIZE * percentOfHP)), y + SPRITESIZE - yPositionOffset);
     }
 
     /*
