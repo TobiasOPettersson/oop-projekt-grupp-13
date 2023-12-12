@@ -329,6 +329,12 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
         g.drawString(text, x, y);
     }
 
+    private void drawPlayerHealth(Graphics g) {
+        for (int i = 0; i < model.getPlayerMoney(); i++) {
+            g.drawImage(image, 0, 0, null);
+        }
+    }
+
     // ----------------------------Other methods--------------------------//
 
     /**

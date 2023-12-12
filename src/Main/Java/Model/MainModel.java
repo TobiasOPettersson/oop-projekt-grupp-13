@@ -66,7 +66,6 @@ public class MainModel implements ITowerUpgradeObserver {
                 enemies.remove(enemyToRemove);
             }
 
-            System.out.println("Test 1");
             this.allWaves.updateSpawnRate();
             if (this.allWaves.checkIfSpawnable() && this.currentWaveEnemies.isEmpty() == false) {
                 this.enemies.add(this.currentWaveEnemies.poll());
@@ -227,9 +226,20 @@ public class MainModel implements ITowerUpgradeObserver {
         return this.map.getTowers();
     }
 
+    /**
+     * TODO REMOVE OR CHANGE
+     */
     public Player getPlayer() {
         map.setPlayer(player);
         return player;
+    }
+
+    public int getPlayerMoney() {
+        return player.getMoney();
+    }
+
+    public int getPlayerHealth() {
+        return player.getHealth();
     }
 
     public boolean allWavesDead() {
