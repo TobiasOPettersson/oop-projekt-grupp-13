@@ -124,7 +124,8 @@ public class UpgradeTowerController extends TowerController implements IUpgradeT
     public void notifyObservers(Upgrade upgrade) {
         for (WidgetButton button : buttons) {
             if (upgrade == ((UpgradeButton) button).upgrade) {
-                button.setOpacity(Color.blue, true);
+                ((UpgradeButton)button).setHasUpgrade(true);
+                ((UpgradeButton)button).showHasUpgrade();
             }
         }
         observer.upgradeTower(getSavedTowerPosX(), getSavedTowerPosY(), upgrade);
@@ -138,7 +139,7 @@ public class UpgradeTowerController extends TowerController implements IUpgradeT
     public void updateMoney(int curMoney) {
         // coinsLabel.setText("Coins: " + curMoney);
         for (WidgetButton button : buttons) {
-            button.setOpacity(Color.gray, button.getCost() > curMoney);
+            button.setOpacity(button.getCost() > curMoney);
         }
     }
 
@@ -149,7 +150,8 @@ public class UpgradeTowerController extends TowerController implements IUpgradeT
     public void updateAvailableUpgrades(List<Upgrade> currentUpgrades) {
         for (WidgetButton button : buttons) {
             if (currentUpgrades.contains(((UpgradeButton) button).upgrade)) {
-                button.setOpacity(Color.blue, true);
+                ((UpgradeButton)button).setHasUpgrade(true);
+                ((UpgradeButton)button).showHasUpgrade();
             }
         }
     }
