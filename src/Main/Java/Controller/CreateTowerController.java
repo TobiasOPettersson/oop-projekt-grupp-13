@@ -109,7 +109,7 @@ public class CreateTowerController extends TowerController implements ICreateTow
     public void updateMoney(int curMoney) {
         // coinsLabel.setText("Coins: " + curMoney);
         for (WidgetButton button : buttons) {
-            button.setOpacity(Color.gray, button.getCost() > curMoney);
+            button.setOpacity(button.getCost() > curMoney);
         }
     }
 }

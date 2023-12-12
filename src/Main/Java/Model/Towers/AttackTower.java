@@ -69,7 +69,9 @@ public abstract class AttackTower extends ATower{
      * @param type The type of enemy that the tower does increased or decreased damage to
      * @return The damage after modifications
      */
-    protected int getDamage(EnemyType type) {
+    protected abstract int getDamage(EnemyType type);
+
+    public int getDamage(){
         return damage;
     }
 }

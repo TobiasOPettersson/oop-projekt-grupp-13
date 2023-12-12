@@ -15,6 +15,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.awt.BasicStroke;
@@ -229,13 +230,20 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
 
     /**
      * Draws the tower that the player wants to create at the mouse cursor
-     * 
      * @param g Graphics
      */
     private void drawTowerAtMousePos(Graphics g) {
+        Map<TowerType, Integer> defaultRangeMap = Map.of(
+            TowerType.knife, 1,
+            TowerType.mallet, 1,
+            TowerType.blowtorch, 3,
+            TowerType.slicer, 1,
+            TowerType.freezer, 1
+        );
+
         BufferedImage[] towerImage = towerSpriteManager.getTowerSprites(towerTypeToPlace);
         g.drawImage(towerImage[0], hoveredTile[0] * 48, hoveredTile[1] * 48, null);
-        drawTowerRange(g, hoveredTile[0], hoveredTile[1], 1);
+        drawTowerRange(g, hoveredTile[0], hoveredTile[1], defaultRangeMap.get(towerTypeToPlace));
     }
 
     /**
@@ -250,7 +258,6 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
 
     /**
      * Draws a circle around the tower representing its range
-     * 
      * @param g     Graphics
      * @param x     Index x of the tile the tower is placed on
      * @param y     Index y of the tile the tower is placed on
@@ -413,6 +420,7 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
         if (isHoveredTileTowerTile()) {
             if (isPlacingTower) {
                 model.createTower(hoveredTile[0], hoveredTile[1], towerTypeToPlace);
+                gameView.addNewUpgradeWidget(towerTypeToPlace, hoveredTile[0], hoveredTile[1]);
             } else if (getTowerAtMousePos() != null) {
                 selectedTile[0] = hoveredTile[0];
                 selectedTile[1] = hoveredTile[1];

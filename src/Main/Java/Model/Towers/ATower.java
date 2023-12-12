@@ -76,13 +76,17 @@ public abstract class ATower implements ITargetable, IUpgradable {
      */
     public List<AEnemy> findEnemiesInRange(List<AEnemy> enemies) {
         List<AEnemy> targets = new ArrayList<>();
+        int nFoundTargets = 0;
         for (AEnemy enemy : enemies) {
             if (inRangeOf(this, enemy, range)) {
                 targets.add(enemy);
-                if (targetType[0] == TargetType.first) {
+                nTargets++;
+                if (targetType[0] == TargetType.first && nTargets == nFoundTargets) {
                     targetPosition = new Point2D.Double(enemy.getX(), enemy.getY());
                     if (aoeRange != 0) {
-                        targets.addAll(findAoeTargets(enemy, enemies));
+                        for (AEnemy target : targets) {
+                            targets.addAll(findAoeTargets(target, enemies));
+                        }
                     }
                     enemiesInRange = true;
                     return targets;
@@ -158,6 +162,7 @@ public abstract class ATower implements ITargetable, IUpgradable {
                 break;
             case Speed:
                 maxCooldown -= upgradeValue.doubleValue();
+                break;
             default:
                 break;
         }
@@ -297,6 +302,16 @@ public abstract class ATower implements ITargetable, IUpgradable {
     public int getAnimationIndex(){
         return animationIndex;
     }
+
+    public Map<Upgrade, Number> getUpgradeMap(){
+        return upgradeMap;
+    }
+
+    public int getNTargets(){
+        return nTargets;
+    }
+
+
 
     // ------------------- Targeting methods that use ITargetable
     // ------------------------//
