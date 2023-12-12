@@ -40,7 +40,7 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
     private boolean isPlacingTower = false;
     protected TowerSpriteManager towerSpriteManager = new TowerSpriteManager();
     protected EnemySpriteManager enemySpriteManager = new EnemySpriteManager();
-    protected WorldSpriteManager WorldSpriteManager = new WorldSpriteManager();
+    protected WorldSpriteManager worldSpriteManager = new WorldSpriteManager();
     private BufferedImage[] towerSprites;
     private BufferedImage[] enemySprites;
     private BufferedImage[] worldSprites;
@@ -73,7 +73,7 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
     private void createPathSprites() {
         for (int i = 1; i < this.pathDirections.size(); i++) {
             pathSprites.add(
-                    WorldSpriteManager.getPathTurn(this.pathDirections.get(i - 1), this.pathDirections.get(i)));
+                    worldSpriteManager.getPathTurn(this.pathDirections.get(i - 1), this.pathDirections.get(i)));
         }
     }
     // ----------------------------Draw & paint methods-----------------------//
@@ -88,8 +88,9 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
         drawMap(g);
         drawTowers(g);
         drawSelectedTile(g);
-        drawEndScreen(g);
         drawVisibleGrid(g);
+        drawInfo(g);
+        drawEndScreen(g);
 
         if (getTowerAtMousePos() != null) {
             drawHoveredTowerRange(g, getTowerAtMousePos());
@@ -298,22 +299,22 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
             for (int j = 0; j < gridHeight; j++) {
                 switch (mapGrid[j][i].getTerrain()) {
                     case Plains:
-                        g.drawImage(WorldSpriteManager.getTileSprite(), i * SPRITESIZE, j * SPRITESIZE, null);
+                        g.drawImage(worldSpriteManager.getTileSprite(), i * SPRITESIZE, j * SPRITESIZE, null);
                         break;
                     case Water:
-                        g.drawImage(WorldSpriteManager.getTileSprite(), i * SPRITESIZE, j * SPRITESIZE, null);
+                        g.drawImage(worldSpriteManager.getTileSprite(), i * SPRITESIZE, j * SPRITESIZE, null);
                         break;
                     case Forrest:
-                        g.drawImage(WorldSpriteManager.getTileSprite(), i * SPRITESIZE, j * SPRITESIZE, null);
+                        g.drawImage(worldSpriteManager.getTileSprite(), i * SPRITESIZE, j * SPRITESIZE, null);
                         break;
                     case Mountains:
-                        g.drawImage(WorldSpriteManager.getTileSprite(), i * SPRITESIZE, j * SPRITESIZE, null);
+                        g.drawImage(worldSpriteManager.getTileSprite(), i * SPRITESIZE, j * SPRITESIZE, null);
                         break;
                     case Kitchen:
-                        g.drawImage(WorldSpriteManager.getTileSprite(), i * SPRITESIZE, j * SPRITESIZE, null);
+                        g.drawImage(worldSpriteManager.getTileSprite(), i * SPRITESIZE, j * SPRITESIZE, null);
                         break;
                     default:
-                        g.drawImage(WorldSpriteManager.getTileSprite(), i * SPRITESIZE, j * SPRITESIZE, null);
+                        g.drawImage(worldSpriteManager.getTileSprite(), i * SPRITESIZE, j * SPRITESIZE, null);
                         break;
                 }
             }
@@ -368,9 +369,28 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
     }
 
     private void drawPlayerHealth(Graphics g) {
-        for (int i = 0; i < model.getPlayerMoney(); i++) {
-            g.drawImage(image, 0, 0, null);
-        }
+        g.setColor(Color.ORANGE);
+        g.setFont(new Font("Arial", Font.BOLD, 25));
+        g.drawString("Health: " + model.getPlayerHealth(), 0, SPRITESIZE/2 + 5);
+    }
+
+    private void drawPlayerMoney(Graphics g) {
+            //g.drawImage(image, 0, 0, null);
+            g.setColor(Color.ORANGE);
+            g.setFont(new Font("Arial", Font.BOLD, 25));
+            g.drawString("Money: " + model.getPlayerMoney(), 0, SPRITESIZE + SPRITESIZE/2 + 5);
+    }
+
+    private void drawWaveNumber(Graphics g) {
+        g.setColor(Color.ORANGE);
+        g.setFont(new Font("Arial", Font.BOLD, 25));
+        g.drawString("Round: " + model.getCurrentWaveNumber() + "/" + model.getMaxNumberofWaves(), model.getMapSizeX()*SPRITESIZE - SPRITESIZE*3, SPRITESIZE/2 + 5);
+    }
+ 
+    private void drawInfo(Graphics g) {
+        drawPlayerHealth(g);
+        drawPlayerMoney(g);
+        drawWaveNumber(g);
     }
 
     // ----------------------------Other methods--------------------------//

@@ -9,6 +9,7 @@ import Model.Enums.EnemyType;
 
 public class Wave {
     private int currentWave;
+    private int maxNumberOfWaves;
     private Queue<Queue<EnemyType>> waves = new LinkedList<Queue<EnemyType>>();
     private int spawnRate;
     private final int MAX_SPAWN_RATE = 120;
@@ -53,7 +54,9 @@ public class Wave {
         this.waves.add(new LinkedList<EnemyType>(createCurrentWave));
         createCurrentWave.clear();
          */
+        this.maxNumberOfWaves = this.waves.size();
     }
+
 
     private Queue<EnemyType> createPartWave(int numberOfEnemies, EnemyType enemieType){
         Queue<EnemyType> currentEnemieType = new LinkedList<EnemyType>();
@@ -85,5 +88,9 @@ public class Wave {
     public Queue<AEnemy> getWave(){
         this.currentWave++;
         return this.waveFactory.createCurrentWave(this.waves.poll());
+    }
+
+    public int getMaxNumberOfWaves() {
+        return this.maxNumberOfWaves;
     }
 }

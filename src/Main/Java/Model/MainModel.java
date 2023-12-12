@@ -245,4 +245,12 @@ public class MainModel implements ITowerUpgradeObserver {
     public boolean allWavesDead() {
         return this.allWaves.wavesIsEmpty();
     }
+
+    public int getCurrentWaveNumber() {
+        return this.allWaves.getCurrentWaveNumber();
+    }
+
+    public int getMaxNumberofWaves() {
+        return this.allWaves.getMaxNumberOfWaves();
+    }
 }
