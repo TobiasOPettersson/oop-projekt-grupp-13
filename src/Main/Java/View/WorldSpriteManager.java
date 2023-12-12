@@ -30,11 +30,10 @@ public class WorldSpriteManager {
 
     private void importTowerImg() {
         InputStream isKitchenTiles = this.getClass().getResourceAsStream("resView/world/tiles.png");
-        
+        InputStream isHeartImage = this.getClass().getResourceAsStream("resView/world/heart.png");
 
         try {
-            worldSprites.put(TileTerrain.Kitchen, ImageIO.read(isKitchenTiles));
-           
+            worldSprites.put(TileTerrain.Kitchen, ImageIO.read(isKitchenTiles));           
         } catch (IOException e) {
             System.out.println("Couldn't find image file");
             e.printStackTrace();
