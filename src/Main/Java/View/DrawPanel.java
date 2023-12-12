@@ -236,7 +236,7 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
      */
     private void drawStartPosition(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
-        Color enemyColor = new Color(224, 39, 0, 100);
+        Color enemyColor = new Color(200, 0, 0, 80);
         g2.setColor(enemyColor);
         int rectY = (model.getStartPosition()*SPRITESIZE)-SPRITESIZE;
         g2.fillRect(0, rectY, 48, 144);
@@ -247,7 +247,7 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
      */
     private void drawEndPosition(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
-        Color homeColor = new Color(0, 39, 224, 100);
+        Color homeColor = new Color(35, 0, 200, 80);
         g2.setColor(homeColor);
         int rectY = ((model.getEndPosition())*SPRITESIZE)-SPRITESIZE;
         int rectX = (model.getMapSizeX()*SPRITESIZE)-SPRITESIZE;
