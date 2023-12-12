@@ -23,9 +23,8 @@ public class Wave {
 
     public Queue<EnemyType> startWave() throws Exception{
         this.currentWave++;
-        if (this.waves.isEmpty() == true) throw new Exception("Wave is empty");
+        if (this.waves.isEmpty()) throw new Exception("Wave is empty");
         return this.waves.poll();
-        
     }
 
     private void createWaves(){
@@ -226,12 +225,11 @@ public class Wave {
     }
 
     public void updateSpawnRate(){
-        this.spawnRate--;
-
+        if (this.spawnRate > 0) this.spawnRate--;
     }
 
     public boolean checkIfSpawnable(){
-        if (this.spawnRate != 0) return false;
+        if (this.spawnRate > 0) return false;
         this.spawnRate = this.MAX_SPAWN_RATE;
         return true;
     }
@@ -239,5 +237,13 @@ public class Wave {
     public Queue<AEnemy> getWave(){
         this.currentWave++;
         return this.waveFactory.createCurrentWave(this.waves.poll());
+    }
+
+    public int getSpawnRate(){
+        return this.spawnRate;
+    }
+
+    public int getMaxSpawnRate(){
+        return this.MAX_SPAWN_RATE;
     }
 }
