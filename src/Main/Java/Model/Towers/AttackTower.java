@@ -56,11 +56,7 @@ public abstract class AttackTower extends ATower{
      * @param upgrade
      */
     protected void upgradeDamage(Upgrade upgrade){
-        Number upgradeValue = upgradeMap.get(upgrade);
-        if(upgradeValue == null){
-            System.out.println("Tower  doesn't have that upgrade");
-        }
-        damage += upgradeValue.intValue();
+        damage += upgradeIntMap.get(upgrade);
         upgrades.add(upgrade);
     }
 

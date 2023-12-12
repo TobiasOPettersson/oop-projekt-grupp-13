@@ -26,7 +26,8 @@ public abstract class ATower implements ITargetable, IUpgradable {
     private TargetType[] targetType;
     private int nTargets;
     protected List<Upgrade> upgrades = new ArrayList<>();
-    protected Map<Upgrade, Number> upgradeMap;
+    protected Map<Upgrade, Double> upgradeDoubleMap;
+    protected Map<Upgrade, Integer> upgradeIntMap;
     private Point2D.Double targetPosition;
     private int animationIndex;
     private int animationTick;
@@ -62,7 +63,8 @@ public abstract class ATower implements ITargetable, IUpgradable {
         this.targetPosition = null;
         targetType = new TargetType[] { targetType1, targetType2 };
         nTargets = 1;
-        upgradeMap = new HashMap<>();
+        upgradeDoubleMap = new HashMap<>();
+        upgradeIntMap = new HashMap<>();
 
     }
 
@@ -146,22 +148,18 @@ public abstract class ATower implements ITargetable, IUpgradable {
      */
     @Override
     public void upgrade(Upgrade upgrade) {
-        Number upgradeValue = upgradeMap.get(upgrade);
-        if (upgradeValue == null) {
-            System.out.println("Tower  doesn't have that upgrade");
-        }
 
         switch (upgrade) {
             case Targets:
-                nTargets += upgradeValue.intValue();
+                nTargets += upgradeIntMap.get(upgrade);
                 break;
             case Range:
-                range += upgradeValue.intValue();
+                range += upgradeDoubleMap.get(upgrade);
             case AoeRange:
-                aoeRange += upgradeValue.doubleValue();
+                aoeRange += upgradeDoubleMap.get(upgrade);
                 break;
             case Speed:
-                maxCooldown -= upgradeValue.doubleValue();
+                maxCooldown -= upgradeIntMap.get(upgrade);
                 break;
             default:
                 break;
@@ -303,8 +301,12 @@ public abstract class ATower implements ITargetable, IUpgradable {
         return animationIndex;
     }
 
-    public Map<Upgrade, Number> getUpgradeMap(){
-        return upgradeMap;
+    public Map<Upgrade, Double> getUpgradeDoubleMap(){
+        return upgradeDoubleMap;
+    }
+
+    public Map<Upgrade, Integer> getUpgradeIntMap(){
+        return upgradeIntMap;
     }
 
     public int getNTargets(){

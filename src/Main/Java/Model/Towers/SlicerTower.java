@@ -13,10 +13,10 @@ public class SlicerTower extends AttackTower{
      * @param y the y-position of the tower as a grid-index, i.e. not the y-position of the sprite in view 
      */
     public SlicerTower(int x, int y) {
-        super(x, y, 2, 1, 0, 30, TowerType.slicer, 2, TargetType.first, TargetType.enemies);
-        upgradeMap.put(Upgrade.AoeRange, 0.5);
-        upgradeMap.put(Upgrade.Damage, 1);
-        upgradeMap.put(Upgrade.Damage2, 1);
+        super(x, y, 2, 1.0, 0, 30, TowerType.slicer, 2, TargetType.first, TargetType.enemies);
+        upgradeDoubleMap.put(Upgrade.AoeRange, 0.5);
+        upgradeIntMap.put(Upgrade.Damage, 1);
+        upgradeIntMap.put(Upgrade.Damage2, 1);
     }
 
     /**

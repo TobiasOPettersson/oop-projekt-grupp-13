@@ -18,6 +18,9 @@ public class TowerSpriteManager {
     }
 
     public BufferedImage[] getTowerSprites(TowerType towerType) {
+        if(towerType == TowerType.freezer){
+            return new BufferedImage[]{towerSprites.get(towerType)};
+        }
         BufferedImage sprite = towerSprites.get(towerType);
         BufferedImage[] spriteArray = new BufferedImage[4];
         for(int i = 0; i < 4; i++){

@@ -15,11 +15,11 @@ public class MalletTower extends AttackTower{
      * @param y the y-position of the tower as a grid-index, i.e. not the y-position of the sprite in view 
      */
     public MalletTower(int x, int y) {
-        super(x, y, 3, 1, 1, 200, TowerType.mallet, 3, TargetType.first, TargetType.enemies);
-        upgradeMap.put(Upgrade.AoeRange, 0.5);
-        upgradeMap.put(Upgrade.Range, 0.5);
-        upgradeMap.put(Upgrade.Damage, 1);
-        upgradeMap.put(Upgrade.Damage2, 1);
+        super(x, y, 3, 1.0, 1.0, 200, TowerType.mallet, 3, TargetType.first, TargetType.enemies);
+        upgradeDoubleMap.put(Upgrade.AoeRange, 0.5);
+        upgradeDoubleMap.put(Upgrade.Range, 0.5);
+        upgradeIntMap.put(Upgrade.Damage, 1);
+        upgradeIntMap.put(Upgrade.Damage2, 1);
     }
 
     /**
