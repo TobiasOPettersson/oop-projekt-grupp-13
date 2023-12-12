@@ -76,6 +76,11 @@ public class Player implements IMoneySubject{
     }
 
     public void takeDamage(int damage){
-        this.health -= damage;
+        if (this.health - damage <= 0) {
+            this.health = 0;
+        }
+        else {
+            this.health -= damage;
+        }
     }
 }
