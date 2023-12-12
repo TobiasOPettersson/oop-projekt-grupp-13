@@ -12,14 +12,14 @@ import Controller.Interfaces.IMoneyObserver;
 import Model.MainModel;
 import View.GraphicsDependencies;
 
-public abstract class TowerController extends JPanel implements IMoneyObserver {
+public abstract class AShopWidgetController extends JPanel implements IMoneyObserver {
     private final int MAP_HEIGHT = 480;
     private final int FRAME_HEIGHT = GraphicsDependencies.getHeight();
     protected MainModel model;
     
     protected PlayButtonController playbutton;
     protected JPanel buttonPanel = new JPanel();
-    protected List<WidgetButton> buttons;
+    protected List<AWidgetButton> buttons;
     protected JPanel headpanel = new JPanel();
 
     /**
@@ -27,7 +27,7 @@ public abstract class TowerController extends JPanel implements IMoneyObserver {
      * @param observer is the Map which is notified when the player wants to create
      *                 a tower
      */
-    public TowerController(MainModel model) {
+    public AShopWidgetController(MainModel model) {
         setSize(new Dimension(600, FRAME_HEIGHT - MAP_HEIGHT));
         setVisible(true);
         this.model = model;

@@ -5,7 +5,7 @@ import java.awt.event.MouseEvent;
 
 import Model.Enums.TowerType;
 
-public class CreateButton extends WidgetButton{
+public class CreateButton extends AWidgetButton{
 
     /**
      * Constructor for CreateButton
@@ -13,7 +13,7 @@ public class CreateButton extends WidgetButton{
      * @param towerController The CreateTowerController the button will be added to
      * @param type The type of the tower
      */
-    public CreateButton(int cost, TowerType type, CreateTowerController towerController) {
+    public CreateButton(int cost, TowerType type, CreateWidgetController towerController) {
         super(cost, type, towerController);
 
         addMouseListener(new MouseAdapter() {

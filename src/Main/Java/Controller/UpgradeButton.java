@@ -8,7 +8,7 @@ import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class UpgradeButton extends WidgetButton{
+public class UpgradeButton extends AWidgetButton{
     protected Upgrade upgrade;
     private boolean hasUpgrade = false;
 
@@ -19,7 +19,7 @@ public class UpgradeButton extends WidgetButton{
      * @param upgrade The upgrade the button has
      * @param type The type of tower the upgrade is for
      */
-    public UpgradeButton(int cost, UpgradeTowerController towerController, Upgrade upgrade, TowerType type) {
+    public UpgradeButton(int cost, UpgradeWidgetController towerController, Upgrade upgrade, TowerType type) {
         super(cost, type, towerController);
         this.upgrade = upgrade;
         nameLabel.setText(upgrade.name());

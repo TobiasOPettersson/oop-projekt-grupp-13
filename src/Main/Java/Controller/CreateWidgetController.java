@@ -8,15 +8,14 @@ import Model.MainModel;
 import Model.Enums.TowerType;
 import View.ICreateTowerObserver;
 
-public class CreateTowerController extends TowerController implements ICreateTowerSubject {
+public class CreateWidgetController extends AShopWidgetController implements ICreateTowerSubject {
     ICreateTowerObserver observer;
-    // JLabel coinsLabel;
 
     /**
      * Constructor for the Shop Widget
      * @param observer The DrawPanel that is notified when the player wants to create a tower
      */
-    public CreateTowerController(ICreateTowerObserver observer, MainModel model) {
+    public CreateWidgetController(ICreateTowerObserver observer, MainModel model) {
         super(model);
 
         this.observer = observer;
@@ -35,10 +34,10 @@ public class CreateTowerController extends TowerController implements ICreateTow
         buttons = List.of(
                 new CreateButton(1, TowerType.knife, this),
                 new CreateButton(3, TowerType.mallet, this),
-                new CreateButton(4, TowerType.blowtorch, this),
+                new CreateButton(10, TowerType.blowtorch, this),
                 new CreateButton(2, TowerType.slicer, this),
                 new CreateButton(3, TowerType.freezer, this));
-        for (WidgetButton button : buttons) {
+        for (AWidgetButton button : buttons) {
             buttonPanel.add(button);
         }
         add(buttonPanel, BorderLayout.CENTER);
@@ -64,8 +63,7 @@ public class CreateTowerController extends TowerController implements ICreateTow
      */
     @Override
     public void updateMoney(int curMoney) {
-        // coinsLabel.setText("Coins: " + curMoney);
-        for (WidgetButton button : buttons) {
+        for (AWidgetButton button : buttons) {
             button.setOpacity(button.getCost() > curMoney);
         }
     }

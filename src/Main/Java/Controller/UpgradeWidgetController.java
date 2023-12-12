@@ -1,15 +1,8 @@
 package Controller;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.util.List;
-
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 
 import Controller.Interfaces.ITowerUpgradeObserver;
 import Controller.Interfaces.IUpgradeTowerSubject;
@@ -17,14 +10,13 @@ import Model.MainModel;
 import Model.Enums.TowerType;
 import Model.Enums.Upgrade;
 
-public class UpgradeTowerController extends TowerController implements IUpgradeTowerSubject {
-    // JLabel coinsLabel;
+public class UpgradeWidgetController extends AShopWidgetController implements IUpgradeTowerSubject {
     TowerType towerType;
     private ITowerUpgradeObserver observer;
     private int savedTowerPosX;
     private int savedTowerPosY;
 
-    public UpgradeTowerController(ITowerUpgradeObserver observer, TowerType towerType, MainModel model, int towerPosX, int towerPosY) {
+    public UpgradeWidgetController(ITowerUpgradeObserver observer, TowerType towerType, MainModel model, int towerPosX, int towerPosY) {
         super(model);
         this.observer = observer;
         this.towerType = towerType;
@@ -80,7 +72,7 @@ public class UpgradeTowerController extends TowerController implements IUpgradeT
                 break;
         }
 
-        for (WidgetButton button : buttons) {
+        for (AWidgetButton button : buttons) {
             buttonPanel.add(button);
         }
         add(buttonPanel, BorderLayout.CENTER);
@@ -92,7 +84,7 @@ public class UpgradeTowerController extends TowerController implements IUpgradeT
 
     @Override
     public void notifyObservers(Upgrade upgrade) {
-        for (WidgetButton button : buttons) {
+        for (AWidgetButton button : buttons) {
             if (upgrade == ((UpgradeButton) button).upgrade) {
                 ((UpgradeButton)button).setHasUpgrade(true);
                 ((UpgradeButton)button).showHasUpgrade();
@@ -107,8 +99,7 @@ public class UpgradeTowerController extends TowerController implements IUpgradeT
      */
     @Override
     public void updateMoney(int curMoney) {
-        // coinsLabel.setText("Coins: " + curMoney);
-        for (WidgetButton button : buttons) {
+        for (AWidgetButton button : buttons) {
             button.setOpacity(button.getCost() > curMoney);
         }
     }
@@ -118,7 +109,7 @@ public class UpgradeTowerController extends TowerController implements IUpgradeT
      * Calls setOpacity(), turns buttons grey if the player cant afford the upgrade
      */
     public void updateAvailableUpgrades(List<Upgrade> currentUpgrades) {
-        for (WidgetButton button : buttons) {
+        for (AWidgetButton button : buttons) {
             if (currentUpgrades.contains(((UpgradeButton) button).upgrade)) {
                 ((UpgradeButton)button).setHasUpgrade(true);
                 ((UpgradeButton)button).showHasUpgrade();
@@ -128,7 +119,6 @@ public class UpgradeTowerController extends TowerController implements IUpgradeT
 
     /**
      * Saves the position of the mouse as grid-indicies
-     * 
      * @param x is the x-position of the mouse as grid-indicies
      * @param y is the y-position of the mouse as grid-indicies
      */
