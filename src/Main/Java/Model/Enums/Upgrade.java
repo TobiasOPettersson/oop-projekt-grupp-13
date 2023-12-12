@@ -13,11 +13,11 @@ public enum Upgrade {
     ConditionDuration,
     Range,
     Damage, 
-    Damage2,   
+    Damage2, 
+    Damage3,   
     Targets,    
     TurnIntoAoe,
     AoeRange,    
     AoeDamage, 
     Speed, 
-    
 }

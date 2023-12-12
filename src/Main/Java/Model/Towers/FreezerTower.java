@@ -14,7 +14,7 @@ public class FreezerTower extends AttackTower {
         super(x, y, 4, 1.0, 0, 30, TowerType.freezer, 0, TargetType.all, TargetType.enemies);
         upgradeIntMap.put(Upgrade.Frostbite, 0);
         upgradeIntMap.put(Upgrade.SuperChill, 0);
-        upgradeIntMap.put(Upgrade.ConditionDuration, 10);
+        upgradeIntMap.put(Upgrade.ConditionDuration, 30);
         upgradeDoubleMap.put(Upgrade.Range, 0.5);
     }
 

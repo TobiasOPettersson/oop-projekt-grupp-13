@@ -44,7 +44,7 @@ public abstract class AttackTower extends ATower{
      */
     @Override
     public void upgrade(Upgrade upgrade){
-        if(upgrade == Upgrade.Damage || upgrade == Upgrade.Damage2){
+        if(upgrade == Upgrade.Damage || upgrade == Upgrade.Damage2 || upgrade == Upgrade.Damage3){
             upgradeDamage(upgrade);
         } else{
             super.upgrade(upgrade);

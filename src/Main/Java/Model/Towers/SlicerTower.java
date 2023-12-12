@@ -15,8 +15,9 @@ public class SlicerTower extends AttackTower{
     public SlicerTower(int x, int y) {
         super(x, y, 2, 1.0, 0, 70, TowerType.slicer, 4, TargetType.first, TargetType.enemies);
         upgradeDoubleMap.put(Upgrade.AoeRange, 0.5);
-        upgradeIntMap.put(Upgrade.Damage, 1);
-        upgradeIntMap.put(Upgrade.Damage2, 1);
+        upgradeIntMap.put(Upgrade.Damage, 4);
+        upgradeIntMap.put(Upgrade.Damage2, 4);
+        upgradeIntMap.put(Upgrade.Damage3, 4);
     }
 
     /**

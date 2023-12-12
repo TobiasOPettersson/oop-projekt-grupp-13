@@ -17,8 +17,8 @@ public class KnifeTower extends AttackTower{
      */
     public KnifeTower(int x, int y) {
         super(x, y, 2, 1.0, 0, 80, TowerType.knife, 5, TargetType.first, TargetType.enemies);
-        upgradeIntMap.put(Upgrade.Damage, 3);
-        upgradeIntMap.put(Upgrade.Speed, 1);
+        upgradeIntMap.put(Upgrade.Damage, 4);
+        upgradeIntMap.put(Upgrade.Speed, 30);
         upgradeIntMap.put(Upgrade.Targets, 1);
         upgradeDoubleMap.put(Upgrade.Range, 1.0);
     }

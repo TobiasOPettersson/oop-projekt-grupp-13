@@ -19,11 +19,6 @@ import Model.Enums.Upgrade;
 
 public class UpgradeTowerController extends TowerController implements IUpgradeTowerSubject {
     // JLabel coinsLabel;
-    List<WidgetButton> buttons;
-    PlayButtonController playbutton;
-    // MainModel model;
-    JPanel buttonPanel = new JPanel();
-    JPanel headpanel = new JPanel();
     TowerType towerType;
     private ITowerUpgradeObserver observer;
     private int savedTowerPosX;
@@ -36,75 +31,50 @@ public class UpgradeTowerController extends TowerController implements IUpgradeT
         savedTowerPosX = towerPosX;
         savedTowerPosY = towerPosY;
 
-        setBackground(Color.WHITE);
         buttonPanel.setLayout(new GridLayout(0, 5, 5, 20));
-        setLayout(new BorderLayout());
-        setPreferredSize(new Dimension(300, 300));
 
-        initHeader();
+        initHeader("Upgrade " + getTowerType().name());
         initButtons();
-        intiPlaybutton();
+        initPlaybutton();
         
-    }
-
-    /**
-     * Initializes the Header of the UpgradTowerController
-     */
-    private void initHeader() {
-        headpanel.setBackground(Color.gray);
-        headpanel.setPreferredSize(new Dimension(300, 25));
-
-        JLabel titleLabel = new JLabel("Upgrade " + getTowerType().name());
-        titleLabel.setForeground(Color.BLACK);
-        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        headpanel.add(titleLabel);
-
-        add(headpanel, BorderLayout.PAGE_START);
-    }
-
-    /**
-     * Initializes the title label
-     */
-    private void intiPlaybutton() {
-        playbutton = new PlayButtonController(model);
-        buttonPanel.add(playbutton);
     }
 
     private void initButtons() {
         switch (towerType) {
             case knife:
                 buttons = List.of(
-                        new UpgradeButton(1, this, Upgrade.Damage, towerType),
-                        new UpgradeButton(3, this, Upgrade.Speed, towerType),
-                        new UpgradeButton(4, this, Upgrade.Targets, towerType),
-                        new UpgradeButton(2, this, Upgrade.Range, towerType));
+                    new UpgradeButton(2, this, Upgrade.Damage, towerType),
+                    new UpgradeButton(3, this, Upgrade.Speed, towerType),
+                    new UpgradeButton(4, this, Upgrade.Targets, towerType),
+                    new UpgradeButton(2, this, Upgrade.Range, towerType));
                 break;
             case mallet:
                 buttons = List.of(
-                        new UpgradeButton(1, this, Upgrade.Damage, towerType),
-                        new UpgradeButton(3, this, Upgrade.Damage2, towerType),
-                        new UpgradeButton(4, this, Upgrade.AoeRange, towerType),
-                        new UpgradeButton(2, this, Upgrade.Range, towerType));
+                    new UpgradeButton(1, this, Upgrade.Damage, towerType),
+                    new UpgradeButton(3, this, Upgrade.Damage2, towerType),
+                    new UpgradeButton(4, this, Upgrade.AoeRange, towerType),
+                    new UpgradeButton(2, this, Upgrade.Range, towerType));
                 break;
             case blowtorch:
                 buttons = List.of(
-                        new UpgradeButton(1, this, Upgrade.Damage, towerType),
-                        new UpgradeButton(3, this, Upgrade.Range, towerType),
-                        new UpgradeButton(4, this, Upgrade.AoeRange, towerType),
-                        new UpgradeButton(2, this, Upgrade.SetOnFire, towerType));
+                    new UpgradeButton(1, this, Upgrade.Damage, towerType),
+                    new UpgradeButton(3, this, Upgrade.Range, towerType),
+                    new UpgradeButton(4, this, Upgrade.AoeRange, towerType),
+                    new UpgradeButton(2, this, Upgrade.SetOnFire, towerType));
                 break;
             case slicer:
                 buttons = List.of(
-                        new UpgradeButton(1, this, Upgrade.Damage, towerType),
-                        new UpgradeButton(3, this, Upgrade.Damage2, towerType),
-                        new UpgradeButton(4, this, Upgrade.AoeRange, towerType));
+                    new UpgradeButton(1, this, Upgrade.Damage, towerType),
+                    new UpgradeButton(3, this, Upgrade.Damage2, towerType),
+                    new UpgradeButton(5, this, Upgrade.Damage3, towerType),
+                    new UpgradeButton(4, this, Upgrade.AoeRange, towerType));
                 break;
             case freezer:
                 buttons = List.of(
-                        new UpgradeButton(1, this, Upgrade.Frostbite, towerType),
-                        new UpgradeButton(3, this, Upgrade.SuperChill, towerType),
-                        new UpgradeButton(4, this, Upgrade.ConditionDuration, towerType),
-                        new UpgradeButton(2, this, Upgrade.Range, towerType));
+                    new UpgradeButton(1, this, Upgrade.Frostbite, towerType),
+                    new UpgradeButton(3, this, Upgrade.SuperChill, towerType),
+                    new UpgradeButton(4, this, Upgrade.ConditionDuration, towerType),
+                    new UpgradeButton(2, this, Upgrade.Range, towerType));
                 break;
             default:
                 break;
