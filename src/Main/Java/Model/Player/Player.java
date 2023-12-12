@@ -67,7 +67,6 @@ public class Player implements IMoneySubject{
 
     //----------------------------Getters and setters--------------------------//
 
-    @Override
     public int getMoney(){
         return this.money;
     }

@@ -1,5 +1,5 @@
-package Controller.Interfaces;
-import Model.Enums.TowerType;
+package Model.Interfaces;
+
 import Model.Enums.Upgrade;
 
 public interface ITowerUpgradeObserver {

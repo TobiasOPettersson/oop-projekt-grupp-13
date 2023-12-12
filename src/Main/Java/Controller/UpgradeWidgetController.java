@@ -4,11 +4,11 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.util.List;
 
-import Controller.Interfaces.ITowerUpgradeObserver;
 import Controller.Interfaces.IUpgradeTowerSubject;
 import Model.MainModel;
 import Model.Enums.TowerType;
 import Model.Enums.Upgrade;
+import Model.Interfaces.ITowerUpgradeObserver;
 
 public class UpgradeWidgetController extends AShopWidgetController implements IUpgradeTowerSubject {
     TowerType towerType;
