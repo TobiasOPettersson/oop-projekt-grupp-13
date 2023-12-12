@@ -369,20 +369,20 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
     }
 
     private void drawPlayerHealth(Graphics g) {
-        g.setColor(Color.ORANGE);
+        g.setColor(Color.DARK_GRAY);
         g.setFont(new Font("Arial", Font.BOLD, 25));
         g.drawString("Health: " + model.getPlayerHealth(), 0, SPRITESIZE/2 + 5);
     }
 
     private void drawPlayerMoney(Graphics g) {
             //g.drawImage(image, 0, 0, null);
-            g.setColor(Color.ORANGE);
+            g.setColor(Color.DARK_GRAY);
             g.setFont(new Font("Arial", Font.BOLD, 25));
             g.drawString("Money: " + model.getPlayerMoney(), 0, SPRITESIZE + SPRITESIZE/2 + 5);
     }
 
     private void drawWaveNumber(Graphics g) {
-        g.setColor(Color.ORANGE);
+        g.setColor(Color.DARK_GRAY);
         g.setFont(new Font("Arial", Font.BOLD, 25));
         g.drawString("Round: " + model.getCurrentWaveNumber() + "/" + model.getMaxNumberofWaves(), model.getMapSizeX()*SPRITESIZE - SPRITESIZE*3, SPRITESIZE/2 + 5);
     }
