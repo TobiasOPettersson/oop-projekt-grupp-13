@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 import javax.swing.LayoutStyle;
 
 import Controller.CreateWidgetController;
+import Controller.ShowTutorialDialog;
 import Controller.UpgradeWidgetController;
 import Controller.Interfaces.IMoneyObserver;
 import Controller.Interfaces.IUpgradeTowerSubject;
@@ -48,6 +49,7 @@ public class GameView extends JFrame {
         add(drawPanel);
         initWidgits();
         initComponents();
+        showTutorial();
     }
 
     /**
@@ -61,6 +63,7 @@ public class GameView extends JFrame {
         createWidget.setVisible(true);
 
         model.getPlayer().setMoneyObservers(getMoneyObservers());
+
     }
 
     /**
@@ -86,12 +89,17 @@ public class GameView extends JFrame {
         createWidget.setVisible(false);
         for (UpgradeWidgetController upgradeWidget : upgradeWidgets) {
             if (x == upgradeWidget.getSavedTowerPosX() && y == upgradeWidget.getSavedTowerPosY()) {
-            upgradeWidget.setVisible(true);
-            upgradeWidget.updateAvailableUpgrades(currentUpgrades);
-            } else{
+                upgradeWidget.setVisible(true);
+                upgradeWidget.updateAvailableUpgrades(currentUpgrades);
+            } else {
                 upgradeWidget.setVisible(false);
             }
         }
+    }
+
+    private void showTutorial() {
+        ShowTutorialDialog tutorial = new ShowTutorialDialog(this);
+        tutorial.setVisible(true);
     }
 
     /**
@@ -131,11 +139,11 @@ public class GameView extends JFrame {
 
     public DrawPanel getDrawPanel() {
         return drawPanel;
-    } 
+    }
 
-    protected void addNewUpgradeWidget(TowerType type, int towerPosX, int towerPosY){
-        for(UpgradeWidgetController upgradeWidget : upgradeWidgets){
-            if(upgradeWidget.getSavedTowerPosX() == towerPosX && upgradeWidget.getSavedTowerPosY() == towerPosY){
+    protected void addNewUpgradeWidget(TowerType type, int towerPosX, int towerPosY) {
+        for (UpgradeWidgetController upgradeWidget : upgradeWidgets) {
+            if (upgradeWidget.getSavedTowerPosX() == towerPosX && upgradeWidget.getSavedTowerPosY() == towerPosY) {
                 return;
             }
         }
