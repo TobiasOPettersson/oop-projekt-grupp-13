@@ -38,9 +38,6 @@ public abstract class AEnemy implements IMovable, ITargetable {
     private HashMap<Condition, Integer> conditions;
     private int animationTick = 0;
     private int animationIndex = 0;
-    private EnemySpriteManager spriteManager;
-    private BufferedImage[] enemySprites;
-    private final int SPRITESIZE = GraphicsDependencies.getSpriteSize();
     
     /**
      * TODO Javadoc comment
@@ -64,8 +61,6 @@ public abstract class AEnemy implements IMovable, ITargetable {
         this.damage = damage;
         this.moneyBag = moneyBag;
         initConditionMap();
-        this.spriteManager = new EnemySpriteManager();
-        this.enemySprites = spriteManager.getEnemySprites(type);
     }
 /**
      * TODO Javadoc comment
@@ -108,64 +103,26 @@ public abstract class AEnemy implements IMovable, ITargetable {
         }
     }
 
-    /*
-     * Updates animationIndex
+    /**
+     * Increments animationIndex
+     * 
      */
     public void incrementAnimationIndex() {
+        int spritesInAnimation = 4;
         animationIndex++;
-        if (animationIndex >= enemySprites.length) {
+        if (animationIndex >= spritesInAnimation) {
             animationIndex = 0;
         }
     }
 
     public void resetAnimation() {
+        int spritesInAnimation = 4;
         if (animationIndex != 0) {
             animationIndex++;
-            if (animationIndex >= enemySprites.length) {
+            if (animationIndex >= spritesInAnimation) {
                 animationIndex = 0;
             }
         }
-    }
-
-    /*
-     * Paint: How to paint an enemy
-     */
-    public void paint(Graphics g) {
-        // offset half of sprite size so the calculated position of enemy will be same
-        // position as center of enemysprite
-        int spriteSize = 48;
-        int offset = spriteSize / 2; // Sprite size / 2
-
-        int x = (int) (this.x * spriteSize) - offset;
-        int y = (int) (this.y * spriteSize) - offset;
-        drawEnemyHP(g, x, y);
-        if (!this.isStaggered()) {
-            g.drawImage(enemySprites[animationIndex], x, y, null);
-        }
-    }
-
-    // TODO Javadoc comment
-    /**
-     * 
-     * @param g
-     * @param spriteSize
-     * @param enemy
-     * @param x
-     * @param y
-     */
-    private void drawEnemyHP(Graphics g, int x, int y) {
-        int yPositionOffset = 3;
-        double percentOfHP = this.getHealth() / this.getMaxHealth();
-        if (percentOfHP > 0.75) {
-            g.setColor(Color.GREEN);
-        } else if ((percentOfHP <= 0.75) && (percentOfHP > 0.5)) {
-            g.setColor(Color.YELLOW);
-        } else if ((percentOfHP <= 0.5) && ((percentOfHP) > 0.25)) {
-            g.setColor(Color.ORANGE);
-        } else {
-            g.setColor(Color.RED);
-        }
-        g.drawLine(x, y + SPRITESIZE - yPositionOffset, (int) (x + (SPRITESIZE * percentOfHP)), y + SPRITESIZE - yPositionOffset);
     }
 
     /*
@@ -440,7 +397,7 @@ public abstract class AEnemy implements IMovable, ITargetable {
         isStaggered = bool;
     }
 
-    public boolean isStaggered() {
+    public boolean getIsStaggered() {
         return isStaggered;
     }
 
@@ -462,5 +419,8 @@ public abstract class AEnemy implements IMovable, ITargetable {
 
     public EnemyType getEnemyType() {
         return this.type;
+    }
+    public int getAnimationIndex(){
+        return this.animationIndex;
     }
 }

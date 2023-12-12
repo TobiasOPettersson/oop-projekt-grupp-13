@@ -2,6 +2,7 @@ package Model.Towers;
 
 import Model.Enemies.AEnemy;
 import Model.Enums.Condition;
+import Model.Enums.EnemyType;
 import Model.Enums.TargetType;
 import Model.Enums.TowerType;
 import Model.Enums.Upgrade;
@@ -31,12 +32,24 @@ public class FreezerTower extends AttackTower {
                     target.takeDamage(damage+1);
                 }
             }
+            
+            int increasedChillDuration = 0;
+            if(hasUpgrade(Upgrade.ConditionDuration)){
+                increasedChillDuration += 20;
+            }
+
             if(hasUpgrade(Upgrade.SuperChill)){
-                target.setCondition(Condition.superChilled, chillDuration);
+                target.setCondition(Condition.superChilled, chillDuration+increasedChillDuration);
             } else{
-                target.setCondition(Condition.chilled, chillDuration);
+                target.setCondition(Condition.chilled, chillDuration+increasedChillDuration);
             }
             resetCooldown();
         }
+    }
+
+    @Override
+    protected int getDamage(EnemyType type) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getDamage'");
     }  
 }

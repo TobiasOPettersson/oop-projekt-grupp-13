@@ -40,7 +40,7 @@ public abstract class WidgetButton extends JPanel {
         initButtonImagePaths();
         initTopPanel();
         initBottomPanel();
-        setOpacity(Color.gray, true);
+        setOpacity(true);
     }
 
     /**
@@ -82,16 +82,14 @@ public abstract class WidgetButton extends JPanel {
         add(bottomPanel, BorderLayout.SOUTH);
     }
 
-    public void setOpacity(Color color, boolean bool) {
-        if(color == Color.gray){
-            color = new Color(0, 0, 0, 150);
-        }
+    public void setOpacity(boolean bool) {
+        Color color = new Color(0, 0, 0, 150);
         
         if (bool) {
-                setOpaque(false);
-                setBackground(color);
-                topPanel.setBackground(color);
-                bottomPanel.setBackground(color);
+            setOpaque(false);
+            setBackground(color);
+            topPanel.setBackground(color);
+            bottomPanel.setBackground(color);
         } else {
             setOpaque(true);
             setBackground(Color.gray);
