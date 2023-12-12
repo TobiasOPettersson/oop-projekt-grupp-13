@@ -16,11 +16,11 @@ public class BlowtorchTower extends AttackTower{
      * @param y the y-position of the tower as a grid-index, i.e. not the y-position of the sprite in view 
      */
     public BlowtorchTower(int x, int y) {
-        super(x, y, 4, 3, 0.5, 10, TowerType.blowtorch, 1, TargetType.first, TargetType.enemies);
-        upgradeMap.put(Upgrade.AoeRange, 0.2);
-        upgradeMap.put(Upgrade.Range, 0.5);
-        upgradeMap.put(Upgrade.Damage, 1);
-        upgradeMap.put(Upgrade.SetOnFire, 0);
+        super(x, y, 10, 2.5, 0.5, 40, TowerType.blowtorch, 1, TargetType.first, TargetType.enemies);
+        upgradeDoubleMap.put(Upgrade.AoeRange, 0.2);
+        upgradeDoubleMap.put(Upgrade.Range, 0.5);
+        upgradeIntMap.put(Upgrade.Damage, 1);
+        upgradeIntMap.put(Upgrade.SetOnFire, 0);
     }
 
     /**

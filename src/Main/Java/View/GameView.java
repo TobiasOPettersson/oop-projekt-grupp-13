@@ -4,8 +4,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.LayoutStyle;
 
-import Controller.CreateTowerController;
-import Controller.UpgradeTowerController;
+import Controller.CreateWidgetController;
+import Controller.UpgradeWidgetController;
 import Controller.Interfaces.IMoneyObserver;
 import Controller.Interfaces.ITowerUpgradeObserver;
 import Controller.Interfaces.IUpgradeTowerSubject;
@@ -32,10 +32,8 @@ import javax.imageio.ImageIO;
 public class GameView extends JFrame {
     MainModel model;
     DrawPanel drawPanel;
-    CreateTowerController createWidget;
-    List<UpgradeTowerController> upgradeWidgets;
-    CreateTowerController createWidgit;
-    List<UpgradeTowerController> upgradeWidgits;
+    CreateWidgetController createWidget;
+    List<UpgradeWidgetController> upgradeWidgets = new ArrayList<>();
 
     /**
      * TODO Javadoc comment
@@ -46,7 +44,7 @@ public class GameView extends JFrame {
         this.model = model;
         this.drawPanel = new DrawPanel(this, model);
         setLayout(null);
-        drawPanel.setBounds(0, 0, 960, 480);
+        this.drawPanel.setBounds(0, 0, 960, 480);
         add(drawPanel);
         initWidgits();
         initComponents();
@@ -57,23 +55,10 @@ public class GameView extends JFrame {
      * each tower type
      */
     private void initWidgits() {
-        upgradeWidgits = List.of(
-                new UpgradeTowerController(model, TowerType.knife, model),
-                new UpgradeTowerController(model, TowerType.mallet, model),
-                new UpgradeTowerController(model, TowerType.blowtorch, model),
-                new UpgradeTowerController(model, TowerType.slicer, model),
-                new UpgradeTowerController(model, TowerType.freezer, model));
-
-        for (UpgradeTowerController upgradeWidgit : upgradeWidgits) {
-            upgradeWidgit.setBounds(0, 480, 960, 300);
-            add(upgradeWidgit);
-            upgradeWidgit.setVisible(false);
-        }
-
-        createWidgit = new CreateTowerController(drawPanel, model);
-        createWidgit.setBounds(0, 480, 960, 300);
-        add(createWidgit);
-        createWidgit.setVisible(true);
+        createWidget = new CreateWidgetController(drawPanel, model);
+        createWidget.setBounds(0, 480, 960, 300);
+        add(createWidget);
+        createWidget.setVisible(true);
 
         model.getPlayer().setMoneyObservers(getMoneyObservers());
     }
@@ -98,12 +83,13 @@ public class GameView extends JFrame {
      * @param currentUpgrades The current upgrades of the tower
      */
     public void openUpgradeWidgit(int x, int y, TowerType type, List<Upgrade> currentUpgrades) {
-        createWidgit.setVisible(true);
-        for (UpgradeTowerController upgradeWidget : upgradeWidgits) {
-            if (type.equals(upgradeWidget.getTowerType())) {
-                upgradeWidget.setVisible(true);
-                upgradeWidget.setSavedMousePos(x, y);
-                upgradeWidget.updateAvailableUpgrades(currentUpgrades);
+        createWidget.setVisible(false);
+        for (UpgradeWidgetController upgradeWidget : upgradeWidgets) {
+            if (x == upgradeWidget.getSavedTowerPosX() && y == upgradeWidget.getSavedTowerPosY()) {
+            upgradeWidget.setVisible(true);
+            upgradeWidget.updateAvailableUpgrades(currentUpgrades);
+            } else{
+                upgradeWidget.setVisible(false);
             }
         }
     }
@@ -112,8 +98,8 @@ public class GameView extends JFrame {
      * Opens the create wigit, and closes all other wigits
      */
     public void openCreateWidgit() {
-        createWidgit.setVisible(true);
-        for (UpgradeTowerController upgradeWidget : upgradeWidgits) {
+        createWidget.setVisible(true);
+        for (UpgradeWidgetController upgradeWidget : upgradeWidgets) {
             upgradeWidget.setVisible(false);
         }
     }
@@ -134,12 +120,10 @@ public class GameView extends JFrame {
      */
     public List<IMoneyObserver> getMoneyObservers() {
         List<IMoneyObserver> observers = new ArrayList<>();
-        if (upgradeWidgits != null) {
-            for (UpgradeTowerController upWidget : upgradeWidgits) {
-                observers.add(upWidget);
-            }
+        for (UpgradeWidgetController upWidget : upgradeWidgets) {
+            observers.add(upWidget);
         }
-        observers.add(createWidgit);
+        observers.add(createWidget);
         return observers;
     }
 
@@ -147,5 +131,19 @@ public class GameView extends JFrame {
 
     public DrawPanel getDrawPanel() {
         return drawPanel;
+    } 
+
+    protected void addNewUpgradeWidget(TowerType type, int towerPosX, int towerPosY){
+        for(UpgradeWidgetController upgradeWidget : upgradeWidgets){
+            if(upgradeWidget.getSavedTowerPosX() == towerPosX && upgradeWidget.getSavedTowerPosY() == towerPosY){
+                return;
+            }
+        }
+        UpgradeWidgetController newUpgradeWiget = new UpgradeWidgetController(model, type, model, towerPosX, towerPosY);
+        upgradeWidgets.add(newUpgradeWiget);
+        newUpgradeWiget.setBounds(0, 480, 960, 300);
+        add(newUpgradeWiget);
+        model.getPlayer().setMoneyObservers(getMoneyObservers());
+        System.out.println(upgradeWidgets.size());
     }
 }

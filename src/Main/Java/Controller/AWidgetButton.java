@@ -15,7 +15,7 @@ import java.awt.GridLayout;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class WidgetButton extends JPanel {
+public abstract class AWidgetButton extends JPanel {
     protected JPanel topPanel;
     protected JPanel bottomPanel;
     protected JLabel nameLabel;
@@ -31,7 +31,7 @@ public abstract class WidgetButton extends JPanel {
      * @param towerController is the tower controller widgit that the button is
      *                        added to
      */
-    public WidgetButton(int cost, TowerType type, TowerController towerController) {
+    public AWidgetButton(int cost, TowerType type, AShopWidgetController towerController) {
         this.cost = cost;
         this.type = type;
         setSize(new Dimension(100, 200));
@@ -40,7 +40,7 @@ public abstract class WidgetButton extends JPanel {
         initButtonImagePaths();
         initTopPanel();
         initBottomPanel();
-        setOpacity(Color.gray, true);
+        setOpacity(true);
     }
 
     /**
@@ -82,16 +82,14 @@ public abstract class WidgetButton extends JPanel {
         add(bottomPanel, BorderLayout.SOUTH);
     }
 
-    public void setOpacity(Color color, boolean bool) {
-        if(color == Color.gray){
-            color = new Color(0, 0, 0, 150);
-        }
+    public void setOpacity(boolean bool) {
+        Color color = new Color(0, 0, 0, 150);
         
         if (bool) {
-                setOpaque(false);
-                setBackground(color);
-                topPanel.setBackground(color);
-                bottomPanel.setBackground(color);
+            setOpaque(false);
+            setBackground(color);
+            topPanel.setBackground(color);
+            bottomPanel.setBackground(color);
         } else {
             setOpaque(true);
             setBackground(Color.gray);

@@ -1,8 +1,5 @@
 package Model.Towers;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -16,8 +13,6 @@ import Model.Enums.TowerType;
 import Model.Enums.Upgrade;
 import Model.Interfaces.ITargetable;
 import Model.Interfaces.IUpgradable;
-import View.SpriteHelper;
-import View.TowerSpriteManager;
 
 public abstract class ATower implements ITargetable, IUpgradable {
     private double x;
@@ -31,12 +26,11 @@ public abstract class ATower implements ITargetable, IUpgradable {
     private TargetType[] targetType;
     private int nTargets;
     protected List<Upgrade> upgrades = new ArrayList<>();
-    protected Map<Upgrade, Number> upgradeMap;
+    protected Map<Upgrade, Double> upgradeDoubleMap;
+    protected Map<Upgrade, Integer> upgradeIntMap;
     private Point2D.Double targetPosition;
     private int animationIndex;
     private int animationTick;
-    private BufferedImage[] towerSprites;
-    protected TowerSpriteManager spriteManager = new TowerSpriteManager();
     private boolean enemiesInRange = false;
 
     /**
@@ -67,10 +61,10 @@ public abstract class ATower implements ITargetable, IUpgradable {
         this.animationTick = 0;
         this.animationIndex = 0;
         this.targetPosition = null;
-        this.towerSprites = spriteManager.getTowerSprites(towerType);
         targetType = new TargetType[] { targetType1, targetType2 };
         nTargets = 1;
-        upgradeMap = new HashMap<>();
+        upgradeDoubleMap = new HashMap<>();
+        upgradeIntMap = new HashMap<>();
 
     }
 
@@ -84,23 +78,27 @@ public abstract class ATower implements ITargetable, IUpgradable {
      */
     public List<AEnemy> findEnemiesInRange(List<AEnemy> enemies) {
         List<AEnemy> targets = new ArrayList<>();
+        int nFoundTargets = 0;
         for (AEnemy enemy : enemies) {
             if (inRangeOf(this, enemy, range)) {
                 targets.add(enemy);
-                if (targetType[0] == TargetType.first) {
+                nTargets++;
+                if (targetType[0] == TargetType.first && nTargets == nFoundTargets) {
                     targetPosition = new Point2D.Double(enemy.getX(), enemy.getY());
                     if (aoeRange != 0) {
-                        targets.addAll(findAoeTargets(enemy, enemies));
+                        for (AEnemy target : targets) {
+                            targets.addAll(findAoeTargets(target, enemies));
+                        }
                     }
+                    enemiesInRange = true;
                     return targets;
                 }
             }
         }
         if (targets.size() > 0) {
-            this.enemiesInRange = true;
             return targets;
         }
-        this.enemiesInRange = false;
+        enemiesInRange = false;
         return null;
     }
 
@@ -150,22 +148,19 @@ public abstract class ATower implements ITargetable, IUpgradable {
      */
     @Override
     public void upgrade(Upgrade upgrade) {
-        Number upgradeValue = upgradeMap.get(upgrade);
-        if (upgradeValue == null) {
-            System.out.println("Tower  doesn't have that upgrade");
-        }
 
         switch (upgrade) {
             case Targets:
-                nTargets += upgradeValue.intValue();
+                nTargets += upgradeIntMap.get(upgrade);
                 break;
             case Range:
-                range += upgradeValue.intValue();
+                range += upgradeDoubleMap.get(upgrade);
             case AoeRange:
-                aoeRange += upgradeValue.doubleValue();
+                aoeRange += upgradeDoubleMap.get(upgrade);
                 break;
             case Speed:
-                maxCooldown -= upgradeValue.doubleValue();
+                maxCooldown -= upgradeIntMap.get(upgrade);
+                break;
             default:
                 break;
         }
@@ -184,19 +179,18 @@ public abstract class ATower implements ITargetable, IUpgradable {
         }
     }
 
+    // ----------------------------Animation methods----------------------//
+
     public void updateAnimationTick() {
         animationTick++;
         if (animationTick >= 10) {
             animationTick = 0;
-            incrementAnimationIndex();
-            /*
-             * if (this.enemiesInRange) { // Need to find some variable to use so towers
-             * only nimate when close to n enemy
-             * incrementAnimationIndex();
-             * } else {
-             * resetAnimation();
-             * }
-             */
+            
+            if (enemiesInRange) {
+                incrementAnimationIndex();
+            } else {
+                resetAnimation();
+            }
         }
     }
 
@@ -204,41 +198,22 @@ public abstract class ATower implements ITargetable, IUpgradable {
      * Updates animationIndex
      */
     public void incrementAnimationIndex() {
+        int spritesInAnimation = 4;
         animationIndex++;
-        if (animationIndex >= towerSprites.length) {
+        if (animationIndex >= spritesInAnimation) {
             animationIndex = 0;
+            enemiesInRange = false;
         }
     }
 
     public void resetAnimation() {
+        int spritesInAnimation = 4;
         if (animationIndex != 0) {
-            animationIndex++;
-            if (animationIndex >= towerSprites.length) {
+            animationIndex = 0;
+            if (animationIndex >= spritesInAnimation) {
                 animationIndex = 0;
             }
         }
-    }
-
-    /*
-     * Paint: How to paint a tower
-     */
-    public void paint(Graphics g) {
-        BufferedImage towerImage = towerSprites[animationIndex];
-        if (this.targetPosition != null) {
-            Point2D.Double enemyCenterPoint = this.targetPosition;
-            double angleBInRadians = Math.atan2(this.y + 0.5 - enemyCenterPoint.getY(),
-                    this.x + 0.5 - enemyCenterPoint.getX());
-            double angle = Math.toDegrees(angleBInRadians);
-            towerImage = SpriteHelper.rotateSprite(towerImage, (int) (angle) + 270);
-        }
-        g.drawImage(towerImage, (int) this.x * 48, (int) this.y * 48, null);
-
-        Graphics2D g2 = (Graphics2D) g;
-        g.setColor(Color.black);
-        int rangeCircleX = (int) ((this.x - this.range));
-        int rangeCircleY = (int) ((this.y - this.range));
-        int rangeCircleD = (int) (this.range * 2 * 48);
-        g2.drawOval(rangeCircleX * 48, rangeCircleY * 48, rangeCircleD + 48, rangeCircleD + 48);
     }
 
 
@@ -321,6 +296,24 @@ public abstract class ATower implements ITargetable, IUpgradable {
     public List<Upgrade> getUpgrades() {
         return upgrades;
     }
+
+    public int getAnimationIndex(){
+        return animationIndex;
+    }
+
+    public Map<Upgrade, Double> getUpgradeDoubleMap(){
+        return upgradeDoubleMap;
+    }
+
+    public Map<Upgrade, Integer> getUpgradeIntMap(){
+        return upgradeIntMap;
+    }
+
+    public int getNTargets(){
+        return nTargets;
+    }
+
+
 
     // ------------------- Targeting methods that use ITargetable
     // ------------------------//

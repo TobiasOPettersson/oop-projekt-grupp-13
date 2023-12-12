@@ -44,7 +44,7 @@ public abstract class AttackTower extends ATower{
      */
     @Override
     public void upgrade(Upgrade upgrade){
-        if(upgrade == Upgrade.Damage || upgrade == Upgrade.Damage2){
+        if(upgrade == Upgrade.Damage || upgrade == Upgrade.Damage2 || upgrade == Upgrade.Damage3){
             upgradeDamage(upgrade);
         } else{
             super.upgrade(upgrade);
@@ -56,11 +56,7 @@ public abstract class AttackTower extends ATower{
      * @param upgrade
      */
     protected void upgradeDamage(Upgrade upgrade){
-        Number upgradeValue = upgradeMap.get(upgrade);
-        if(upgradeValue == null){
-            System.out.println("Tower  doesn't have that upgrade");
-        }
-        damage += upgradeValue.intValue();
+        damage += upgradeIntMap.get(upgrade);
         upgrades.add(upgrade);
     }
 
@@ -69,7 +65,9 @@ public abstract class AttackTower extends ATower{
      * @param type The type of enemy that the tower does increased or decreased damage to
      * @return The damage after modifications
      */
-    protected int getDamage(EnemyType type) {
+    protected abstract int getDamage(EnemyType type);
+
+    public int getDamage(){
         return damage;
     }
 }

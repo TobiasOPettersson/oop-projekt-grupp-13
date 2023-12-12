@@ -27,7 +27,7 @@ public class TomatoTest {
             enemy.move();
         }
         assertEquals(4.5, enemy.getX());
-        assertEquals(2.5, enemy.getY());
+        assertEquals(2.5, enemy.getY()); //2.5
     }
 
     @Test

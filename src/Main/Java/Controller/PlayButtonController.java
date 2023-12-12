@@ -24,10 +24,7 @@ public class PlayButtonController extends JPanel {
         this.model = model;
         setBackground(Color.pink);
         setLayout(new GridLayout(0, 1, 0, 0));
-        // setSize(120, 75);
-        // setBorder(BorderFactory.createEmptyBorder(200, 20, 20, 20));
         initButton();
-        // initPlayImage();
     }
 
     /**
@@ -39,13 +36,5 @@ public class PlayButtonController extends JPanel {
         button.setText("START WAVE");
         button.addActionListener(e -> model.play());
         add(button);
-    }
-
-    /**
-     * Initializes the image of the play button
-     */
-    private void initPlayImage() {
-        JLabel playImage = new JLabel(new ImageIcon(playImagePath));
-        add(playImage);
     }
 }

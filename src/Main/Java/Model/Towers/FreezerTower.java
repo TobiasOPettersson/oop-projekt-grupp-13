@@ -2,6 +2,7 @@ package Model.Towers;
 
 import Model.Enemies.AEnemy;
 import Model.Enums.Condition;
+import Model.Enums.EnemyType;
 import Model.Enums.TargetType;
 import Model.Enums.TowerType;
 import Model.Enums.Upgrade;
@@ -10,11 +11,11 @@ public class FreezerTower extends AttackTower {
     private int chillDuration = 30;
 
     public FreezerTower(int x, int y) {
-        super(x, y, 4, 1, 1, 30, TowerType.freezer, 0, TargetType.all, TargetType.enemies);
-        upgradeMap.put(Upgrade.Frostbite, 0);
-        upgradeMap.put(Upgrade.SuperChill, 0);
-        upgradeMap.put(Upgrade.ConditionDuration, 10);
-        upgradeMap.put(Upgrade.Range, 0.5);
+        super(x, y, 4, 1.0, 0, 30, TowerType.freezer, 0, TargetType.all, TargetType.enemies);
+        upgradeIntMap.put(Upgrade.Frostbite, 0);
+        upgradeIntMap.put(Upgrade.SuperChill, 0);
+        upgradeIntMap.put(Upgrade.ConditionDuration, 30);
+        upgradeDoubleMap.put(Upgrade.Range, 0.5);
     }
 
     /**
@@ -31,12 +32,24 @@ public class FreezerTower extends AttackTower {
                     target.takeDamage(damage+1);
                 }
             }
+            
+            int increasedChillDuration = 0;
+            if(hasUpgrade(Upgrade.ConditionDuration)){
+                increasedChillDuration += 20;
+            }
+
             if(hasUpgrade(Upgrade.SuperChill)){
-                target.setCondition(Condition.superChilled, chillDuration);
+                target.setCondition(Condition.superChilled, chillDuration+increasedChillDuration);
             } else{
-                target.setCondition(Condition.chilled, chillDuration);
+                target.setCondition(Condition.chilled, chillDuration+increasedChillDuration);
             }
             resetCooldown();
         }
+    }
+
+    @Override
+    protected int getDamage(EnemyType type) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getDamage'");
     }  
 }

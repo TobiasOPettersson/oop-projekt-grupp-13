@@ -105,10 +105,16 @@ public class AMap{
      * Place the tiles where the player can't place towers and isn't a path
      */
     private void fillOccupiedTile(){
-        grid[MAP_HEIGHT-1][MAP_WIDTH-1] = new OccupiedTile(MAP_WIDTH-1, MAP_HEIGHT-1);
-        grid[MAP_HEIGHT-2][MAP_WIDTH-1] = new OccupiedTile(MAP_WIDTH-2, MAP_HEIGHT-1);
-        grid[MAP_HEIGHT-2][MAP_WIDTH-2] = new OccupiedTile(MAP_WIDTH-2, MAP_HEIGHT-2);
-        grid[MAP_HEIGHT-1][MAP_WIDTH-2] = new OccupiedTile(MAP_WIDTH-1, MAP_HEIGHT-2);
+        //Tiles for player information
+        this.grid[0][0] = new OccupiedTile(0, 0);
+        this.grid[0][1] = new OccupiedTile(1, 0);
+        this.grid[0][2] = new OccupiedTile(2, 0);
+        this.grid[1][0] = new OccupiedTile(0, 1);
+        this.grid[1][1] = new OccupiedTile(1, 1);
+        this.grid[1][2] = new OccupiedTile(2, 1);
+        this.grid[0][MAP_WIDTH-3] = new OccupiedTile(MAP_WIDTH-3, 0);
+        this.grid[0][MAP_WIDTH-2] = new OccupiedTile(MAP_WIDTH-2, 0);
+        this.grid[0][MAP_WIDTH-1] = new OccupiedTile(MAP_WIDTH-1, 0);
     }
 
 

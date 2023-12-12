@@ -5,7 +5,7 @@ import View.GameView;
 
 public class Application {
     private final double FPS = 60.0;
-    MainModel model = new MainModel();
+    MainModel model = new MainModel(); 
     GameView view = new GameView(model);
     
     /**
