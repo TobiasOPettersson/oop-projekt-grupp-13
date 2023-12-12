@@ -68,7 +68,7 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
     /*
      * Creates an array of sprites oriented the correct way and in the correct order
      * according
-     * to the pathDirection array
+     * to the pathDirection
      */
     private void createPathSprites() {
         for (int i = 1; i < this.pathDirections.size(); i++) {
@@ -97,6 +97,8 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
         if (isPlacingTower) {
             drawTowerAtMousePos(g);
         }
+        drawStartPosition(g);
+        drawEndPosition(g);
         drawEnemies(g);
         drawEndScreen(g);
 
@@ -200,7 +202,7 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
                         tower.getX() + 0.5 - enemyCenterPoint.getX());
                 double angle = Math.toDegrees(angleBInRadians);
                 towerImage = SpriteHelper.rotateSprite(towerImage, (int) (angle));
-            }else{
+            } else {
                 towerImage = towerSprites[tower.getAnimationIndex()];
             }
             g.drawImage(towerImage, (int) tower.getX() * 48, (int) tower.getY() * 48, null);
@@ -230,17 +232,40 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
     }
 
     /**
+     * Draw start position for enemies
+     */
+    private void drawStartPosition(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g;
+        Color enemyColor = new Color(224, 39, 0, 100);
+        g2.setColor(enemyColor);
+        int rectY = (model.getStartPosition()*SPRITESIZE)-SPRITESIZE;
+        g2.fillRect(0, rectY, 48, 144);
+    }
+
+    /**
+     * Draw start position for enemies
+     */
+    private void drawEndPosition(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g;
+        Color homeColor = new Color(0, 39, 224, 100);
+        g2.setColor(homeColor);
+        int rectY = ((model.getEndPosition())*SPRITESIZE)-SPRITESIZE;
+        int rectX = (model.getMapSizeX()*SPRITESIZE)-SPRITESIZE;
+        g2.fillRect(rectX, rectY, 48, 144);
+    }
+
+    /**
      * Draws the tower that the player wants to create at the mouse cursor
+     * 
      * @param g Graphics
      */
     private void drawTowerAtMousePos(Graphics g) {
         Map<TowerType, Integer> defaultRangeMap = Map.of(
-            TowerType.knife, 1,
-            TowerType.mallet, 1,
-            TowerType.blowtorch, 3,
-            TowerType.slicer, 1,
-            TowerType.freezer, 1
-        );
+                TowerType.knife, 1,
+                TowerType.mallet, 1,
+                TowerType.blowtorch, 3,
+                TowerType.slicer, 1,
+                TowerType.freezer, 1);
 
         BufferedImage[] towerImage = towerSpriteManager.getTowerSprites(towerTypeToPlace);
         g.drawImage(towerImage[0], hoveredTile[0] * 48, hoveredTile[1] * 48, null);
@@ -259,6 +284,7 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
 
     /**
      * Draws a circle around the tower representing its range
+     * 
      * @param g     Graphics
      * @param x     Index x of the tile the tower is placed on
      * @param y     Index y of the tile the tower is placed on
@@ -371,22 +397,23 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
     private void drawPlayerHealth(Graphics g) {
         g.setColor(Color.DARK_GRAY);
         g.setFont(new Font("Arial", Font.BOLD, 25));
-        g.drawString("Health: " + model.getPlayerHealth(), 0, SPRITESIZE/2 + 5);
+        g.drawString("Health: " + model.getPlayerHealth(), 0, SPRITESIZE / 2 + 5);
     }
 
     private void drawPlayerMoney(Graphics g) {
-            //g.drawImage(image, 0, 0, null);
-            g.setColor(Color.DARK_GRAY);
-            g.setFont(new Font("Arial", Font.BOLD, 25));
-            g.drawString("Money: " + model.getPlayerMoney(), 0, SPRITESIZE + SPRITESIZE/2 + 5);
+        // g.drawImage(image, 0, 0, null);
+        g.setColor(Color.DARK_GRAY);
+        g.setFont(new Font("Arial", Font.BOLD, 25));
+        g.drawString("Money: " + model.getPlayerMoney(), 0, SPRITESIZE + SPRITESIZE / 2 + 5);
     }
 
     private void drawWaveNumber(Graphics g) {
         g.setColor(Color.DARK_GRAY);
         g.setFont(new Font("Arial", Font.BOLD, 25));
-        g.drawString("Round: " + model.getCurrentWaveNumber() + "/" + model.getMaxNumberofWaves(), model.getMapSizeX()*SPRITESIZE - SPRITESIZE*3, SPRITESIZE/2 + 5);
+        g.drawString("Round: " + model.getCurrentWaveNumber() + "/" + model.getMaxNumberofWaves(),
+                model.getMapSizeX() * SPRITESIZE - SPRITESIZE * 3, SPRITESIZE / 2 + 5);
     }
- 
+
     private void drawInfo(Graphics g) {
         drawPlayerHealth(g);
         drawPlayerMoney(g);

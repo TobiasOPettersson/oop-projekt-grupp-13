@@ -21,6 +21,7 @@ public class AMap{
     private List<ATower> towers = new ArrayList<ATower>();
     private ATile grid[][] = new ATile[MAP_HEIGHT][MAP_WIDTH];
     private int startPosition;
+    private int endPosition;
     private int[][] pathGrid;
     private List<Direction> pathDirections = new ArrayList<Direction>();
     private Player player;
@@ -35,6 +36,7 @@ public class AMap{
         fillOccupiedTile();
         fillGridTowerTile();
         setStartPosition();
+        setEndPosition();
     }
 
 
@@ -98,6 +100,16 @@ public class AMap{
         for (int i = 0; i < this.MAP_HEIGHT; i++) {
             if (pathGrid[i][0] == 1)
                 startPosition = i;
+        }
+    }
+    
+    /*
+     * Find the end position of the path
+     */
+    private void setEndPosition() {
+        for (int i = 0; i < this.MAP_HEIGHT; i++) {
+            if (pathGrid[i][MAP_WIDTH-1] != 0)
+                endPosition = i;
         }
     }
 
@@ -238,6 +250,10 @@ public class AMap{
 
     public int getStartPosition() {
         return startPosition;
+    }
+
+    public int getEndPosition() {
+        return endPosition;
     }
 
     public List<ATower> getTowers() {

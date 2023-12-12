@@ -198,6 +198,10 @@ public class MainModel implements ITowerUpgradeObserver {
         return map.getStartPosition();
     }
 
+    public int getEndPosition() {
+        return map.getEndPosition();
+    }
+
     public int[][] getPathGrid() {
         return map.getPathGrid();
     }
