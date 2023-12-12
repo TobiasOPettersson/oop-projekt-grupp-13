@@ -29,11 +29,15 @@ public class EnemySpriteManager {
     private void importEnemyImg() {
         InputStream isTomatoEnemy = this.getClass().getResourceAsStream("resView/enemies/tomatoEnemy.png");
         InputStream isBananaEnemy = this.getClass().getResourceAsStream("resView/enemies/bananaEnemy.png");
+        InputStream isCheeseEnemy = this.getClass().getResourceAsStream("resView/enemies/cheeseEnemy.png");
+        InputStream isChickenEnemy = this.getClass().getResourceAsStream("resView/enemies/chickenEnemy.png");
         
 
         try {
             enemySprites.put(EnemyType.tomato, ImageIO.read(isTomatoEnemy));
             enemySprites.put(EnemyType.banana, ImageIO.read(isBananaEnemy));
+            enemySprites.put(EnemyType.cheese, ImageIO.read(isCheeseEnemy));
+            enemySprites.put(EnemyType.chicken, ImageIO.read(isChickenEnemy));
            
         } catch (IOException e) {
             e.printStackTrace();
