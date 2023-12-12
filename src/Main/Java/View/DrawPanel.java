@@ -2,12 +2,10 @@ package View;
 
 import javax.swing.JPanel;
 
-import Controller.PlayButtonController;
 import Model.MainModel;
 import Model.Enemies.AEnemy;
 import Model.Enums.Direction;
 import Model.Enums.EnemyType;
-import Model.Enums.TileTerrain;
 import Model.Enums.TowerType;
 import Model.Map.ATile;
 import Model.Map.TowerTile;
@@ -28,9 +26,6 @@ import java.awt.geom.Point2D;
 
 public class DrawPanel extends JPanel implements ICreateTowerObserver {
     private GameView gameView;
-    private BufferedImage image;
-    private Map<TowerType, BufferedImage> towerImageMap;
-    private Map<EnemyType, BufferedImage> enemyImageMap;
     private MainModel model;
     private ATile mapGrid[][];
     private List<Direction> pathDirections;
@@ -43,7 +38,12 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
     private TowerType towerTypeToPlace = null;
     private boolean isPlacingTower = false;
     protected TowerSpriteManager towerSpriteManager = new TowerSpriteManager();
+    protected EnemySpriteManager enemySpriteManager = new EnemySpriteManager();
     protected WorldSpriteManager WorldSpriteManager = new WorldSpriteManager();
+    private BufferedImage[] towerSprites;
+    private BufferedImage[] enemySprites;
+    private BufferedImage[] worldSprites;
+
     private final int SPRITESIZE = GraphicsDependencies.getSpriteSize();
 
     // Constructor
@@ -55,8 +55,6 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
         this.gridWidth = this.model.getMapSizeX();
         this.gridHeight = this.model.getMapSizeY();
         this.pathGrid = this.model.getPathGrid();
-        // made some changes here
-        // set the layout to null to get absolut psotio
         setLayout(null);
         // PlayButtonController playButton = new PlayButtonController(model);
         // playButton.setBounds(836, 384, 96, 96);
@@ -64,23 +62,6 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
         update();
         createPathSprites();
         addMouseListeners();
-    }
-
-    private void handleTileClick(int x, int y) {
-        for (int i = 0; i < gridWidth; i++) {
-            if (x > 48 * i && x < 48 * (i + 1)) {
-                for (int j = 0; j < gridHeight; j++) {
-                    if (y > 48 * j && y < 48 * (j + 1)) {
-                        if (model.getMap().getTile(i, j) instanceof TowerTile) {
-                            selectedTile[0] = i;
-                            selectedTile[1] = j;
-                            //gameView.openWidgit(i, j);
-                            return;
-                        }
-                    }
-                }
-            }
-        }
     }
 
     /*
@@ -108,11 +89,11 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
         drawSelectedTile(g);
         drawEndScreen(g);
         drawVisibleGrid(g);
-        
+
         if (getTowerAtMousePos() != null) {
             drawHoveredTowerRange(g, getTowerAtMousePos());
         }
-        
+
         if (isPlacingTower) {
             drawTowerAtMousePos(g);
         }
@@ -167,19 +148,69 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
      */
     void drawEnemies(Graphics g) {
         for (AEnemy enemy : model.getEnemies()) {
-            enemy.paint(g);
+            // offset half of sprite size so the calculated position of enemy will be same
+            // position as center of enemysprite
+            int spriteSize = 48;
+            int offset = spriteSize / 2; // Sprite size / 2
+            this.enemySprites = enemySpriteManager.getEnemySprites(enemy.getEnemyType());
+
+            if (!enemy.getIsStaggered()) {
+                int x = (int) (enemy.getX() * spriteSize) - offset;
+                int y = (int) (enemy.getY() * spriteSize) - offset;
+                g.drawImage(enemySprites[enemy.getAnimationIndex()], x, y, null);
+                drawEnemyHP(g, enemy, x, y);
+            }
+
         }
     }
 
-    /*
-     * draw towers
+    /**
+     * 
+     * @param g
+     * @param enemy
+     * @param x
+     * @param y
+     */
+    private void drawEnemyHP(Graphics g, AEnemy enemy, int x, int y) {
+        double percentOfHP = enemy.getHealth() / enemy.getMaxHealth();
+        if (percentOfHP > 0.75) {
+            g.setColor(Color.GREEN);
+        } else if ((percentOfHP <= 0.75) && (percentOfHP > 0.5)) {
+            g.setColor(Color.YELLOW);
+        } else if ((percentOfHP <= 0.5) && ((percentOfHP) > 0.25)) {
+            g.setColor(Color.ORANGE);
+        } else {
+            g.setColor(Color.RED);
+        }
+        g.drawLine(x, y + SPRITESIZE, (int) (x + (SPRITESIZE * percentOfHP)), y + SPRITESIZE);
+    }
+
+    /**
+     * @param g
      */
     private void drawTowers(Graphics g) {
         for (ATower tower : model.getTowers()) {
-            tower.paint(g);
+            this.towerSprites = towerSpriteManager.getTowerSprites(tower.getTowerType());
+            BufferedImage towerImage = towerSprites[tower.getAnimationIndex()];
+            if (tower.getTargetPosition() != null) {
+                Point2D.Double enemyCenterPoint = tower.getTargetPosition();
+                double angleBInRadians = Math.atan2(tower.getY() + 0.5 - enemyCenterPoint.getY(),
+                        tower.getX() + 0.5 - enemyCenterPoint.getX());
+                double angle = Math.toDegrees(angleBInRadians);
+                towerImage = SpriteHelper.rotateSprite(towerImage, (int) (angle));
+            }else{
+                towerImage = towerSprites[tower.getAnimationIndex()];
+            }
+            g.drawImage(towerImage, (int) tower.getX() * 48, (int) tower.getY() * 48, null);
+
+            Graphics2D g2 = (Graphics2D) g;
+            g.setColor(Color.black);
+            int rangeCircleX = (int) ((tower.getX() - tower.getRange()));
+            int rangeCircleY = (int) ((tower.getY() - tower.getRange()));
+            int rangeCircleD = (int) (tower.getRange() * 2 * 48);
+            g2.drawOval(rangeCircleX * 48, rangeCircleY * 48, rangeCircleD + 48, rangeCircleD + 48);
         }
     }
-
 
     /**
      * Rotates the tower image toward the enemy its targeting

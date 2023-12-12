@@ -1,8 +1,5 @@
 package Model.Towers;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -16,8 +13,6 @@ import Model.Enums.TowerType;
 import Model.Enums.Upgrade;
 import Model.Interfaces.ITargetable;
 import Model.Interfaces.IUpgradable;
-import View.SpriteHelper;
-import View.TowerSpriteManager;
 
 public abstract class ATower implements ITargetable, IUpgradable {
     private double x;
@@ -35,8 +30,6 @@ public abstract class ATower implements ITargetable, IUpgradable {
     private Point2D.Double targetPosition;
     private int animationIndex;
     private int animationTick;
-    private BufferedImage[] towerSprites;
-    protected TowerSpriteManager spriteManager = new TowerSpriteManager();
     private boolean enemiesInRange = false;
 
     /**
@@ -67,7 +60,6 @@ public abstract class ATower implements ITargetable, IUpgradable {
         this.animationTick = 0;
         this.animationIndex = 0;
         this.targetPosition = null;
-        this.towerSprites = spriteManager.getTowerSprites(towerType);
         targetType = new TargetType[] { targetType1, targetType2 };
         nTargets = 1;
         upgradeMap = new HashMap<>();
@@ -98,7 +90,6 @@ public abstract class ATower implements ITargetable, IUpgradable {
             }
         }
         if (targets.size() > 0) {
-            enemiesInRange = true;
             return targets;
         }
         enemiesInRange = false;
@@ -192,7 +183,7 @@ public abstract class ATower implements ITargetable, IUpgradable {
         if (animationTick >= 10) {
             animationTick = 0;
             
-            if (enemiesInRange) { // Need to find some variable to use so towers only nimate when close to n enemy
+            if (enemiesInRange) {
                 incrementAnimationIndex();
             } else {
                 resetAnimation();
@@ -204,42 +195,22 @@ public abstract class ATower implements ITargetable, IUpgradable {
      * Updates animationIndex
      */
     public void incrementAnimationIndex() {
+        int spritesInAnimation = 4;
         animationIndex++;
-        if (animationIndex >= towerSprites.length) {
+        if (animationIndex >= spritesInAnimation) {
             animationIndex = 0;
             enemiesInRange = false;
         }
     }
 
     public void resetAnimation() {
+        int spritesInAnimation = 4;
         if (animationIndex != 0) {
-            animationIndex++;
-            if (animationIndex >= towerSprites.length) {
+            animationIndex = 0;
+            if (animationIndex >= spritesInAnimation) {
                 animationIndex = 0;
             }
         }
-    }
-
-    /*
-     * Paint: How to paint a tower
-     */
-    public void paint(Graphics g) {
-        BufferedImage towerImage = towerSprites[animationIndex];
-        if (this.targetPosition != null) {
-            Point2D.Double enemyCenterPoint = this.targetPosition;
-            double angleBInRadians = Math.atan2(this.y + 0.5 - enemyCenterPoint.getY(),
-                    this.x + 0.5 - enemyCenterPoint.getX());
-            double angle = Math.toDegrees(angleBInRadians);
-            towerImage = SpriteHelper.rotateSprite(towerImage, (int) (angle) + 270);
-        }
-        g.drawImage(towerImage, (int) this.x * 48, (int) this.y * 48, null);
-
-        Graphics2D g2 = (Graphics2D) g;
-        g.setColor(Color.black);
-        int rangeCircleX = (int) ((this.x - this.range));
-        int rangeCircleY = (int) ((this.y - this.range));
-        int rangeCircleD = (int) (this.range * 2 * 48);
-        g2.drawOval(rangeCircleX * 48, rangeCircleY * 48, rangeCircleD + 48, rangeCircleD + 48);
     }
 
 
@@ -321,6 +292,10 @@ public abstract class ATower implements ITargetable, IUpgradable {
 
     public List<Upgrade> getUpgrades() {
         return upgrades;
+    }
+
+    public int getAnimationIndex(){
+        return animationIndex;
     }
 
     // ------------------- Targeting methods that use ITargetable
