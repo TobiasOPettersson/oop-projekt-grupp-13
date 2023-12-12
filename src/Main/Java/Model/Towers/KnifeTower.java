@@ -16,7 +16,7 @@ public class KnifeTower extends AttackTower{
      * @param y the y-position of the tower as a grid-index, i.e. not the y-position of the sprite in view 
      */
     public KnifeTower(int x, int y) {
-        super(x, y, 1, 1.0, 0, 50, TowerType.knife, 2, TargetType.first, TargetType.enemies);
+        super(x, y, 2, 1.0, 0, 80, TowerType.knife, 5, TargetType.first, TargetType.enemies);
         upgradeIntMap.put(Upgrade.Damage, 3);
         upgradeIntMap.put(Upgrade.Speed, 1);
         upgradeIntMap.put(Upgrade.Targets, 1);
