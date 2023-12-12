@@ -21,10 +21,10 @@ public class Wave {
         this.waveFactory = new WaveFactory(startPosition, pathDirections);
     }
 
-    public Queue<EnemyType> startWave(){
+    public Queue<EnemyType> startWave() throws Exception{
         this.currentWave++;
-        if (waves.isEmpty() == true) new Exception("Wave is empty");
-        return waves.poll();
+        if (this.waves.isEmpty() == true) throw new Exception("Wave is empty");
+        return this.waves.poll();
         
     }
 
