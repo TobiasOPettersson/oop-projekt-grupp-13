@@ -90,8 +90,6 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
         drawSelectedTile(g);
         drawVisibleGrid(g);
         drawInfo(g);
-        drawEndScreen(g);
-
         if (getTowerAtMousePos() != null) {
             drawHoveredTowerRange(g, getTowerAtMousePos());
         }
@@ -100,6 +98,8 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
             drawTowerAtMousePos(g);
         }
         drawEnemies(g);
+        drawEndScreen(g);
+
     }
 
     /**
