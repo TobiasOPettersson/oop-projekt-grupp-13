@@ -49,7 +49,7 @@ public abstract class AWidgetButton extends JPanel {
     protected abstract void initButtonImagePaths();
 
     /**
-     * Initializes all components of the bottom panel, it contains:
+     * Initializes all components of the top panel, it contains:
      * An image of the tower
      */
     private void initTopPanel() {
@@ -82,9 +82,15 @@ public abstract class AWidgetButton extends JPanel {
         add(bottomPanel, BorderLayout.SOUTH);
     }
 
+    /**
+     * Sets the opacity of the widget components.
+     * 
+     * @param bool true to set the widget and its components as opaque,
+     *             false to set them with transparency!
+     */
     public void setOpacity(boolean bool) {
         Color color = new Color(0, 0, 0, 150);
-        
+
         if (bool) {
             setOpaque(false);
             setBackground(color);
@@ -98,6 +104,11 @@ public abstract class AWidgetButton extends JPanel {
         }
     }
 
+    /**
+     * Get the cost of a tower
+     * 
+     * @return returns the cost of the tower.
+     */
     protected int getCost() {
         return cost;
     }
