@@ -16,6 +16,7 @@ public class CreateWidgetController extends AShopWidgetController implements ICr
      * 
      * @param observer The DrawPanel that is notified when the player wants to
      *                 create a tower
+     * @Param model The main model containing the data and logic
      */
     public CreateWidgetController(ICreateTowerObserver observer, MainModel model) {
         super(model);
