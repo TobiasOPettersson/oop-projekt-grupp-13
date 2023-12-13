@@ -11,6 +11,6 @@ import Model.Enums.EnemyType;
  */
 public class BananaEnemy extends AEnemy{
     public BananaEnemy(double y, List<Direction> directions) {
-        super(40, y, 0.015, EnemyType.banana, directions, 4, 1);
+        super(40, y, 0.015, EnemyType.banana, directions, 1, 1);
     }
 }

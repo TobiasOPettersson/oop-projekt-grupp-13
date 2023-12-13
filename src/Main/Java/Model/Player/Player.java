@@ -44,6 +44,13 @@ public class Player implements IMoneySubject{
         notifyObservers();
     }
 
+    public boolean canAfford(int cost){
+        if (this.money < cost){
+            return false;
+        } 
+        return true;
+    }
+
     //----------------------------IMoneyObserver methods--------------------------//
 
     /**

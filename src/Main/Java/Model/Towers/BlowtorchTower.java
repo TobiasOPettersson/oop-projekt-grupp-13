@@ -7,7 +7,7 @@ import Model.Enums.TargetType;
 import Model.Enums.TowerType;
 import Model.Enums.Upgrade;
 
-public class BlowtorchTower extends AttackTower{
+public class BlowtorchTower extends ATower{
     int burnDuration = 2;
 
     /**
@@ -16,9 +16,9 @@ public class BlowtorchTower extends AttackTower{
      * @param y the y-position of the tower as a grid-index, i.e. not the y-position of the sprite in view 
      */
     public BlowtorchTower(int x, int y) {
-        super(x, y, 10, 2.5, 0.5, 40, TowerType.blowtorch, 1, TargetType.first, TargetType.enemies);
-        upgradeDoubleMap.put(Upgrade.AoeRange, 0.2);
-        upgradeDoubleMap.put(Upgrade.Range, 0.5);
+        super(x, y, 10, 3, 1.0, 30, TowerType.blowtorch, 1, TargetType.first, TargetType.enemies);
+        upgradeDoubleMap.put(Upgrade.AoeRange, 1.0);
+        upgradeDoubleMap.put(Upgrade.Range, 1.0);
         upgradeIntMap.put(Upgrade.Damage, 1);
         upgradeIntMap.put(Upgrade.SetOnFire, 0);
     }
@@ -28,7 +28,7 @@ public class BlowtorchTower extends AttackTower{
      * @param target The target of the attack
      */
     @Override
-    public void attack(AEnemy target) {
+    public void useAbility(AEnemy target) {
         if(target != null){
             System.out.println("Blowtorch attack");
             if(hasUpgrade(Upgrade.SetOnFire)){

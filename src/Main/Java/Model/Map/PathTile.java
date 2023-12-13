@@ -5,9 +5,9 @@ public class PathTile extends ATile {
     
     /**
      * TODO Javadoc comment
-     * @param x
-     * @param y
-     * @param next
+     * @param x the Tiles x position in the matrix
+     * @param y the Tiles y position in the matrix
+     * @param next points towards the next PathTile
      */
     public PathTile(int x, int y, PathTile next){
         super(x, y, false);
@@ -15,6 +15,6 @@ public class PathTile extends ATile {
     }
 
     public PathTile getNext(){
-        return this.next;
+        return next;
     }
 }

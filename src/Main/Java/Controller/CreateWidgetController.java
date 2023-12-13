@@ -32,11 +32,11 @@ public class CreateWidgetController extends AShopWidgetController implements ICr
      */
     private void initButtons() {
         buttons = List.of(
-                new CreateButton(1, TowerType.knife, this),
+                new CreateButton(2, TowerType.knife, this),
                 new CreateButton(3, TowerType.mallet, this),
                 new CreateButton(10, TowerType.blowtorch, this),
                 new CreateButton(2, TowerType.slicer, this),
-                new CreateButton(3, TowerType.freezer, this));
+                new CreateButton(6, TowerType.freezer, this));
         for (AWidgetButton button : buttons) {
             buttonPanel.add(button);
         }

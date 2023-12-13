@@ -26,7 +26,11 @@ public class UpgradeButton extends AWidgetButton{
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent mEvent) {
-                towerController.notifyObservers(upgrade);
+                try {
+                    towerController.notifyObservers(upgrade, cost);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

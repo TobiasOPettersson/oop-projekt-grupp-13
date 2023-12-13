@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import Model.Enemies.AEnemy;
+import Model.Enums.EnemyType;
 import Model.Enums.TargetType;
 import Model.Enums.TowerType;
 import Model.Enums.Upgrade;
@@ -20,6 +21,7 @@ public abstract class ATower implements ITargetable, IUpgradable {
     private int cost;
     private double range;
     private double aoeRange;
+    protected int damage;
     private int cooldown = 0; // Cooldown starts at 0 so towers can use their abilities directly
     private int maxCooldown;
     private TowerType towerType;
@@ -49,8 +51,7 @@ public abstract class ATower implements ITargetable, IUpgradable {
      *                    been used
      * @param towerType   is the type of the tower, for example knife or mallet
      */
-    public ATower(double x, double y, int cost, double range, double aoeRange, int maxCooldown, TowerType towerType,
-            TargetType targetType1, TargetType targetType2) {
+    public ATower(int x, int y, int cost, double range, double aoeRange, int maxCooldown, TowerType towerType, int damage, TargetType targetType1, TargetType targetType2) {
         this.x = x;
         this.y = y;
         this.cost = cost;
@@ -58,6 +59,7 @@ public abstract class ATower implements ITargetable, IUpgradable {
         this.aoeRange = aoeRange;
         this.maxCooldown = maxCooldown;
         this.towerType = towerType;
+        this.damage = damage;
         this.animationTick = 0;
         this.animationIndex = 0;
         this.targetPosition = null;
@@ -66,6 +68,32 @@ public abstract class ATower implements ITargetable, IUpgradable {
         upgradeDoubleMap = new HashMap<>();
         upgradeIntMap = new HashMap<>();
 
+    }
+
+
+    /**
+    * The default ability for attack towers, dealing damage to the first enemy in range. Method is from the interface IAttackable
+    * @param target The enemy the tower is targeting 
+    */
+    public void useAbility(AEnemy target) {
+        if(target != null){
+            target.takeDamage(getDamage(target.getType()));
+            target.setStaggered(true);
+            resetCooldown();
+        }
+    }
+
+    /**
+     * Default damage, overridden in sub-classes
+     * @param type The type of enemy that the tower does increased or decreased damage to
+     * @return The damage after modifications
+     */
+    protected int getDamage(EnemyType type){
+        return damage;
+    }
+
+    public int getDamage(){
+        return damage;
     }
 
     // ----------------------------Methods for targeting----------------------//
@@ -78,24 +106,22 @@ public abstract class ATower implements ITargetable, IUpgradable {
      */
     public List<AEnemy> findEnemiesInRange(List<AEnemy> enemies) {
         List<AEnemy> targets = new ArrayList<>();
-        int nFoundTargets = 0;
         for (AEnemy enemy : enemies) {
             if (inRangeOf(this, enemy, range)) {
                 targets.add(enemy);
-                nTargets++;
-                if (targetType[0] == TargetType.first && nTargets == nFoundTargets) {
-                    targetPosition = new Point2D.Double(enemy.getX(), enemy.getY());
-                    if (aoeRange != 0) {
-                        for (AEnemy target : targets) {
-                            targets.addAll(findAoeTargets(target, enemies));
-                        }
-                    }
-                    enemiesInRange = true;
-                    return targets;
-                }
             }
         }
         if (targets.size() > 0) {
+            if (targetType[0] == TargetType.first) {
+                targetPosition = new Point2D.Double(targets.get(0).getX(), targets.get(0).getY());
+                if (nTargets < targets.size()) {
+                    targets.subList(nTargets, targets.size()).clear();
+                }
+                if (aoeRange != 0) {
+                    targets.addAll(findAoeTargets(targets, enemies));
+                }
+            }
+            enemiesInRange = true;
             return targets;
         }
         enemiesInRange = false;
@@ -104,30 +130,28 @@ public abstract class ATower implements ITargetable, IUpgradable {
 
     /**
      * Finds each targetable in range
-     * 
      * @param source  The enemy that is the center of the aoe
      * @param enemies All enemies on the map
      * @return The targets in aoe range of the tower ability
      */
-    public List<AEnemy> findAoeTargets(AEnemy source, List<AEnemy> enemies) {
+    public List<AEnemy> findAoeTargets(List<AEnemy> sources, List<AEnemy> enemies) {
         List<AEnemy> aoeTargets = new ArrayList<>();
         List<AEnemy> aoeTargetables = new ArrayList<>(enemies);
-        for (AEnemy enemy : aoeTargetables) {
-            if (!enemy.equals(source)) {
-                if (inRangeOf(source, enemy, aoeRange)) {
-                    aoeTargets.add(enemy);
+        for (AEnemy source : sources){
+            for (AEnemy enemy : aoeTargetables) {
+                if (!sources.contains(enemy) && !aoeTargets.contains(enemy)) {
+                    if (inRangeOf(source, enemy, aoeRange)) {
+                        aoeTargets.add(enemy);
+                    }
                 }
             }
         }
-    return aoeTargets;
-
+        return aoeTargets;
     }
 
     /**
      * Checks if a targetable is in range or not
-     * Without "distance += ...;" it will look like the enemy was attacked out of
-     * range, even though it wasn't
-     * 
+     * Without "distance -= ...;" it will look like the enemy was attacked out ofrange, even though it wasn't
      * @param enemy to check
      * @return whether or not the enemy is in range of the towers attack
      */
@@ -150,6 +174,11 @@ public abstract class ATower implements ITargetable, IUpgradable {
     public void upgrade(Upgrade upgrade) {
 
         switch (upgrade) {
+            case Damage:
+            case Damage2:
+            case Damage3:
+                damage += upgradeIntMap.get(upgrade);
+                break;
             case Targets:
                 nTargets += upgradeIntMap.get(upgrade);
                 break;
