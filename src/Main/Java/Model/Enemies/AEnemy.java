@@ -1,8 +1,5 @@
 package Model.Enemies;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,9 +10,6 @@ import Model.Enums.Direction;
 import Model.Enums.EnemyType;
 import Model.Interfaces.IMovable;
 import Model.Interfaces.ITargetable;
-import View.SpriteHelper;
-import View.EnemySpriteManager;
-import View.GraphicsDependencies;
 
 // TODO seperate methods into groups if possible (with for example //----------------------------Getter and setters----------------------//)
 
