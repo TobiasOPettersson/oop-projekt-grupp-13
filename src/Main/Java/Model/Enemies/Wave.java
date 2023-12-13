@@ -272,7 +272,7 @@ public class Wave {
             return nextWave;
         }
         else {
-            throw new NullPointerException(" You can't call waves.poll() on an empty queue. Returns null.");
+            throw new NullPointerException(" You called waves.poll() on an empty queue. Returns null.");
         }
     }
 
