@@ -55,9 +55,7 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
         this.gridHeight = this.model.getMapSizeY();
         this.pathGrid = this.model.getPathGrid();
         setLayout(null);
-        // PlayButtonController playButton = new PlayButtonController(model);
-        // playButton.setBounds(836, 384, 96, 96);
-        // add(playButton);
+
         createPathSprites();
         addMouseListeners();
     }
@@ -235,7 +233,7 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
         Graphics2D g2 = (Graphics2D) g;
         Color enemyColor = new Color(200, 0, 0, 80);
         g2.setColor(enemyColor);
-        int rectY = (model.getStartPosition()*SPRITESIZE)-SPRITESIZE;
+        int rectY = (model.getStartPosition() * SPRITESIZE) - SPRITESIZE;
         g2.fillRect(0, rectY, 48, 144);
     }
 
@@ -246,8 +244,8 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
         Graphics2D g2 = (Graphics2D) g;
         Color homeColor = new Color(35, 0, 200, 80);
         g2.setColor(homeColor);
-        int rectY = ((model.getEndPosition())*SPRITESIZE)-SPRITESIZE;
-        int rectX = (model.getMapSizeX()*SPRITESIZE)-SPRITESIZE;
+        int rectY = ((model.getEndPosition()) * SPRITESIZE) - SPRITESIZE;
+        int rectX = (model.getMapSizeX() * SPRITESIZE) - SPRITESIZE;
         g2.fillRect(rectX, rectY, 48, 144);
     }
 
