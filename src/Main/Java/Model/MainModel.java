@@ -103,24 +103,22 @@ public class MainModel implements ITowerUpgradeObserver {
      */
     private void updateTowers() {
         for (ATower tower : map.getTowers()) {
-            tower.updateAnimationTick();
-            if (!tower.isOnCooldown()) {
-                if (tower instanceof AttackTower) {
+                tower.updateAnimationTick();
+                if (!tower.isOnCooldown()) {
                     List<AEnemy> targets = tower.findEnemiesInRange(enemies);
                     if (targets != null) {
                         for (AEnemy target : targets) {
-                            ((AttackTower) tower).attack(target);
+                            tower.useAbility(target);
                             if (target.getHealth() <= 0) {
                                 player.addMoney(target.getMoney());
                                 enemies.remove(target);
                             }
                         }
                     }
+                } else {
+                    tower.decrementCooldown();
                 }
-            } else {
-                tower.decrementCooldown();
             }
-        }
     }
 
 
