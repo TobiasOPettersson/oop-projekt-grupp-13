@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import Model.Enemies.AEnemy;
 import Model.Enemies.TomatoEnemy;
 import Model.Enemies.Wave;
-import Model.Enemies.WaveFactory;
+import Model.Enemies.EnemyFactory;
 import Model.Enums.Direction;
 import Model.Enums.TowerType;
 import Model.Enums.Upgrade;
