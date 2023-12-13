@@ -223,7 +223,7 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
         Color enemyColor = new Color(200, 0, 0, 80);
         g2.setColor(enemyColor);
         int rectY = (model.getStartPosition()*SPRITESIZE)-SPRITESIZE;
-        g2.fillRect(0, rectY, 48, 144);
+        g2.fillRect(0, rectY, SPRITESIZE, SPRITESIZE*3);
     }
 
     /**
@@ -235,7 +235,7 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
         g2.setColor(homeColor);
         int rectY = ((model.getEndPosition())*SPRITESIZE)-SPRITESIZE;
         int rectX = (model.getMapSizeX()*SPRITESIZE)-SPRITESIZE;
-        g2.fillRect(rectX, rectY, 48, 144);
+        g2.fillRect(rectX, rectY, SPRITESIZE, SPRITESIZE*3);
     }
 
     /**
@@ -412,6 +412,11 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
      * @param g
      */
     private void drawInfo(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g;
+        Color backgroundColor = new Color(46, 122, 71, 255);
+        g2.setColor(backgroundColor);
+        g2.fillRect(0, 0, SPRITESIZE*3, SPRITESIZE*2);
+        g2.fillRect((model.getMapSizeX()-3)*SPRITESIZE, 0, SPRITESIZE*3, SPRITESIZE);
         drawPlayerHealth(g);
         drawPlayerMoney(g);
         drawWaveNumber(g);

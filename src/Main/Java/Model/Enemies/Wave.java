@@ -46,7 +46,7 @@ public class Wave {
      */
     private void createWaves(){
         Queue<EnemyType> createCurrentWave = new LinkedList<EnemyType>();
-        
+
         //Waves 1
         createCurrentWave.addAll(createPartWave(5, EnemyType.banana));
         waves.add(new LinkedList<EnemyType>(createCurrentWave));
