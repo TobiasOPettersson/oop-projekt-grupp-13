@@ -7,6 +7,9 @@ import java.util.Queue;
 import Model.Enums.Direction;
 import Model.Enums.EnemyType;
 
+/**
+ * A class representing waves with enemies.
+ */
 public class Wave {
     private int currentWave;
     private int maxNumberOfWaves;
@@ -15,6 +18,11 @@ public class Wave {
     private final int MAX_SPAWN_RATE = 120;
     private EnemyFactory waveFactory;
     
+    /**
+     * Constructor of the Wave class.
+     * @param startPosition is the start y position in the tile grid for the waves.
+     * @param pathDirections is the list of directions which the waves should follow.
+     */
     public Wave(int startPosition, List<Direction> pathDirections){
         currentWave = 0;
         createWaves();
@@ -22,12 +30,20 @@ public class Wave {
         waveFactory = new EnemyFactory(startPosition, pathDirections);
     }
 
+    /**
+     * Starts a new wave of enemies.
+     * @return The next wave in the queue.
+     * @throws Exception if the queue is empty.
+     */
     public Queue<EnemyType> startWave() throws Exception{
         currentWave++;
         if (waves.isEmpty()) throw new Exception("Wave is empty");
         return waves.poll();
     }
-
+    
+    /**
+     * Adds all the waves to the wave queue.
+     */
     private void createWaves(){
         Queue<EnemyType> createCurrentWave = new LinkedList<EnemyType>();
         
@@ -198,7 +214,7 @@ public class Wave {
         waves.add(new LinkedList<EnemyType>(createCurrentWave));
         createCurrentWave.clear();
 
-        /* -------------------------- Mall for each wave
+        /* -------------------------- Template for each wave --------------------------
         //Wave #
         createCurrentWave.addAll(createPartWave(1, EnemyType.banana));
         createCurrentWave.addAll(createPartWave(1, EnemyType.tomato));
@@ -210,36 +226,58 @@ public class Wave {
         maxNumberOfWaves = waves.size();
     }
 
-
-    private Queue<EnemyType> createPartWave(int numberOfEnemies, EnemyType enemieType){
-        Queue<EnemyType> currentEnemieType = new LinkedList<EnemyType>();
+    /**
+     * Creates a part of a wave with a certain number of enemies of a certain type.
+     * @param numberOfEnemies the number of enemies in this part of the wave
+     * @param enemyType the type of enemy which the part should contain
+     * @return a queue of enemy types
+     */
+    private Queue<EnemyType> createPartWave(int numberOfEnemies, EnemyType enemyType){
+        Queue<EnemyType> currentEnemyType = new LinkedList<EnemyType>();
         for(int i = 0 ; i < numberOfEnemies ; i++){
-            currentEnemieType.add(enemieType);
+            currentEnemyType.add(enemyType);
         }
-        return currentEnemieType;
+        return currentEnemyType;
     }
 
+    /**
+     * @return boolean for if the waves queue is empty or not
+     */
     public boolean wavesIsEmpty(){
         return waves.isEmpty();
     }
 
-    public int getCurrentWaveNumber(){
-        return currentWave;
-    }
-
+    /**
+     * decrements spawn rate if it's above 0
+     */
     public void updateSpawnRate(){
         if (spawnRate > 0) spawnRate--;
     }
 
+    /**
+     * @return boolean for if a new enemy can be spawned
+     */
     public boolean checkIfSpawnable(){
         if (spawnRate > 0) return false;
         spawnRate = MAX_SPAWN_RATE;
         return true;
     }
 
-    public Queue<AEnemy> getWave(){
-        currentWave++;
-        return waveFactory.createCurrentWave(waves.poll());
+    //---------------- GETTERS AND SETTERS -----------------//
+
+    public Queue<AEnemy> getNextWave(){
+        if (!waves.isEmpty()){
+            Queue<AEnemy> nextWave = waveFactory.createCurrentWave(waves.poll());
+            currentWave++;
+            return nextWave;
+        }
+        else {
+            throw new NullPointerException();
+        }
+    }
+
+    public int getCurrentWaveNumber(){
+        return currentWave;
     }
 
     public int getMaxNumberOfWaves() {
