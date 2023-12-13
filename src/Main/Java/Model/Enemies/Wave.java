@@ -51,7 +51,7 @@ public class Wave {
         createCurrentWave.addAll(createPartWave(5, EnemyType.banana));
         waves.add(new LinkedList<EnemyType>(createCurrentWave));
         createCurrentWave.clear();
-        
+
         //Wave 2
         createCurrentWave.addAll(createPartWave(10, EnemyType.banana));
         waves.add(new LinkedList<EnemyType>(createCurrentWave));
@@ -265,14 +265,14 @@ public class Wave {
 
     //---------------- GETTERS AND SETTERS -----------------//
 
-    public Queue<AEnemy> getNextWave(){
+    public Queue<AEnemy> getNextWave() {
         if (!waves.isEmpty()){
             Queue<AEnemy> nextWave = waveFactory.createCurrentWave(waves.poll());
             currentWave++;
             return nextWave;
         }
         else {
-            throw new NullPointerException();
+            throw new NullPointerException(" You can't call waves.poll() on an empty queue. Returns null.");
         }
     }
 
