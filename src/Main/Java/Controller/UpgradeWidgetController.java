@@ -1,6 +1,7 @@
 package Controller;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.List;
 
@@ -83,14 +84,14 @@ public class UpgradeWidgetController extends AShopWidgetController implements IU
     }
 
     @Override
-    public void notifyObservers(Upgrade upgrade) {
+    public void notifyObservers(Upgrade upgrade, int cost) throws Exception {
         for (AWidgetButton button : buttons) {
-            if (upgrade == ((UpgradeButton) button).upgrade) {
+            if (upgrade == ((UpgradeButton) button).upgrade && !button.getBackground().equals(new Color(0, 0, 0, 150))) {
                 ((UpgradeButton)button).setHasUpgrade(true);
                 ((UpgradeButton)button).showHasUpgrade();
             }
         }
-        observer.upgradeTower(getSavedTowerPosX(), getSavedTowerPosY(), upgrade);
+        observer.upgradeTower(getSavedTowerPosX(), getSavedTowerPosY(), upgrade, cost);
     }
 
     /**

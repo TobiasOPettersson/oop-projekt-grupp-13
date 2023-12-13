@@ -9,5 +9,5 @@ public interface IUpgradeTowerSubject {
      * @param towerType is the type of the tower
      * @throws Exception
      */
-    void notifyObservers(Upgrade upgrade) throws Exception;
+    void notifyObservers(Upgrade upgrade, int cost) throws Exception;
 }

@@ -198,6 +198,9 @@ public class AMap{
                     System.out.println("Tower type given is not implemented");
                     break;
             }
+            if(!player.canAfford(tower.getCost())){
+                return;
+            }
             player.subtractMoney(tower.getCost());
             this.towers.add(tower);
             getTile(x, y).setPlaceable(false);
@@ -210,8 +213,13 @@ public class AMap{
      * @param x The towers x-index on the grid
      * @param y The towers y-index on the grid
      * @param upgrade The type of upgrade that will be added
+     * @throws Exception If the player doesn't have enough money for the upgrade 
      */
-    public void upgradeTower(int x, int y, Upgrade upgrade) {
+    public void upgradeTower(int x, int y, Upgrade upgrade, int cost) throws Exception {
+        if(!player.canAfford(cost)){
+            return;
+        }
+        player.subtractMoney(cost);
         if(!getTowerOnTile(x, y).getUpgrades().contains(upgrade)){
             getTowerOnTile(x, y).upgrade(upgrade);
         }
@@ -256,5 +264,9 @@ public class AMap{
     }
     public void setPlayer(Player player){
         this.player = player;
+    }
+
+    public boolean tileIsTowerTile(int x, int y){
+        return getTile(x, y) instanceof TowerTile;
     }
 }

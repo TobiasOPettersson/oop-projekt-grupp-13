@@ -16,8 +16,8 @@ public class MalletTower extends AttackTower{
      */
     public MalletTower(int x, int y) {
         super(x, y, 3, 1.0, 1.0, 200, TowerType.mallet, 20, TargetType.first, TargetType.enemies);
-        upgradeDoubleMap.put(Upgrade.AoeRange, 0.5);
-        upgradeDoubleMap.put(Upgrade.Range, 0.5);
+        upgradeDoubleMap.put(Upgrade.AoeRange, 1.0);
+        upgradeDoubleMap.put(Upgrade.Range, 1.0);
         upgradeIntMap.put(Upgrade.Damage, 1);
         upgradeIntMap.put(Upgrade.Damage2, 1);
     }

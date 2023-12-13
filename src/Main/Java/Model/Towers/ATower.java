@@ -78,24 +78,22 @@ public abstract class ATower implements ITargetable, IUpgradable {
      */
     public List<AEnemy> findEnemiesInRange(List<AEnemy> enemies) {
         List<AEnemy> targets = new ArrayList<>();
-        int nFoundTargets = 0;
         for (AEnemy enemy : enemies) {
             if (inRangeOf(this, enemy, range)) {
                 targets.add(enemy);
-                nTargets++;
-                if (targetType[0] == TargetType.first && nTargets == nFoundTargets) {
-                    targetPosition = new Point2D.Double(enemy.getX(), enemy.getY());
-                    if (aoeRange != 0) {
-                        for (AEnemy target : targets) {
-                            targets.addAll(findAoeTargets(target, enemies));
-                        }
-                    }
-                    enemiesInRange = true;
-                    return targets;
-                }
             }
         }
         if (targets.size() > 0) {
+            if (targetType[0] == TargetType.first) {
+                targetPosition = new Point2D.Double(targets.get(0).getX(), targets.get(0).getY());
+                if (nTargets < targets.size()) {
+                    targets.subList(nTargets, targets.size()).clear();
+                }
+                if (aoeRange != 0) {
+                    targets.addAll(findAoeTargets(targets, enemies));
+                }
+            }
+            enemiesInRange = true;
             return targets;
         }
         enemiesInRange = false;
@@ -104,23 +102,23 @@ public abstract class ATower implements ITargetable, IUpgradable {
 
     /**
      * Finds each targetable in range
-     * 
      * @param source  The enemy that is the center of the aoe
      * @param enemies All enemies on the map
      * @return The targets in aoe range of the tower ability
      */
-    public List<AEnemy> findAoeTargets(AEnemy source, List<AEnemy> enemies) {
+    public List<AEnemy> findAoeTargets(List<AEnemy> sources, List<AEnemy> enemies) {
         List<AEnemy> aoeTargets = new ArrayList<>();
         List<AEnemy> aoeTargetables = new ArrayList<>(enemies);
-        for (AEnemy enemy : aoeTargetables) {
-            if (!enemy.equals(source)) {
-                if (inRangeOf(source, enemy, aoeRange)) {
-                    aoeTargets.add(enemy);
+        for (AEnemy source : sources){
+            for (AEnemy enemy : aoeTargetables) {
+                if (!sources.contains(enemy) && !aoeTargets.contains(enemy)) {
+                    if (inRangeOf(source, enemy, aoeRange)) {
+                        aoeTargets.add(enemy);
+                    }
                 }
             }
         }
-    return aoeTargets;
-
+        return aoeTargets;
     }
 
     /**

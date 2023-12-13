@@ -18,6 +18,7 @@ import Model.Enums.EnemyType;
 import Model.Map.AMap;
 import Model.Map.ATile;
 import Model.Map.MapOne;
+import Model.Map.TowerTile;
 import Model.Player.Player;
 import Model.Towers.ATower;
 import Model.Towers.AttackTower;
@@ -47,7 +48,6 @@ public class MainModel implements ITowerUpgradeObserver {
      */
     public void run() {
         if (activeWave) {
-            System.out.println(enemies.size());
             AEnemy enemyToRemove = null;
             for (AEnemy enemy : enemies) {
                 enemy.updateAnimationTick();
@@ -118,8 +118,8 @@ public class MainModel implements ITowerUpgradeObserver {
      * @param y The towers y-index on the grid
      * @param upgrade The type of upgrade that will be added
      */
-    public void upgradeTower(int x, int y, Upgrade upgrade) {
-        map.upgradeTower(x, y, upgrade);
+    public void upgradeTower(int x, int y, Upgrade upgrade, int cost) throws Exception {
+        map.upgradeTower(x, y, upgrade, cost);
     }
 
     //-----------------------Other methods---------------------// 
@@ -224,6 +224,18 @@ public class MainModel implements ITowerUpgradeObserver {
 
     public List<ATower> getTowers() {
         return this.map.getTowers();
+    }
+
+    public ATile getTile(int x, int y){
+        return map.getTile(x, y);
+    }
+
+    public boolean tileIsTowerTile(int x, int y){
+        return map.tileIsTowerTile(x, y);
+    }
+
+    public ATower getTowerOnTile(TowerTile tile){
+        return tile.getTower();
     }
 
     /**
