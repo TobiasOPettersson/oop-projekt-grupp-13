@@ -34,7 +34,7 @@ public class BlowtorchTower extends ATower{
             if(hasUpgrade(Upgrade.SetOnFire)){
                 target.setCondition(Condition.onFire, burnDuration);
             }
-            target.takeDamage(getDamage(target.getType()));
+            target.takeDamage(getDamage(target.getEnemyType()));
             target.setStaggered(true);
             resetCooldown();
             System.out.println(target.getHealth());

@@ -382,7 +382,7 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
     private void drawPlayerHealth(Graphics g) {
         g.setColor(Color.DARK_GRAY);
         g.setFont(new Font("Arial", Font.BOLD, 20));
-        g.drawString("Health: " + model.getPlayerHealth(), 0, SPRITESIZE / 2 + 5);
+        g.drawString("Health: " + model.getPlayerHealth(), 0, SPRITESIZE / 2 + 6);
     }
 
     /**
@@ -390,10 +390,9 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
      * @param g
      */
     private void drawPlayerMoney(Graphics g) {
-        // g.drawImage(image, 0, 0, null);
         g.setColor(Color.DARK_GRAY);
         g.setFont(new Font("Arial", Font.BOLD, 20));
-        g.drawString("Money: " + model.getPlayerMoney(), 0, SPRITESIZE + SPRITESIZE / 2 + 5);
+        g.drawString("Money: " + model.getPlayerMoney(), 0, SPRITESIZE + SPRITESIZE / 2 + 6);
     }
 
     /**
@@ -404,7 +403,7 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
         g.setColor(Color.DARK_GRAY);
         g.setFont(new Font("Arial", Font.BOLD, 20));
         g.drawString("Round: " + model.getCurrentWaveNumber() + "/" + model.getMaxNumberofWaves(),
-                model.getMapSizeX() * SPRITESIZE - SPRITESIZE * 3, SPRITESIZE / 2 + 5);
+                model.getMapSizeX() * SPRITESIZE - SPRITESIZE * 3, SPRITESIZE / 2 + 6);
     }
 
     /**
