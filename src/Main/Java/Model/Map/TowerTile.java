@@ -8,9 +8,9 @@ public class TowerTile extends ATile {
 
     /**
      * TODO Javadoc comment
-     * @param x
-     * @param y
-     * @param placeable
+     * @param x the Tiles x position in the matrix
+     * @param y the Tiles y position in the matrix
+     * @param placeable if it's possible to place a tower on this tile
      */
     public TowerTile(int x, int y, boolean placeable) {
         super(x, y, placeable);
