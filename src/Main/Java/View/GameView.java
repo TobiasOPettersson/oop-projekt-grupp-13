@@ -1,35 +1,22 @@
 package View;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.LayoutStyle;
 
 import Controller.CreateWidgetController;
+import Controller.ShowTutorialDialog;
 import Controller.UpgradeWidgetController;
 import Controller.Interfaces.IMoneyObserver;
-import Controller.Interfaces.IUpgradeTowerSubject;
 import Model.MainModel;
-import Model.Enums.EnemyType;
 import Model.Enums.TowerType;
 import Model.Enums.Upgrade;
-import Model.Interfaces.ITowerUpgradeObserver;
-import Model.Map.AMap;
-import Model.Map.TowerTile;
-import Model.Towers.ATower;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.image.*;
-import java.io.IOException;
-import java.io.InputStream;
+import Model.Interfaces.IObservable;
+
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import javax.imageio.ImageIO;
-
-public class GameView extends JFrame {
+public class GameView extends JFrame implements IObservable {
     MainModel model;
     DrawPanel drawPanel;
     CreateWidgetController createWidget;
@@ -48,6 +35,7 @@ public class GameView extends JFrame {
         add(drawPanel);
         initWidgits();
         initComponents();
+        showTutorial();
     }
 
     /**
@@ -61,11 +49,13 @@ public class GameView extends JFrame {
         createWidget.setVisible(true);
 
         model.getPlayer().setMoneyObservers(getMoneyObservers());
+
     }
 
     /**
      * // TODO Javadoc comment
      */
+    @Override
     public void update() {
         drawPanel.update();
     }
@@ -86,12 +76,17 @@ public class GameView extends JFrame {
         createWidget.setVisible(false);
         for (UpgradeWidgetController upgradeWidget : upgradeWidgets) {
             if (x == upgradeWidget.getSavedTowerPosX() && y == upgradeWidget.getSavedTowerPosY()) {
-            upgradeWidget.setVisible(true);
-            upgradeWidget.updateAvailableUpgrades(currentUpgrades);
-            } else{
+                upgradeWidget.setVisible(true);
+                upgradeWidget.updateAvailableUpgrades(currentUpgrades);
+            } else {
                 upgradeWidget.setVisible(false);
             }
         }
+    }
+
+    private void showTutorial() {
+        ShowTutorialDialog tutorial = new ShowTutorialDialog(this);
+        tutorial.setVisible(true);
     }
 
     /**
@@ -131,11 +126,11 @@ public class GameView extends JFrame {
 
     public DrawPanel getDrawPanel() {
         return drawPanel;
-    } 
+    }
 
-    protected void addNewUpgradeWidget(TowerType type, int towerPosX, int towerPosY){
-        for(UpgradeWidgetController upgradeWidget : upgradeWidgets){
-            if(upgradeWidget.getSavedTowerPosX() == towerPosX && upgradeWidget.getSavedTowerPosY() == towerPosY){
+    protected void addNewUpgradeWidget(TowerType type, int towerPosX, int towerPosY) {
+        for (UpgradeWidgetController upgradeWidget : upgradeWidgets) {
+            if (upgradeWidget.getSavedTowerPosX() == towerPosX && upgradeWidget.getSavedTowerPosY() == towerPosY) {
                 return;
             }
         }

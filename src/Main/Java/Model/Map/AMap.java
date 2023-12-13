@@ -15,19 +15,21 @@ import Model.Towers.SlicerTower;
 
 import java.util.ArrayList;
 
-public class AMap{
+public abstract class AMap{
     private final int MAP_HEIGHT = 10;
     private final int MAP_WIDTH = 20;
     private List<ATower> towers = new ArrayList<ATower>();
     private ATile grid[][] = new ATile[MAP_HEIGHT][MAP_WIDTH];
     private int startPosition;
+    private int endPosition;
     private int[][] pathGrid;
     private List<Direction> pathDirections = new ArrayList<Direction>();
     private Player player;
 
     /**
-     * TODO Javadoc comment
-     * @param pathGrid
+     * The constructor of the AMap class
+     * @param pathGrid Size X = 20 and Y = 10. Matrix made in subclass. Path made by ints 1 = start and highest number is the end.
+     * Start is always on the left and End is always at the right
      */
     public AMap(int[][] pathGrid) {
         this.pathGrid = pathGrid;
@@ -35,13 +37,14 @@ public class AMap{
         fillOccupiedTile();
         fillGridTowerTile();
         setStartPosition();
+        setEndPosition();
     }
 
 
     //----------------------------Constructor methods----------------------//
 
-    /*
-     * Create the instances of every pathTile on the grid
+    /**
+     * Create the instances of every pathTile on the grid.
      * Then fill the pathDirections with the directions of the path
      */
     private void createPathGrid() {
@@ -77,7 +80,7 @@ public class AMap{
         createPathDirections((PathTile)grid[tempY][tempX]);
     }
    
-    /*
+    /**
      * Fill the rest of the grid that isn't pathTile with towerTile
      */
     private void fillGridTowerTile(){
@@ -91,30 +94,40 @@ public class AMap{
 
     }
 
-    /*
+    /**
      * Find the starting position of the path
      */
     private void setStartPosition() {
-        for (int i = 0; i < this.MAP_HEIGHT; i++) {
+        for (int i = 0; i < MAP_HEIGHT; i++) {
             if (pathGrid[i][0] == 1)
                 startPosition = i;
         }
     }
+    
+    /**
+     * Find the end position of the path
+     */
+    private void setEndPosition() {
+        for (int i = 0; i < MAP_HEIGHT; i++) {
+            if (pathGrid[i][MAP_WIDTH-1] != 0)
+                endPosition = i;
+        }
+    }
 
-    /*
+    /**
      * Place the tiles where the player can't place towers and isn't a path
      */
     private void fillOccupiedTile(){
         //Tiles for player information
-        this.grid[0][0] = new OccupiedTile(0, 0);
-        this.grid[0][1] = new OccupiedTile(1, 0);
-        this.grid[0][2] = new OccupiedTile(2, 0);
-        this.grid[1][0] = new OccupiedTile(0, 1);
-        this.grid[1][1] = new OccupiedTile(1, 1);
-        this.grid[1][2] = new OccupiedTile(2, 1);
-        this.grid[0][MAP_WIDTH-3] = new OccupiedTile(MAP_WIDTH-3, 0);
-        this.grid[0][MAP_WIDTH-2] = new OccupiedTile(MAP_WIDTH-2, 0);
-        this.grid[0][MAP_WIDTH-1] = new OccupiedTile(MAP_WIDTH-1, 0);
+        grid[0][0] = new OccupiedTile(0, 0);
+        grid[0][1] = new OccupiedTile(1, 0);
+        grid[0][2] = new OccupiedTile(2, 0);
+        grid[1][0] = new OccupiedTile(0, 1);
+        grid[1][1] = new OccupiedTile(1, 1);
+        grid[1][2] = new OccupiedTile(2, 1);
+        grid[0][MAP_WIDTH-3] = new OccupiedTile(MAP_WIDTH-3, 0);
+        grid[0][MAP_WIDTH-2] = new OccupiedTile(MAP_WIDTH-2, 0);
+        grid[0][MAP_WIDTH-1] = new OccupiedTile(MAP_WIDTH-1, 0);
     }
 
 
@@ -123,20 +136,20 @@ public class AMap{
     /**
      * Create the next pathTile and have it point at the previous pathTile
      * TODO comment parameters
-     * @param nextTile
-     * @param tempX
-     * @param tempY
+     * @param previousTile needs to be a PathTile is the PathTile the new PathTile will point too
+     * @param tempX is the same as x in previousTile or is a different by 1
+     * @param tempY is the same as y in previousTile or is a different by 1
      */
-    private void nextTileInGrid(ATile nextTile, int tempX, int tempY){
-        if (nextTile instanceof PathTile) {
-            PathTile pt = (PathTile) nextTile;
+    private void nextTileInGrid(ATile previousTile, int tempX, int tempY){
+        if (previousTile instanceof PathTile) {
+            PathTile pt = (PathTile) previousTile;
             grid[tempY][tempX] = new PathTile(tempX, tempY, pt);
         }
     }
 
     /**
      * Fill the pathDirections with the directions for the path
-     * @param start The tile where the enemies start from
+     * @param start The first PathTile where enemies will spawn
      */
     private void createPathDirections(PathTile start) {
         PathTile next;
@@ -144,27 +157,20 @@ public class AMap{
         while (start.getNext() != null) {
             next = start.getNext();
             if (start.getX() == next.getX() - 1) {
-                addPathDirections(Direction.RIGHT);
+                pathDirections.add(Direction.RIGHT);
             } else if (start.getX() == next.getX() + 1) {
-                addPathDirections(Direction.LEFT);
+                pathDirections.add(Direction.LEFT);
             } else if (start.getY() == next.getY() - 1) {
-                addPathDirections(Direction.DOWN);
+                pathDirections.add(Direction.DOWN);
             } else if (start.getY() == next.getY() + 1) {
-                addPathDirections(Direction.UP);
+                pathDirections.add(Direction.UP);
             }
             start = next;
             next = next.getNext();
         }
-        this.pathDirections.add(Direction.RIGHT);
+        pathDirections.add(Direction.RIGHT);
     }
 
-    /**
-     * Add the direction to pathDirection
-     * @param direction The direction to add
-     */
-    private void addPathDirections(Direction direction){
-        this.pathDirections.add(direction);
-    }
 
     //----------------------------Tower methods----------------------//
     
@@ -202,7 +208,7 @@ public class AMap{
                 return;
             }
             player.subtractMoney(tower.getCost());
-            this.towers.add(tower);
+            towers.add(tower);
             getTile(x, y).setPlaceable(false);
             ((TowerTile)getTile(x, y)).setTower(tower);
         }
@@ -241,11 +247,22 @@ public class AMap{
     }
 
     public List<Direction> getPathDirections() {
-        return this.pathDirections;
+        return pathDirections;
     }
 
+    /**
+     * 
+     * @return the position of the start Tile
+     */
     public int getStartPosition() {
         return startPosition;
+    }
+
+    /**
+     * @return the position of the end Tile
+     */
+    public int getEndPosition() {
+        return endPosition;
     }
 
     public List<ATower> getTowers() {
