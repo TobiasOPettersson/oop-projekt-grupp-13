@@ -157,7 +157,6 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
                 g.drawImage(enemySprites[enemy.getAnimationIndex()], x, y, null);
                 drawEnemyHP(g, enemy, x, y);
             }
-
         }
     }
 
@@ -174,12 +173,14 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
             g.setColor(Color.GREEN);
         } else if ((percentOfHP <= 0.75) && (percentOfHP > 0.5)) {
             g.setColor(Color.YELLOW);
-        } else if ((percentOfHP <= 0.5) && ((percentOfHP) > 0.25)) {
+        } else if ((percentOfHP <= 0.5) && (percentOfHP > 0.25)) {
             g.setColor(Color.ORANGE);
         } else {
             g.setColor(Color.RED);
         }
-        g.drawLine(x, y + SPRITESIZE, (int) (x + (SPRITESIZE * percentOfHP)), y + SPRITESIZE);
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setStroke(new BasicStroke(3));
+        g2.drawLine(x, y + SPRITESIZE + 2, (int) (x + (SPRITESIZE * percentOfHP)), y + SPRITESIZE + 2);
     }
 
     /**
