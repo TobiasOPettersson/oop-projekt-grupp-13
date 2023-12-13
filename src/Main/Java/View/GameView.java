@@ -1,36 +1,22 @@
 package View;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.LayoutStyle;
 
 import Controller.CreateWidgetController;
 import Controller.ShowTutorialDialog;
 import Controller.UpgradeWidgetController;
 import Controller.Interfaces.IMoneyObserver;
-import Controller.Interfaces.IUpgradeTowerSubject;
 import Model.MainModel;
-import Model.Enums.EnemyType;
 import Model.Enums.TowerType;
 import Model.Enums.Upgrade;
-import Model.Interfaces.ITowerUpgradeObserver;
-import Model.Map.AMap;
-import Model.Map.TowerTile;
-import Model.Towers.ATower;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.image.*;
-import java.io.IOException;
-import java.io.InputStream;
+import Model.Interfaces.IObservable;
+
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import javax.imageio.ImageIO;
-
-public class GameView extends JFrame {
+public class GameView extends JFrame implements IObservable {
     MainModel model;
     DrawPanel drawPanel;
     CreateWidgetController createWidget;
@@ -69,6 +55,7 @@ public class GameView extends JFrame {
     /**
      * // TODO Javadoc comment
      */
+    @Override
     public void update() {
         drawPanel.update();
     }

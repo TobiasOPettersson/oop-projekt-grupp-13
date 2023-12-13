@@ -2,6 +2,7 @@ package Model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observer;
 import java.util.Queue;
 import java.util.LinkedList;
 
@@ -12,6 +13,7 @@ import Model.Enemies.WaveFactory;
 import Model.Enums.Direction;
 import Model.Enums.TowerType;
 import Model.Enums.Upgrade;
+import Model.Interfaces.IObservable;
 import Model.Interfaces.ITargetable;
 import Model.Interfaces.ITowerUpgradeObserver;
 import Model.Enums.EnemyType;
@@ -30,6 +32,7 @@ public class MainModel implements ITowerUpgradeObserver {
     private boolean alive;
     private boolean activeWave;
     private Wave allWaves;
+    List<IObservable> observers = new ArrayList<IObservable>();
 
     /**
      * TODO Javadoc comment
@@ -95,6 +98,7 @@ public class MainModel implements ITowerUpgradeObserver {
             this.activeWave = activeWave(); // Commented since it doesnt check if the wave is finished, only if there
                                             // are no enemies currently on the panel/ in the list
         }
+        notifyObservers();
     }
 
     //-----------------------Tower methods---------------------// 
@@ -120,6 +124,17 @@ public class MainModel implements ITowerUpgradeObserver {
      */
     public void upgradeTower(int x, int y, Upgrade upgrade) {
         map.upgradeTower(x, y, upgrade);
+    }
+
+    //-----------------------Observer---------------------------//
+    public void addObserver(IObservable observer) {
+        observers.add(observer);
+    }
+
+    private void notifyObservers(){
+        for (IObservable observer : observers) {
+            observer.update();
+        }
     }
 
     //-----------------------Other methods---------------------// 

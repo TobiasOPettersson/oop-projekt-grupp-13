@@ -5,8 +5,8 @@ import javax.swing.JPanel;
 import Model.MainModel;
 import Model.Enemies.AEnemy;
 import Model.Enums.Direction;
-import Model.Enums.EnemyType;
 import Model.Enums.TowerType;
+import Model.Interfaces.IObservable;
 import Model.Map.ATile;
 import Model.Map.TowerTile;
 import Model.Towers.ATower;
@@ -15,7 +15,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.awt.BasicStroke;
@@ -25,7 +24,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 
-public class DrawPanel extends JPanel implements ICreateTowerObserver {
+public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservable {
     private GameView gameView;
     private MainModel model;
     private ATile mapGrid[][];
@@ -43,7 +42,6 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
     protected WorldSpriteManager worldSpriteManager = new WorldSpriteManager();
     private BufferedImage[] towerSprites;
     private BufferedImage[] enemySprites;
-    private BufferedImage[] worldSprites;
 
     private final int SPRITESIZE = GraphicsDependencies.getSpriteSize();
 
@@ -60,7 +58,6 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
         // PlayButtonController playButton = new PlayButtonController(model);
         // playButton.setBounds(836, 384, 96, 96);
         // add(playButton);
-        update();
         createPathSprites();
         addMouseListeners();
     }
@@ -425,6 +422,7 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver {
     /**
      * TODO javadoc comment
      */
+    @Override
     public void update() {
         repaint();
     }
