@@ -7,11 +7,11 @@ import Model.Enums.TargetType;
 import Model.Enums.TowerType;
 import Model.Enums.Upgrade;
 
-public class FreezerTower extends AttackTower {
+public class FreezerTower extends ATower {
     private int chillDuration = 30;
 
     public FreezerTower(int x, int y) {
-        super(x, y, 4, 1.0, 0, 30, TowerType.freezer, 0, TargetType.all, TargetType.enemies);
+        super(x, y, 6, 1.0, 0, 30, TowerType.freezer, 0, TargetType.all, TargetType.enemies);
         upgradeIntMap.put(Upgrade.Frostbite, 0);
         upgradeIntMap.put(Upgrade.SuperChill, 0);
         upgradeIntMap.put(Upgrade.ConditionDuration, 30);
@@ -24,9 +24,8 @@ public class FreezerTower extends AttackTower {
      * @param target The target of the attack
      */
     @Override
-    public void attack(AEnemy target) {
+    public void useAbility(AEnemy target) {
         if(target != null){
-            System.out.println("Freezer attack");
             if(hasUpgrade(Upgrade.Frostbite)){
                 if(target.isChilled()){
                     target.takeDamage(damage+1);
@@ -46,10 +45,4 @@ public class FreezerTower extends AttackTower {
             resetCooldown();
         }
     }
-
-    @Override
-    protected int getDamage(EnemyType type) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getDamage'");
-    }  
 }

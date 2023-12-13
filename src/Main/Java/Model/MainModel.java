@@ -23,7 +23,6 @@ import Model.Map.MapOne;
 import Model.Map.TowerTile;
 import Model.Player.Player;
 import Model.Towers.ATower;
-import Model.Towers.AttackTower;
 
 public class MainModel implements ITowerUpgradeObserver {
     private AMap map;

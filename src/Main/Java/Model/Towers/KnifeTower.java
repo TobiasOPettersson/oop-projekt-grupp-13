@@ -7,7 +7,7 @@ import Model.Enums.TargetType;
 import Model.Enums.TowerType;
 import Model.Enums.Upgrade;
 
-public class KnifeTower extends AttackTower{
+public class KnifeTower extends ATower{
 
     /**
      * Constructor for knife tower that uses the default attack from AttackTower

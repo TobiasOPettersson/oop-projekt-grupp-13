@@ -7,7 +7,7 @@ import Model.Enums.TargetType;
 import Model.Enums.TowerType;
 import Model.Enums.Upgrade;
 
-public class BlowtorchTower extends AttackTower{
+public class BlowtorchTower extends ATower{
     int burnDuration = 2;
 
     /**
@@ -28,7 +28,7 @@ public class BlowtorchTower extends AttackTower{
      * @param target The target of the attack
      */
     @Override
-    public void attack(AEnemy target) {
+    public void useAbility(AEnemy target) {
         if(target != null){
             System.out.println("Blowtorch attack");
             if(hasUpgrade(Upgrade.SetOnFire)){
