@@ -158,7 +158,7 @@ public abstract class ATower implements ITargetable, IUpgradable {
     public boolean inRangeOf(ITargetable source, ITargetable targetable, double range) {
         double distance = Math
                 .sqrt(Math.pow(source.getX() - targetable.getX(), 2) + Math.pow(source.getY() - targetable.getY(), 2));
-        distance -= 0.5;
+        distance -= 0.6;
         return distance <= range;
     }
 
