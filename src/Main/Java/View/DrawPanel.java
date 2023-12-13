@@ -188,11 +188,14 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
     private void drawTowers(Graphics g) {
         for (ATower tower : model.getTowers()) {
             this.towerSprites = towerSpriteManager.getTowerSprites(tower.getTowerType());
-            BufferedImage towerImage = towerSprites[tower.getAnimationIndex()];
-            if (tower.getTargetPosition() != null) {
-                towerImage = rotateTowerTowardTarget(tower, towerImage);
-            } else{
+            BufferedImage towerImage = null;
+            if(tower.getTowerType() != TowerType.freezer){
                 towerImage = towerSprites[tower.getAnimationIndex()];
+                if (tower.getTargetPosition() != null) {
+                    towerImage = rotateTowerTowardTarget(tower, towerImage);
+                }
+            } else{
+                towerImage = towerSprites[0];
             }
             g.drawImage(towerImage, (int) tower.getX() * 48, (int) tower.getY() * 48, null);
         }
@@ -206,8 +209,7 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
      */
     private BufferedImage rotateTowerTowardTarget(ATower tower, BufferedImage towerImage) {
         Point2D.Double enemyCenterPoint = tower.getTargetPosition();
-        double angleBInRadians = Math.atan2(tower.getY() + 0.5 - enemyCenterPoint.getY(),
-                tower.getX() + 0.5 - enemyCenterPoint.getX());
+        double angleBInRadians = Math.atan2(tower.getY() + 0.5 - enemyCenterPoint.getY(), tower.getX() + 0.5 - enemyCenterPoint.getX());
         double angle = Math.toDegrees(angleBInRadians);
         return SpriteHelper.rotateSprite(towerImage, (int) (angle) + 270);
     }

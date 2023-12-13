@@ -23,7 +23,6 @@ import Model.Map.MapOne;
 import Model.Map.TowerTile;
 import Model.Player.Player;
 import Model.Towers.ATower;
-import Model.Towers.AttackTower;
 
 public class MainModel implements ITowerUpgradeObserver {
     private AMap map;
@@ -77,15 +76,13 @@ public class MainModel implements ITowerUpgradeObserver {
             for (ATower tower : map.getTowers()) {
                 tower.updateAnimationTick();
                 if (!tower.isOnCooldown()) {
-                    if (tower instanceof AttackTower) {
-                        List<AEnemy> targets = tower.findEnemiesInRange(enemies);
-                        if (targets != null) {
-                            for (AEnemy target : targets) {
-                                ((AttackTower) tower).attack(target);
-                                if (target.getHealth() <= 0) {
-                                    player.addMoney(target.getMoney());
-                                    enemies.remove(target);
-                                }
+                    List<AEnemy> targets = tower.findEnemiesInRange(enemies);
+                    if (targets != null) {
+                        for (AEnemy target : targets) {
+                            tower.useAbility(target);
+                            if (target.getHealth() <= 0) {
+                                player.addMoney(target.getMoney());
+                                enemies.remove(target);
                             }
                         }
                     }
@@ -95,8 +92,7 @@ public class MainModel implements ITowerUpgradeObserver {
             }
 
             this.alive = alive();
-            this.activeWave = activeWave(); // Commented since it doesnt check if the wave is finished, only if there
-                                            // are no enemies currently on the panel/ in the list
+            this.activeWave = activeWave(); 
         }
         notifyObservers();
     }
