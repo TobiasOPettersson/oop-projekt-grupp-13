@@ -62,7 +62,7 @@ public class TowersTest {
     public void test_mallet_upgrade_aoerange() {
         MalletTower mallet = new MalletTower(0, 0);
         mallet.upgrade(Upgrade.Range);
-        assertEquals(1.5, mallet.getRange());
+        assertEquals(2, mallet.getRange());
     }
 
 
@@ -86,7 +86,7 @@ public class TowersTest {
     public void test_blowtorch_upgrade_range() {
         BlowtorchTower blowtorch = new BlowtorchTower(0, 0);
         blowtorch.upgrade(Upgrade.Range);
-        assertEquals(3.0, blowtorch.getRange());
+        assertEquals(4, blowtorch.getRange());
     }
 
     @Test

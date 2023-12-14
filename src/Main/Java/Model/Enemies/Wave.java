@@ -29,17 +29,6 @@ public class Wave {
         spawnRate = MAX_SPAWN_RATE;
         waveFactory = new EnemyFactory(startPosition, pathDirections);
     }
-
-    /**
-     * Starts a new wave of enemies.
-     * @return The next wave in the queue.
-     * @throws Exception if the queue is empty.
-     */
-    public Queue<EnemyType> startWave() throws Exception{
-        currentWave++;
-        if (waves.isEmpty()) throw new Exception("Wave is empty");
-        return waves.poll();
-    }
     
     /**
      * Adds all the waves to the wave queue.

@@ -5,15 +5,18 @@ import java.util.List;
 import Controller.Interfaces.IMoneyObserver;
 import Model.Interfaces.IMoneySubject;
 
+/**
+ * A class a player in the game.
+ */
 public class Player implements IMoneySubject{
     private int money;
     private int health;
     private List<IMoneyObserver> moneyObservers;
 
     /**
-     * TODO Javadoc comment
-     * @param money
-     * @param health
+     * Constructor of a player
+     * @param money the money that the player uses to buy and upgrade new towers
+     * @param health the health points of a player. If this goes to 0 the player dies.
      */
     public Player(int money, int health){
         this.money = money;
