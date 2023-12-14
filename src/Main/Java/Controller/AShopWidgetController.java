@@ -12,11 +12,20 @@ import Controller.Interfaces.IMoneyObserver;
 import Model.MainModel;
 import View.GraphicsDependencies;
 
+/**
+ * AShopWidgetController is an abstract class representing a widget controller
+ * responsible for managing the user interface elements within the shop,
+ * including
+ * the creation and display of buttons, header initialization, and overall
+ * layout
+ * configuration.
+ */
+
 public abstract class AShopWidgetController extends JPanel implements IMoneyObserver {
     private final int MAP_HEIGHT = 480;
     private final int FRAME_HEIGHT = GraphicsDependencies.getHeight();
     protected MainModel model;
-    
+
     protected PlayButtonController playbutton;
     protected JPanel buttonPanel = new JPanel();
     protected List<AWidgetButton> buttons;
@@ -24,6 +33,7 @@ public abstract class AShopWidgetController extends JPanel implements IMoneyObse
 
     /**
      * Constructor of the abstract Tower Controller class
+     * 
      * @param observer is the Map which is notified when the player wants to create
      *                 a tower
      */
@@ -47,6 +57,8 @@ public abstract class AShopWidgetController extends JPanel implements IMoneyObse
 
     /**
      * Initializes the Header of the CreateTowerController
+     * 
+     * @param titleString - to initilize the titel of the header.
      */
     protected void initHeader(String titleString) {
         headpanel.setBackground(Color.gray);
