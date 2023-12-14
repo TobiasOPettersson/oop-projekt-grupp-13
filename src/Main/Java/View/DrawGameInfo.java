@@ -10,25 +10,12 @@ public class DrawGameInfo {
     private final int SPRITESIZE = GraphicsDependencies.getSpriteSize();
     private final int FRAMEWIDTH = GraphicsDependencies.getWidth();
     private final int FRAMEHEIGHT = GraphicsDependencies.getHeight();
+
+    private MainModel model;
     
-    private int mapSizeX;
-    private int playerHealth;
-    private int playerMoney;
-    private int currentWaveNumber;
-    private int maxNumberofWaves;
-    private boolean playerisAlive;
-    private boolean activeWave;
-    private boolean allWavesDead;
 
     public DrawGameInfo(MainModel model) {
-        mapSizeX = model.getMapSizeX();
-        playerHealth = model.getPlayerHealth();
-        playerMoney = model.getPlayerMoney();
-        currentWaveNumber = model.getCurrentWaveNumber();
-        maxNumberofWaves = model.getMaxNumberofWaves();
-        playerisAlive = model.getAlive();
-        activeWave = model.getActiveWave();
-        allWavesDead = model.allWavesDead();
+        this.model = model;
     }
 
     /**
@@ -53,7 +40,7 @@ public class DrawGameInfo {
     private void drawPlayerHealth(Graphics g) {
         g.setColor(Color.DARK_GRAY);
         g.setFont(new Font("Arial", Font.BOLD, 20));
-        g.drawString("Health: " + playerHealth, 0, SPRITESIZE / 2 + 6);
+        g.drawString("Health: " + model.getPlayerHealth(), 0, SPRITESIZE / 2 + 6);
     }
 
     /**
@@ -64,7 +51,7 @@ public class DrawGameInfo {
     private void drawPlayerMoney(Graphics g) {
         g.setColor(Color.DARK_GRAY);
         g.setFont(new Font("Arial", Font.BOLD, 20));
-        g.drawString("Money: " + playerMoney, 0, SPRITESIZE + SPRITESIZE / 2 + 6);
+        g.drawString("Money: " + model.getPlayerMoney(), 0, SPRITESIZE + SPRITESIZE / 2 + 6);
     }
 
     /**
@@ -75,8 +62,8 @@ public class DrawGameInfo {
     private void drawWaveNumber(Graphics g) {
         g.setColor(Color.DARK_GRAY);
         g.setFont(new Font("Arial", Font.BOLD, 20));
-        g.drawString("Round: " + currentWaveNumber + "/" + maxNumberofWaves,
-                mapSizeX * SPRITESIZE - SPRITESIZE * 3, SPRITESIZE / 2 + 6);
+        g.drawString("Round: " + model.getCurrentWaveNumber() + "/" + model.getMaxNumberofWaves(),
+                model.getMapSizeX() * SPRITESIZE - SPRITESIZE * 3, SPRITESIZE / 2 + 6);
     }
 
     /**
@@ -103,10 +90,10 @@ public class DrawGameInfo {
      * @param g
      */
     private void drawEndScreen(Graphics g) {
-        if (!playerisAlive) {
+        if (!model.getAlive()) {
             drawLostScreeen(g);
         }
-        if (!activeWave && allWavesDead && playerisAlive) {
+        if (!model.getActiveWave() && model.allWavesDead() && model.getAlive()) {
             drawWonScreeen(g);
         }
     }
@@ -165,7 +152,7 @@ public class DrawGameInfo {
         drawRect(rect1X, rect1Y, width1, height1, background, g);
 
         // Rectangle 2 Waves
-        int rect2X = (mapSizeX - 3) * SPRITESIZE;
+        int rect2X = (model.getMapSizeX() - 3) * SPRITESIZE;
         int rect2Y = 0;
         int width2 = SPRITESIZE * 3;
         int height2 = SPRITESIZE;
