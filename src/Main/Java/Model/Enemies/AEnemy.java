@@ -92,7 +92,7 @@ public abstract class AEnemy implements IMovable, ITargetable {
             double number;
             double offset = vector / 2;
 
-            if (coordinate == Math.floor(coordinate) + this.tileOffset) {
+            if (coordinate == Math.floor(coordinate) + tileOffset) {
                 number = Math.round(coordinate + offset);
             } else {
                 number = Math.round(coordinate);
@@ -110,7 +110,7 @@ public abstract class AEnemy implements IMovable, ITargetable {
      * @return the closest tile centerpoint x-coordinate.
      */
     private double tileCenterPointX(double h) {
-        return tileCenterPoint(this.x, h);
+        return tileCenterPoint(x, h);
     }
     
     /**
@@ -118,7 +118,7 @@ public abstract class AEnemy implements IMovable, ITargetable {
      * @return the closest tile centerpoint y-coordinate.
      */
     private double tileCenterPointY(double v) {
-        return tileCenterPoint(this.y, v);
+        return tileCenterPoint(y, v);
     }
 
     /**
@@ -151,8 +151,8 @@ public abstract class AEnemy implements IMovable, ITargetable {
      * @return boolean for if the position is on or passed a centerpoint. True if that's the case, else false.
      */
     private boolean currentPosIsPassedCenterPoint(double centerPointX, double centerPointY, double h, double v) {
-        return ((Math.signum(this.y - centerPointY) == v) || (this.y == centerPointY))
-                && (Math.signum(this.x - centerPointX) == h || (this.x == centerPointX));
+        return ((Math.signum(y - centerPointY) == v) || (y == centerPointY))
+                && (Math.signum(x - centerPointX) == h || (x == centerPointX));
     }
 
     /**
@@ -164,8 +164,8 @@ public abstract class AEnemy implements IMovable, ITargetable {
         if (h != 0 && v != 0) {
             throw new IllegalArgumentException("The enemy can only walk in one direction");
         }
-        this.x += h * speed;
-        this.y += v * speed;
+        x += h * speed;
+        y += v * speed;
     }
 
     /**
@@ -174,8 +174,8 @@ public abstract class AEnemy implements IMovable, ITargetable {
      * @param centerPointY is the closest centerpoint y-coordinate
      */
     private void forceEnemyToCenterPoint(double centerPointX, double centerPointY) {
-        this.x = centerPointX;
-        this.y = centerPointY;
+        x = centerPointX;
+        y = centerPointY;
     }
 
     /**
@@ -208,8 +208,8 @@ public abstract class AEnemy implements IMovable, ITargetable {
     private void turningMove(double h, double v, double hNext, double vNext, double nextX, double nextY) {
         double nextXPos = tileCenterPointX(h) + Math.abs((nextY) - tileCenterPointY(v)) * hNext;
         double nextYPos = tileCenterPointY(v) + Math.abs((nextX) - tileCenterPointX(h)) * vNext;
-        this.x = nextXPos;
-        this.y = nextYPos;
+        x = nextXPos;
+        y = nextYPos;
     }
 
     /**
@@ -231,8 +231,8 @@ public abstract class AEnemy implements IMovable, ITargetable {
             double hNext = horizontalVector(nextDir);
             double vNext = verticalVector(nextDir);
 
-            double nextX = this.x + h * speed;
-            double nextY = this.y + v * speed;
+            double nextX = x + h * speed;
+            double nextY = y + v * speed;
 
             if (nextPosIsPassedCenterPoint(nextX, nextY, currentDir, h, v)) {
                 if (currentDir == nextDir) {
