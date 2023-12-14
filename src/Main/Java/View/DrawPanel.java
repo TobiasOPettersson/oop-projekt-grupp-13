@@ -28,49 +28,32 @@ import java.awt.geom.Point2D;
 
 public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservable {
     private MainModel model;
-    private ATile mapGrid[][];
-    private List<Direction> pathDirections;
-    private int gridWidth;
-    private int gridHeight;
-    private ArrayList<BufferedImage> pathSprites = new ArrayList<>();
-    private int[][] pathGrid;
+    private DrawEnemies drawEnemies = new DrawEnemies();
+    private DrawMap drawMap = new DrawMap(model);
+    private DrawGameInfo drawGameInfo = new DrawGameInfo(model);
+
     private int[] selectedTile = new int[] { -1, -1 };
     private int[] hoveredTile = new int[] { -1, -1 };
     private TowerType towerTypeToPlace = null;
     private boolean isPlacingTower = false;
     protected TowerSpriteManager towerSpriteManager = new TowerSpriteManager();
-    protected EnemySpriteManager enemySpriteManager = new EnemySpriteManager();
-    protected WorldSpriteManager worldSpriteManager = new WorldSpriteManager();
+
     private BufferedImage[] towerSprites;
-    private BufferedImage[] enemySprites;
 
     private final int SPRITESIZE = GraphicsDependencies.getSpriteSize();
+    private int gridWidth;
+    private int gridHeight;
 
     // Constructor
     public DrawPanel(GameView gameView, MainModel model) {
         this.model = model;
-        this.pathDirections = this.model.getPathDirections();
-        this.mapGrid = this.model.getTileGrid();
-        this.gridWidth = this.model.getMapSizeX();
-        this.gridHeight = this.model.getMapSizeY();
-        this.pathGrid = this.model.getPathGrid();
         setLayout(null);
-
         update();
-        createPathSprites();
         addMouseListeners();
+        this.gridWidth = model.getMapSizeX();
+        this.gridHeight = model.getMapSizeY();
     }
 
-    /*
-     * Creates an array of sprites oriented the correct way and in the correct order according
-     * to the pathDirection array
-     */
-    private void createPathSprites() {
-        for (int i = 1; i < this.pathDirections.size(); i++) {
-            pathSprites.add(
-                    worldSpriteManager.getPathTurn(this.pathDirections.get(i - 1), this.pathDirections.get(i)));
-        }
-    }
     // ----------------------------Draw & paint methods-----------------------//
 
     /**
@@ -80,11 +63,8 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
      */
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        drawMap(g);
         drawTowers(g);
         drawSelectedTile(g);
-        drawVisibleGrid(g);
-        drawInfo(g);
         if (getTowerAtMousePos() != null) {
             drawHoveredTowerRange(g, getTowerAtMousePos());
         }
@@ -92,26 +72,16 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
         if (isPlacingTower) {
             drawTowerAtMousePos(g);
         }
-        drawStartPosition(g);
-        drawEndPosition(g);
-        drawEnemies(g);
-        drawEndScreen(g);
-    }
-
-    /**
-     * TODO Javadoc comment, duplicate methodcalls in paintComponents() and here
-     * 
-     * @param g
-     */
-    private void drawMap(Graphics g) {
-        drawTerrain(g);
-        drawPath(g);
+        drawEnemies.draw(g, model.getEnemies());
+        drawMap.draw(g);
+        drawGameInfo.draw(g);
         drawHoveredTile(g);
     }
 
     /**
-     * Draws a square border around the tile the player has clicked on 
-     * @param g Graphics
+     * Draws a square border around the tile the player has clicked on
+     * 
+     * @param g Graphics object
      */
     void drawSelectedTile(Graphics g) {
         if (selectedTile.length > 0) {
@@ -125,7 +95,8 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
 
     /**
      * Draws a square border around the tile the player is hovering over
-     * @param g Graphics
+     * 
+     * @param g Graphics object
      */
     void drawHoveredTile(Graphics g) {
         if (selectedTile.length > 0) {
@@ -138,60 +109,22 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
     }
 
     // TODO Javadoc comment
+
     /**
+     * Draw Towers on the map
      * 
-     * @param g
-     */
-    void drawEnemies(Graphics g) {
-        for (AEnemy enemy : model.getEnemies()) {
-            int offset = SPRITESIZE / 2; // Sprite size / 2
-            this.enemySprites = enemySpriteManager.getEnemySprites(enemy.getEnemyType());
-
-            if (!enemy.getIsStaggered()) {
-                int x = (int) (enemy.getX() * SPRITESIZE) - offset;
-                int y = (int) (enemy.getY() * SPRITESIZE) - offset;
-                g.drawImage(enemySprites[enemy.getAnimationIndex()], x, y, null);
-                drawEnemyHP(g, enemy, x, y);
-            }
-        }
-    }
-
-    /**
-     * 
-     * @param g
-     * @param enemy
-     * @param x
-     * @param y
-     */
-    private void drawEnemyHP(Graphics g, AEnemy enemy, int x, int y) {
-        double percentOfHP = enemy.getHealth() / enemy.getMaxHealth();
-        if (percentOfHP > 0.75) {
-            g.setColor(Color.GREEN);
-        } else if ((percentOfHP <= 0.75) && (percentOfHP > 0.5)) {
-            g.setColor(Color.YELLOW);
-        } else if ((percentOfHP <= 0.5) && (percentOfHP > 0.25)) {
-            g.setColor(Color.ORANGE);
-        } else {
-            g.setColor(Color.RED);
-        }
-        Graphics2D g2 = (Graphics2D) g;
-        g2.setStroke(new BasicStroke(3));
-        g2.drawLine(x, y + SPRITESIZE + 2, (int) (x + (SPRITESIZE * percentOfHP)), y + SPRITESIZE + 2);
-    }
-
-    /**
      * @param g
      */
     private void drawTowers(Graphics g) {
         for (ATower tower : model.getTowers()) {
             this.towerSprites = towerSpriteManager.getTowerSprites(tower.getTowerType());
             BufferedImage towerImage = null;
-            if(tower.getTowerType() != TowerType.freezer){
+            if (tower.getTowerType() != TowerType.freezer) {
                 towerImage = towerSprites[tower.getAnimationIndex()];
                 if (tower.getTargetPosition() != null) {
                     towerImage = rotateTowerTowardTarget(tower, towerImage);
                 }
-            } else{
+            } else {
                 towerImage = towerSprites[0];
             }
             g.drawImage(towerImage, (int) tower.getX() * SPRITESIZE, (int) tower.getY() * SPRITESIZE, null);
@@ -200,39 +133,22 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
 
     /**
      * Rotates the tower image toward the enemy its targeting
+     * 
      * @param tower      The tower that is attacking the enemy
      * @param towerImage The original tower image
      * @return The rotated tower image
      */
     private BufferedImage rotateTowerTowardTarget(ATower tower, BufferedImage towerImage) {
         Point2D.Double enemyCenterPoint = tower.getTargetPosition();
-        double angleBInRadians = Math.atan2(tower.getY() + 0.5 - enemyCenterPoint.getY(), tower.getX() + 0.5 - enemyCenterPoint.getX());
+        double angleBInRadians = Math.atan2(tower.getY() + 0.5 - enemyCenterPoint.getY(),
+                tower.getX() + 0.5 - enemyCenterPoint.getX());
         double angle = Math.toDegrees(angleBInRadians);
         return SpriteHelper.rotateSprite(towerImage, (int) (angle) + 270);
     }
 
-    /**
-     * Draw start position for enemies
-     */
-    private void drawStartPosition(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;
-        Color enemyColor = new Color(200, 0, 0, 80);
-        g2.setColor(enemyColor);
-        int rectY = (model.getStartPosition()*SPRITESIZE)-SPRITESIZE;
-        g2.fillRect(0, rectY, SPRITESIZE, SPRITESIZE*3);
-    }
+    
+    
 
-    /**
-     * Draw start position for enemies
-     */
-    private void drawEndPosition(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;
-        Color homeColor = new Color(35, 0, 200, 80);
-        g2.setColor(homeColor);
-        int rectY = ((model.getEndPosition())*SPRITESIZE)-SPRITESIZE;
-        int rectX = (model.getMapSizeX()*SPRITESIZE)-SPRITESIZE;
-        g2.fillRect(rectX, rectY, SPRITESIZE, SPRITESIZE*3);
-    }
 
     /**
      * Draws the tower that the player wants to create at the mouse cursor
@@ -276,145 +192,8 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
         int rangeCircleX = (int) (x - range);
         int rangeCircleY = (int) (y - range);
         int rangeCircleD = (int) (range * 2 * SPRITESIZE);
-        g2.drawOval(rangeCircleX * SPRITESIZE, rangeCircleY * SPRITESIZE, rangeCircleD + SPRITESIZE, rangeCircleD + SPRITESIZE);
-    }
-
-    /**
-     * TODO javadoc comment
-     * 
-     * @param g
-     */
-    private void drawPath(Graphics g) {
-        for (int i = 0; i < gridWidth; i++) {
-            for (int j = 0; j < gridHeight; j++) {
-                if (pathGrid[j][i] != 0) {
-                    g.drawImage(pathSprites.get(pathGrid[j][i] - 1), i * SPRITESIZE, j * SPRITESIZE, null);
-                }
-            }
-        }
-    }
-
-    /**
-     * Draws the map to the screen according to the blueprint
-     * @param g Graphics
-     */
-    private void drawTerrain(Graphics g) {
-        for (int i = 0; i < gridWidth; i++) {
-            for (int j = 0; j < gridHeight; j++) {
-                switch (mapGrid[j][i].getTerrain()) {
-                    case Plains:
-                        g.drawImage(worldSpriteManager.getTileSprite(), i * SPRITESIZE, j * SPRITESIZE, null);
-                        break;
-                    case Water:
-                        g.drawImage(worldSpriteManager.getTileSprite(), i * SPRITESIZE, j * SPRITESIZE, null);
-                        break;
-                    case Forrest:
-                        g.drawImage(worldSpriteManager.getTileSprite(), i * SPRITESIZE, j * SPRITESIZE, null);
-                        break;
-                    case Mountains:
-                        g.drawImage(worldSpriteManager.getTileSprite(), i * SPRITESIZE, j * SPRITESIZE, null);
-                        break;
-                    case Kitchen:
-                        g.drawImage(worldSpriteManager.getTileSprite(), i * SPRITESIZE, j * SPRITESIZE, null);
-                        break;
-                    default:
-                        g.drawImage(worldSpriteManager.getTileSprite(), i * SPRITESIZE, j * SPRITESIZE, null);
-                        break;
-                }
-            }
-        }
-    }
-
-    /*
-     * Draw a grid on the whole map
-     */
-    private void drawVisibleGrid(Graphics g) {
-        for (int i = 0; i < gridWidth; i++) {
-            g.setColor(new Color(77, 77, 77));
-            g.drawLine(i * SPRITESIZE, 0, i * SPRITESIZE, gridHeight * SPRITESIZE);
-        }
-        for (int j = 0; j < gridHeight; j++) {
-            g.drawLine(0, j * SPRITESIZE, gridWidth * SPRITESIZE, j * SPRITESIZE);
-        }
-    }
-
-    /**
-     * TODO Javadoc comment
-     * @param g
-     */
-    private void drawEndScreen(Graphics g) {
-        if (!model.getAlive()) {
-            g.setColor(new Color(0, 0, 0, 150));
-            g.fillRect(0, 0, getWidth(), getHeight());
-            g.setColor(Color.RED);
-            g.setFont(new Font("Arial", Font.BOLD, 30));
-            drawCenteredText(g, "YOU LOST!");
-        }
-        if (!model.getActiveWave() && model.allWavesDead() && model.getAlive()) {
-            g.setColor(new Color(0, 0, 0, 150));
-            g.fillRect(0, 0, getWidth(), getHeight());
-            g.setColor(Color.GREEN);
-            g.setFont(new Font("Arial", Font.BOLD, 30));
-            drawCenteredText(g, "YOU WON!");
-        }
-    }
-
-    /**
-     * TODO Javadoc comment
-     * @param g
-     * @param text
-     */
-    private void drawCenteredText(Graphics g, String text) {
-        int messageWidth = g.getFontMetrics().stringWidth(text);
-        int x = (getWidth() - messageWidth) / 2;
-        int y = getHeight() / 2;
-        g.drawString(text, x, y);
-    }
-
-    /**
-     * TODO Javadoc comment
-     * @param g
-     */
-    private void drawPlayerHealth(Graphics g) {
-        g.setColor(Color.DARK_GRAY);
-        g.setFont(new Font("Arial", Font.BOLD, 20));
-        g.drawString("Health: " + model.getPlayerHealth(), 0, SPRITESIZE / 2 + 6);
-    }
-
-    /**
-     * TODO Javadoc comment
-     * @param g
-     */
-    private void drawPlayerMoney(Graphics g) {
-        g.setColor(Color.DARK_GRAY);
-        g.setFont(new Font("Arial", Font.BOLD, 20));
-        g.drawString("Money: " + model.getPlayerMoney(), 0, SPRITESIZE + SPRITESIZE / 2 + 6);
-    }
-
-    /**
-     * TODO Javadoc comment
-     * @param g
-     */
-    private void drawWaveNumber(Graphics g) {
-        g.setColor(Color.DARK_GRAY);
-        g.setFont(new Font("Arial", Font.BOLD, 20));
-        g.drawString("Round: " + model.getCurrentWaveNumber() + "/" + model.getMaxNumberofWaves(),
-                model.getMapSizeX() * SPRITESIZE - SPRITESIZE * 3, SPRITESIZE / 2 + 6);
-    }
-
-    /**
-     * TODO Javadoc comment
-     * @param g
-     */
-    private void drawInfo(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;
-        Color backgroundColor = new Color(46, 122, 71, 255);
-        g2.setColor(backgroundColor);
-        g2.fillRect(0, 0, SPRITESIZE*3, SPRITESIZE*2);
-        g2.fillRect((model.getMapSizeX()-3)*SPRITESIZE, 0, SPRITESIZE*3, SPRITESIZE);
-        drawPlayerHealth(g);
-        drawPlayerMoney(g);
-        drawWaveNumber(g);
+        g2.drawOval(rangeCircleX * SPRITESIZE, rangeCircleY * SPRITESIZE, rangeCircleD + SPRITESIZE,
+                rangeCircleD + SPRITESIZE);
     }
 
     // ----------------------------Other methods--------------------------//
@@ -443,7 +222,7 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
                 if (mEvent.getButton() == MouseEvent.BUTTON3) {
                     isPlacingTower = false;
                     JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(DrawPanel.this);
-                    ((GameView)parentFrame).openCreateWidgit();
+                    ((GameView) parentFrame).openCreateWidgit();
                 } else {
                     try {
                         handleTileClick();
@@ -473,11 +252,12 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
             JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(DrawPanel.this);
             if (isPlacingTower) {
                 model.createTower(hoveredTile[0], hoveredTile[1], towerTypeToPlace);
-                ((GameView)parentFrame).addNewUpgradeWidget(towerTypeToPlace, hoveredTile[0], hoveredTile[1]);
+                ((GameView) parentFrame).addNewUpgradeWidget(towerTypeToPlace, hoveredTile[0], hoveredTile[1]);
             } else if (getTowerAtMousePos() != null) {
                 selectedTile[0] = hoveredTile[0];
                 selectedTile[1] = hoveredTile[1];
-                ((GameView)parentFrame).openUpgradeWidgit(hoveredTile[0], hoveredTile[1], getTowerAtMousePos().getTowerType(),
+                ((GameView) parentFrame).openUpgradeWidgit(hoveredTile[0], hoveredTile[1],
+                        getTowerAtMousePos().getTowerType(),
                         getTowerAtMousePos().getUpgrades());
             }
         }
@@ -515,12 +295,13 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
 
     /**
      * Gets the tower object at the current mouse position
+     * 
      * @return Tower at mouse position or null if the tile doesn't have a tower
      */
     private ATower getTowerAtMousePos() {
         if (hoveredTile[0] > -1 && hoveredTile[1] > -1) {
             if (isHoveredTileTowerTile()) {
-                return model.getTowerOnTile(((TowerTile)model.getTile(hoveredTile[0], hoveredTile[1])));
+                return model.getTowerOnTile(((TowerTile) model.getTile(hoveredTile[0], hoveredTile[1])));
             }
         }
         return null;
@@ -528,6 +309,7 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
 
     /**
      * Checks whether the hovered tile is a TowerTile
+     * 
      * @return If the hovered tile is a TowerTile
      */
     private boolean isHoveredTileTowerTile() {

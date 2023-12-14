@@ -12,8 +12,9 @@ public class GraphicsDependencies {
     private static final int BOTTOMPANEL = 190; // Kanske inte ska användas
     // sprite size in pixels
     private static final int SPRITESIZE = 48;
-    
+
     /**
+     * Frame Width
      * 
      * @return
      */
@@ -22,6 +23,7 @@ public class GraphicsDependencies {
     }
 
     /**
+     * Frame Height
      * 
      * @return
      */
@@ -30,7 +32,7 @@ public class GraphicsDependencies {
     }
 
     /**
-     * 
+     * Y coordinates of TowerPanel
      * @return
      */
     public static int getBottomPanel() {
@@ -38,7 +40,7 @@ public class GraphicsDependencies {
     }
 
     /**
-     * 
+     * Size of sprites
      * @return
      */
     public static int getSpriteSize() {
