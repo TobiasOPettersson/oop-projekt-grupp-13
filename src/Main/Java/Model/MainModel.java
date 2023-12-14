@@ -35,7 +35,7 @@ public class MainModel implements ITowerUpgradeObserver {
      */
     public MainModel() {
         player = new Player(5, 3);
-        map = new MapOne();
+        map = new MapOne(player);
         allWaves = new Wave(map.getStartPosition(), map.getPathDirections());
         alive = true;
         activeWave = false;
@@ -158,8 +158,9 @@ public class MainModel implements ITowerUpgradeObserver {
 
     /**
      * Starts the wave
+     * @throws Exception
      */
-    public void play() {
+    public void play() throws Exception {
         if (canStartNewWave()) {
             currentWaveEnemies = allWaves.getNextWave();
             activeWave = true;
@@ -283,7 +284,6 @@ public class MainModel implements ITowerUpgradeObserver {
      * TODO REMOVE OR CHANGE
      */
     public Player getPlayer() {
-        map.setPlayer(player);
         return player;
     }
 

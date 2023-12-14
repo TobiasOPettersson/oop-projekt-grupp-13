@@ -255,14 +255,14 @@ public class Wave {
 
     //---------------- GETTERS AND SETTERS -----------------//
 
-    public Queue<AEnemy> getNextWave() {
+    public Queue<AEnemy> getNextWave() throws Exception {
         if (!waves.isEmpty()){
             Queue<AEnemy> nextWave = waveFactory.createCurrentWave(waves.poll());
             currentWave++;
             return nextWave;
         }
         else {
-            throw new NullPointerException(" You called waves.poll() on an empty queue. Returns null.");
+            throw new Exception(" You called waves.poll() on an empty queue. Returns null.");
         }
     }
 

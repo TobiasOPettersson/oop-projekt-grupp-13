@@ -1,7 +1,5 @@
 package Model.Towers;
 
-import java.util.List;
-
 import Model.Enums.EnemyType;
 import Model.Enums.TargetType;
 import Model.Enums.TowerType;
