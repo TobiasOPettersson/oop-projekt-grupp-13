@@ -153,6 +153,7 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
                 g.drawImage(enemySprites[enemy.getAnimationIndex()], x, y, null);
                 drawEnemyHP(g, enemy, x, y);
             }
+
         }
     }
 
@@ -285,6 +286,7 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
      * @param g
      */
     private void drawPath(Graphics g) {
+        int spriteSize = 48;
         for (int i = 0; i < gridWidth; i++) {
             for (int j = 0; j < gridHeight; j++) {
                 if (pathGrid[j][i] != 0) {
@@ -327,6 +329,11 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
 
     /*
      * Draw a grid on the whole map
+     * @param g
+     */
+    /**
+     * Draw a grid on the whole map
+     * @param g
      */
     private void drawVisibleGrid(Graphics g) {
         for (int i = 0; i < gridWidth; i++) {
@@ -386,7 +393,7 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
      * @param g
      */
     private void drawPlayerMoney(Graphics g) {
-        g.setColor(Color.DARK_GRAY);
+                g.setColor(Color.DARK_GRAY);
         g.setFont(new Font("Arial", Font.BOLD, 20));
         g.drawString("Money: " + model.getPlayerMoney(), 0, SPRITESIZE + SPRITESIZE / 2 + 6);
     }
@@ -407,7 +414,7 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
      * @param g
      */
     private void drawInfo(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;
+Graphics2D g2 = (Graphics2D) g;
         Color backgroundColor = new Color(46, 122, 71, 255);
         g2.setColor(backgroundColor);
         g2.fillRect(0, 0, SPRITESIZE*3, SPRITESIZE*2);

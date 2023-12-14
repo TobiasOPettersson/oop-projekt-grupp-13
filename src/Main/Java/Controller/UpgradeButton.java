@@ -4,7 +4,6 @@ import Model.Enums.TowerType;
 import Model.Enums.Upgrade;
 
 import java.awt.Color;
-import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 

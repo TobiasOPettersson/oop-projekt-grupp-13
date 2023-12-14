@@ -3,25 +3,18 @@ package Model.Enemies;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.awt.Point;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Queue;
 
 import Model.Enums.Direction;
-import Model.Enums.EnemyType;
 import Model.Map.AMap;
 import Model.Map.MapOne;
-import Model.Enemies.TomatoEnemy;
-import Model.Enemies.Wave;
-import Model.Enemies.AEnemy;
-import Model.Interfaces.IAttackable;
+import Model.Player.Player;
 
 public class WaveTest {
-    AMap map = new MapOne();
+    Player player = new Player(0, 10);
+    AMap map = new MapOne(player);
     public int startPosition = map.getStartPosition();
     public List<Direction> pathDirections = map.getPathDirections();
 

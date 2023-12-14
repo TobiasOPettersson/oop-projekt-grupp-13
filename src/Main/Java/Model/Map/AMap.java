@@ -31,8 +31,9 @@ public abstract class AMap{
      * @param pathGrid Size X = 20 and Y = 10. Matrix made in subclass. Path made by ints 1 = start and highest number is the end.
      * Start is always on the left and End is always at the right
      */
-    public AMap(int[][] pathGrid) {
+    public AMap(int[][] pathGrid, Player player) {
         this.pathGrid = pathGrid;
+        this.player = player;
         createPathGrid();
         fillOccupiedTile();
         fillGridTowerTile();
@@ -279,10 +280,7 @@ public abstract class AMap{
     public int[][] getPathGrid() {
         return pathGrid;
     }
-    public void setPlayer(Player player){
-        this.player = player;
-    }
-
+    
     public boolean tileIsTowerTile(int x, int y){
         return getTile(x, y) instanceof TowerTile;
     }
