@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import Model.MainModel;
 
 /**
  * A class that draws game info such as lives, money, the loss- and win screen
