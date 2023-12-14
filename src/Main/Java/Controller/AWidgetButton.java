@@ -11,6 +11,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.util.HashMap;
 import java.util.Map;
@@ -62,7 +63,7 @@ public abstract class AWidgetButton extends JPanel {
     private void initTopPanel() {
         topPanel = new JPanel();
         JLabel towerImageLabel = new JLabel(new ImageIcon(buttonImgPaths.get(type)));
-        // topPanel.setBackground(Color.orange);
+
         topPanel.setLayout(new BorderLayout());
         topPanel.add(towerImageLabel, BorderLayout.CENTER);
         add(topPanel, BorderLayout.CENTER);
@@ -76,12 +77,15 @@ public abstract class AWidgetButton extends JPanel {
     private void initBottomPanel() {
         bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         bottomPanel.setPreferredSize(new Dimension(100, 180));
-        // bottomPanel.setBackground(Color.PINK);
         bottomPanel.setLayout(new GridLayout(3, 1, 0, 0));
 
         String typeName = Character.toUpperCase(type.name().charAt(0)) + type.name().substring(1);
         nameLabel = new JLabel(typeName);
+        Font newFontName = nameLabel.getFont().deriveFont(18f); // 18f is the new font size
+        nameLabel.setFont(newFontName);
         JLabel costLabel = new JLabel(Integer.toString(cost));
+        Font newFontCost = costLabel.getFont().deriveFont(18f);
+        costLabel.setFont(newFontCost);
         nameLabel.setHorizontalAlignment(SwingConstants.CENTER);
         costLabel.setHorizontalAlignment(SwingConstants.CENTER);
         bottomPanel.add(nameLabel);

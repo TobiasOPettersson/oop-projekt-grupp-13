@@ -37,7 +37,7 @@ public class CreateWidgetController extends AShopWidgetController implements ICr
         this.model = model;
         buttonPanel.setLayout(new GridLayout(0, 6, 5, 10));
 
-        initHeader("CREATE TOWERS");
+        initHeader("BUY TOWERS");
         initButtons();
         initPlaybutton();
     }
