@@ -15,6 +15,13 @@ import java.awt.GridLayout;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * AWidgetButton is an abstract class representing a button widget
+ * used in the shop's interface to display tower options. It encapsulates
+ * the visual components of a tower button, including the tower's cost,
+ * image, and related UI elements.
+ */
+
 public abstract class AWidgetButton extends JPanel {
     protected JPanel topPanel;
     protected JPanel bottomPanel;
@@ -49,7 +56,7 @@ public abstract class AWidgetButton extends JPanel {
     protected abstract void initButtonImagePaths();
 
     /**
-     * Initializes all components of the bottom panel, it contains:
+     * Initializes all components of the top panel, it contains:
      * An image of the tower
      */
     private void initTopPanel() {
@@ -82,9 +89,15 @@ public abstract class AWidgetButton extends JPanel {
         add(bottomPanel, BorderLayout.SOUTH);
     }
 
+    /**
+     * Sets the opacity of the widget components.
+     * 
+     * @param bool true to set the widget and its components as opaque,
+     *             false to set them with transparency!
+     */
     public void setOpacity(boolean bool) {
         Color color = new Color(0, 0, 0, 150);
-        
+
         if (bool) {
             setOpaque(false);
             setBackground(color);

@@ -11,13 +11,39 @@ import Model.Enums.TowerType;
 import Model.Enums.Upgrade;
 import Model.Interfaces.ITowerUpgradeObserver;
 
+/**
+ * Represents a controller managing the upgrade widget for a specific tower type
+ * in the game.
+ * This controller is responsible for initializing upgrade buttons, handling
+ * player interactions
+ * with these buttons, notifying observers about upgrades, and managing upgrade
+ * availability based on the player's bank.
+ * It extends AShopWidgetController and implements the IUpgradeTowerSubject
+ * interface to observe and notify upgrades.
+ * The class maintains information about the tower type, its position, and
+ * updates available upgrades.
+ */
+
 public class UpgradeWidgetController extends AShopWidgetController implements IUpgradeTowerSubject {
     TowerType towerType;
     private ITowerUpgradeObserver observer;
     private int savedTowerPosX;
     private int savedTowerPosY;
 
-    public UpgradeWidgetController(ITowerUpgradeObserver observer, TowerType towerType, MainModel model, int towerPosX, int towerPosY) {
+    /**
+     * 
+     * @param observer  observer The DrawPanel that is notified when the player
+     *                  wants to create a tower
+     * @param towerType The towerType that the player want to upgrade.
+     * @param model     The mainModel with the data and logic of the game.
+     * @param towerPosX TowerPosX represents the x-coordinate of the tower's
+     *                  position.
+     * @param towerPosY TowerPosY represents the x-coordinate of the tower's
+     *                  position.
+     */
+
+    public UpgradeWidgetController(ITowerUpgradeObserver observer, TowerType towerType, MainModel model, int towerPosX,
+            int towerPosY) {
         super(model);
         this.observer = observer;
         this.towerType = towerType;
@@ -29,45 +55,51 @@ public class UpgradeWidgetController extends AShopWidgetController implements IU
         initHeader("Upgrade " + getTowerType().name());
         initButtons();
         initPlaybutton();
-        
+
     }
+
+    /*
+     * * Initializes the buttons that the player click on when they want to upgrade
+     * the
+     * specific tower
+     */
 
     private void initButtons() {
         switch (towerType) {
             case knife:
                 buttons = List.of(
-                    new UpgradeButton(2, this, Upgrade.Damage, towerType),
-                    new UpgradeButton(3, this, Upgrade.Speed, towerType),
-                    new UpgradeButton(4, this, Upgrade.Targets, towerType),
-                    new UpgradeButton(2, this, Upgrade.Range, towerType));
+                        new UpgradeButton(2, this, Upgrade.Damage, towerType),
+                        new UpgradeButton(3, this, Upgrade.Speed, towerType),
+                        new UpgradeButton(4, this, Upgrade.Targets, towerType),
+                        new UpgradeButton(2, this, Upgrade.Range, towerType));
                 break;
             case mallet:
                 buttons = List.of(
-                    new UpgradeButton(1, this, Upgrade.Damage, towerType),
-                    new UpgradeButton(3, this, Upgrade.Damage2, towerType),
-                    new UpgradeButton(4, this, Upgrade.AoeRange, towerType),
-                    new UpgradeButton(2, this, Upgrade.Range, towerType));
+                        new UpgradeButton(1, this, Upgrade.Damage, towerType),
+                        new UpgradeButton(3, this, Upgrade.Damage2, towerType),
+                        new UpgradeButton(4, this, Upgrade.AoeRange, towerType),
+                        new UpgradeButton(2, this, Upgrade.Range, towerType));
                 break;
             case blowtorch:
                 buttons = List.of(
-                    new UpgradeButton(1, this, Upgrade.Damage, towerType),
-                    new UpgradeButton(3, this, Upgrade.Range, towerType),
-                    new UpgradeButton(4, this, Upgrade.AoeRange, towerType),
-                    new UpgradeButton(2, this, Upgrade.SetOnFire, towerType));
+                        new UpgradeButton(1, this, Upgrade.Damage, towerType),
+                        new UpgradeButton(3, this, Upgrade.Range, towerType),
+                        new UpgradeButton(4, this, Upgrade.AoeRange, towerType),
+                        new UpgradeButton(2, this, Upgrade.SetOnFire, towerType));
                 break;
             case slicer:
                 buttons = List.of(
-                    new UpgradeButton(1, this, Upgrade.Damage, towerType),
-                    new UpgradeButton(3, this, Upgrade.Damage2, towerType),
-                    new UpgradeButton(5, this, Upgrade.Damage3, towerType),
-                    new UpgradeButton(4, this, Upgrade.AoeRange, towerType));
+                        new UpgradeButton(1, this, Upgrade.Damage, towerType),
+                        new UpgradeButton(3, this, Upgrade.Damage2, towerType),
+                        new UpgradeButton(5, this, Upgrade.Damage3, towerType),
+                        new UpgradeButton(4, this, Upgrade.AoeRange, towerType));
                 break;
             case freezer:
                 buttons = List.of(
-                    new UpgradeButton(1, this, Upgrade.Frostbite, towerType),
-                    new UpgradeButton(3, this, Upgrade.SuperChill, towerType),
-                    new UpgradeButton(4, this, Upgrade.ConditionDuration, towerType),
-                    new UpgradeButton(2, this, Upgrade.Range, towerType));
+                        new UpgradeButton(1, this, Upgrade.Frostbite, towerType),
+                        new UpgradeButton(3, this, Upgrade.SuperChill, towerType),
+                        new UpgradeButton(4, this, Upgrade.ConditionDuration, towerType),
+                        new UpgradeButton(2, this, Upgrade.Range, towerType));
                 break;
             default:
                 break;
@@ -83,12 +115,20 @@ public class UpgradeWidgetController extends AShopWidgetController implements IU
         return towerType;
     }
 
+    /**
+     * Notifies the observers about an upgrade and updates corresponding buttons.
+     * Also triggers a method to upgrade a tower.
+     *
+     * @param upgrade The upgrade to be notified to observers
+     */
+
     @Override
     public void notifyObservers(Upgrade upgrade, int cost) throws Exception {
         for (AWidgetButton button : buttons) {
-            if (upgrade == ((UpgradeButton) button).upgrade && !button.getBackground().equals(new Color(0, 0, 0, 150))) {
-                ((UpgradeButton)button).setHasUpgrade(true);
-                ((UpgradeButton)button).showHasUpgrade();
+            if (upgrade == ((UpgradeButton) button).upgrade
+                    && !button.getBackground().equals(new Color(0, 0, 0, 150))) {
+                ((UpgradeButton) button).setHasUpgrade(true);
+                ((UpgradeButton) button).showHasUpgrade();
             }
         }
         observer.upgradeTower(getSavedTowerPosX(), getSavedTowerPosY(), upgrade, cost);
@@ -112,14 +152,15 @@ public class UpgradeWidgetController extends AShopWidgetController implements IU
     public void updateAvailableUpgrades(List<Upgrade> currentUpgrades) {
         for (AWidgetButton button : buttons) {
             if (currentUpgrades.contains(((UpgradeButton) button).upgrade)) {
-                ((UpgradeButton)button).setHasUpgrade(true);
-                ((UpgradeButton)button).showHasUpgrade();
+                ((UpgradeButton) button).setHasUpgrade(true);
+                ((UpgradeButton) button).showHasUpgrade();
             }
         }
     }
 
     /**
      * Saves the position of the mouse as grid-indicies
+     * 
      * @param x is the x-position of the mouse as grid-indicies
      * @param y is the y-position of the mouse as grid-indicies
      */
