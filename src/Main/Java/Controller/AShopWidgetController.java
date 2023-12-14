@@ -12,6 +12,15 @@ import Controller.Interfaces.IMoneyObserver;
 import Model.MainModel;
 import View.GraphicsDependencies;
 
+/**
+ * AShopWidgetController is an abstract class representing a widget controller
+ * responsible for managing the user interface elements within the shop,
+ * including
+ * the creation and display of buttons, header initialization, and overall
+ * layout
+ * configuration.
+ */
+
 public abstract class AShopWidgetController extends JPanel implements IMoneyObserver {
     private final int MAP_HEIGHT = 480;
     private final int FRAME_HEIGHT = GraphicsDependencies.getHeight();

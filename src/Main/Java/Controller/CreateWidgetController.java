@@ -8,6 +8,18 @@ import Model.MainModel;
 import Model.Enums.TowerType;
 import View.ICreateTowerObserver;
 
+/**
+ * CreateWidgetController represents the controller responsible for managing the
+ * shop interface
+ * used for creating towers in the game. It extends AShopWidgetController and
+ * implements the
+ * ICreateTowerSubject interface to facilitate tower creation.
+ * This controller initializes buttons for various tower types and handles
+ * interactions related to
+ * tower creation in the game. It also updates button opacity based on the
+ * player's available money.
+ */
+
 public class CreateWidgetController extends AShopWidgetController implements ICreateTowerSubject {
     ICreateTowerObserver observer;
 

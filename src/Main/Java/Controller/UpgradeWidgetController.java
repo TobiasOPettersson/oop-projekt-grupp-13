@@ -10,6 +10,19 @@ import Model.Enums.TowerType;
 import Model.Enums.Upgrade;
 import Model.Interfaces.ITowerUpgradeObserver;
 
+/**
+ * Represents a controller managing the upgrade widget for a specific tower type
+ * in the game.
+ * This controller is responsible for initializing upgrade buttons, handling
+ * player interactions
+ * with these buttons, notifying observers about upgrades, and managing upgrade
+ * availability based on the player's bank.
+ * It extends AShopWidgetController and implements the IUpgradeTowerSubject
+ * interface to observe and notify upgrades.
+ * The class maintains information about the tower type, its position, and
+ * updates available upgrades.
+ */
+
 public class UpgradeWidgetController extends AShopWidgetController implements IUpgradeTowerSubject {
     TowerType towerType;
     private ITowerUpgradeObserver observer;

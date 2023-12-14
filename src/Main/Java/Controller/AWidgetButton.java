@@ -15,6 +15,13 @@ import java.awt.GridLayout;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * AWidgetButton is an abstract class representing a button widget
+ * used in the shop's interface to display tower options. It encapsulates
+ * the visual components of a tower button, including the tower's cost,
+ * image, and related UI elements.
+ */
+
 public abstract class AWidgetButton extends JPanel {
     protected JPanel topPanel;
     protected JPanel bottomPanel;
