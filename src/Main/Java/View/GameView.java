@@ -31,7 +31,7 @@ public class GameView extends JFrame implements IObservable {
      */
     public GameView(MainModel model) {
         this.model = model;
-        this.drawPanel = new DrawPanel(this, model);
+        this.drawPanel = new DrawPanel(model);
         addMouseListenersToDrawPanel();
         setLayout(null);
         this.drawPanel.setBounds(0, 0, 960, 480);
@@ -85,7 +85,7 @@ public class GameView extends JFrame implements IObservable {
                     openCreateWidgit();
                 } else {
                     try {
-                        handleTileClick();
+                        handleDrawPanelTileClick();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -107,7 +107,7 @@ public class GameView extends JFrame implements IObservable {
      * OR
      * Opens the upgrade widget for the tower at the mouse position
      */
-    private void handleTileClick() throws Exception {
+    private void handleDrawPanelTileClick() throws Exception {
         if (drawPanel.isHoveredTileTowerTile()) {
             int[] hoveredTile = drawPanel.getHoveredTile();
             if (drawPanel.isPlacingTower()) {

@@ -12,37 +12,15 @@ import Model.MainModel;
 import Model.Enums.Direction;
 import Model.Map.ATile;
 
+// TODO ta bort att DrawMap har en pathDirections och mapGrid och använd getters istället, onödiga pilar
 public class DrawMap {
     protected WorldSpriteManager worldSpriteManager = new WorldSpriteManager();
     private final int SPRITESIZE = GraphicsDependencies.getSpriteSize();
     private ArrayList<BufferedImage> pathSprites = new ArrayList<>();
-    private List<Direction> pathDirections;
-    private ATile mapGrid[][];
-    private int[][] pathGrid;
-    private int gridWidth;
-    private int gridHeight;
-    private int pathStartTile;
-    private int pathEndTile;
-    private int mapSizeX;
 
-    public DrawMap(MainModel model) {
-        this.mapSizeX = model.getMapSizeX();
-        this.gridWidth = model.getMapSizeX();
-        this.gridHeight = model.getMapSizeY();
-        this.mapGrid = model.getTileGrid();
-        this.pathDirections = model.getPathDirections();
-        this.pathGrid = model.getPathGrid();
-        this.pathStartTile = model.getStartPosition();
-        this.pathEndTile = model.getEndPosition();
-        createPathSprites();
+    public DrawMap(List<Direction> pathDirections) {
+        createPathSprites(pathDirections);
 
-    }
-
-    public void draw(Graphics g) {
-        drawTerrain(g);
-        drawPath(g);
-        drawStartPosition(g);
-        drawEndPosition(g);
     }
 
     /**
@@ -50,7 +28,7 @@ public class DrawMap {
      * 
      * @param g Graphics
      */
-    private void drawTerrain(Graphics g) {
+    protected void drawTerrain(Graphics g, ATile mapGrid[][], int gridHeight, int gridWidth) {
         for (int i = 0; i < gridWidth; i++) {
             for (int j = 0; j < gridHeight; j++) {
                 switch (mapGrid[j][i].getTerrain()) {
@@ -82,10 +60,10 @@ public class DrawMap {
      * according
      * to the pathDirection array
      */
-    private void createPathSprites() {
-        for (int i = 1; i < this.pathDirections.size(); i++) {
+    private void createPathSprites(List<Direction> pathDirections) {
+        for (int i = 1; i < pathDirections.size(); i++) {
             pathSprites.add(
-                    worldSpriteManager.getPathTurn(this.pathDirections.get(i - 1), this.pathDirections.get(i)));
+                    worldSpriteManager.getPathTurn(pathDirections.get(i - 1), pathDirections.get(i)));
         }
     }
 
@@ -97,7 +75,7 @@ public class DrawMap {
      * 
      * @param g
      */
-    private void drawPath(Graphics g) {
+    protected void drawPath(Graphics g, int[][] pathGrid, int gridWidth, int gridHeight) {
         for (int i = 0; i < gridWidth; i++) {
             for (int j = 0; j < gridHeight; j++) {
                 if (pathGrid[j][i] != 0) {
@@ -112,7 +90,7 @@ public class DrawMap {
      * 
      * @param g Graphics object
      */
-    private void drawStartPosition(Graphics g) {
+    protected void drawStartPosition(Graphics g, int pathStartTile) {
         Color enemyColor = new Color(0, 200, 39, 80);
         int rectX = 0;
         int rectY = (pathStartTile * SPRITESIZE) - SPRITESIZE;
@@ -126,7 +104,7 @@ public class DrawMap {
      * 
      * @param g Graphics object
      */
-    private void drawEndPosition(Graphics g) {
+    protected void drawEndPosition(Graphics g, int mapSizeX, int pathEndTile) {
         Color homeColor = new Color(200, 0, 0, 80);
         int rectY = (pathEndTile * SPRITESIZE) - SPRITESIZE;
         int rectX = (mapSizeX * SPRITESIZE) - SPRITESIZE;
