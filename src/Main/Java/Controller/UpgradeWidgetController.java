@@ -52,7 +52,7 @@ public class UpgradeWidgetController extends AShopWidgetController implements IU
 
         buttonPanel.setLayout(new GridLayout(0, 5, 5, 20));
 
-        initHeader("Upgrade " + getTowerType().name());
+        initHeader("UPGRADE " + getTowerType().name());
         initButtons();
         initPlaybutton();
 

@@ -1,6 +1,7 @@
 package Controller;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -34,9 +35,9 @@ public class PlayButtonController extends JPanel {
      * Initializes the button
      */
     private void initButton() {
-        JButton button = new JButton();
-        button.setSize(50, 50);
-        button.setText("START WAVE");
+        JButton button = new JButton("START WAVE");
+        Font font = new Font("Arial", Font.BOLD, 16);
+        button.setFont(font);
         button.addActionListener(e -> {
             try {
                 model.play();
