@@ -50,7 +50,7 @@ public class MainModel implements ITowerUpgradeObserver {
             updateWave();
             updateTowers();
 
-            alive = alive();
+            alive = isAlive();
             activeWave = activeWave();
         }
         notifyObservers();
@@ -180,7 +180,7 @@ public class MainModel implements ITowerUpgradeObserver {
     /**
      * @return true if alive, false if dead
      */
-    private boolean alive(){
+    private boolean isAlive(){
         return player.getHealth() > 0;
     }
    
