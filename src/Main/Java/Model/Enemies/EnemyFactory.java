@@ -9,7 +9,7 @@ import Model.Enums.Direction;
 import Model.Enums.EnemyType;
 
 /**
- * A class represnting an enemy factory which creates all instances of enemies.
+ * A class representing an enemy factory which creates all instances of enemies.
  */
 public class EnemyFactory {
     private Queue<AEnemy> currentWave = new LinkedList<AEnemy>(); 
