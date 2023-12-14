@@ -280,9 +280,6 @@ public class MainModel implements ITowerUpgradeObserver {
         return tile.getTower();
     }
 
-    /**
-     * TODO REMOVE OR CHANGE
-     */
     public Player getPlayer() {
         return player;
     }
