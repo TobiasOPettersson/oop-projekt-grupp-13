@@ -2,21 +2,17 @@ package Model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observer;
 import java.util.Queue;
 import java.util.LinkedList;
 
 import Model.Enemies.AEnemy;
-import Model.Enemies.TomatoEnemy;
 import Model.Enemies.Wave;
-import Model.Enemies.EnemyFactory;
 import Model.Enums.Direction;
 import Model.Enums.TowerType;
 import Model.Enums.Upgrade;
 import Model.Interfaces.IObservable;
 import Model.Interfaces.ITargetable;
 import Model.Interfaces.ITowerUpgradeObserver;
-import Model.Enums.EnemyType;
 import Model.Map.AMap;
 import Model.Map.ATile;
 import Model.Map.MapOne;
