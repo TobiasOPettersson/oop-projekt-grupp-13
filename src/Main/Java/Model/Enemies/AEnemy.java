@@ -281,19 +281,6 @@ public abstract class AEnemy implements IMovable, ITargetable {
             animationIndex = 0;
         }
     }
-
-    /*
-     * Resets animation index
-     */
-    private void resetAnimation() {
-        int spritesInAnimation = 4;
-        if (animationIndex != 0) {
-            animationIndex++;
-            if (animationIndex >= spritesInAnimation) {
-                animationIndex = 0;
-            }
-        }
-    }
     
     //----------------------------Condition methods----------------------//
 
