@@ -33,6 +33,7 @@ public class Wave {
         
         //Waves 1
         createCurrentWave.addAll(createPartWave(5, EnemyType.banana));
+        createCurrentWave.addAll(createPartWave(1, EnemyType.chicken));
         waves.add(new LinkedList<EnemyType>(createCurrentWave));
         createCurrentWave.clear();
         
