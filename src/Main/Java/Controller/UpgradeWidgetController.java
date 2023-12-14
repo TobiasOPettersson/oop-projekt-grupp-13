@@ -44,6 +44,11 @@ public class UpgradeWidgetController extends AShopWidgetController implements IU
         initPlaybutton();
 
     }
+    /*
+     * * Initializes the buttons that the player click on when they want to upgrade
+     * the
+     * specific tower
+     */
 
     private void initButtons() {
         switch (towerType) {
