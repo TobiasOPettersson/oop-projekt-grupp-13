@@ -4,10 +4,8 @@ import org.junit.jupiter.api.Test;
 
 import Model.Enemies.ChickenEnemy;
 import Model.Enums.Condition;
-import Model.Enums.EnemyType;
 import Model.Enums.Upgrade;
 
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
