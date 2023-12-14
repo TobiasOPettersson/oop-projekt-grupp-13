@@ -15,6 +15,15 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+/**
+ * Represents a dialog window providing a tutorial for the game "Kitchen
+ * Defence".
+ * It displays instructions for gameplay mechanics and controls to the user.
+ * This dialog contains information about enemy waves, placing utensils,
+ * upgrading placed utensils, and starting the game.
+ * The dialog includes a "Start Game" button to close the tutorial and begin
+ * gameplay.
+ */
 public class ShowTutorialDialog extends JDialog {
 
     public ShowTutorialDialog(JFrame GameView) {
