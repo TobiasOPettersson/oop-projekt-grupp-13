@@ -35,11 +35,11 @@ public class GameView extends JFrame implements IObservable {
         add(drawPanel);
         initWidgits();
         initComponents();
-        showTutorial();
-
         setTitle("Kitchen Defence");
         ImageIcon img = new ImageIcon("src/Main/Java/View/resView/towers/fridgeTower.png");
         setIconImage(img.getImage());
+
+        showTutorial();
     }
 
     /**
