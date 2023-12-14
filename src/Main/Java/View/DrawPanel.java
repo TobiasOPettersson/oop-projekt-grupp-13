@@ -28,18 +28,16 @@ import java.awt.geom.Point2D;
 
 public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservable {
     private MainModel model;
-    private DrawEnemies drawEnemies = new DrawEnemies();
-    private DrawMap drawMap = new DrawMap(model);
-    private DrawGameInfo drawGameInfo = new DrawGameInfo(model);
+    private DrawEnemies drawEnemies;
+    private DrawMap drawMap;
+    private DrawGameInfo drawGameInfo;
 
     private int[] selectedTile = new int[] { -1, -1 };
     private int[] hoveredTile = new int[] { -1, -1 };
     private TowerType towerTypeToPlace = null;
     private boolean isPlacingTower = false;
     protected TowerSpriteManager towerSpriteManager = new TowerSpriteManager();
-
     private BufferedImage[] towerSprites;
-
     private final int SPRITESIZE = GraphicsDependencies.getSpriteSize();
     private int gridWidth;
     private int gridHeight;
@@ -47,6 +45,9 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
     // Constructor
     public DrawPanel(GameView gameView, MainModel model) {
         this.model = model;
+        this.drawEnemies = new DrawEnemies();
+        this.drawMap = new DrawMap(model);
+        this.drawGameInfo = new DrawGameInfo(model);
         setLayout(null);
         update();
         addMouseListeners();
@@ -63,19 +64,19 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
      */
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        drawMap.draw(g);
+        drawEnemies.draw(g, model.getEnemies());
         drawTowers(g);
+        drawGameInfo.draw(g);
         drawSelectedTile(g);
+        drawHoveredTile(g);
         if (getTowerAtMousePos() != null) {
             drawHoveredTowerRange(g, getTowerAtMousePos());
         }
-
+        
         if (isPlacingTower) {
             drawTowerAtMousePos(g);
         }
-        drawEnemies.draw(g, model.getEnemies());
-        drawMap.draw(g);
-        drawGameInfo.draw(g);
-        drawHoveredTile(g);
     }
 
     /**
@@ -199,7 +200,7 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
     // ----------------------------Other methods--------------------------//
 
     /**
-     * TODO javadoc comment
+     * Refreshes visual elements
      */
     @Override
     public void update() {

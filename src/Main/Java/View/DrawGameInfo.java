@@ -23,9 +23,9 @@ public class DrawGameInfo {
     public DrawGameInfo(MainModel model) {
         mapSizeX = model.getMapSizeX();
         playerHealth = model.getPlayerHealth();
-        playerMoney = model.getPlayerHealth();
-        maxNumberofWaves = model.getCurrentWaveNumber();
-        currentWaveNumber = model.getMaxNumberofWaves();
+        playerMoney = model.getPlayerMoney();
+        currentWaveNumber = model.getCurrentWaveNumber();
+        maxNumberofWaves = model.getMaxNumberofWaves();
         playerisAlive = model.getAlive();
         activeWave = model.getActiveWave();
         allWavesDead = model.allWavesDead();
@@ -156,7 +156,7 @@ public class DrawGameInfo {
      * @param g Graphics object
      */
     private void drawInfoBackground(Graphics g) {
-        Color background = new Color(70, 30, 220, 80);
+        Color background = new Color(108, 108, 236, 220);
         // Rectangle 1 Health and Coins
         int rect1X = 0;
         int rect1Y = 0;

@@ -13,14 +13,14 @@ import Model.Enums.Direction;
 import Model.Map.ATile;
 
 public class DrawMap {
-    private int gridWidth;
-    private int gridHeight;
-    private ATile mapGrid[][];
     protected WorldSpriteManager worldSpriteManager = new WorldSpriteManager();
     private final int SPRITESIZE = GraphicsDependencies.getSpriteSize();
-    private int[][] pathGrid;
-    private List<Direction> pathDirections;
     private ArrayList<BufferedImage> pathSprites = new ArrayList<>();
+    private List<Direction> pathDirections;
+    private ATile mapGrid[][];
+    private int[][] pathGrid;
+    private int gridWidth;
+    private int gridHeight;
     private int pathStartTile;
     private int pathEndTile;
     private int mapSizeX;
@@ -41,7 +41,6 @@ public class DrawMap {
     public void draw(Graphics g) {
         drawTerrain(g);
         drawPath(g);
-       
         drawStartPosition(g);
         drawEndPosition(g);
     }
