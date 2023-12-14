@@ -61,7 +61,7 @@ public abstract class AShopWidgetController extends JPanel implements IMoneyObse
      * @param titleString - to initilize the titel of the header.
      */
     protected void initHeader(String titleString) {
-        headpanel.setBackground(Color.gray);
+        headpanel.setBackground(new Color(35, 0, 200, 80));
         headpanel.setPreferredSize(new Dimension(300, 25));
 
         JLabel titleLabel = new JLabel(titleString);

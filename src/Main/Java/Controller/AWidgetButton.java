@@ -62,7 +62,7 @@ public abstract class AWidgetButton extends JPanel {
     private void initTopPanel() {
         topPanel = new JPanel();
         JLabel towerImageLabel = new JLabel(new ImageIcon(buttonImgPaths.get(type)));
-        topPanel.setBackground(Color.orange);
+        // topPanel.setBackground(Color.orange);
         topPanel.setLayout(new BorderLayout());
         topPanel.add(towerImageLabel, BorderLayout.CENTER);
         add(topPanel, BorderLayout.CENTER);
@@ -76,7 +76,7 @@ public abstract class AWidgetButton extends JPanel {
     private void initBottomPanel() {
         bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         bottomPanel.setPreferredSize(new Dimension(100, 180));
-        bottomPanel.setBackground(Color.PINK);
+        // bottomPanel.setBackground(Color.PINK);
         bottomPanel.setLayout(new GridLayout(3, 1, 0, 0));
 
         String typeName = Character.toUpperCase(type.name().charAt(0)) + type.name().substring(1);
@@ -106,8 +106,8 @@ public abstract class AWidgetButton extends JPanel {
         } else {
             setOpaque(true);
             setBackground(Color.gray);
-            topPanel.setBackground(Color.orange);
-            bottomPanel.setBackground(Color.pink);
+            topPanel.setBackground(new Color(200, 0, 0, 80));
+            bottomPanel.setBackground(new Color(35, 0, 200, 80));
         }
     }
 
