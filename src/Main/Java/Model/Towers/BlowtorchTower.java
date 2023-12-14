@@ -7,6 +7,9 @@ import Model.Enums.TargetType;
 import Model.Enums.TowerType;
 import Model.Enums.Upgrade;
 
+/**
+ * Class representing a blowtorch tower
+ */
 public class BlowtorchTower extends ATower{
     int burnDuration = 2;
 
@@ -24,7 +27,7 @@ public class BlowtorchTower extends ATower{
     }
 
     /**
-     * Blowtorch overrides the default attack method in order to apply burning condition if it has the right upgrade
+     * Blowtorch overrides the default ability method in order to apply burning condition if it has the right upgrade
      * @param target The target of the attack
      */
     @Override

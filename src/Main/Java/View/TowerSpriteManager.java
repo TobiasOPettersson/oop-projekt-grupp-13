@@ -9,14 +9,26 @@ import javax.imageio.ImageIO;
 
 import Model.Enums.TowerType;
 
+/**
+ * A class that manages tower sprites
+ */
 public class TowerSpriteManager {
     private HashMap<TowerType, BufferedImage> towerSprites;
 
+    /**
+     * Constructor
+     */
     public TowerSpriteManager(){
         towerSprites = new HashMap<>();
         importTowerImg();
     }
 
+    /**
+     * Gets the tower sprites and splices them into an array containing their frame by frame animation
+     * An exception to freezer since it desn't have an animation
+     * @param towerType     The type of the tower
+     * @return              An array containing all sprites of the towers animation
+     */
     public BufferedImage[] getTowerSprites(TowerType towerType) {
         if(towerType == TowerType.freezer){
             return new BufferedImage[]{towerSprites.get(towerType)};
@@ -29,6 +41,9 @@ public class TowerSpriteManager {
         return spriteArray;
     }
 
+    /**
+     * Imports tower sprites
+     */
     private void importTowerImg() {
         InputStream isKnifeTower = this.getClass().getResourceAsStream("resView/towers/knifeTower.png");
         InputStream isMalletTower = this.getClass().getResourceAsStream("resView/towers/malletTower.png");

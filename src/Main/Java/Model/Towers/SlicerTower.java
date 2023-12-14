@@ -5,12 +5,15 @@ import Model.Enums.TargetType;
 import Model.Enums.TowerType;
 import Model.Enums.Upgrade;
 
+/**
+ * Class representing a cheese slicer tower
+ */
 public class SlicerTower extends ATower{
 
     /**
      * Constructor for knife tower that uses the default attack from AttackTower
-     * @param x the x-position of the tower as a grid-index, i.e. not the x-position of the sprite in view
-     * @param y the y-position of the tower as a grid-index, i.e. not the y-position of the sprite in view 
+     * @param x the x-position of the tower as a grid-index
+     * @param y the y-position of the tower as a grid-index
      */
     public SlicerTower(int x, int y) {
         super(x, y, 2, 1.0, 0, 60, TowerType.slicer, 4, TargetType.first, TargetType.enemies);
@@ -22,8 +25,8 @@ public class SlicerTower extends ATower{
 
     /**
      * Slicer does more damage to cheese and the only one who doesn't deal reduced damage to it
-     * @param type The type of enemy that the tower does increased or decreased damage to
-     * @return The damage after modifications
+     * @param type  The type of enemy that the tower does increased or decreased damage to
+     * @return      The damage after modifications
      */
     @Override
     protected int getDamage(EnemyType type) {

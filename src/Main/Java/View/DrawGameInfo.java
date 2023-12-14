@@ -6,22 +6,26 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import Model.MainModel;
 
+/**
+ * A class that draws game info such as lives, money, the loss- and win screen
+ */
 public class DrawGameInfo {
     private final int SPRITESIZE = GraphicsDependencies.getSpriteSize();
     private final int FRAMEWIDTH = GraphicsDependencies.getWidth();
     private final int FRAMEHEIGHT = GraphicsDependencies.getHeight();
-
     private MainModel model;
     
-
+    /**
+     * Constructor
+     * @param model The main model
+     */
     public DrawGameInfo(MainModel model) {
         this.model = model;
     }
 
     /**
-     * Draw inportant game inforation on the screen
-     * 
-     * @param g
+     * Draw all game information on the screen
+     * @param g Graphics
      */
     public void draw(Graphics g) {
         drawInfoBackground(g);
@@ -34,8 +38,7 @@ public class DrawGameInfo {
 
     /**
      * Draw how much health the player has on the screen
-     * 
-     * @param g
+     * @param g Graphics
      */
     private void drawPlayerHealth(Graphics g) {
         g.setColor(Color.DARK_GRAY);
@@ -45,8 +48,7 @@ public class DrawGameInfo {
 
     /**
      * Draw how much money the player currently has
-     * 
-     * @param g
+     * @param g Graphics
      */
     private void drawPlayerMoney(Graphics g) {
         g.setColor(Color.DARK_GRAY);
@@ -56,8 +58,7 @@ public class DrawGameInfo {
 
     /**
      * Draw how many waves are done and how many there are left
-     * 
-     * @param g
+     * @param g Graphics
      */
     private void drawWaveNumber(Graphics g) {
         g.setColor(Color.DARK_GRAY);
@@ -68,7 +69,6 @@ public class DrawGameInfo {
 
     /**
      * Draw rectangle
-     * 
      * @param x      X value
      * @param y      y value
      * @param width  width of rectange
@@ -85,8 +85,7 @@ public class DrawGameInfo {
     /**
      * Draw end screen
      * Draw You Lost if the player dies
-     * Draw You Won if the player winns
-     * 
+     * Draw You Won if the player wins
      * @param g
      */
     private void drawEndScreen(Graphics g) {
@@ -100,8 +99,7 @@ public class DrawGameInfo {
 
     /**
      * Draw winner screen
-     * 
-     * @param g
+     * @param g Graphics
      */
     private void drawWonScreeen(Graphics g) {
         g.setColor(new Color(0, 0, 0, 150));
@@ -113,8 +111,7 @@ public class DrawGameInfo {
 
     /**
      * Draw looser screen
-     * 
-     * @param g
+     * @param g Graphics
      */
     private void drawLostScreeen(Graphics g) {
         g.setColor(new Color(0, 0, 0, 150));
@@ -126,9 +123,8 @@ public class DrawGameInfo {
 
     /**
      * Helper method to draw end text in the middle of the screen
-     * 
-     * @param g
-     * @param text
+     * @param g     Graphics
+     * @param text  The text to draw
      */
     private void drawCenteredText(Graphics g, String text) {
         int messageWidth = g.getFontMetrics().stringWidth(text);
@@ -139,7 +135,6 @@ public class DrawGameInfo {
 
     /**
      * Draw background for Health, coins and waves
-     * 
      * @param g Graphics object
      */
     private void drawInfoBackground(Graphics g) {

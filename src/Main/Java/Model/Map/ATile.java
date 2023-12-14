@@ -2,6 +2,9 @@ package Model.Map;
 
 import Model.Enums.TileTerrain;
 
+/**
+ * The abstact superclass for every Tile on the map
+ */
 public abstract class ATile{
     public int x;
     public int y;
@@ -9,7 +12,7 @@ public abstract class ATile{
     public boolean placeable;
 
     /**
-     * The abstact class for every Tile on the map
+     * Constructor
      * @param x the Tiles x position in the matrix
      * @param y the Tiles y position in the matrix
      * @param placeable if it's possible to place a tower on this tile

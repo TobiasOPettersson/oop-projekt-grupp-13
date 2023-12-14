@@ -18,6 +18,9 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The main frame of the game
+ */
 public class GameView extends JFrame implements IObservable {
     MainModel model;
     DrawPanel drawPanel;
@@ -25,16 +28,14 @@ public class GameView extends JFrame implements IObservable {
     List<UpgradeWidgetController> upgradeWidgets = new ArrayList<>();
 
     /**
-     * TODO Javadoc comment
-     * 
-     * @param model
+     * Constructor
+     * @param model The main model
      */
     public GameView(MainModel model) {
         this.model = model;
         this.drawPanel = new DrawPanel(model);
         addMouseListenersToDrawPanel();
         setLayout(null);
-        this.drawPanel.setBounds(0, 0, 960, 480);
         add(drawPanel);
         initWidgits();
         initComponents();
@@ -46,8 +47,19 @@ public class GameView extends JFrame implements IObservable {
     }
 
     /**
-     * Initializes all wigits, one for buying new towers and one for upgrading for
-     * each tower type
+     * Initializes the JFrame
+     */
+    private void initComponents() {
+        setSize(GraphicsDependencies.getWidth(), GraphicsDependencies.getHeight());
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setVisible(true);
+        setResizable(false);
+    }
+
+
+    /**
+     * Initializes all wigits, one for buying new towers and one for upgrading for each tower type
      */
     private void initWidgits() {
         createWidget = new CreateWidgetController(drawPanel, model);
@@ -60,7 +72,15 @@ public class GameView extends JFrame implements IObservable {
     }
 
     /**
-     * // TODO Javadoc comment
+     * Opens the tutorial window, called at start
+     */
+    private void showTutorial() {
+        ShowTutorialDialog tutorial = new ShowTutorialDialog(this);
+        tutorial.setVisible(true);
+    }
+    
+    /**
+     * Calls DrawPanel to repaint all components (tiles, towers, enemies etc.)
      */
     @Override
     public void update() {
@@ -69,12 +89,11 @@ public class GameView extends JFrame implements IObservable {
 
     // ----------------------------Wigit methods--------------------------//
 
-        /**
+    /**
      * Adds mouselisteners to DrawPanel
-     * MouseClicked left: Exits placing towers
-     * MouseClicked right: Creates a tower at the mouse position
-     * MouseMoved: Saves which tile the player is hovering over in the hoveredTile
-     * variable
+     * mouseClicked left:   Exits placing towers
+     * mouseClicked right:  Creates a tower at the mouse position
+     * mouseMoved:          Saves which tile the player is hovering over in the hoveredTile variable
      */
     private void addMouseListenersToDrawPanel() {
         drawPanel.addMouseListener(new MouseAdapter() {
@@ -122,13 +141,10 @@ public class GameView extends JFrame implements IObservable {
 
 
     /**
-     * Opens the upgrade wigit of the clicked towers type, and closes all other
-     * wigits
-     * 
+     * Opens the upgrade wigit of the clicked towers type, and closes all other wigits
      * @param x               The grid x-position of the tile the player clicked on
      * @param y               The grid y-position of the tile the player clicked on
-     * @param type            The the type of the tower that is on the tile the
-     *                        player clicked on
+     * @param type            The the type of the tower that is on the tile the player clicked on
      * @param currentUpgrades The current upgrades of the tower
      */
     public void openUpgradeWidgit(int x, int y, TowerType type, List<Upgrade> currentUpgrades) {
@@ -143,11 +159,6 @@ public class GameView extends JFrame implements IObservable {
         }
     }
 
-    private void showTutorial() {
-        ShowTutorialDialog tutorial = new ShowTutorialDialog(this);
-        tutorial.setVisible(true);
-    }
-
     /**
      * Opens the create wigit, and closes all other wigits
      */
@@ -156,35 +167,6 @@ public class GameView extends JFrame implements IObservable {
         for (UpgradeWidgetController upgradeWidget : upgradeWidgets) {
             upgradeWidget.setVisible(false);
         }
-    }
-
-    // initialize swing window
-    private void initComponents() {
-        setSize(GraphicsDependencies.getWidth(), GraphicsDependencies.getHeight());
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setVisible(true);
-        setResizable(false);
-    }
-
-    /**
-     * Converts all TowerControllers into IMoneyObservers
-     * 
-     * @return TowerControllers as IMoneyObservers
-     */
-    public List<IMoneyObserver> getMoneyObservers() {
-        List<IMoneyObserver> observers = new ArrayList<>();
-        for (UpgradeWidgetController upWidget : upgradeWidgets) {
-            observers.add(upWidget);
-        }
-        observers.add(createWidget);
-        return observers;
-    }
-
-    // ----------------------------Getters and setters--------------------------//
-
-    public DrawPanel getDrawPanel() {
-        return drawPanel;
     }
 
     protected void addNewUpgradeWidget(TowerType type, int towerPosX, int towerPosY) {
@@ -199,5 +181,24 @@ public class GameView extends JFrame implements IObservable {
         add(newUpgradeWiget);
         model.getPlayer().setMoneyObservers(getMoneyObservers());
         System.out.println(upgradeWidgets.size());
+    }
+
+    /**
+     * Converts all AShopWidgetControllers into IMoneyObservers to be used by the Player class
+     * @return AShopWidgetControllers as IMoneyObservers
+     */
+    public List<IMoneyObserver> getMoneyObservers() {
+        List<IMoneyObserver> observers = new ArrayList<>();
+        for (UpgradeWidgetController upWidget : upgradeWidgets) {
+            observers.add(upWidget);
+        }
+        observers.add(createWidget);
+        return observers;
+    }
+
+    // ----------------------------Getters and setters--------------------------//
+
+    public DrawPanel getDrawPanel() {
+        return drawPanel;
     }
 }

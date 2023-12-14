@@ -6,6 +6,9 @@ import Model.Enums.TargetType;
 import Model.Enums.TowerType;
 import Model.Enums.Upgrade;
 
+/**
+ * Class representing a freezer tower
+ */
 public class FreezerTower extends ATower {
     private int chillDuration = 30;
 
@@ -18,7 +21,7 @@ public class FreezerTower extends ATower {
     }
 
     /**
-     * Blowtorch overrides the default attack method in order to apply the chill condition if it has the right upgrade
+     * Freezer overrides the default ability method in order to apply the chill condition if it has the right upgrade
      * Also since if it has the upgrade Frostbite, it can deal damage to chilled enemies
      * @param target The target of the attack
      */

@@ -36,7 +36,7 @@ public class Player implements IMoneySubject{
 
     /**
      * Called when the player tries to buy a tower or an upgrade
-     * @param cost The cost oth the tower or upgrade
+     * @param cost       The cost of the tower or upgrade
      * @throws Exception if the player doesn't have enough money
      */
     public void subtractMoney(int cost) throws Exception{
@@ -47,6 +47,11 @@ public class Player implements IMoneySubject{
         notifyObservers();
     }
 
+    /**
+     * Checks if the player can afford a cost
+     * @param cost  The cost of the tower or upgrade 
+     * @return      Whether or not the player can afford it
+     */
     public boolean canAfford(int cost){
         if (this.money < cost){
             return false;

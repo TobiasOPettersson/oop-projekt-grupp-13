@@ -2,6 +2,9 @@ package Model.Map;
 
 import Model.Player.Player;
 
+/**
+ * Class representing map nr 1
+ */
 public class MapOne extends AMap {     
     public MapOne(Player player){
         super(new int[][]{  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },

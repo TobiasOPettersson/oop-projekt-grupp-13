@@ -5,13 +5,16 @@ import Model.Enums.TargetType;
 import Model.Enums.TowerType;
 import Model.Enums.Upgrade;
 
+/**
+ * Class representing a mallet tower
+ */
 public class MalletTower extends ATower{
 
     /**
      * Constructor for knife tower that uses the default attack from AttackTower
      * Can upgrade damage twice, aoe range, and range
-     * @param x the x-position of the tower as a grid-index, i.e. not the x-position of the sprite in view
-     * @param y the y-position of the tower as a grid-index, i.e. not the y-position of the sprite in view 
+     * @param x the x-position of the tower as a grid-index
+     * @param y the y-position of the tower as a grid-index
      */
     public MalletTower(int x, int y) {
         super(x, y, 3, 1.0, 1.0, 200, TowerType.mallet, 20, TargetType.first, TargetType.enemies);

@@ -5,13 +5,16 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
+/**
+ * A class containing helper methods for managing sprites
+ */
 public class SpriteHelper {
-    // TODO Javadoc comment
+
     /**
-     * 
-     * @param originalSprite
-     * @param angle
-     * @return
+     * Rotates an image
+     * @param originalSprite    The original image    
+     * @param angle             The angle to rotate
+     * @return                  The rotated image
      */
     public static BufferedImage rotateSprite(BufferedImage originalSprite, int angle) {
         int width = originalSprite.getWidth();
@@ -32,12 +35,11 @@ public class SpriteHelper {
         return rotatedSprite;
     }
 
-    // TODO Javadoc comment
     /**
-     * 
-     * @param originalSprite
-     * @param scale
-     * @return
+     * Scales an image
+     * @param originalSprite    The original image    
+     * @param scale             The new scale
+     * @return                  The scaled image
      */
     public static BufferedImage scaleSprite(BufferedImage originalSprite, double scale) {
         int w = (int)(originalSprite.getWidth() * scale);

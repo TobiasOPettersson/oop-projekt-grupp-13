@@ -9,6 +9,9 @@ import java.util.List;
 
 import Model.Enemies.AEnemy;
 
+/**
+ * Class containing methods that draw the enemies on the map
+ */
 public class DrawEnemies {
     private final int SPRITESIZE = GraphicsDependencies.getSpriteSize();
     protected EnemySpriteManager enemySpriteManager = new EnemySpriteManager();
@@ -18,9 +21,9 @@ public class DrawEnemies {
     }
 
     /**
-     * public method for drawing everything to do with enemies
-     * @param g Graphics object
-     * @param enemies List of live enemies
+     * Method for drawing everything to do with enemies
+     * @param g         Graphics object
+     * @param enemies   List of live enemies
      */
     public void draw (Graphics g, List<AEnemy> enemies){
         drawEnemies(g, enemies);
@@ -28,10 +31,8 @@ public class DrawEnemies {
 
     /**
      * Draw enemies
-     * 
      * @param g       Graphics object
      * @param enemies List of live enemies
-     * 
      */
     private void drawEnemies(Graphics g, List<AEnemy> enemies) {
         for (AEnemy enemy : enemies) {

@@ -5,13 +5,16 @@ import Model.Enums.TargetType;
 import Model.Enums.TowerType;
 import Model.Enums.Upgrade;
 
+/**
+ * Class representing a knife tower
+ */
 public class KnifeTower extends ATower{
 
     /**
      * Constructor for knife tower that uses the default attack from AttackTower
      * Can upgrade damage, speed, number of targets and range
-     * @param x the x-position of the tower as a grid-index, i.e. not the x-position of the sprite in view
-     * @param y the y-position of the tower as a grid-index, i.e. not the y-position of the sprite in view 
+     * @param x the x-position of the tower as a grid-index
+     * @param y the y-position of the tower as a grid-index
      */
     public KnifeTower(int x, int y) {
         super(x, y, 2, 1.0, 0, 50, TowerType.knife, 5, TargetType.first, TargetType.enemies);

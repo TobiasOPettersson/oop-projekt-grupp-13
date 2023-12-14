@@ -57,7 +57,6 @@ public abstract class AShopWidgetController extends JPanel implements IMoneyObse
 
     /**
      * Initializes the Header of the CreateTowerController
-     * 
      * @param titleString - to initilize the titel of the header.
      */
     protected void initHeader(String titleString) {

@@ -14,6 +14,9 @@ import Model.Enums.Upgrade;
 import Model.Interfaces.ITargetable;
 import Model.Interfaces.IUpgradable;
 
+/**
+ * Superclass for all towers
+ */
 public abstract class ATower implements ITargetable, IUpgradable {
     private double x;
     private double y;
@@ -37,17 +40,13 @@ public abstract class ATower implements ITargetable, IUpgradable {
     /**
      * Constructor of abstract class ATower
      *
-     * @param x           the x-position of the tower as a grid-index, i.e. not the
-     *                    x-position of the sprite in view
-     * @param y           the y-position of the tower as a grid-index, i.e. not the
-     *                    y-position of the sprite in view
+     * @param x           the x-position of the tower as a grid-index
+     * @param y           the y-position of the tower as a grid-index
      * @param cost        is the amount of money needed to buy one tower
      * @param range       is the range of the towers ability
-     * @param aoeRange    is the aoerange of the towers ability, 0 if the ability
-     *                    isn't an aoe
+     * @param aoeRange    is the aoerange of the towers ability, 0 if the ability isn't an aoe
      * @param maxCooldown is the maximum cooldown of the towers ability, the
-     *                    variable cooldown will reset to this after an ability has
-     *                    been used
+     *                    variable cooldown will reset to this after an ability has been used
      * @param towerType   is the type of the tower, for example knife or mallet
      */
     public ATower(int x, int y, int cost, double range, double aoeRange, int maxCooldown, TowerType towerType, int damage, TargetType targetType1, TargetType targetType2) {
@@ -71,7 +70,7 @@ public abstract class ATower implements ITargetable, IUpgradable {
 
 
     /**
-    * The default ability for attack towers, dealing damage to the first enemy in range. Method is from the interface IAttackable
+    * The default ability for towers, dealing damage to the first enemy in range
     * @param target The enemy the tower is targeting 
     */
     public void useAbility(AEnemy target) {
@@ -247,7 +246,6 @@ public abstract class ATower implements ITargetable, IUpgradable {
 
     /**
      * Checks if tower ability is on cooldown
-     * 
      * @return true if cooldown larger than 0
      */
     public boolean isOnCooldown() {

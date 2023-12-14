@@ -15,6 +15,9 @@ import Model.Towers.SlicerTower;
 
 import java.util.ArrayList;
 
+/**
+ * The abstact superclass for every map
+ */
 public abstract class AMap{
     private final int MAP_HEIGHT = 10;
     private final int MAP_WIDTH = 20;
@@ -27,7 +30,7 @@ public abstract class AMap{
     private Player player;
 
     /**
-     * The constructor of the AMap class
+     * Constructor
      * @param pathGrid Size X = 20 and Y = 10. Matrix made in subclass. Path made by ints 1 = start and highest number is the end.
      * Start is always on the left and End is always at the right
      */
@@ -136,7 +139,6 @@ public abstract class AMap{
 
     /**
      * Create the next pathTile and have it point at the previous pathTile
-     * TODO comment parameters
      * @param previousTile needs to be a PathTile is the PathTile the new PathTile will point too
      * @param tempX is the same as x in previousTile or is a different by 1
      * @param tempY is the same as y in previousTile or is a different by 1
@@ -251,17 +253,10 @@ public abstract class AMap{
         return pathDirections;
     }
 
-    /**
-     * 
-     * @return the position of the start Tile
-     */
     public int getStartPosition() {
         return startPosition;
     }
 
-    /**
-     * @return the position of the end Tile
-     */
     public int getEndPosition() {
         return endPosition;
     }

@@ -11,6 +11,9 @@ import java.util.Map;
 import Model.Enums.TowerType;
 import Model.Towers.ATower;
 
+/**
+ * A class containing methods that draw towers
+ */
 public class DrawTowers {
     protected TowerSpriteManager towerSpriteManager = new TowerSpriteManager();
     private BufferedImage[] towerSprites;
@@ -21,7 +24,7 @@ public class DrawTowers {
 
     /**
      * Draw Towers on the map
-     * @param g
+     * @param g Graphics
      */
     protected void drawTowers(Graphics g, List<ATower> towers) {
         for (ATower tower : towers) {
@@ -41,9 +44,9 @@ public class DrawTowers {
 
     /**
      * Rotates the tower image toward the enemy its targeting
-     * @param tower      The tower that is attacking the enemy
-     * @param towerImage The original tower image
-     * @return The rotated tower image
+     * @param tower         The tower that is attacking the enemy
+     * @param towerImage    The original tower image
+     * @return              The rotated tower image
      */
     private BufferedImage rotateTowerTowardTarget(ATower tower, BufferedImage towerImage) {
         Point2D.Double enemyCenterPoint = tower.getTargetPosition();

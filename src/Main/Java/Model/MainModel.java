@@ -31,7 +31,7 @@ public class MainModel implements ITowerUpgradeObserver {
     List<IObservable> observers = new ArrayList<IObservable>();
 
     /**
-     * The constructor for this class. This class is responisble for running the game
+     * The constructor for this class
      */
     public MainModel() {
         player = new Player(5, 3);
@@ -95,7 +95,7 @@ public class MainModel implements ITowerUpgradeObserver {
     }
 
     /**
-     * Updates all the towers
+     * Updates all the towers that uses their abilities if its off cooldown and targets are in range
      */
     private void updateTowers() {
         for (ATower tower : map.getTowers()) {
@@ -122,32 +122,35 @@ public class MainModel implements ITowerUpgradeObserver {
 
     /**
      * Calls createTower() in map that creates a new instance of a tower
-     * @param x Grid x-index of where the tower will be created
-     * @param y Grid y-index of where the tower will be created
-     * @param type Type of the tower
+     * @param x          Grid x-index of where the tower will be created
+     * @param y          Grid y-index of where the tower will be created
+     * @param type       Type of the tower
      * @throws Exception if the player doesn't have enough money to buy the tower
      */
     public void createTower(int x, int y, TowerType type) throws Exception {
         map.createTower(x, y, type);
     }
 
-    @Override
-    
     /**
      * Calls upgradeTower() in map that upgrades the tower at tile (x, y)
-     * @param x The towers x-index on the grid
-     * @param y The towers y-index on the grid
+     * @param x       The towers x-index on the grid
+     * @param y       The towers y-index on the grid
      * @param upgrade The type of upgrade that will be added
      */
+    @Override
     public void upgradeTower(int x, int y, Upgrade upgrade, int cost) throws Exception {
         map.upgradeTower(x, y, upgrade, cost);
     }
 
     //-----------------------Observer---------------------------//
+
     public void addObserver(IObservable observer) {
         observers.add(observer);
     }
 
+    /**
+     * Notifies the DrawPanel to repain all components
+     */
     private void notifyObservers(){
         for (IObservable observer : observers) {
             observer.update();
@@ -168,6 +171,7 @@ public class MainModel implements ITowerUpgradeObserver {
     }
 
     /**
+     * Checks whether a new wave can start
      * @return true if u can start a new wave, otherwise false
      */
     private boolean canStartNewWave() {
@@ -178,6 +182,7 @@ public class MainModel implements ITowerUpgradeObserver {
     }
 
     /**
+     * Checks whether the player is alive or not
      * @return true if alive, false if dead
      */
     private boolean isAlive(){

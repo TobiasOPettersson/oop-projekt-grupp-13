@@ -17,7 +17,7 @@ public class EnemyFactory {
     private List<Direction> pathDirection = new ArrayList<Direction>();
 
     /**
-     * 
+     * Constructor
      * @param startPosition get the position of the first Tile
      * @param pathDirection get the list with directions of the path
      */
@@ -27,7 +27,7 @@ public class EnemyFactory {
     }
 
     /**
-     * 
+     * Creates a queue of AEnemy objects from a queue of EnemyTypes
      * @param currentWaveType a queue of EnemyTypes for the current wave
      * @return a queue of AEnemy for the current wave
      */

@@ -11,6 +11,9 @@ import java.awt.Graphics2D;
 import java.awt.BasicStroke;
 import java.awt.Color;
 
+/**
+ * A class representing the view of the map (tiles)
+ */
 public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservable {
     private MainModel model;
     private DrawEnemies drawEnemies;
@@ -25,8 +28,13 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
     private int gridWidth;
     private int gridHeight;
 
-    // Constructor
+    /**
+     * Constructor
+     * @param model The main model
+     */
     public DrawPanel(MainModel model) {
+        setBounds(0, 0, 960, 480);
+        
         this.model = model;
         this.drawEnemies = new DrawEnemies();
         this.drawMap = new DrawMap(model.getPathDirections());
@@ -41,8 +49,7 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
     // ----------------------------Draw & paint methods-----------------------//
 
     /**
-     * TODO javadoc comment
-     * 
+     * Paints all components inside the DrawPanel (tiles, towers, enemies etc.)
      * @param g
      */
     public void paintComponent(Graphics g) {
@@ -56,6 +63,10 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
 
     }
 
+    /**
+     * Draws the map
+     * @param g Graphics
+     */
     private void drawMap(Graphics g) {
         drawMap.drawTerrain(g, model.getTileGrid(), model.getMapSizeY(), model.getMapSizeX());
         drawMap.drawPath(g, model.getPathGrid(), model.getMapSizeX(), model.getMapSizeY());
@@ -63,6 +74,10 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
         drawMap.drawEndPosition(g, model.getMapSizeX(), model.getEndPosition());
     }
 
+    /**
+     * Draws the towers in the main model list of towers
+     * @param g Graphics
+     */
     private void drawTowers(Graphics g) {
         drawTowers.drawTowers(g, model.getTowers());
         if (getTowerAtMousePos() != null) {

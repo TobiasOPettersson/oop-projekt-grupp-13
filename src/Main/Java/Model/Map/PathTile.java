@@ -1,10 +1,13 @@
 package Model.Map;
 
+/**
+ * Class representing tiles on the enemys movement path
+ */
 public class PathTile extends ATile {
     PathTile next;
     
     /**
-     * TODO Javadoc comment
+     * Constructor
      * @param x the Tiles x position in the matrix
      * @param y the Tiles y position in the matrix
      * @param next points towards the next PathTile
