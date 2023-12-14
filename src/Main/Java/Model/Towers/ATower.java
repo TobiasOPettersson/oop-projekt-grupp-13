@@ -37,7 +37,7 @@ public abstract class ATower implements ITargetable, IUpgradable {
 
     /**
      * Constructor of abstract class ATower
-     * 
+     *
      * @param x           the x-position of the tower as a grid-index, i.e. not the
      *                    x-position of the sprite in view
      * @param y           the y-position of the tower as a grid-index, i.e. not the
@@ -77,7 +77,7 @@ public abstract class ATower implements ITargetable, IUpgradable {
     */
     public void useAbility(AEnemy target) {
         if(target != null){
-            target.takeDamage(getDamage(target.getType()));
+            target.takeDamage(getDamage(target.getEnemyType()));
             target.setStaggered(true);
             resetCooldown();
         }

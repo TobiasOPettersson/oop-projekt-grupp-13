@@ -164,9 +164,8 @@ public class MainModel implements ITowerUpgradeObserver {
      * Starts the wave
      */
     public void play() {
-        System.out.println(currentWaveEnemies);
         if (canStartNewWave()) {
-            currentWaveEnemies = allWaves.getWave();
+            currentWaveEnemies = allWaves.getNextWave();
             activeWave = true;
         }
     }

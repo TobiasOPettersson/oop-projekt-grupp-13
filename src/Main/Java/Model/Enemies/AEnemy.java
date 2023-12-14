@@ -1,8 +1,5 @@
 package Model.Enemies;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,24 +10,19 @@ import Model.Enums.Direction;
 import Model.Enums.EnemyType;
 import Model.Interfaces.IMovable;
 import Model.Interfaces.ITargetable;
-import View.SpriteHelper;
-import View.EnemySpriteManager;
-import View.GraphicsDependencies;
-
-// TODO seperate methods into groups if possible (with for example //----------------------------Getter and setters----------------------//)
 
 /**
  * An abstract class representing an enemy in the game.
- * This class implements the IMovable interface.
+ * This class implements the IMovable and ITargatable interface.
  */
 public abstract class AEnemy implements IMovable, ITargetable {
-    private double health; //health points
+    private double health;
     private double maxHealth;
-    private double x, y; //position
-    private double speed; //movement speed of an enemy
+    private double x, y;
+    private double speed;
     private double maxSpeed;
-    private EnemyType type; // The type of enemy
-    private List<Direction> directions; // List of directions for the enemy to follow when moving
+    private EnemyType enemyType;
+    private List<Direction> directions;
     private int damage;
     private int moneyBag;
     private double tileOffset = 0.5;
@@ -40,99 +32,56 @@ public abstract class AEnemy implements IMovable, ITargetable {
     private int animationIndex = 0;
     
     /**
-     * TODO Javadoc comment
-     * @param health
-     * @param y
-     * @param speed
-     * @param type
-     * @param directions
-     * @param damage
-     * @param moneyBag
+     * Constructor of abstract class AEnemy.
+     * @param health        is the health points needed to kill an enemy
+     * @param y             the y-position of the enemy as a grid-index, i.e. not the
+     *                      y-position of the sprite in view
+     * @param speed         is the movement speed of the enemy
+     * @param type          is the type of the enemy
+     * @param directions    is the list of directions in which the enemy will follow
+     * @param damage        is the damage that the enemy can deal to a player
+     * @param moneyBag      is the money which a player will gain if they kill the enemy
      */
-    public AEnemy(double health, double y, double speed, EnemyType type, List<Direction> directions, int damage, int moneyBag) {
+    public AEnemy(double health, double y, double speed, EnemyType enemyType, List<Direction> directions, int damage, int moneyBag) {
         this.health = health;
         this.maxHealth = health;
         this.x = 0;
         this.y = y + tileOffset;
         this.speed = speed;
         this.maxSpeed = speed;
-        this.type = type;
+        this.enemyType = enemyType;
         this.directions = new ArrayList<>(directions);
         this.damage = damage;
         this.moneyBag = moneyBag;
         initConditionMap();
     }
-/**
-     * TODO Javadoc comment
-     */
-    private void initConditionMap() {
-
-        conditions = new HashMap<Condition, Integer>();
-        conditions.put(Condition.chilled, 0);
-        conditions.put(Condition.superChilled, 0);
-        conditions.put(Condition.onFire, 0);
-    }
 
      /**
-      * TODO comment parameter and return
-      * Computes the horizontal vector.
-      * Returns the horizontal vector depending on an enemy's direciton. 
-      * @param dir
-      * @return
+      * Computes a horizontal unit vector.
+      * @param dir is the enemy's current direction
+      * @return the horizontal unit vector as an int depending on an enemy's direction.
       */
     private int horizontalVector(Direction dir) {
         return ((dir == Direction.RIGHT) ? 1 : 0) - ((dir == Direction.LEFT) ? 1 : 0);
     }
     
     /**
-     * 
-     * Computes the vertical vector.
-     * Returns the vertical vector depending on an enemy's direciton.
-     * @param dir
-     * @return
-     */
+      * Computes a vertical unit vector.
+      * @param dir is the enemy's current direction
+      * @return the vertical unit vector as an int depending on an enemy's direction.
+      */
     private int verticalVector(Direction dir) {
         return ((dir == Direction.DOWN) ? 1 : 0) - ((dir == Direction.UP) ? 1 : 0);
     }
 
-    public void updateAnimationTick() {
-        animationTick++;
-        if (animationTick >= 10) {
-            animationTick = 0;
-            incrementAnimationIndex();
-        }
-    }
-
     /**
-     * Increments animationIndex
-     * 
-     */
-    public void incrementAnimationIndex() {
-        int spritesInAnimation = 4;
-        animationIndex++;
-        if (animationIndex >= spritesInAnimation) {
-            animationIndex = 0;
-        }
-    }
-
-    public void resetAnimation() {
-        int spritesInAnimation = 4;
-        if (animationIndex != 0) {
-            animationIndex++;
-            if (animationIndex >= spritesInAnimation) {
-                animationIndex = 0;
-            }
-        }
-    }
-
-    /*
      * Computes the closest tile centerpoint x- or y-corodinate.
-     * h must be -1, 0 or 1. Throws IllegalArgumentException if not.
+     * vector must be -1, 0 or 1. Throws IllegalArgumentException if not.
      * Else return the closest coordinate depending on the enemy's position
      * and current vector.
-     * @param coordinate
-     * @param vector
-     * @return
+     * @param coordinate the enemy position coordinate, can be x or y.
+     * @param vector the unit vector for the current direction. Can be horizontal or vertical.
+     * @return x- or y-coordinate depending on the arguments as a double.
      */
     private double tileCenterPoint(double coordinate, double vector) {
         if (vector != -1 && vector != 0 && vector != 1) {
@@ -157,35 +106,29 @@ public abstract class AEnemy implements IMovable, ITargetable {
     }
     
     /**
-     * 
-     * Return the closest tile centerpoint x-coordinate.
-     * @param h
-     * @return
+     * @param h is the horizontal unit vector for the current direction
+     * @return the closest tile centerpoint x-coordinate.
      */
     private double tileCenterPointX(double h) {
         return tileCenterPoint(this.x, h);
     }
     
     /**
-     * 
-     * Return the closest tile centerpoint y-coordinate.
-     * @param v
-     * @return
+     * @param v is the vertical unit vector for the current direction
+     * @return the closest tile centerpoint y-coordinate.
      */
     private double tileCenterPointY(double v) {
         return tileCenterPoint(this.y, v);
     }
 
     /**
-     * 
-     * Computes if the enemy's next position is passed or on a tile centerpoint.
-     * Returns true if the position is passed or on a centerpoint, else false. 
-     * @param nextX
-     * @param nextY
-     * @param currentDir
-     * @param h
-     * @param v
-     * @return
+     * Computes if the enemy's next position is on or passed a tile centerpoint.
+     * @param nextX is the next x-position
+     * @param nextY is the next y-position
+     * @param currentDir is the current direction in which an enemy is moving
+     * @param h is the horizontal unit vector for the current direction
+     * @param v is the vertical unit vector for the current direction
+     * @return boolean for if the next position is on or passed a centerpoint. True if that's the case, else false.
      */
     private boolean nextPosIsPassedCenterPoint(double nextX, double nextY, Direction currentDir, double h, double v) {
         if ((nextX >= tileCenterPointX(h) && currentDir == Direction.RIGHT)
@@ -200,14 +143,12 @@ public abstract class AEnemy implements IMovable, ITargetable {
     }
 
     /**
-     * 
-     * Computes if the enemy's current position is passed or on a tile centerpoint.
-     * Returns true if the position is passed or on a centerpoint, else false.
-     * @param centerPointX
-     * @param centerPointY
-     * @param h
-     * @param v
-     * @return
+     * Computes if the enemy's current position is on or passed a tile centerpoint.
+     * @param centerPointX is the closest centerpoint x-coordinate
+     * @param centerPointY is the closest centerpoint y-coordinate
+     * @param h is the horizontal unit vector for the current direction
+     * @param v is the vertical unit vector for the current direction
+     * @return boolean for if the position is on or passed a centerpoint. True if that's the case, else false.
      */
     private boolean currentPosIsPassedCenterPoint(double centerPointX, double centerPointY, double h, double v) {
         return ((Math.signum(this.y - centerPointY) == v) || (this.y == centerPointY))
@@ -215,10 +156,9 @@ public abstract class AEnemy implements IMovable, ITargetable {
     }
 
     /**
-     * 
      * Calculate the next enemy position coordinates in one axis and updates them.
-     * @param h
-     * @param v
+     * @param h is the horizontal unit vector for the current direction
+     * @param v is the vertical unit vector for the current direction
      */
     private void oneAxisMove(double h, double v) {
         if (h != 0 && v != 0) {
@@ -229,10 +169,9 @@ public abstract class AEnemy implements IMovable, ITargetable {
     }
 
     /**
-     * 
      * Updates the enemy's coordinates to the closest tile centerpoint coordinates.
-     * @param centerPointX
-     * @param centerPointY
+     * @param centerPointX is the closest centerpoint x-coordinate
+     * @param centerPointY is the closest centerpoint y-coordinate
      */
     private void forceEnemyToCenterPoint(double centerPointX, double centerPointY) {
         this.x = centerPointX;
@@ -240,11 +179,10 @@ public abstract class AEnemy implements IMovable, ITargetable {
     }
 
     /**
-     * 
      * If there is only one direction for the enemy left to move, move it
      * in that direction until it has reached its closest tile centerpoint.
-     * @param h
-     * @param v
+     * @param h is the horizontal unit vector for the current direction
+     * @param v is the vertical unit vector for the current direction
      */
     private void finalDirectionMove(double h, double v) {
         if (directions.size() == 1) {
@@ -259,14 +197,13 @@ public abstract class AEnemy implements IMovable, ITargetable {
     }
 
     /**
-     * 
      * Calculate the next enemy position coordinates after a turn and updates them.
-     * @param h
-     * @param v
-     * @param hNext
-     * @param vNext
-     * @param nextX
-     * @param nextY
+     * @param h is the horizontal unit vector for the current direction
+     * @param v is the vertical unit vector for the current direction
+     * @param hNext is the horizontal unit vector for the next direction
+     * @param vNext is the vertical unit vector for the next direction
+     * @param nextX is the next x-position
+     * @param nextY is the next y-position
      */
     private void turningMove(double h, double v, double hNext, double vNext, double nextX, double nextY) {
         double nextXPos = tileCenterPointX(h) + Math.abs((nextY) - tileCenterPointY(v)) * hNext;
@@ -277,7 +214,7 @@ public abstract class AEnemy implements IMovable, ITargetable {
 
     /**
      * Moves the enemy along a predefined path of directions, adjusting its position
-     * based on the current and next direction. Handles both continuous movement
+     * based on the current and next direction. Handles both movement
      * in the same direction and turning at designated points.
      */
     private void moveEnemy() {
@@ -311,7 +248,7 @@ public abstract class AEnemy implements IMovable, ITargetable {
         speed = maxSpeed;
     }
 
-    /*
+    /**
      * Move an enemy if the direction list isn't empty.
      */
     @Override
@@ -321,10 +258,57 @@ public abstract class AEnemy implements IMovable, ITargetable {
         }
     }
 
+    //----------------------------Animation----------------------//
+
+    /*
+     * Updates the animation tick count and checks if it's time to increment the animation index and reset tick count.
+     */
+    public void updateAnimationTick() {
+        animationTick++;
+        if (animationTick >= 10) {
+            animationTick = 0;
+            incrementAnimationIndex();
+        }
+    }
+
+    /*
+     * Increments the animation index and resets if it exceeds the number of sprites in the animation.
+     */
+    private void incrementAnimationIndex() {
+        int spritesInAnimation = 4;
+        animationIndex++;
+        if (animationIndex >= spritesInAnimation) {
+            animationIndex = 0;
+        }
+    }
+
+    /*
+     * Resets animation index
+     */
+    private void resetAnimation() {
+        int spritesInAnimation = 4;
+        if (animationIndex != 0) {
+            animationIndex++;
+            if (animationIndex >= spritesInAnimation) {
+                animationIndex = 0;
+            }
+        }
+    }
+    
     //----------------------------Condition methods----------------------//
 
     /**
-     * Triggers any conditions the enemy has (If its duration in the conditions map is more that 0)
+     * Initializes the conditions for which an enemy can have.
+     */
+    private void initConditionMap() {
+        conditions = new HashMap<Condition, Integer>();
+        conditions.put(Condition.chilled, 0);
+        conditions.put(Condition.superChilled, 0);
+        conditions.put(Condition.onFire, 0);
+    }
+
+    /**
+     * Triggers any conditions the enemy has (If its duration in the conditions map is more than 0)
      */
     public void triggerConditions(){
         if(conditions.get(Condition.chilled) > 0){
@@ -341,13 +325,23 @@ public abstract class AEnemy implements IMovable, ITargetable {
     }
 
     /**
-     * Decrements condition duration it it's larger than 0
+     * Decrements condition duration if it's larger than 0
      */
     public void decrementConditionDurations(){
         for (Map.Entry<Condition, Integer> entry : conditions.entrySet()) {
             if (entry.getValue() > 0) {
                 conditions.put(entry.getKey(), entry.getValue() - 1);
             }
+        }
+    }
+
+    public boolean isChilled() {
+        return conditions.get(Condition.chilled) > 0 || conditions.get(Condition.superChilled) > 0;
+    }
+
+    public void setCondition(Condition condition, int duration) {
+        if (conditions.get(condition) < duration) {
+            conditions.put(condition, duration);
         }
     }
 
@@ -379,20 +373,6 @@ public abstract class AEnemy implements IMovable, ITargetable {
         return this.damage;
     }
 
-    public boolean isChilled() {
-        return conditions.get(Condition.chilled) > 0 || conditions.get(Condition.superChilled) > 0;
-    }
-
-    public void setCondition(Condition condition, int duration) {
-        if (conditions.get(condition) < duration) {
-            conditions.put(condition, duration);
-        }
-    }
-
-    public EnemyType getType() {
-        return type;
-    }
-
     public void setStaggered(boolean bool) {
         isStaggered = bool;
     }
@@ -402,15 +382,15 @@ public abstract class AEnemy implements IMovable, ITargetable {
     }
 
     public double getHealth(){
-        return this.health;
+        return health;
     }
 
     public double getMaxHealth(){
-        return this.maxHealth;
+        return maxHealth;
     }
 
     public int getMoney() {
-        return this.moneyBag;
+        return moneyBag;
     }
 
     public int getDirectionsSize() {
@@ -418,7 +398,7 @@ public abstract class AEnemy implements IMovable, ITargetable {
     }
 
     public EnemyType getEnemyType() {
-        return this.type;
+        return enemyType;
     }
     public int getAnimationIndex(){
         return this.animationIndex;
