@@ -13,7 +13,7 @@ public class FreezerTower extends ATower {
         super(x, y, 6, 1.0, 0, 30, TowerType.freezer, 0, TargetType.all, TargetType.enemies);
         upgradeIntMap.put(Upgrade.Frostbite, 0);
         upgradeIntMap.put(Upgrade.SuperChill, 0);
-        upgradeIntMap.put(Upgrade.ConditionDuration, 30);
+        upgradeIntMap.put(Upgrade.ConditionDuration, 20);
         upgradeDoubleMap.put(Upgrade.Range, 0.5);
     }
 
@@ -26,7 +26,7 @@ public class FreezerTower extends ATower {
     public void useAbility(AEnemy target) {
         if(target != null){
             if(hasUpgrade(Upgrade.Frostbite)){
-                if(target.isChilled()){
+                if(target.hasCondition(Condition.chilled) || target.hasCondition(Condition.superChilled)){
                     target.takeDamage(damage+1);
                 }
             }
@@ -43,5 +43,9 @@ public class FreezerTower extends ATower {
             }
             resetCooldown();
         }
+    }
+
+    public Integer getChillDuration() {
+        return null;
     }
 }

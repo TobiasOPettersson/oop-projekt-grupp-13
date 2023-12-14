@@ -2,10 +2,16 @@ package Model.Towers;
 
 import org.junit.jupiter.api.Test;
 
+import Model.Enemies.ChickenEnemy;
+import Model.Enums.Condition;
+import Model.Enums.EnemyType;
 import Model.Enums.Upgrade;
 
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.ArrayList;
 
 public class TowersTest {
     
@@ -94,6 +100,9 @@ public class TowersTest {
         BlowtorchTower blowtorch = new BlowtorchTower(0, 0);
         blowtorch.upgrade(Upgrade.SetOnFire);
         assertTrue(blowtorch.hasUpgrade(Upgrade.SetOnFire));
+        ChickenEnemy target = new ChickenEnemy(0, new ArrayList<>());
+        blowtorch.useAbility(target);
+        assertTrue(target.hasCondition(Condition.onFire));
     }
 
     @Test
@@ -106,7 +115,7 @@ public class TowersTest {
 
     @Test
     public void test_slicer_upgrade_aoerange() {
-        SlicerTower slicer = new SlicerTower(0, 0);
+        SlicerTower slicer = new SlicerTower(0, 2);
         double upgradedAoeRange = slicer.getAoeRange() + slicer.getUpgradeDoubleMap().get(Upgrade.AoeRange).doubleValue();
         slicer.upgrade(Upgrade.AoeRange);
         assertEquals(upgradedAoeRange, slicer.getAoeRange());
@@ -115,21 +124,31 @@ public class TowersTest {
     @Test
     public void test_freezer_upgrade_frostbite() {
         FreezerTower freezer = new FreezerTower(0, 0);
+        ChickenEnemy target = new ChickenEnemy(0, new ArrayList<>());
         freezer.upgrade(Upgrade.Frostbite);
+        freezer.useAbility(target);
+        freezer.useAbility(target);
+        assertEquals(49, target.getHealth());
         assertTrue(freezer.hasUpgrade(Upgrade.Frostbite));
     }
 
     @Test
     public void test_freezer_upgrade_superchill() {
         FreezerTower freezer = new FreezerTower(0, 0);
+        ChickenEnemy target = new ChickenEnemy(0, new ArrayList<>());
         freezer.upgrade(Upgrade.SuperChill);
+        freezer.useAbility(target);
+        assertTrue(target.hasCondition(Condition.superChilled));
         assertTrue(freezer.hasUpgrade(Upgrade.SuperChill));
     }
 
     @Test
     public void test_freezer_upgrade_conditionduration() {
         FreezerTower freezer = new FreezerTower(0, 0);
+        ChickenEnemy target = new ChickenEnemy(0, new ArrayList<>());
         freezer.upgrade(Upgrade.ConditionDuration);
+        freezer.useAbility(target);
+        assertEquals(50, target.getConditionDuration(Condition.chilled));
         assertTrue(freezer.hasUpgrade(Upgrade.ConditionDuration));
     }
 

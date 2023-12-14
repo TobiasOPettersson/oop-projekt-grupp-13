@@ -281,19 +281,6 @@ public abstract class AEnemy implements IMovable, ITargetable {
             animationIndex = 0;
         }
     }
-
-    /*
-     * Resets animation index
-     */
-    private void resetAnimation() {
-        int spritesInAnimation = 4;
-        if (animationIndex != 0) {
-            animationIndex++;
-            if (animationIndex >= spritesInAnimation) {
-                animationIndex = 0;
-            }
-        }
-    }
     
     //----------------------------Condition methods----------------------//
 
@@ -335,14 +322,18 @@ public abstract class AEnemy implements IMovable, ITargetable {
         }
     }
 
-    public boolean isChilled() {
-        return conditions.get(Condition.chilled) > 0 || conditions.get(Condition.superChilled) > 0;
-    }
-
     public void setCondition(Condition condition, int duration) {
         if (conditions.get(condition) < duration) {
             conditions.put(condition, duration);
         }
+    }
+
+    public boolean hasCondition(Condition condition){
+        return conditions.get(condition) > 0;
+    }
+
+    public int getConditionDuration(Condition condition){
+        return conditions.get(condition);
     }
 
     //----------------------------Other methods----------------------//
