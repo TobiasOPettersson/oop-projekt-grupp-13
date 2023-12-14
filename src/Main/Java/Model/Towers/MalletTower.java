@@ -1,6 +1,5 @@
 package Model.Towers;
 
-import Model.Enemies.AEnemy;
 import Model.Enums.EnemyType;
 import Model.Enums.TargetType;
 import Model.Enums.TowerType;

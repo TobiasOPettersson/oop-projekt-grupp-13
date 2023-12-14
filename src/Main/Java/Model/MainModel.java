@@ -2,21 +2,17 @@ package Model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observer;
 import java.util.Queue;
 import java.util.LinkedList;
 
 import Model.Enemies.AEnemy;
-import Model.Enemies.TomatoEnemy;
 import Model.Enemies.Wave;
-import Model.Enemies.EnemyFactory;
 import Model.Enums.Direction;
 import Model.Enums.TowerType;
 import Model.Enums.Upgrade;
 import Model.Interfaces.IObservable;
 import Model.Interfaces.ITargetable;
 import Model.Interfaces.ITowerUpgradeObserver;
-import Model.Enums.EnemyType;
 import Model.Map.AMap;
 import Model.Map.ATile;
 import Model.Map.MapOne;
@@ -39,7 +35,7 @@ public class MainModel implements ITowerUpgradeObserver {
      */
     public MainModel() {
         player = new Player(5, 3);
-        map = new MapOne();
+        map = new MapOne(player);
         allWaves = new Wave(map.getStartPosition(), map.getPathDirections());
         alive = true;
         activeWave = false;
@@ -54,8 +50,8 @@ public class MainModel implements ITowerUpgradeObserver {
             updateWave();
             updateTowers();
 
-            alive = alive();
-            activeWave = activeWave();
+            alive = isAlive();
+            activeWave = isActiveWave();
         }
         notifyObservers();
     }
@@ -162,8 +158,9 @@ public class MainModel implements ITowerUpgradeObserver {
 
     /**
      * Starts the wave
+     * @throws Exception
      */
-    public void play() {
+    public void play() throws Exception {
         if (canStartNewWave()) {
             currentWaveEnemies = allWaves.getNextWave();
             activeWave = true;
@@ -183,7 +180,7 @@ public class MainModel implements ITowerUpgradeObserver {
     /**
      * @return true if alive, false if dead
      */
-    private boolean alive(){
+    private boolean isAlive(){
         return player.getHealth() > 0;
     }
    
@@ -212,7 +209,7 @@ public class MainModel implements ITowerUpgradeObserver {
     /**
      * @return whether or not there is an active wave
      */
-    public boolean activeWave(){
+    public boolean isActiveWave(){
         if (enemies.isEmpty() && currentWaveEnemies.isEmpty()) return false;
         return true;
     }
@@ -283,11 +280,7 @@ public class MainModel implements ITowerUpgradeObserver {
         return tile.getTower();
     }
 
-    /**
-     * TODO REMOVE OR CHANGE
-     */
     public Player getPlayer() {
-        map.setPlayer(player);
         return player;
     }
 

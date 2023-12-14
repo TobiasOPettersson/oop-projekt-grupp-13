@@ -29,17 +29,6 @@ public class Wave {
         spawnRate = MAX_SPAWN_RATE;
         waveFactory = new EnemyFactory(startPosition, pathDirections);
     }
-
-    /**
-     * Starts a new wave of enemies.
-     * @return The next wave in the queue.
-     * @throws Exception if the queue is empty.
-     */
-    public Queue<EnemyType> startWave() throws Exception{
-        currentWave++;
-        if (waves.isEmpty()) throw new Exception("Wave is empty");
-        return waves.poll();
-    }
     
     /**
      * Adds all the waves to the wave queue.
@@ -266,14 +255,14 @@ public class Wave {
 
     //---------------- GETTERS AND SETTERS -----------------//
 
-    public Queue<AEnemy> getNextWave() {
+    public Queue<AEnemy> getNextWave() throws Exception {
         if (!waves.isEmpty()){
             Queue<AEnemy> nextWave = waveFactory.createCurrentWave(waves.poll());
             currentWave++;
             return nextWave;
         }
         else {
-            throw new NullPointerException(" You called waves.poll() on an empty queue. Returns null.");
+            throw new Exception(" You called waves.poll() on an empty queue. Returns null.");
         }
     }
 

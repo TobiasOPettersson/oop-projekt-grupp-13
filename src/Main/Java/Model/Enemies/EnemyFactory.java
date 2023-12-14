@@ -8,6 +8,9 @@ import java.util.Queue;
 import Model.Enums.Direction;
 import Model.Enums.EnemyType;
 
+/**
+ * A class representing an enemy factory which creates all instances of enemies.
+ */
 public class EnemyFactory {
     private Queue<AEnemy> currentWave = new LinkedList<AEnemy>(); 
     private int startPosition;
@@ -33,10 +36,26 @@ public class EnemyFactory {
         EnemyType currentEnemyType;
         while (currentWaveType.isEmpty() == false) {
             currentEnemyType = currentWaveType.poll();
-            if (currentEnemyType == EnemyType.tomato) currentWave.add(new TomatoEnemy(startPosition, pathDirection));
-            if (currentEnemyType == EnemyType.banana) currentWave.add(new BananaEnemy(startPosition, pathDirection));
-            if (currentEnemyType == EnemyType.cheese) currentWave.add(new CheeseEnemy(startPosition, pathDirection));
-            if (currentEnemyType == EnemyType.chicken) currentWave.add(new ChickenEnemy(startPosition, pathDirection));
+            switch (currentEnemyType) {
+                case banana:
+                    currentWave.add(new BananaEnemy(startPosition, pathDirection));
+                    break;
+
+                case tomato:
+                    currentWave.add(new TomatoEnemy(startPosition, pathDirection));
+                    break;
+
+                case cheese:
+                    currentWave.add(new CheeseEnemy(startPosition, pathDirection));
+                    break;
+
+                case chicken:
+                    currentWave.add(new ChickenEnemy(startPosition, pathDirection));
+                    break;
+            
+                default:
+                    break;
+            } 
         }
         return currentWave;
     }

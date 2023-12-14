@@ -1,6 +1,5 @@
 package Controller.Interfaces;
 
-import Model.Enums.TowerType;
 import Model.Enums.Upgrade;
 
 public interface IUpgradeTowerSubject {

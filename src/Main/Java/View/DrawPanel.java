@@ -50,7 +50,6 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
         this.drawGameInfo = new DrawGameInfo(model);
         setLayout(null);
         update();
-        addMouseListeners();
         this.gridWidth = model.getMapSizeX();
         this.gridHeight = model.getMapSizeY();
     }
@@ -207,62 +206,7 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
         repaint();
     }
 
-    /** -------- Related to mouse events -------- */
-
-    /**
-     * Adds mouselisteners to DrawPanel
-     * MouseClicked left: Exits placing towers
-     * MouseClicked right: Creates a tower at the mouse position
-     * MouseMoved: Saves which tile the player is hovering over in the hoveredTile
-     * variable
-     */
-    private void addMouseListeners() {
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent mEvent) {
-                if (mEvent.getButton() == MouseEvent.BUTTON3) {
-                    isPlacingTower = false;
-                    JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(DrawPanel.this);
-                    ((GameView) parentFrame).openCreateWidgit();
-                } else {
-                    try {
-                        handleTileClick();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-        addMouseMotionListener(new MouseAdapter() {
-            @Override
-            public void mouseMoved(MouseEvent mEvent) {
-                // if(!model.activeWave()){
-                hoverOverTile(mEvent.getX(), mEvent.getY());
-                // }
-            }
-        });
-    }
-
-    /**
-     * Creates a tower at the mouse position if the player is placing towers
-     * OR
-     * Opens the upgrade widget for the tower at the mouse position
-     */
-    private void handleTileClick() throws Exception {
-        if (isHoveredTileTowerTile()) {
-            JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(DrawPanel.this);
-            if (isPlacingTower) {
-                model.createTower(hoveredTile[0], hoveredTile[1], towerTypeToPlace);
-                ((GameView) parentFrame).addNewUpgradeWidget(towerTypeToPlace, hoveredTile[0], hoveredTile[1]);
-            } else if (getTowerAtMousePos() != null) {
-                selectedTile[0] = hoveredTile[0];
-                selectedTile[1] = hoveredTile[1];
-                ((GameView) parentFrame).openUpgradeWidgit(hoveredTile[0], hoveredTile[1],
-                        getTowerAtMousePos().getTowerType(),
-                        getTowerAtMousePos().getUpgrades());
-            }
-        }
-    }
+    // -----------------------Related to mouse events--------------------//
 
     /**
      * Saves which tile the player is hovering over in the hoveredTile variable
@@ -270,7 +214,7 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
      * @param x Mouse x-pos
      * @param y Mouse y-pos
      */
-    private void hoverOverTile(int x, int y) {
+    protected void hoverOverTile(int x, int y) {
         for (int i = 0; i < gridWidth; i++) {
             if (x > SPRITESIZE * i && x < SPRITESIZE * (i + 1)) {
                 for (int j = 0; j < gridHeight; j++) {
@@ -299,7 +243,7 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
      * 
      * @return Tower at mouse position or null if the tile doesn't have a tower
      */
-    private ATower getTowerAtMousePos() {
+    protected ATower getTowerAtMousePos() {
         if (hoveredTile[0] > -1 && hoveredTile[1] > -1) {
             if (isHoveredTileTowerTile()) {
                 return model.getTowerOnTile(((TowerTile) model.getTile(hoveredTile[0], hoveredTile[1])));
@@ -313,7 +257,30 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
      * 
      * @return If the hovered tile is a TowerTile
      */
-    private boolean isHoveredTileTowerTile() {
+    protected boolean isHoveredTileTowerTile() {
         return model.tileIsTowerTile(hoveredTile[0], hoveredTile[1]);
+    }
+
+    // ----------------------------Getters & setters--------------------------//
+
+    protected void setSelectedTile() {
+        selectedTile[0] = hoveredTile[0];
+        selectedTile[1] = hoveredTile[1];
+    }
+
+    protected int[] getHoveredTile() {
+        return hoveredTile;
+    }
+
+    protected TowerType getTowerTypeToPlace() {
+        return towerTypeToPlace;
+    }
+
+    protected boolean isPlacingTower() {
+        return isPlacingTower;
+    }
+
+    protected boolean setPlacingTower(boolean bool) {
+        return isPlacingTower = bool;
     }
 }

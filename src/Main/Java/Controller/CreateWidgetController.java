@@ -8,12 +8,27 @@ import Model.MainModel;
 import Model.Enums.TowerType;
 import View.ICreateTowerObserver;
 
+/**
+ * CreateWidgetController represents the controller responsible for managing the
+ * shop interface
+ * used for creating towers in the game. It extends AShopWidgetController and
+ * implements the
+ * ICreateTowerSubject interface to facilitate tower creation.
+ * This controller initializes buttons for various tower types and handles
+ * interactions related to
+ * tower creation in the game. It also updates button opacity based on the
+ * player's available money.
+ */
+
 public class CreateWidgetController extends AShopWidgetController implements ICreateTowerSubject {
     ICreateTowerObserver observer;
 
     /**
      * Constructor for the Shop Widget
-     * @param observer The DrawPanel that is notified when the player wants to create a tower
+     * 
+     * @param observer The DrawPanel that is notified when the player wants to
+     *                 create a tower
+     * @Param model The main model containing the data and logic
      */
     public CreateWidgetController(ICreateTowerObserver observer, MainModel model) {
         super(model);
@@ -22,13 +37,14 @@ public class CreateWidgetController extends AShopWidgetController implements ICr
         this.model = model;
         buttonPanel.setLayout(new GridLayout(0, 6, 5, 10));
 
-        initHeader("CREATE TOWERS");
+        initHeader("BUY TOWERS");
         initButtons();
         initPlaybutton();
     }
 
     /**
-     * Initializes the buttons that the player click on when they want to create a tower
+     * Initializes the buttons that the player click on when they want to create a
+     * tower
      */
     private void initButtons() {
         buttons = List.of(
@@ -45,6 +61,7 @@ public class CreateWidgetController extends AShopWidgetController implements ICr
 
     /**
      * Notifies the observer (DrawPanel) that the player wants to create a tower of
+     * 
      * @param towerType The tower the player wants to buy
      * @throws Exception if the player doesn't have enough money to buy the tower
      */
@@ -60,6 +77,8 @@ public class CreateWidgetController extends AShopWidgetController implements ICr
     /**
      * Called whenever the players bank changes
      * Calls setOpacity(), turns buttons grey if the player cant afford the tower
+     * 
+     * @param curMoney The current amount of Money the Player has.
      */
     @Override
     public void updateMoney(int curMoney) {

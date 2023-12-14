@@ -1,23 +1,27 @@
 package Controller;
 
 import java.awt.Color;
-import java.awt.GridBagLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
-
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-
 import Model.MainModel;
 
+/**
+ * PlayButtonController represents the controller for the "Start Wave" button
+ * used to initiate
+ * the game's wave or level. It extends JPanel and initializes a JButton to
+ * start a new wave
+ * or level in the game when clicked. The button triggers the 'play()' method in
+ * the MainModel.
+ */
 public class PlayButtonController extends JPanel {
     String playImagePath;
     MainModel model;
 
     /**
      * The button that starts a new wave, i.e. starts the game
+     * 
      * @param model is the main model where the method play() is called on
      */
     public PlayButtonController(MainModel model) {
@@ -31,10 +35,16 @@ public class PlayButtonController extends JPanel {
      * Initializes the button
      */
     private void initButton() {
-        JButton button = new JButton();
-        button.setSize(50, 50);
-        button.setText("START WAVE");
-        button.addActionListener(e -> model.play());
+        JButton button = new JButton("START WAVE");
+        Font font = new Font("Arial", Font.BOLD, 16);
+        button.setFont(font);
+        button.addActionListener(e -> {
+            try {
+                model.play();
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
+        });
         add(button);
     }
 }

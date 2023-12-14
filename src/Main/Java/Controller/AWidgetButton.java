@@ -11,9 +11,17 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.util.HashMap;
 import java.util.Map;
+
+/**
+ * AWidgetButton is an abstract class representing a button widget
+ * used in the shop's interface to display tower options. It encapsulates
+ * the visual components of a tower button, including the tower's cost,
+ * image, and related UI elements.
+ */
 
 public abstract class AWidgetButton extends JPanel {
     protected JPanel topPanel;
@@ -49,13 +57,13 @@ public abstract class AWidgetButton extends JPanel {
     protected abstract void initButtonImagePaths();
 
     /**
-     * Initializes all components of the bottom panel, it contains:
+     * Initializes all components of the top panel, it contains:
      * An image of the tower
      */
     private void initTopPanel() {
         topPanel = new JPanel();
         JLabel towerImageLabel = new JLabel(new ImageIcon(buttonImgPaths.get(type)));
-        topPanel.setBackground(Color.orange);
+
         topPanel.setLayout(new BorderLayout());
         topPanel.add(towerImageLabel, BorderLayout.CENTER);
         add(topPanel, BorderLayout.CENTER);
@@ -69,12 +77,15 @@ public abstract class AWidgetButton extends JPanel {
     private void initBottomPanel() {
         bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         bottomPanel.setPreferredSize(new Dimension(100, 180));
-        bottomPanel.setBackground(Color.PINK);
         bottomPanel.setLayout(new GridLayout(3, 1, 0, 0));
 
         String typeName = Character.toUpperCase(type.name().charAt(0)) + type.name().substring(1);
         nameLabel = new JLabel(typeName);
+        Font newFontName = nameLabel.getFont().deriveFont(18f); // 18f is the new font size
+        nameLabel.setFont(newFontName);
         JLabel costLabel = new JLabel(Integer.toString(cost));
+        Font newFontCost = costLabel.getFont().deriveFont(18f);
+        costLabel.setFont(newFontCost);
         nameLabel.setHorizontalAlignment(SwingConstants.CENTER);
         costLabel.setHorizontalAlignment(SwingConstants.CENTER);
         bottomPanel.add(nameLabel);
@@ -82,9 +93,15 @@ public abstract class AWidgetButton extends JPanel {
         add(bottomPanel, BorderLayout.SOUTH);
     }
 
+    /**
+     * Sets the opacity of the widget components.
+     * 
+     * @param bool true to set the widget and its components as opaque,
+     *             false to set them with transparency!
+     */
     public void setOpacity(boolean bool) {
         Color color = new Color(0, 0, 0, 150);
-        
+
         if (bool) {
             setOpaque(false);
             setBackground(color);
@@ -93,8 +110,8 @@ public abstract class AWidgetButton extends JPanel {
         } else {
             setOpaque(true);
             setBackground(Color.gray);
-            topPanel.setBackground(Color.orange);
-            bottomPanel.setBackground(Color.pink);
+            topPanel.setBackground(new Color(200, 0, 0, 80));
+            bottomPanel.setBackground(new Color(35, 0, 200, 80));
         }
     }
 

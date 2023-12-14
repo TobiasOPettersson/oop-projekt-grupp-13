@@ -1,5 +1,6 @@
 package View;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 import Controller.CreateWidgetController;
@@ -12,6 +13,8 @@ import Model.Enums.Upgrade;
 
 import Model.Interfaces.IObservable;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,11 +32,16 @@ public class GameView extends JFrame implements IObservable {
     public GameView(MainModel model) {
         this.model = model;
         this.drawPanel = new DrawPanel(this, model);
+        addMouseListenersToDrawPanel();
         setLayout(null);
         this.drawPanel.setBounds(0, 0, 960, 480);
         add(drawPanel);
         initWidgits();
         initComponents();
+        setTitle("Kitchen Defence");
+        ImageIcon img = new ImageIcon("src/Main/Java/View/resView/towers/fridgeTower.png");
+        setIconImage(img.getImage());
+
         showTutorial();
     }
 
@@ -60,6 +68,58 @@ public class GameView extends JFrame implements IObservable {
     }
 
     // ----------------------------Wigit methods--------------------------//
+
+        /**
+     * Adds mouselisteners to DrawPanel
+     * MouseClicked left: Exits placing towers
+     * MouseClicked right: Creates a tower at the mouse position
+     * MouseMoved: Saves which tile the player is hovering over in the hoveredTile
+     * variable
+     */
+    private void addMouseListenersToDrawPanel() {
+        drawPanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent mEvent) {
+                if (mEvent.getButton() == MouseEvent.BUTTON3) {
+                    drawPanel.setPlacingTower(false);
+                    openCreateWidgit();
+                } else {
+                    try {
+                        handleTileClick();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        drawPanel.addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent mEvent) {
+                // if(!model.activeWave()){
+                drawPanel.hoverOverTile(mEvent.getX(), mEvent.getY());
+                // }
+            }
+        });
+    }
+
+    /**
+     * Creates a tower at the mouse position if the player is placing towers
+     * OR
+     * Opens the upgrade widget for the tower at the mouse position
+     */
+    private void handleTileClick() throws Exception {
+        if (drawPanel.isHoveredTileTowerTile()) {
+            int[] hoveredTile = drawPanel.getHoveredTile();
+            if (drawPanel.isPlacingTower()) {
+                model.createTower(hoveredTile[0], hoveredTile[1], drawPanel.getTowerTypeToPlace());
+                addNewUpgradeWidget(drawPanel.getTowerTypeToPlace(), hoveredTile[0], hoveredTile[1]);
+            } else if (drawPanel.getTowerAtMousePos() != null) {
+                drawPanel.setSelectedTile();
+                openUpgradeWidgit(hoveredTile[0], hoveredTile[1], drawPanel.getTowerAtMousePos().getTowerType(), drawPanel.getTowerAtMousePos().getUpgrades());
+            }
+        }
+    }
+
 
     /**
      * Opens the upgrade wigit of the clicked towers type, and closes all other

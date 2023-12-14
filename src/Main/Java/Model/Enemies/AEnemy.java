@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.imageio.IIOException;
+
 import Model.Enums.Condition;
 import Model.Enums.Direction;
 import Model.Enums.EnemyType;
@@ -281,19 +283,6 @@ public abstract class AEnemy implements IMovable, ITargetable {
             animationIndex = 0;
         }
     }
-
-    /*
-     * Resets animation index
-     */
-    private void resetAnimation() {
-        int spritesInAnimation = 4;
-        if (animationIndex != 0) {
-            animationIndex++;
-            if (animationIndex >= spritesInAnimation) {
-                animationIndex = 0;
-            }
-        }
-    }
     
     //----------------------------Condition methods----------------------//
 
@@ -335,14 +324,18 @@ public abstract class AEnemy implements IMovable, ITargetable {
         }
     }
 
-    public boolean isChilled() {
-        return conditions.get(Condition.chilled) > 0 || conditions.get(Condition.superChilled) > 0;
-    }
-
     public void setCondition(Condition condition, int duration) {
         if (conditions.get(condition) < duration) {
             conditions.put(condition, duration);
         }
+    }
+
+    public boolean hasCondition(Condition condition){
+        return conditions.get(condition) > 0;
+    }
+
+    public int getConditionDuration(Condition condition){
+        return conditions.get(condition);
     }
 
     //----------------------------Other methods----------------------//
@@ -350,11 +343,18 @@ public abstract class AEnemy implements IMovable, ITargetable {
     /*
      * Updates the enemy health depending on the damage it takes
      */
-    public void takeDamage(int damage){
+    public void takeDamage(int damage) {
         if (damage >= 0) {
-            this.health -= damage;
+            if (health - damage >= 0) {
+                health -= damage;
+            }
+            else {
+                health = 0;
+            }
         }
-        
+        else {
+            throw new IllegalArgumentException("Damage can't be negative!");
+        }
     }
 
     //----------------------------Getter and setters----------------------//
@@ -370,7 +370,7 @@ public abstract class AEnemy implements IMovable, ITargetable {
     }
 
     public int getDamage() {
-        return this.damage;
+        return damage;
     }
 
     public void setStaggered(boolean bool) {
@@ -401,6 +401,6 @@ public abstract class AEnemy implements IMovable, ITargetable {
         return enemyType;
     }
     public int getAnimationIndex(){
-        return this.animationIndex;
+        return animationIndex;
     }
 }
