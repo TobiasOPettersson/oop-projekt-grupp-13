@@ -51,7 +51,7 @@ public class MainModel implements ITowerUpgradeObserver {
             updateTowers();
 
             alive = isAlive();
-            activeWave = activeWave();
+            activeWave = isActiveWave();
         }
         notifyObservers();
     }
@@ -209,7 +209,7 @@ public class MainModel implements ITowerUpgradeObserver {
     /**
      * @return whether or not there is an active wave
      */
-    public boolean activeWave(){
+    public boolean isActiveWave(){
         if (enemies.isEmpty() && currentWaveEnemies.isEmpty()) return false;
         return true;
     }
