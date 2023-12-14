@@ -1,13 +1,8 @@
 package Controller;
 
 import java.awt.Color;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import Model.MainModel;
@@ -34,7 +29,13 @@ public class PlayButtonController extends JPanel {
         JButton button = new JButton();
         button.setSize(50, 50);
         button.setText("START WAVE");
-        button.addActionListener(e -> model.play());
+        button.addActionListener(e -> {
+            try {
+                model.play();
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
+        });
         add(button);
     }
 }

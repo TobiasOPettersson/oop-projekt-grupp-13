@@ -17,6 +17,6 @@ public class ChickenEnemy extends AEnemy {
      * @param directions    is the list of directions in which the enemy will follow
      */
     public ChickenEnemy(double y, List<Direction> directions) {
-        super(50, y, 0.001, EnemyType.chicken, directions, 2, 1);
+        super(50, y, 0.005, EnemyType.chicken, directions, 2, 1);
     }
 }

@@ -96,7 +96,6 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
         drawEndPosition(g);
         drawEnemies(g);
         drawEndScreen(g);
-
     }
 
     /**
@@ -119,7 +118,7 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
             Graphics2D g2 = (Graphics2D) g;
             g2.setColor(Color.red);
             g2.setStroke(new BasicStroke(1));
-            g2.drawRect(selectedTile[0] * 48, selectedTile[1] * 48, 48, 48);
+            g2.drawRect(selectedTile[0] * SPRITESIZE, selectedTile[1] * SPRITESIZE, SPRITESIZE, SPRITESIZE);
             g2.setStroke(g2.getStroke());
         }
     }
@@ -133,7 +132,7 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
             Graphics2D g2 = (Graphics2D) g;
             g2.setStroke(new BasicStroke(1));
             g2.setColor(Color.yellow);
-            g2.drawRect(hoveredTile[0] * 48, hoveredTile[1] * 48, 48, 48);
+            g2.drawRect(hoveredTile[0] * SPRITESIZE, hoveredTile[1] * SPRITESIZE, SPRITESIZE, SPRITESIZE);
             g2.setStroke(g2.getStroke());
         }
     }
@@ -145,15 +144,12 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
      */
     void drawEnemies(Graphics g) {
         for (AEnemy enemy : model.getEnemies()) {
-            // offset half of sprite size so the calculated position of enemy will be same
-            // position as center of enemysprite
-            int spriteSize = 48;
-            int offset = spriteSize / 2; // Sprite size / 2
+            int offset = SPRITESIZE / 2; // Sprite size / 2
             this.enemySprites = enemySpriteManager.getEnemySprites(enemy.getEnemyType());
 
             if (!enemy.getIsStaggered()) {
-                int x = (int) (enemy.getX() * spriteSize) - offset;
-                int y = (int) (enemy.getY() * spriteSize) - offset;
+                int x = (int) (enemy.getX() * SPRITESIZE) - offset;
+                int y = (int) (enemy.getY() * SPRITESIZE) - offset;
                 g.drawImage(enemySprites[enemy.getAnimationIndex()], x, y, null);
                 drawEnemyHP(g, enemy, x, y);
             }
@@ -174,12 +170,14 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
             g.setColor(Color.GREEN);
         } else if ((percentOfHP <= 0.75) && (percentOfHP > 0.5)) {
             g.setColor(Color.YELLOW);
-        } else if ((percentOfHP <= 0.5) && ((percentOfHP) > 0.25)) {
+        } else if ((percentOfHP <= 0.5) && (percentOfHP > 0.25)) {
             g.setColor(Color.ORANGE);
         } else {
             g.setColor(Color.RED);
         }
-        g.drawLine(x, y + SPRITESIZE, (int) (x + (SPRITESIZE * percentOfHP)), y + SPRITESIZE);
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setStroke(new BasicStroke(3));
+        g2.drawLine(x, y + SPRITESIZE + 2, (int) (x + (SPRITESIZE * percentOfHP)), y + SPRITESIZE + 2);
     }
 
     /**
@@ -197,7 +195,7 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
             } else{
                 towerImage = towerSprites[0];
             }
-            g.drawImage(towerImage, (int) tower.getX() * 48, (int) tower.getY() * 48, null);
+            g.drawImage(towerImage, (int) tower.getX() * SPRITESIZE, (int) tower.getY() * SPRITESIZE, null);
         }
     }
 
@@ -222,7 +220,7 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
         Color enemyColor = new Color(200, 0, 0, 80);
         g2.setColor(enemyColor);
         int rectY = (model.getStartPosition()*SPRITESIZE)-SPRITESIZE;
-        g2.fillRect(0, rectY, 48, 144);
+        g2.fillRect(0, rectY, SPRITESIZE, SPRITESIZE*3);
     }
 
     /**
@@ -234,7 +232,7 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
         g2.setColor(homeColor);
         int rectY = ((model.getEndPosition())*SPRITESIZE)-SPRITESIZE;
         int rectX = (model.getMapSizeX()*SPRITESIZE)-SPRITESIZE;
-        g2.fillRect(rectX, rectY, 48, 144);
+        g2.fillRect(rectX, rectY, SPRITESIZE, SPRITESIZE*3);
     }
 
     /**
@@ -251,7 +249,7 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
                 TowerType.freezer, 1);
 
         BufferedImage[] towerImage = towerSpriteManager.getTowerSprites(towerTypeToPlace);
-        g.drawImage(towerImage[0], hoveredTile[0] * 48, hoveredTile[1] * 48, null);
+        g.drawImage(towerImage[0], hoveredTile[0] * SPRITESIZE, hoveredTile[1] * SPRITESIZE, null);
         drawTowerRange(g, hoveredTile[0], hoveredTile[1], defaultRangeMap.get(towerTypeToPlace));
     }
 
@@ -278,8 +276,8 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
         g.setColor(Color.black);
         int rangeCircleX = (int) (x - range);
         int rangeCircleY = (int) (y - range);
-        int rangeCircleD = (int) (range * 2 * 48);
-        g2.drawOval(rangeCircleX * 48, rangeCircleY * 48, rangeCircleD + 48, rangeCircleD + 48);
+        int rangeCircleD = (int) (range * 2 * SPRITESIZE);
+        g2.drawOval(rangeCircleX * SPRITESIZE, rangeCircleY * SPRITESIZE, rangeCircleD + SPRITESIZE, rangeCircleD + SPRITESIZE);
     }
 
     /**
@@ -292,7 +290,7 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
         for (int i = 0; i < gridWidth; i++) {
             for (int j = 0; j < gridHeight; j++) {
                 if (pathGrid[j][i] != 0) {
-                    g.drawImage(pathSprites.get(pathGrid[j][i] - 1), i * spriteSize, j * spriteSize, null);
+                    g.drawImage(pathSprites.get(pathGrid[j][i] - 1), i * SPRITESIZE, j * SPRITESIZE, null);
                 }
             }
         }
@@ -331,6 +329,11 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
 
     /*
      * Draw a grid on the whole map
+     * @param g
+     */
+    /**
+     * Draw a grid on the whole map
+     * @param g
      */
     private void drawVisibleGrid(Graphics g) {
         for (int i = 0; i < gridWidth; i++) {
@@ -390,7 +393,7 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
      * @param g
      */
     private void drawPlayerMoney(Graphics g) {
-        g.setColor(Color.DARK_GRAY);
+                g.setColor(Color.DARK_GRAY);
         g.setFont(new Font("Arial", Font.BOLD, 20));
         g.drawString("Money: " + model.getPlayerMoney(), 0, SPRITESIZE + SPRITESIZE / 2 + 6);
     }
@@ -411,6 +414,11 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
      * @param g
      */
     private void drawInfo(Graphics g) {
+Graphics2D g2 = (Graphics2D) g;
+        Color backgroundColor = new Color(46, 122, 71, 255);
+        g2.setColor(backgroundColor);
+        g2.fillRect(0, 0, SPRITESIZE*3, SPRITESIZE*2);
+        g2.fillRect((model.getMapSizeX()-3)*SPRITESIZE, 0, SPRITESIZE*3, SPRITESIZE);
         drawPlayerHealth(g);
         drawPlayerMoney(g);
         drawWaveNumber(g);
@@ -490,9 +498,9 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
      */
     private void hoverOverTile(int x, int y) {
         for (int i = 0; i < gridWidth; i++) {
-            if (x > 48 * i && x < 48 * (i + 1)) {
+            if (x > SPRITESIZE * i && x < SPRITESIZE * (i + 1)) {
                 for (int j = 0; j < gridHeight; j++) {
-                    if (y > 48 * j && y < 48 * (j + 1)) {
+                    if (y > SPRITESIZE * j && y < SPRITESIZE * (j + 1)) {
                         hoveredTile[0] = i;
                         hoveredTile[1] = j;
                         return;
