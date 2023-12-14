@@ -104,11 +104,6 @@ public abstract class AWidgetButton extends JPanel {
         }
     }
 
-    /**
-     * Get the cost of a tower
-     * 
-     * @return returns the cost of the tower.
-     */
     protected int getCost() {
         return cost;
     }

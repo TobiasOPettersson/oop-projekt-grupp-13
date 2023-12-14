@@ -1,8 +1,7 @@
 package Controller;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
+
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -37,26 +36,25 @@ public class ShowTutorialDialog extends JDialog {
         tutorialHeader.setFont(new Font("Arial", Font.BOLD, 25));
         innerPanel.add(tutorialHeader);
 
-        String tutorialText ="<html>When you click the button <b>Start Wave</b> enemies will appear on the"
-                            + "<br>left side of the playing field. They will follow the path to the right side"
-                            + "<br>and if they get there you will loose health points."
-                            + "<br>"
-                            + "<br>A good way to stop the enemiees from getting to the right side is to place"
-                            + "<br>kitchen utencils along the path."
-                            + "<br>To <b>place a utencil</b> first left click one of them in the bottom of the screen."
-                            + "<br>Make sure you have money to pay for them!"
-                            + "<br>Right click to unselect the utencil."
-                            + "<br>"
-                            + "<br>You can left click on a placed utencil to <b>upgrade it</b> to a faster,"
-                            + "<br>stronger version."
-                            + "<br>"
-                            + "<br>"
-                            + "<br>"
-                            + "<br>";
+        String tutorialText = "<html>When you click the button <b>Start Wave</b> enemies will appear on the"
+                + "<br>left side of the playing field. They will follow the path to the right side"
+                + "<br>and if they get there you will loose health points."
+                + "<br>"
+                + "<br>A good way to stop the enemiees from getting to the right side is to place"
+                + "<br>kitchen utencils along the path."
+                + "<br>To <b>place a utencil</b> first left click one of them in the bottom of the screen."
+                + "<br>Make sure you have money to pay for them!"
+                + "<br>Right click to unselect the utencil."
+                + "<br>"
+                + "<br>You can left click on a placed utencil to <b>upgrade it</b> to a faster,"
+                + "<br>stronger version."
+                + "<br>"
+                + "<br>"
+                + "<br>"
+                + "<br>";
         JLabel tutorialLabel = new JLabel(tutorialText);
         tutorialLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         innerPanel.add(tutorialLabel);
-
 
         JButton startGameButton = new JButton("Start Game");
         startGameButton.addActionListener(new ActionListener() {

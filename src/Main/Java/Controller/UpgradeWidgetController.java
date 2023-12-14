@@ -19,8 +19,7 @@ public class UpgradeWidgetController extends AShopWidgetController implements IU
     /**
      * 
      * @param observer  observer The DrawPanel that is notified when the player
-     *                  wants to
-     *                  create a tower
+     *                  wants to create a tower
      * @param towerType The towerType that the player want to upgrade.
      * @param model     The mainModel with the data and logic of the game.
      * @param towerPosX TowerPosX represents the x-coordinate of the tower's
@@ -44,6 +43,7 @@ public class UpgradeWidgetController extends AShopWidgetController implements IU
         initPlaybutton();
 
     }
+
     /*
      * * Initializes the buttons that the player click on when they want to upgrade
      * the
@@ -100,6 +100,13 @@ public class UpgradeWidgetController extends AShopWidgetController implements IU
     public TowerType getTowerType() {
         return towerType;
     }
+
+    /**
+     * Notifies the observers about an upgrade and updates corresponding buttons.
+     * Also triggers a method to upgrade a tower.
+     *
+     * @param upgrade The upgrade to be notified to observers
+     */
 
     @Override
     public void notifyObservers(Upgrade upgrade) {
