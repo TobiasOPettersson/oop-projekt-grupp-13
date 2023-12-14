@@ -89,8 +89,8 @@ public class UpgradeButton extends AWidgetButton {
         } else {
             setOpaque(true);
             setBackground(Color.gray);
-            topPanel.setBackground(Color.orange);
-            bottomPanel.setBackground(Color.pink);
+            topPanel.setBackground(new Color(200, 0, 0, 80));
+            bottomPanel.setBackground(new Color(35, 0, 200, 80));
         }
         if (hasUpgrade) {
             showHasUpgrade();
