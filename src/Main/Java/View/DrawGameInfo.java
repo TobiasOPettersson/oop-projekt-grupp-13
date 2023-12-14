@@ -13,58 +13,55 @@ public class DrawGameInfo {
     private final int SPRITESIZE = GraphicsDependencies.getSpriteSize();
     private final int FRAMEWIDTH = GraphicsDependencies.getWidth();
     private final int FRAMEHEIGHT = GraphicsDependencies.getHeight();
-    private MainModel model;
     
     /**
      * Constructor
      * @param model The main model
      */
-    public DrawGameInfo(MainModel model) {
-        this.model = model;
+    public DrawGameInfo() {
     }
 
     /**
      * Draw all game information on the screen
      * @param g Graphics
      */
-    public void draw(Graphics g) {
-        drawInfoBackground(g);
-        drawPlayerHealth(g);
-        drawPlayerMoney(g);
-        drawWaveNumber(g);
-        drawEndScreen(g);
-
+    public void draw(Graphics g, int playerHealth, int playerMoney, int currentWaveNumber, int maxNumberOfWaves, int mapSizeX, boolean playerAlive, boolean activeWave, boolean allWavesDead) {
+        drawInfoBackground(g, mapSizeX);
+        drawPlayerHealth(g, playerHealth);
+        drawPlayerMoney(g, playerMoney);
+        drawWaveNumber(g, currentWaveNumber, maxNumberOfWaves, mapSizeX);
+        drawEndScreen(g, playerAlive, activeWave, allWavesDead);
     }
 
     /**
      * Draw how much health the player has on the screen
      * @param g Graphics
      */
-    private void drawPlayerHealth(Graphics g) {
+    private void drawPlayerHealth(Graphics g, int playerHealth) {
         g.setColor(Color.DARK_GRAY);
         g.setFont(new Font("Arial", Font.BOLD, 20));
-        g.drawString("Health: " + model.getPlayerHealth(), 0, SPRITESIZE / 2 + 6);
+        g.drawString("Health: " + playerHealth, 0, SPRITESIZE / 2 + 6);
     }
 
     /**
      * Draw how much money the player currently has
      * @param g Graphics
      */
-    private void drawPlayerMoney(Graphics g) {
+    private void drawPlayerMoney(Graphics g, int playerMoney) {
         g.setColor(Color.DARK_GRAY);
         g.setFont(new Font("Arial", Font.BOLD, 20));
-        g.drawString("Money: " + model.getPlayerMoney(), 0, SPRITESIZE + SPRITESIZE / 2 + 6);
+        g.drawString("Money: " + playerMoney, 0, SPRITESIZE + SPRITESIZE / 2 + 6);
     }
 
     /**
      * Draw how many waves are done and how many there are left
      * @param g Graphics
      */
-    private void drawWaveNumber(Graphics g) {
+    private void drawWaveNumber(Graphics g, int currentWaveNumber, int maxNumberOfWaves, int mapSizeX) {
         g.setColor(Color.DARK_GRAY);
         g.setFont(new Font("Arial", Font.BOLD, 20));
-        g.drawString("Round: " + model.getCurrentWaveNumber() + "/" + model.getMaxNumberofWaves(),
-                model.getMapSizeX() * SPRITESIZE - SPRITESIZE * 3, SPRITESIZE / 2 + 6);
+        g.drawString("Round: " + currentWaveNumber + "/" + maxNumberOfWaves,
+                mapSizeX * SPRITESIZE - SPRITESIZE * 3, SPRITESIZE / 2 + 6);
     }
 
     /**
@@ -88,11 +85,11 @@ public class DrawGameInfo {
      * Draw You Won if the player wins
      * @param g
      */
-    private void drawEndScreen(Graphics g) {
-        if (!model.getAlive()) {
+    private void drawEndScreen(Graphics g, boolean playerAlive, boolean activeWave, boolean allWavesDead) {
+        if (!playerAlive) {
             drawLostScreeen(g);
         }
-        if (!model.getActiveWave() && model.allWavesDead() && model.getAlive()) {
+        if (!activeWave && allWavesDead && playerAlive) {
             drawWonScreeen(g);
         }
     }
@@ -129,7 +126,7 @@ public class DrawGameInfo {
     private void drawCenteredText(Graphics g, String text) {
         int messageWidth = g.getFontMetrics().stringWidth(text);
         int x = (FRAMEWIDTH - messageWidth) / 2;
-        int y = FRAMEHEIGHT / 2;
+        int y = FRAMEHEIGHT / 3;
         g.drawString(text, x, y);
     }
 
@@ -137,7 +134,7 @@ public class DrawGameInfo {
      * Draw background for Health, coins and waves
      * @param g Graphics object
      */
-    private void drawInfoBackground(Graphics g) {
+    private void drawInfoBackground(Graphics g, int mapSizeX) {
         Color background = new Color(108, 108, 236, 220);
         // Rectangle 1 Health and Coins
         int rect1X = 0;
@@ -147,7 +144,7 @@ public class DrawGameInfo {
         drawRect(rect1X, rect1Y, width1, height1, background, g);
 
         // Rectangle 2 Waves
-        int rect2X = (model.getMapSizeX() - 3) * SPRITESIZE;
+        int rect2X = (mapSizeX - 3) * SPRITESIZE;
         int rect2Y = 0;
         int width2 = SPRITESIZE * 3;
         int height2 = SPRITESIZE;

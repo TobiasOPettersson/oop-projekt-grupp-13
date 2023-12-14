@@ -38,7 +38,7 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
         this.model = model;
         this.drawEnemies = new DrawEnemies();
         this.drawMap = new DrawMap(model.getPathDirections());
-        this.drawGameInfo = new DrawGameInfo(model);
+        this.drawGameInfo = new DrawGameInfo();
         this.drawTowers = new DrawTowers();
         setLayout(null);
         update();
@@ -57,10 +57,9 @@ public class DrawPanel extends JPanel implements ICreateTowerObserver, IObservab
         drawMap(g);
         drawEnemies.draw(g, model.getEnemies());
         drawTowers(g);
-        drawGameInfo.draw(g);
+        drawGameInfo.draw(g, model.getPlayerHealth(), model.getPlayerMoney(), model.getCurrentWaveNumber(), model.getMaxNumberofWaves(), model.getMapSizeX(), model.getAlive(), model.getActiveWave(), model.allWavesDead());
         drawSelectedTile(g);
         drawHoveredTile(g);
-
     }
 
     /**
