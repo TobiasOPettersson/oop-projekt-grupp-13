@@ -1,15 +1,16 @@
 import Model.MainModel;
 import View.GameView;
 
-// TODO Javadoc comments
-
+/**
+ * The class that initializes the model and view and runs the game
+ */
 public class Application {
     private final double FPS = 60.0;
     MainModel model = new MainModel(); 
     GameView view = new GameView(model);
     
     /**
-     * 
+     * Main loop
      * @param args
      */
     public static void main(String[] args) {
@@ -17,7 +18,7 @@ public class Application {
     }
 
     /**
-     * 
+     * Calls the models run-method that updates to the model state each frame.
      */
     private void run() {
         double timePerFrame = 1_000_000_000.0 / FPS;

@@ -39,14 +39,12 @@ public abstract class ATower implements ITargetable, IUpgradable {
 
     /**
      * Constructor of abstract class ATower
-     *
      * @param x           the x-position of the tower as a grid-index
      * @param y           the y-position of the tower as a grid-index
      * @param cost        is the amount of money needed to buy one tower
      * @param range       is the range of the towers ability
      * @param aoeRange    is the aoerange of the towers ability, 0 if the ability isn't an aoe
-     * @param maxCooldown is the maximum cooldown of the towers ability, the
-     *                    variable cooldown will reset to this after an ability has been used
+     * @param maxCooldown is the maximum cooldown of the towers ability, the variable cooldown will reset to this after an ability has been used
      * @param towerType   is the type of the tower, for example knife or mallet
      */
     public ATower(int x, int y, int cost, double range, double aoeRange, int maxCooldown, TowerType towerType, int damage, TargetType targetType1, TargetType targetType2) {
@@ -98,7 +96,6 @@ public abstract class ATower implements ITargetable, IUpgradable {
 
     /**
      * Finds enemies in range
-     * 
      * @param enemies All enemies on the map
      * @return Enemies in range, either the first or all
      */
@@ -149,14 +146,15 @@ public abstract class ATower implements ITargetable, IUpgradable {
 
     /**
      * Checks if a targetable is in range or not
-     * Without "distance -= ...;" it will look like the enemy was attacked out ofrange, even though it wasn't
+     * Without the distanceModifier it will look like the enemy was attacked out ofrange, even though it wasn't
      * @param enemy to check
      * @return whether or not the enemy is in range of the towers attack
      */
     public boolean inRangeOf(ITargetable source, ITargetable targetable, double range) {
+        double distanceModifier = 0.6;
         double distance = Math
                 .sqrt(Math.pow(source.getX() - targetable.getX(), 2) + Math.pow(source.getY() - targetable.getY(), 2));
-        distance -= 0.6;
+        distance -= distanceModifier;
         return distance <= range;
     }
 
@@ -208,6 +206,9 @@ public abstract class ATower implements ITargetable, IUpgradable {
 
     // ----------------------------Animation methods----------------------//
 
+    /**
+     * Increments the animation tick
+     */
     public void updateAnimationTick() {
         animationTick++;
         if (animationTick >= 10) {
@@ -233,6 +234,9 @@ public abstract class ATower implements ITargetable, IUpgradable {
         }
     }
 
+    /**
+     * Resets the animationindex  to 0
+     */
     public void resetAnimation() {
         int spritesInAnimation = 4;
         if (animationIndex != 0) {
@@ -341,15 +345,12 @@ public abstract class ATower implements ITargetable, IUpgradable {
 
 
 
-    // ------------------- Targeting methods that use ITargetable
-    // ------------------------//
+    // ------------------- Targeting methods that use ITargetable (Not used atm)------------------------//
 
     /**
      * Finds each targetable in range
-     * @param targetables are either the enemies on the map or the towers, depending
-     *                    of if the tower ability targets enemies or towers
-     * @return if the tower only targets the first only return the first targetable
-     *         in range, otherwise all. Return null if there are no targets
+     * @param targetables are either the enemies on the map or the towers, depending of if the tower ability targets enemies or towers
+     * @return if the tower only targets the first only return the first targetable in range, otherwise all. Return null if there are no targets
      */
     public List<ITargetable> findTargets(List<ITargetable> targetables) {
         List<ITargetable> targets = new ArrayList<>();
@@ -375,10 +376,8 @@ public abstract class ATower implements ITargetable, IUpgradable {
     /**
      * Finds each targetable in range
      * @param source      is the enemy or tower that is the center of the aoe
-     * @param targetables are either the enemies on the map or the towers, depending
-     *                    of if the tower ability targets enemies or towers
-     * @return if the tower only targets the first only return the first targetable
-     *         in range, otherwise all. Return null if there are no targets
+     * @param targetables are either the enemies on the map or the towers, depending of if the tower ability targets enemies or towers
+     * @return if the tower only targets the first only return the first targetable in range, otherwise all. Return null if there are no targets
      */
     public List<ITargetable> findAoeTargets(ITargetable source, List<ITargetable> targetables) {
         List<ITargetable> aoeTargets = new ArrayList<>();

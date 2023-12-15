@@ -2,7 +2,7 @@ package Model.Interfaces;
 
 public interface IObservable {
    /**
-    * Observer pattern
+    * Notifies the View to repaint each update
     */
    void update();
 }

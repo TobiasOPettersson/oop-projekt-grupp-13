@@ -5,19 +5,15 @@ import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
 
 /**
- * Represents a dialog window providing a tutorial for the game "Kitchen
- * Defence".
+ * Represents a dialog window providing a tutorial for the game "Kitchen Defence".
  * It displays instructions for gameplay mechanics and controls to the user.
- * This dialog contains information about enemy waves, placing utensils,
- * upgrading placed utensils, and starting the game.
- * The dialog includes a "Start Game" button to close the tutorial and begin
- * gameplay.
+ * This dialog contains information about enemy waves, placing utensils, upgrading placed utensils, and starting the game.
+ * The dialog includes a "Start Game" button to close the tutorial and begin gameplay.
  */
 public class ShowTutorialDialog extends JDialog {
 
     /**
      * Constructor for ShowTutorialDialog
-     * 
      * @param gameView The main JFrame of the game
      */
     public ShowTutorialDialog(JFrame gameView) {
@@ -38,7 +34,6 @@ public class ShowTutorialDialog extends JDialog {
 
     /**
      * Creates the inner panel containing tutorial information
-     * 
      * @return The inner JPanel containing tutorial content
      */
     private JPanel createInnerPanel() {
@@ -74,7 +69,6 @@ public class ShowTutorialDialog extends JDialog {
 
     /**
      * Creates the "Start Game" button
-     * 
      * @return The "Start Game" JButton
      */
     private JButton createStartGameButton() {
@@ -84,12 +78,10 @@ public class ShowTutorialDialog extends JDialog {
     }
 
     /**
-     * Creates the outer panel containing the inner panel and the "Start Game"
-     * button
-     * 
+     * Creates the outer panel containing the inner panel and the "Start Game" button
      * @param innerPanel      The JPanel containing tutorial content
      * @param startGameButton The JButton to start the game
-     * @return The outer JPanel containing all components
+     * @return                The outer JPanel containing all components
      */
     private JPanel createOuterPanel(JPanel innerPanel, JButton startGameButton) {
         JPanel outerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));

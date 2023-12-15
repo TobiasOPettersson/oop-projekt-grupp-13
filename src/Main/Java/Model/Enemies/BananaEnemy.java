@@ -12,8 +12,7 @@ import Model.Enums.EnemyType;
 public class BananaEnemy extends AEnemy{
     /**
      * Constructor of a banana enemy.
-     * @param y             the y-position of the enemy as a grid-index, i.e. not the
-     *                      y-position of the sprite in view
+     * @param y             the y-position of the enemy as a grid-index, i.e. not the y-position of the sprite in view
      * @param directions    is the list of directions in which the enemy will follow
      */
     public BananaEnemy(double y, List<Direction> directions) {

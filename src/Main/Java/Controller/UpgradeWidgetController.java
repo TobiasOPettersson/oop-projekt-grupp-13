@@ -14,16 +14,11 @@ import Model.Enums.Upgrade;
 import Model.Interfaces.ITowerUpgradeObserver;
 
 /**
- * Represents a controller managing the upgrade widget for a specific tower type
- * in the game.
- * This controller is responsible for initializing upgrade buttons, handling
- * player interactions
- * with these buttons, notifying observers about upgrades, and managing upgrade
- * availability based on the player's bank.
- * It extends AShopWidgetController and implements the IUpgradeTowerSubject
- * interface to observe and notify upgrades.
- * The class maintains information about the tower type, its position, and
- * updates available upgrades.
+ * Represents a controller managing the upgrade widget for a specific tower type in the game.
+ * This controller is responsible for initializing upgrade buttons, handling player interactions,
+ * with these buttons, notifying observers about upgrades, and managing upgrade availability based on the player's bank.
+ * It extends AShopWidgetController and implements the IUpgradeTowerSubject interface to observe and notify upgrades.
+ * The class maintains information about the tower type, its position, and updates available upgrades.
  */
 
 public class UpgradeWidgetController extends AShopWidgetController implements IUpgradeTowerSubject {
@@ -33,17 +28,13 @@ public class UpgradeWidgetController extends AShopWidgetController implements IU
     private int savedTowerPosY;
 
     /**
-     * 
-     * @param observer  observer The DrawPanel that is notified when the player
-     *                  wants to create a tower
+     * Constructor
+     * @param observer  observer The DrawPanel that is notified when the player wants to create a tower
      * @param towerType The towerType that the player want to upgrade.
      * @param model     The mainModel with the data and logic of the game.
-     * @param towerPosX TowerPosX represents the x-coordinate of the tower's
-     *                  position.
-     * @param towerPosY TowerPosY represents the x-coordinate of the tower's
-     *                  position.
+     * @param towerPosX TowerPosX represents the x-coordinate of the tower's position.
+     * @param towerPosY TowerPosY represents the x-coordinate of the tower's position.
      */
-
     public UpgradeWidgetController(ITowerUpgradeObserver observer, TowerType towerType, MainModel model, int towerPosX,
             int towerPosY) {
         super(model);
@@ -61,11 +52,8 @@ public class UpgradeWidgetController extends AShopWidgetController implements IU
     }
 
     /*
-     * * Initializes the buttons that the player click on when they want to upgrade
-     * the
-     * specific tower
+     * Initializes the buttons that the player click on when they want to upgrade the specific tower
      */
-
     private void initButtons() {
         switch (towerType) {
             case knife:
@@ -114,6 +102,10 @@ public class UpgradeWidgetController extends AShopWidgetController implements IU
         add(buttonPanel, BorderLayout.CENTER);
     }
 
+    /**
+     * Adds mouse listeners to a button that notifies observers when the player wants to upgrade a tower
+     * @param button The button to add the mouse listener to
+     */
     private void addMouseListenersToButton(AWidgetButton button){
         button.addMouseListener(new MouseAdapter() {
             @Override
@@ -132,12 +124,9 @@ public class UpgradeWidgetController extends AShopWidgetController implements IU
     }
 
     /**
-     * Notifies the observers about an upgrade and updates corresponding buttons.
-     * Also triggers a method to upgrade a tower.
-     *
+     * Notifies the observer (MainModel) about the player wanting to upgrade a tower
      * @param upgrade The upgrade to be notified to observers
      */
-
     @Override
     public void notifyObservers(Upgrade upgrade, int cost) throws Exception {
         for (AWidgetButton button : buttons) {
@@ -152,7 +141,6 @@ public class UpgradeWidgetController extends AShopWidgetController implements IU
 
     /**
      * Called whenever the players bank changes
-     * Calls setOpacity(), turns buttons grey if the player cant afford the upgrade
      */
     @Override
     public void updateMoney(int curMoney) {
@@ -162,7 +150,6 @@ public class UpgradeWidgetController extends AShopWidgetController implements IU
     }
 
     /**
-     * Called whenever the players bank changes
      * Calls setOpacity(), turns buttons grey if the player cant afford the upgrade
      */
     public void updateAvailableUpgrades(List<Upgrade> currentUpgrades) {
@@ -175,8 +162,7 @@ public class UpgradeWidgetController extends AShopWidgetController implements IU
     }
 
     /**
-     * Saves the position of the mouse as grid-indicies
-     * 
+     * Saves the position of the mouse as grid-indicies, i.e. the position of the tower the player clicked on
      * @param x is the x-position of the mouse as grid-indicies
      * @param y is the y-position of the mouse as grid-indicies
      */

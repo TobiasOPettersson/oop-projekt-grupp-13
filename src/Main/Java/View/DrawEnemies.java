@@ -57,9 +57,9 @@ public class DrawEnemies {
      * red = 25% health
      * 
      * @param g     Graphics object
-     * @param enemy
-     * @param x
-     * @param y
+     * @param enemy The enemy the method should draw
+     * @param x     The x-position of the enemy
+     * @param y     The y-position of the enemy
      */
     private void drawEnemyHP(Graphics g, AEnemy enemy, int x, int y) {
         double percentOfHP = enemy.getHealth() / enemy.getMaxHealth();
