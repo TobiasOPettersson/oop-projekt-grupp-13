@@ -1,8 +1,5 @@
 package Controller;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
 import Model.Enums.TowerType;
 
 /**
@@ -23,15 +20,8 @@ public class CreateButton extends AWidgetButton {
      * @param towerController The CreateTowerController the button will be added to
      * @param type            The type of the tower
      */
-    public CreateButton(int cost, TowerType type, CreateWidgetController towerController) {
-        super(cost, type, towerController);
-
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent mEvent) {
-                towerController.notifyObservers(type);
-            }
-        });
+    public CreateButton(int cost, TowerType type) {
+        super(cost, type);
     }
 
     /**

@@ -15,8 +15,8 @@ public class BlowtorchTower extends ATower{
 
     /**
      * Constructor for knife tower that uses the default attack from AttackTower
-     * @param x the x-position of the tower as a grid-index, i.e. not the x-position of the sprite in view
-     * @param y the y-position of the tower as a grid-index, i.e. not the y-position of the sprite in view 
+     * @param x the x-position of the tower as a grid-index
+     * @param y the y-position of the tower as a grid-index
      */
     public BlowtorchTower(int x, int y) {
         super(x, y, 10, 3, 1.0, 30, TowerType.blowtorch, 1, TargetType.first, TargetType.enemies);
@@ -33,14 +33,12 @@ public class BlowtorchTower extends ATower{
     @Override
     public void useAbility(AEnemy target) {
         if(target != null){
-            System.out.println("Blowtorch attack");
             if(hasUpgrade(Upgrade.SetOnFire)){
                 target.setCondition(Condition.onFire, burnDuration);
             }
             target.takeDamage(getDamage(target.getEnemyType()));
             target.setStaggered(true);
             resetCooldown();
-            System.out.println(target.getHealth());
         }
     }  
 

@@ -39,7 +39,7 @@ public abstract class AWidgetButton extends JPanel {
      * @param towerController is the tower controller widgit that the button is
      *                        added to
      */
-    public AWidgetButton(int cost, TowerType type, AShopWidgetController towerController) {
+    public AWidgetButton(int cost, TowerType type) {
         this.cost = cost;
         this.type = type;
         setSize(new Dimension(100, 200));

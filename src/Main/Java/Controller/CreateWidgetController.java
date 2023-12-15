@@ -3,6 +3,9 @@ package Controller;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.util.List;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 import Controller.Interfaces.ICreateTowerSubject;
 import Model.MainModel;
 import Model.Enums.TowerType;
@@ -34,12 +37,11 @@ public class CreateWidgetController extends AShopWidgetController implements ICr
         super(model);
 
         this.observer = observer;
-        this.model = model;
         buttonPanel.setLayout(new GridLayout(0, 6, 5, 10));
 
         initHeader("BUY TOWERS");
         initButtons();
-        initPlaybutton();
+        initPlaybutton(model);
     }
 
     /**
@@ -48,17 +50,28 @@ public class CreateWidgetController extends AShopWidgetController implements ICr
      */
     private void initButtons() {
         buttons = List.of(
-                new CreateButton(2, TowerType.knife, this),
-                new CreateButton(3, TowerType.mallet, this),
-                new CreateButton(10, TowerType.blowtorch, this),
-                new CreateButton(2, TowerType.slicer, this),
-                new CreateButton(6, TowerType.freezer, this));
+                new CreateButton(2, TowerType.knife),
+                new CreateButton(3, TowerType.mallet),
+                new CreateButton(10, TowerType.blowtorch),
+                new CreateButton(2, TowerType.slicer),
+                new CreateButton(6, TowerType.freezer)
+                );
+        
         for (AWidgetButton button : buttons) {
+            addMouseListenersToButton(button);
             buttonPanel.add(button);
         }
         add(buttonPanel, BorderLayout.CENTER);
     }
 
+    private void addMouseListenersToButton(AWidgetButton button){
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent mEvent) {
+                notifyObservers(button.type);
+            }
+        });
+    }
     /**
      * Notifies the observer (DrawPanel) that the player wants to create a tower of
      * 

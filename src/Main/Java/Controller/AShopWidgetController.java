@@ -24,7 +24,6 @@ import View.GraphicsDependencies;
 public abstract class AShopWidgetController extends JPanel implements IMoneyObserver {
     private final int MAP_HEIGHT = 480;
     private final int FRAME_HEIGHT = GraphicsDependencies.getHeight();
-    protected MainModel model;
 
     protected PlayButtonController playbutton;
     protected JPanel buttonPanel = new JPanel();
@@ -40,7 +39,6 @@ public abstract class AShopWidgetController extends JPanel implements IMoneyObse
     public AShopWidgetController(MainModel model) {
         setSize(new Dimension(600, FRAME_HEIGHT - MAP_HEIGHT));
         setVisible(true);
-        this.model = model;
 
         setBackground(Color.WHITE);
         setLayout(new BorderLayout());
@@ -50,7 +48,7 @@ public abstract class AShopWidgetController extends JPanel implements IMoneyObse
     /**
      * Initializes the Playbutton label
      */
-    protected void initPlaybutton() {
+    protected void initPlaybutton(MainModel model) {
         playbutton = new PlayButtonController(model);
         buttonPanel.add(playbutton);
     }

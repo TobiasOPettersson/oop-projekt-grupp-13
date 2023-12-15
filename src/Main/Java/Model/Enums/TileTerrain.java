@@ -1,7 +1,7 @@
 package Model.Enums;
 
 /**
- * TODO Javadoc comment
+ * Represents the different types of tile terrains
  */
 public enum TileTerrain {
     Plains,

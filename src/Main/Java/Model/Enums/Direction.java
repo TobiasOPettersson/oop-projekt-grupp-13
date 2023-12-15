@@ -1,7 +1,7 @@
 package Model.Enums;
 
 /**
- * TODO Javadoc comment
+ * Represents the direction of pathing
  */
 public enum Direction {
     UP,

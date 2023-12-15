@@ -4,8 +4,6 @@ import Model.Enums.TowerType;
 import Model.Enums.Upgrade;
 
 import java.awt.Color;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 /**
  * Represents a button for upgrading a specific tower in the game. It extends
@@ -32,20 +30,10 @@ public class UpgradeButton extends AWidgetButton {
      * @param upgrade         The upgrade the button has
      * @param type            The type of tower the upgrade is for
      */
-    public UpgradeButton(int cost, UpgradeWidgetController towerController, Upgrade upgrade, TowerType type) {
-        super(cost, type, towerController);
+    public UpgradeButton(int cost, Upgrade upgrade, TowerType type) {
+        super(cost, type);
         this.upgrade = upgrade;
         nameLabel.setText(upgrade.name());
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent mEvent) {
-                try {
-                    towerController.notifyObservers(upgrade, cost);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
     }
 
     /**

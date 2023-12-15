@@ -346,7 +346,6 @@ public abstract class ATower implements ITargetable, IUpgradable {
 
     /**
      * Finds each targetable in range
-     * 
      * @param targetables are either the enemies on the map or the towers, depending
      *                    of if the tower ability targets enemies or towers
      * @return if the tower only targets the first only return the first targetable
@@ -375,7 +374,6 @@ public abstract class ATower implements ITargetable, IUpgradable {
 
     /**
      * Finds each targetable in range
-     * 
      * @param source      is the enemy or tower that is the center of the aoe
      * @param targetables are either the enemies on the map or the towers, depending
      *                    of if the tower ability targets enemies or towers
