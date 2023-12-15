@@ -13,12 +13,8 @@ import Model.MainModel;
 import View.GraphicsDependencies;
 
 /**
- * AShopWidgetController is an abstract class representing a widget controller
- * responsible for managing the user interface elements within the shop,
- * including
- * the creation and display of buttons, header initialization, and overall
- * layout
- * configuration.
+ * AShopWidgetController is an abstract class representing a widget controller responsible for managing the user interface elements within the shop,
+ * including the creation and display of buttons, header initialization, and overall layout configuration.
  */
 
 public abstract class AShopWidgetController extends JPanel implements IMoneyObserver {
@@ -32,9 +28,7 @@ public abstract class AShopWidgetController extends JPanel implements IMoneyObse
 
     /**
      * Constructor of the abstract Tower Controller class
-     * 
-     * @param observer is the Map which is notified when the player wants to create
-     *                 a tower
+     * @param observer is the Map which is notified when the player wants to create a tower
      */
     public AShopWidgetController(MainModel model) {
         setSize(new Dimension(600, FRAME_HEIGHT - MAP_HEIGHT));

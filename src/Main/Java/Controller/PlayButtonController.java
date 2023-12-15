@@ -8,12 +8,9 @@ import javax.swing.JPanel;
 import Model.MainModel;
 
 /**
- * PlayButtonController represents the controller for the "Start Wave" button
- * used to initiate
- * the game's wave or level. It extends JPanel and initializes a JButton to
- * start a new wave
- * or level in the game when clicked. The button triggers the 'play()' method in
- * the MainModel.
+ * PlayButtonController represents the controller for the "Start Wave" button used to initiate the game's wave or level. 
+ * It extends JPanel and initializes a JButton to start a new wave or level in the game when clicked. 
+ * The button triggers the 'play()' method in the MainModel.
  */
 public class PlayButtonController extends JPanel {
     String playImagePath;
@@ -21,7 +18,6 @@ public class PlayButtonController extends JPanel {
 
     /**
      * The button that starts a new wave, i.e. starts the game
-     * 
      * @param model is the main model where the method play() is called on
      */
     public PlayButtonController(MainModel model) {

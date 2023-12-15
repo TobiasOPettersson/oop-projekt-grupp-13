@@ -6,17 +6,11 @@ import Model.Enums.Upgrade;
 import java.awt.Color;
 
 /**
- * Represents a button for upgrading a specific tower in the game. It extends
- * AWidgetButton
- * and handles the display and functionality for an upgrade associated with a
- * TowerType.
- * The class initializes button images for different TowerTypes and manages the
- * upgrade process.
- * It allows for setting the opacity based on upgrade availability and showing
- * the upgraded state
- * with a distinct color scheme. The button triggers the
- * 'notifyObservers(upgrade)' method in
- * the UpgradeTowerController upon being clicked.
+ * Represents a button for upgrading a specific tower in the game. 
+ * It extends AWidgetButton and handles the display and functionality for an upgrade associated with a TowerType.
+ * The class initializes button images for different TowerTypes and manages the upgrade process.
+ * It allows for setting the opacity based on upgrade availability and showing the upgraded state with a distinct color scheme. 
+ * The button triggers the 'notifyObservers(upgrade)' method in the UpgradeTowerController upon being clicked.
  */
 public class UpgradeButton extends AWidgetButton {
     protected Upgrade upgrade;
@@ -24,7 +18,6 @@ public class UpgradeButton extends AWidgetButton {
 
     /**
      * Constructor
-     * 
      * @param cost            The cost of the upgrade
      * @param towerController The UpgradeTowerController the button will be added to
      * @param upgrade         The upgrade the button has
@@ -58,10 +51,8 @@ public class UpgradeButton extends AWidgetButton {
     }
 
     /**
-     * Sets the opacity of the entity and adjusts background colors based on the
-     * boolean value.
+     * Sets the opacity of the entity and adjusts background colors based on the boolean value.
      * If hasUpgrade is true, a specific display for having an upgrade is shown.
-     *
      * @param bool the boolean value determining the opacity
      */
 
@@ -88,7 +79,6 @@ public class UpgradeButton extends AWidgetButton {
     /**
      * Displays the upgraded state with a specific color scheme.
      */
-
     protected void showHasUpgrade() {
         Color color = Color.blue;
         setOpaque(false);

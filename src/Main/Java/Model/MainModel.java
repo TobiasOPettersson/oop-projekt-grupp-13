@@ -56,9 +56,6 @@ public class MainModel implements ITowerUpgradeObserver {
         notifyObservers();
     }
 
-    
-
-
     //----------------------Run helper methods-------------------------------//
 
     /**

@@ -1,6 +1,6 @@
 package Model.Interfaces;
 
-public interface IMovable extends IPositionable{
+public interface IMovable{
     /**
      * Moves IMovables
      */

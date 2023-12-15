@@ -12,7 +12,6 @@ import Model.Enums.EnemyType;
  * A class representing an enemy factory which creates all instances of enemies.
  */
 public class EnemyFactory {
-    private Queue<AEnemy> currentWave = new LinkedList<AEnemy>(); 
     private int startPosition;
     private List<Direction> pathDirection = new ArrayList<Direction>();
 
@@ -32,6 +31,7 @@ public class EnemyFactory {
      * @return a queue of AEnemy for the current wave
      */
     public Queue<AEnemy> createCurrentWave(Queue<EnemyType> currentWaveType){
+        Queue<AEnemy> currentWave = new LinkedList<AEnemy>(); 
         currentWave.clear();
         EnemyType currentEnemyType;
         while (currentWaveType.isEmpty() == false) {

@@ -34,8 +34,7 @@ public abstract class AEnemy implements IMovable, ITargetable {
     /**
      * Constructor of abstract class AEnemy.
      * @param health        is the health points needed to kill an enemy
-     * @param y             the y-position of the enemy as a grid-index, i.e. not the
-     *                      y-position of the sprite in view
+     * @param y             the y-position of the enemy as a grid-index, i.e. not the y-position of the sprite in view
      * @param speed         is the movement speed of the enemy
      * @param type          is the type of the enemy
      * @param directions    is the list of directions in which the enemy will follow
@@ -76,9 +75,8 @@ public abstract class AEnemy implements IMovable, ITargetable {
 
     /**
      * Computes the closest tile centerpoint x- or y-corodinate.
-     * vector must be -1, 0 or 1. Throws IllegalArgumentException if not.
-     * Else return the closest coordinate depending on the enemy's position
-     * and current vector.
+     * Vector must be -1, 0 or 1. Throws IllegalArgumentException if not.
+     * Else return the closest coordinate depending on the enemy's position and current vector.
      * @param coordinate the enemy position coordinate, can be x or y.
      * @param vector the unit vector for the current direction. Can be horizontal or vertical.
      * @return x- or y-coordinate depending on the arguments as a double.
@@ -213,9 +211,8 @@ public abstract class AEnemy implements IMovable, ITargetable {
     }
 
     /**
-     * Moves the enemy along a predefined path of directions, adjusting its position
-     * based on the current and next direction. Handles both movement
-     * in the same direction and turning at designated points.
+     * Moves the enemy along a predefined path of directions, adjusting its position based on the current and next direction. 
+     * Handles both movement in the same direction and turning at designated points.
      */
     private void moveEnemy() {
         Direction currentDir = directions.get(0);

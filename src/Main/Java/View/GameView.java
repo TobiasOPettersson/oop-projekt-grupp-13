@@ -169,6 +169,12 @@ public class GameView extends JFrame implements IObservable {
         }
     }
 
+    /**
+     * Adds a new upgrade widget to the list of upgrade widgets when a new tower has been created
+     * @param type      The type of the created tower
+     * @param towerPosX The towers x-position on the grid
+     * @param towerPosY The towers y-position on the grid
+     */
     protected void addNewUpgradeWidget(TowerType type, int towerPosX, int towerPosY) {
         for (UpgradeWidgetController upgradeWidget : upgradeWidgets) {
             if (upgradeWidget.getSavedTowerPosX() == towerPosX && upgradeWidget.getSavedTowerPosY() == towerPosY) {

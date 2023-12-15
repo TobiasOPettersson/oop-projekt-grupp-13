@@ -17,10 +17,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * AWidgetButton is an abstract class representing a button widget
- * used in the shop's interface to display tower options. It encapsulates
- * the visual components of a tower button, including the tower's cost,
- * image, and related UI elements.
+ * AWidgetButton is an abstract class representing a button widget, used in the shop's interface to display tower options. 
+ * It encapsulates the visual components of a tower button, including the tower's cost, image, and related UI elements.
  */
 
 public abstract class AWidgetButton extends JPanel {
@@ -33,7 +31,6 @@ public abstract class AWidgetButton extends JPanel {
 
     /**
      * The constructor of the tower widget buttonClick
-     * 
      * @param cost            is the amount of money needed to purchace the tower
      * @param type            is the type of the tower, for example knife or mallet
      * @param towerController is the tower controller widgit that the button is
@@ -95,7 +92,6 @@ public abstract class AWidgetButton extends JPanel {
 
     /**
      * Sets the opacity of the widget components.
-     * 
      * @param bool true to set the widget and its components as opaque,
      *             false to set them with transparency!
      */
