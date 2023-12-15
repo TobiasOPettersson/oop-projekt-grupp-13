@@ -59,7 +59,7 @@ public class DrawGameInfo {
     private void drawWaveNumber(Graphics g, int currentWaveNumber, int maxNumberOfWaves, int mapSizeX) {
         g.setColor(Color.DARK_GRAY);
         g.setFont(new Font("Arial", Font.BOLD, 20));
-        g.drawString("Round: " + currentWaveNumber + "/" + maxNumberOfWaves,
+        g.drawString("Wave: " + currentWaveNumber + "/" + maxNumberOfWaves,
                 mapSizeX * SPRITESIZE - SPRITESIZE * 3, SPRITESIZE / 2 + 6);
     }
 
