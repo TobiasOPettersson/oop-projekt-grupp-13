@@ -34,7 +34,7 @@ public class MainModel implements ITowerUpgradeObserver {
      * The constructor for this class
      */
     public MainModel() {
-        player = new Player(5, 3);
+        player = new Player(100, 1);
         map = new MapOne(player);
         allWaves = new Wave(map.getStartPosition(), map.getPathDirections());
         alive = true;
