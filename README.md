@@ -1,13 +1,18 @@
-# oop-projekt
-Projekt i TDA367/DIT213 Objektorienterat programmeringsprojekt
+# Tower Defence game
+A tower defence game with a food theme.
 
-# Class
-A class name start with I if it is an Interface, A if it is an abstract class
-The first word is capitalize, i.e PascalCase
-It always ends in what part of MVC it is, i.e Model, View, Controller or App
+## Tech Stack
+- Java
+- JavaFX
 
-# Method
-Use camelCase
+## Purpose
+This project was built as a school group project in a course where the main focus was MVC and agile workflow
 
-# Variable
-Use camelCase
+## Features
+Food-themed enemies and kitchen appliances as towers
+Wave-based tower defence gameplay
+Basic scoring and game mechanics
+
+## Status
+Completed as a school assignment
+Run the `Main.java` file in your Java IDE to start the game.
